@@ -7,13 +7,10 @@ Object {
       let className = undefined;
       export { className as class };
       export let tabindex = undefined;
-      export let width = 16;
-      export let height = 16;
       export let focusable = 'false';
       export let title = undefined;
       export let style = 'will-change: transform;';
 
-      const viewBox = '0 0 16 16';
       const preserveAspectRatio = 'xMidYMid meet';
       const ariaLabel = $$props['aria-label'];
       const ariaLabelledBy = $$props['aria-labelledby'];
@@ -32,12 +29,9 @@ Object {
       on:mouseover
       on:mouseenter
       on:mouseleave
-      xmlns='http://www.w3.org/2000/svg'
+      xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 16 16\\" width=\\"16\\" height=\\"16\\"
       class={className}
       {preserveAspectRatio}
-      {viewBox}
-      {width}
-      {height}
       {style}
       {...attributes}>
       <path d='M6.7 12.3L2.9 8.5H15v-1H2.9l3.8-3.8L6 3 1 8l5 5z'></path>

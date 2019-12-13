@@ -1,4 +1,4 @@
-import { getAttributes } from '@carbon/icon-helpers';
+import { formatAttributes, getAttributes } from '@carbon/icon-helpers';
 import { createElements } from './createElements';
 
 interface IAttributes {
@@ -54,13 +54,10 @@ function createComponent(icon: ICarbonIcon) {
       let className = undefined;
       export { className as class };
       export let tabindex = undefined;
-      export let width = ${attrs.width};
-      export let height = ${attrs.height};
       export let focusable = '${attributes.focusable}';
       export let title = undefined;
       export let style = '${attributes.style}';
 
-      const viewBox = '${attrs.viewBox}';
       const preserveAspectRatio = '${attributes.preserveAspectRatio}';
       const ariaLabel = $$props['aria-label'];
       const ariaLabelledBy = $$props['aria-labelledby'];
@@ -79,12 +76,9 @@ function createComponent(icon: ICarbonIcon) {
       on:mouseover
       on:mouseenter
       on:mouseleave
-      xmlns='${attrs.xmlns}'
+      ${formatAttributes(attrs)}
       class={className}
       {preserveAspectRatio}
-      {viewBox}
-      {width}
-      {height}
       {style}
       {...attributes}>
       ${createElements(content)}
