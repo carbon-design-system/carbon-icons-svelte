@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "lib": ["esnext"],
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "strict": true,
+    "target": "es5"
+  },
+  "include": ["src"]
+}

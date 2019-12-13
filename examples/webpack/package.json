@@ -1,0 +1,27 @@
+{
+  "name": "webpack",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "webpack-dev-server",
+    "build": "NODE_ENV=production webpack"
+  },
+  "devDependencies": {
+    "carbon-icons-svelte": "^0.1.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "css-loader": "^3.3.2",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.8.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "style-loader": "^1.0.1",
+    "svelte": "^3.16.4",
+    "svelte-loader": "^2.13.6",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
+  },
+  "resolutions": {
+    "**/**/serialize-javascript": ">=2.1.1"
+  }
+}
