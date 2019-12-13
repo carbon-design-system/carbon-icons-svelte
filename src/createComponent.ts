@@ -1,5 +1,8 @@
-import { formatAttributes, getAttributes } from '@carbon/icon-helpers';
-import { createElements } from './createElements';
+import {
+  formatAttributes,
+  getAttributes,
+  toString
+} from '@carbon/icon-helpers';
 
 interface IAttributes {
   focusable: 'false';
@@ -45,7 +48,6 @@ export interface ICarbonIcon {
   size?: IconSize;
 }
 
-// TODO: use `getAttributes` from @carbon/icon-helpers (#4)
 function createComponent(icon: ICarbonIcon) {
   const { name, size, attrs, content } = icon;
 
@@ -81,7 +83,7 @@ function createComponent(icon: ICarbonIcon) {
       {preserveAspectRatio}
       {style}
       {...attributes}>
-      ${createElements(content)}
+      ${content.map(element => toString(element)).join('')}
       <slot>
         {#if title}
           <title>{title}</title>

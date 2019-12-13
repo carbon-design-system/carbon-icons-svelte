@@ -34,7 +34,7 @@ Object {
       {preserveAspectRatio}
       {style}
       {...attributes}>
-      <path d='M6.7 12.3L2.9 8.5H15v-1H2.9l3.8-3.8L6 3 1 8l5 5z'></path>
+      <path d=\\"M6.7 12.3L2.9 8.5H15v-1H2.9l3.8-3.8L6 3 1 8l5 5z\\"></path>
       <slot>
         {#if title}
           <title>{title}</title>
