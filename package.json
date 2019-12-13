@@ -1,0 +1,79 @@
+{
+  "name": "carbon-icons-svelte",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "description": "Carbon Design System icons as Svelte components",
+  "author": "Eric Liu (https://github.com/metonym)",
+  "svelte": "lib/index.js",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "run-s build:*",
+    "build:task": "tsc",
+    "build:lib": "node dist",
+    "build:format-lib": "prettier --write 'lib/**/*.{js,svelte}'",
+    "test": "jest --coverage",
+    "test:tdd": "jest --watch",
+    "prepublishOnly": "yarn build"
+  },
+  "devDependencies": {
+    "@carbon/icon-helpers": "10.4.0",
+    "@carbon/icons": "10.6.1",
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "@types/fs-extra": "^8.0.1",
+    "@types/jest": "^24.0.23",
+    "fs-extra": "^8.1.0",
+    "husky": "^3.1.0",
+    "jest": "^24.9.0",
+    "lint-staged": "^9.4.3",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.19.1",
+    "prettier-plugin-svelte": "^0.7.0",
+    "pretty-quick": "^2.0.1",
+    "svelte": "^3.16.4",
+    "ts-jest": "^24.2.0",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.7.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && pretty-quick --staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.{ts}": [
+      "tslint --fix -p .",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": true
+  },
+  "jest": {
+    "preset": "ts-jest"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ibm/carbon-icons-svelte.git"
+  },
+  "homepage": "https://github.com/ibm/carbon-icons-svelte",
+  "keywords": [
+    "carbon",
+    "carbon icons",
+    "svelte"
+  ],
+  "files": [
+    "lib"
+  ],
+  "bugs": "https://github.com/ibm/carbon-icons-svelte/issues",
+  "sideEffects": false
+}
