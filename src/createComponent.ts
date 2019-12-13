@@ -56,7 +56,7 @@ function createComponent(icon: ICarbonIcon) {
       let className = undefined;
       export { className as class };
       export let tabindex = undefined;
-      export let focusable = '${attributes.focusable}';
+      export let focusable = ${attributes.focusable};
       export let title = undefined;
       export let style = '${attributes.style}';
 
@@ -67,9 +67,9 @@ function createComponent(icon: ICarbonIcon) {
       const attributes = {
         'aria-label': ariaLabel,
         'aria-labelledby': ariaLabelledBy,
-        'aria-hidden': labelled ? undefined : 'true',
+        'aria-hidden': labelled ? undefined : true,
         role: labelled ? 'img' : undefined,
-        focusable: tabindex ? 'true' : focusable,
+        focusable: tabindex ? true : focusable,
         tabindex
       };
     </script>
