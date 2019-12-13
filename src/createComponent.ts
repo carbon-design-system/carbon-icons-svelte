@@ -45,6 +45,7 @@ export interface ICarbonIcon {
   size?: IconSize;
 }
 
+// TODO: use `getAttributes` from @carbon/icon-helpers (#4)
 function createComponent(icon: ICarbonIcon) {
   const { name, size, attrs, content } = icon;
 

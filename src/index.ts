@@ -6,13 +6,15 @@ import { formatName } from './format';
 async function build() {
   await fs.remove('lib');
   await fs.ensureDir('lib');
-  await fs.ensureDir('lib/src');
 
   const baseImports: string[] = [];
   const baseExports: { [componentName: string]: string } = {};
 
+  // TODO: use build-info.json (#5)
   Object.keys(icons).forEach(async iconName => {
     const { name, size, markup } = createComponent(icons[iconName]);
+
+    // TODO: use `moduleName` from build-info.json (#5)
     const componentName = formatName({ name, size });
 
     if (componentName != null && !(componentName in baseExports)) {

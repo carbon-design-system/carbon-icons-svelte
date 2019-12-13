@@ -5,6 +5,7 @@ function formatName({ name, size }: Pick<ICarbonIcon, 'name' | 'size'>) {
     return null;
   }
 
+  // TODO: use `moduleName` from build-info.json (#5)
   const formattedName = name
     .split('-')
     .filter(Boolean)
