@@ -5,12 +5,14 @@
 
 > Carbon Design System icons as Svelte components.
 
-This library uses [@carbon/icons](https://github.com/carbon-design-system/carbon/tree/master/packages/icons)(version 10.6.1) and [@carbon/icon-helpers](https://github.com/carbon-design-system/carbon/tree/master/packages/icon-helpers)(version 10.4.0) to build [Carbon Design System iconography](https://www.carbondesignsystem.com/guidelines/icons/library) for [Svelte](https://github.com/sveltejs/svelte).
+This library uses [@carbon/icons](https://github.com/carbon-design-system/carbon/tree/master/packages/icons) (v10.6.1) and [@carbon/icon-helpers](https://github.com/carbon-design-system/carbon/tree/master/packages/icon-helpers) (v10.4.0) to build [Carbon Design System iconography](https://www.carbondesignsystem.com/guidelines/icons/library) for [Svelte](https://github.com/sveltejs/svelte).
 
-## Getting started
+## Install
 
 ```bash
 yarn add -D carbon-icons-svelte
+# OR
+npm install -D carbon-icons-svelte
 ```
 
 ## Usage
@@ -23,7 +25,7 @@ yarn add -D carbon-icons-svelte
 <Add16 />
 ```
 
-For faster compiling, import icons individually:
+For faster compile times, import icons individually:
 
 ```html
 <script>
