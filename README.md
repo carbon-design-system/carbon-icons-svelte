@@ -12,11 +12,15 @@ This library uses [@carbon/icons](https://github.com/carbon-design-system/carbon
 
 ```bash
 yarn add -D carbon-icons-svelte
+
 # OR
+
 npm install -D carbon-icons-svelte
 ```
 
 ## Usage
+
+Supported icon sizes include `16`, `20`, `24` and `32`. Refer to the [Carbon icon library](https://www.carbondesignsystem.com/guidelines/icons/library) for supported icons.
 
 ```html
 <script>
@@ -26,7 +30,15 @@ npm install -D carbon-icons-svelte
 <Add16 />
 ```
 
-For faster compile times, import icons individually:
+**Recommendation**: For faster compiling, import icons individually.
+
+### Icon Import Path
+
+```js
+import Icon from 'carbon-icons-svelte/lib/<module-name>';
+```
+
+#### Example
 
 ```html
 <script>
@@ -35,6 +47,68 @@ For faster compile times, import icons individually:
 
 <Add16 />
 ```
+
+## API
+
+### Props
+
+All props are optional.
+
+| Name            | Type      | Default     |
+| --------------- | --------- | ----------- |
+| aria-label      | `string`  | `undefined` |
+| aria-labelledby | `string`  | `undefined` |
+| tabindex        | `string`  | `undefined` |
+| focusable       | `boolean` | `false`     |
+| title           | `string`  | `undefined` |
+| class           | `string`  | `undefined` |
+| style           | `string`  | `undefined` |
+
+```html
+<script>
+  import Add16 from 'carbon-icons-svelte/lib/Add16';
+</script>
+
+<Add16 aria-label="Add" class="custom-class" style="will-change: transform;" />
+```
+
+You can pass a `title` as a prop or through the slot.
+
+```html
+<Add16 title="Add" />
+
+<!-- OR -->
+
+<Add16>
+  <title>Add</title>
+</Add16>
+```
+
+### Forwarded Events
+
+The following events can be forwarded to the icon:
+
+- `on:click`
+- `on:mouseenter`
+- `on:mouseover`
+- `on:mouseleave`
+
+```html
+<script>
+  import Add16 from 'carbon-icons-svelte/lib/Add16';
+</script>
+
+<Add16
+  on:click="{() => {}}"
+  on:mouseenter="{() => {}}"
+  on:mouseover="{() => {}}"
+  on:mouseleave="{() => {}}"
+/>
+```
+
+## Limitations
+
+This library exports icons in the `ES` (ES module) format. Currently, the `UMD` format is not supported.
 
 ## [Examples](examples)
 
