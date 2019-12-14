@@ -7,7 +7,7 @@
 
 > Svelte components for icons in digital and software products using the Carbon Design System.
 
-This library uses [@carbon/icons](https://github.com/carbon-design-system/carbon/tree/master/packages/icons) to build [Carbon Design System icons](https://www.carbondesignsystem.com/guidelines/icons/library) with zero dependencies.
+This library uses [@carbon/icons](https://github.com/carbon-design-system/carbon/tree/master/packages/icons) to build [Carbon icons](https://www.carbondesignsystem.com/guidelines/icons/library) with zero dependencies.
 
 ## Install
 
@@ -47,7 +47,7 @@ For faster compiling, import icons individually.
 import Icon from 'carbon-icons-svelte/lib/<module-name>';
 ```
 
-Supported icon sizes include `16`, `20`, `24` and `32`. Refer to the [Carbon icon library](https://www.carbondesignsystem.com/guidelines/icons/library) for available icons.
+Supported icon sizes include `16`, `20`, `24` and `32`. Refer to the [Carbon icon library](https://www.carbondesignsystem.com/guidelines/icons/library) for the full list of available icons.
 
 ## API
 
@@ -55,15 +55,15 @@ Supported icon sizes include `16`, `20`, `24` and `32`. Refer to the [Carbon ico
 
 | Name            | Value                                     |
 | --------------- | ----------------------------------------- |
-| aria-label      | (optional) `string`                       |
-| aria-labelledby | (optional) `string`                       |
-| tabindex        | (optional) `string`                       |
-| focusable       | (optional) `boolean` (Default is `false`) |
-| title           | (optional) `string`                       |
-| class           | (optional) `string`                       |
-| style           | (optional) `string`                       |
+| aria-label      | `string` (optional)                       |
+| aria-labelledby | `string` (optional)                       |
+| tabindex        | `string` (optional)                       |
+| focusable       | `boolean` (optional – default is `false`) |
+| title           | `string` (optional)                       |
+| class           | `string` (optional)                       |
+| style           | `string` (optional)                       |
 
-You can pass a `title` as a prop or through the slot.
+The `title` prop can be passed through the slot.
 
 ```html
 <Add16 title="Add" />
@@ -75,13 +75,9 @@ You can pass a `title` as a prop or through the slot.
 
 ### Forwarded Events
 
-Events can be forwarded to the icon.
+Events can be forwarded directly to the SVG element.
 
 ```html
-<script>
-  import Add16 from 'carbon-icons-svelte/lib/Add16';
-</script>
-
 <Add16
   on:click="{() => {}}"
   on:mouseenter="{() => {}}"
