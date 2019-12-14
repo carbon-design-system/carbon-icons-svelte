@@ -6,21 +6,25 @@
 
 > Svelte components for icons in digital and software products using the Carbon Design System.
 
-This library uses [@carbon/icons](https://github.com/carbon-design-system/carbon/tree/master/packages/icons) (v10.6.1) and [@carbon/icon-helpers](https://github.com/carbon-design-system/carbon/tree/master/packages/icon-helpers) (v10.4.0) to build [Carbon Design System iconography](https://www.carbondesignsystem.com/guidelines/icons/library) for [Svelte](https://github.com/sveltejs/svelte).
+This library uses [@carbon/icons](https://github.com/carbon-design-system/carbon/tree/master/packages/icons) and [@carbon/icon-helpers](https://github.com/carbon-design-system/carbon/tree/master/packages/icon-helpers) to build [Carbon Design System icons](https://www.carbondesignsystem.com/guidelines/icons/library) with zero dependencies.
+
+**Aligned Version**: `@carbon/icons@10.6.1`
 
 ## Install
 
 ```bash
 yarn add -D carbon-icons-svelte
-
 # OR
-
 npm install -D carbon-icons-svelte
 ```
 
 ## Usage
 
-Supported icon sizes include `16`, `20`, `24` and `32`. Refer to the [Carbon icon library](https://www.carbondesignsystem.com/guidelines/icons/library) for supported icons.
+Supported icon sizes include `16`, `20`, `24` and `32`.
+
+Refer to the [Carbon icon library](https://www.carbondesignsystem.com/guidelines/icons/library) for available icons.
+
+## Basic
 
 ```html
 <script>
@@ -30,15 +34,9 @@ Supported icon sizes include `16`, `20`, `24` and `32`. Refer to the [Carbon ico
 <Add16 />
 ```
 
-**Recommendation**: For faster compiling, import icons individually.
+## Recommended Usage
 
-### Icon Import Path
-
-```js
-import Icon from 'carbon-icons-svelte/lib/<module-name>';
-```
-
-#### Example
+For faster compiling, import icons individually.
 
 ```html
 <script>
@@ -48,21 +46,27 @@ import Icon from 'carbon-icons-svelte/lib/<module-name>';
 <Add16 />
 ```
 
+### Import Path Pattern
+
+```js
+import Icon from 'carbon-icons-svelte/lib/<module-name>';
+```
+
 ## API
 
 ### Props
 
 All props are optional.
 
-| Name            | Type      | Default     |
-| --------------- | --------- | ----------- |
-| aria-label      | `string`  | `undefined` |
-| aria-labelledby | `string`  | `undefined` |
-| tabindex        | `string`  | `undefined` |
-| focusable       | `boolean` | `false`     |
-| title           | `string`  | `undefined` |
-| class           | `string`  | `undefined` |
-| style           | `string`  | `undefined` |
+| Name            | Value                        |
+| --------------- | ---------------------------- |
+| aria-label      | `string`                     |
+| aria-labelledby | `string`                     |
+| tabindex        | `string`                     |
+| focusable       | `boolean` (Default: `false`) |
+| title           | `string`                     |
+| class           | `string`                     |
+| style           | `string`                     |
 
 ```html
 <script>
@@ -76,9 +80,7 @@ You can pass a `title` as a prop or through the slot.
 
 ```html
 <Add16 title="Add" />
-
 <!-- OR -->
-
 <Add16>
   <title>Add</title>
 </Add16>
@@ -108,9 +110,14 @@ The following events can be forwarded to the icon:
 
 ## Limitations
 
-This library exports icons in the `ES` (ES module) format. Currently, the `UMD` format is not supported.
+Currently, the `UMD` format is not supported.
 
-## [Examples](examples)
+This library exports icons in the `ES` (ES module) format; use a Webpack or Rollup set-up for consumption (see [examples](examples)).
+
+## Examples
+
+- [Webpack](examples/webpack)
+- [Rollup](examples/rollup)
 
 ## [Changelog](CHANGELOG.md)
 
