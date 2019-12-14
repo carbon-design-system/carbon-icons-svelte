@@ -4,7 +4,7 @@
 [![Build][build]][build-badge]
 [![Coverage][codecov-shield]][codecov]
 
-> Carbon Design System icons as Svelte components.
+> Svelte components for icons in digital and software products using the Carbon Design System.
 
 This library uses [@carbon/icons](https://github.com/carbon-design-system/carbon/tree/master/packages/icons) (v10.6.1) and [@carbon/icon-helpers](https://github.com/carbon-design-system/carbon/tree/master/packages/icon-helpers) (v10.4.0) to build [Carbon Design System iconography](https://www.carbondesignsystem.com/guidelines/icons/library) for [Svelte](https://github.com/sveltejs/svelte).
 
