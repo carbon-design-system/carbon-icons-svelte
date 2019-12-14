@@ -2,7 +2,7 @@
   "name": "carbon-icons-svelte",
   "version": "1.0.0",
   "license": "Apache-2.0",
-  "description": "Carbon Design System icons as Svelte components",
+  "description": "Svelte components for icons in digital and software products using the Carbon Design System",
   "author": "Eric Liu (https://github.com/metonym)",
   "svelte": "lib/index.js",
   "main": "lib/index.js",
