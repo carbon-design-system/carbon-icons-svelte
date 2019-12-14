@@ -1,6 +1,7 @@
 # carbon-icons-svelte
 
 [![NPM][npm]][npm-url]
+[![Dependencies][deps]][deps-badge]
 [![Build][build]][build-badge]
 [![Coverage][codecov-shield]][codecov]
 
@@ -108,6 +109,8 @@ This library exports icons in the `ES` format; use a Webpack or Rollup set-up fo
 
 [npm]: https://img.shields.io/npm/v/carbon-icons-svelte.svg?color=blue
 [npm-url]: https://npmjs.com/package/carbon-icons-svelte
+[deps]: https://david-dm.org/ibm/carbon-icons-svelte/status.svg
+[deps-badge]: https://david-dm.org/ibm/carbon-icons-svelte
 [build]: https://travis-ci.com/ibm/carbon-icons-svelte.svg?branch=master
 [build-badge]: https://travis-ci.com/ibm/carbon-icons-svelte
 [codecov]: https://codecov.io/gh/ibm/carbon-icons-svelte
