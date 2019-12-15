@@ -9,14 +9,20 @@
 
 This library uses [@carbon/icons](https://github.com/carbon-design-system/carbon/tree/master/packages/icons) to build [Carbon icons](https://www.carbondesignsystem.com/guidelines/icons/library) with zero dependencies.
 
-## [Icon Index](docs/ICON_INDEX.md)
+## Getting Started
 
-## Install
+`carbon-icons-svelte` can be installed as a development dependency.
+
+### Using Yarn
 
 ```bash
 yarn add -D carbon-icons-svelte
-# OR
-npm install -D carbon-icons-svelte
+```
+
+### Using NPM
+
+```bash
+npm i -D carbon-icons-svelte
 ```
 
 ## Usage
@@ -45,25 +51,68 @@ For faster compiling, import icons individually.
 <Add16 />
 ```
 
+#### Import Path Pattern
+
+```js
+import Icon from 'carbon-icons-svelte/lib/<IconModuleName>';
+```
+
 ## API
 
 ### Props
 
-| Name            | Value                                     |
-| --------------- | ----------------------------------------- |
-| aria-label      | `string` (optional)                       |
-| aria-labelledby | `string` (optional)                       |
-| tabindex        | `string` (optional)                       |
-| focusable       | `boolean` (optional – default is `false`) |
-| title           | `string` (optional)                       |
-| class           | `string` (optional)                       |
-| style           | `string` (optional)                       |
+| Name            | Value               |
+| --------------- | ------------------- |
+| aria-label      | `string` (optional) |
+| aria-labelledby | `string` (optional) |
+| tabindex        | `string` (optional) |
+| title           | `string` (optional) |
+| class           | `string` (optional) |
+| style           | `string` (optional) |
 
-The `title` prop can be passed through the slot.
+### Recipes
+
+#### Custom Class
+
+```html
+<style>
+  :global(.custom-class) {
+    outline: 1px solid #000;
+  }
+</style>
+
+<Add16 class="custom-class" />
+```
+
+#### Labelled
+
+```html
+<Add16 aria-label="Add" />
+```
+
+#### Labelled with Focus
+
+```html
+<Add16 aria-label="Add" tabindex="0" />
+```
+
+#### Labelled by
+
+```html
+<label id="addFile">Add file</label>
+
+<Add16 aria-labelledby="addFile" />
+```
+
+### Slot
+
+`title` can be passed as a prop or through the slot.
 
 ```html
 <Add16 title="Add" />
+
 <!-- OR -->
+
 <Add16>
   <title>Add</title>
 </Add16>
@@ -71,7 +120,7 @@ The `title` prop can be passed through the slot.
 
 ### Forwarded Events
 
-Events can be forwarded directly to the SVG element.
+Event directives can be forwarded directly to the SVG element.
 
 ```html
 <Add16
@@ -86,7 +135,7 @@ Events can be forwarded directly to the SVG element.
 
 Currently, the `UMD` format is not supported.
 
-This library exports icons in the `ES` format; use a Webpack or Rollup set-up for consumption (see [examples](examples)).
+This library exports icons in the `ES` format. Use Webpack or Rollup for application bundling (see [examples](examples)).
 
 ## Examples
 
