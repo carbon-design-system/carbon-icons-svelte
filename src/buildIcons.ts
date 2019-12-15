@@ -52,15 +52,16 @@ async function buildIcons({ path, dist }: { path: string; dist: string }) {
   }
 
   const buffer = await readFile(path);
-  const iconMetadata: IBuildIcon[] = JSON.parse(buffer.toString());
+  const metadata: IBuildIcon[] = JSON.parse(buffer.toString());
 
   await remove(dist);
   await ensureDir(dist);
 
   const baseImports: string[] = [];
   const baseExports: string[] = [];
+  const iconIndex: string[] = ['# Icon Index\n\n', '> List of supported icons (moduleName)\n\n'];
 
-  iconMetadata.forEach(async ({ descriptor: { attrs, content }, moduleName }) => {
+  metadata.forEach(async ({ descriptor: { attrs, content }, moduleName }) => {
     const component = template({ attrs, content });
     const componentName = `${moduleName}.svelte`;
     const componentFolder = `${dist}/${moduleName}`;
@@ -71,6 +72,7 @@ export default ${moduleName};`;
 
     baseImports.push(`import ${moduleName} from './${moduleName}';\n`);
     baseExports.push(moduleName);
+    iconIndex.push(`- ${moduleName}\n`);
 
     await ensureDir(componentFolder);
     await writeFile(componentPath, component);
@@ -83,6 +85,8 @@ export {
 };`;
 
   await writeFile(`${dist}/index.js`, baseFile);
+  await ensureDir('docs');
+  await writeFile(`docs/ICON_INDEX.md`, iconIndex.join(''));
 }
 
 export { buildIcons };

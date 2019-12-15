@@ -9,6 +9,8 @@
 
 This library uses [@carbon/icons](https://github.com/carbon-design-system/carbon/tree/master/packages/icons) to build [Carbon icons](https://www.carbondesignsystem.com/guidelines/icons/library) with zero dependencies.
 
+## [Icon Index](docs/ICON_INDEX.md)
+
 ## Install
 
 ```bash
@@ -18,6 +20,8 @@ npm install -D carbon-icons-svelte
 ```
 
 ## Usage
+
+Supported icon sizes include `16`, `20`, `24` and `32`. Refer to the [Icon Index](docs/ICON_INDEX.md) for a list of available icons.
 
 ### Basic
 
@@ -40,14 +44,6 @@ For faster compiling, import icons individually.
 
 <Add16 />
 ```
-
-#### Import Path Pattern
-
-```js
-import Icon from 'carbon-icons-svelte/lib/<module-name>';
-```
-
-Supported icon sizes include `16`, `20`, `24` and `32`. Refer to the [Carbon icon library](https://www.carbondesignsystem.com/guidelines/icons/library) for the full list of available icons.
 
 ## API
 
