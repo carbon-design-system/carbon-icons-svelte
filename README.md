@@ -11,17 +11,11 @@ This library uses [@carbon/icons](https://github.com/carbon-design-system/carbon
 
 ## Getting Started
 
-`carbon-icons-svelte` can be installed as a development dependency.
-
-### Using Yarn
+`carbon-icons-svelte` can be installed as a development dependency using yarn or npm.
 
 ```bash
 yarn add -D carbon-icons-svelte
-```
-
-### Using NPM
-
-```bash
+# OR
 npm i -D carbon-icons-svelte
 ```
 
@@ -61,14 +55,30 @@ import Icon from 'carbon-icons-svelte/lib/<IconModuleName>';
 
 ### Props
 
-| Name            | Value               |
-| --------------- | ------------------- |
-| aria-label      | `string` (optional) |
-| aria-labelledby | `string` (optional) |
-| tabindex        | `string` (optional) |
-| title           | `string` (optional) |
-| class           | `string` (optional) |
-| style           | `string` (optional) |
+All props are optional.
+
+| Name            | Value                                           |
+| --------------- | ----------------------------------------------- |
+| aria-label      | `string`                                        |
+| aria-labelledby | `string`                                        |
+| tabindex        | `string`                                        |
+| title           | `string`                                        |
+| class           | `string`                                        |
+| style           | `string` (default: `"will-change: transform;"`) |
+
+### Slot
+
+`title` can be passed as a prop or through the slot as an element.
+
+```html
+<Add16 title="Add" />
+
+<!-- OR -->
+
+<Add16>
+  <title>Add</title>
+</Add16>
+```
 
 ### Recipes
 
@@ -104,20 +114,6 @@ import Icon from 'carbon-icons-svelte/lib/<IconModuleName>';
 <Add16 aria-labelledby="addFile" />
 ```
 
-### Slot
-
-`title` can be passed as a prop or through the slot.
-
-```html
-<Add16 title="Add" />
-
-<!-- OR -->
-
-<Add16>
-  <title>Add</title>
-</Add16>
-```
-
 ### Forwarded Events
 
 Event directives can be forwarded directly to the SVG element.
@@ -133,9 +129,9 @@ Event directives can be forwarded directly to the SVG element.
 
 ## Limitations
 
-Currently, the `UMD` format is not supported.
+Currently, this library supports the `ES` format. `UMD` is not supported.
 
-This library exports icons in the `ES` format. Use Webpack or Rollup for application bundling (see [examples](examples)).
+Use Webpack or Rollup for application bundling (see [examples](examples)).
 
 ## Examples
 
