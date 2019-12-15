@@ -12,7 +12,7 @@ yarn install
 
 ## Available Scripts
 
-### `yarn develop`
+### `yarn start`
 
 Runs the app in development mode with livereload enabled. Visit `http://localhost:3000` to view the app.
 
