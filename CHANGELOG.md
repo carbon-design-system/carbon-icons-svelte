@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [10.8.0-rc.0](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.8.0-rc.0) - 2019-12-14
 
-- Upgrade @carbon/icons to 10.8.0-rc.-0
+- Upgrade @carbon/icons to 10.8.0-rc.0
 
 - Use build-info.json from @carbon/icons to generate library and icon index
   ([#6](https://github.com/IBM/carbon-icons-svelte/issues/6))
