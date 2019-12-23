@@ -25,6 +25,7 @@ exports[`icon matches the snapshot 1`] = `
 </script>
 
 <svg
+  data-carbon-icon=\\"Add32\\"
   on:click
   on:mouseover
   on:mouseenter

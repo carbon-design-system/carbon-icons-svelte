@@ -62,7 +62,7 @@ async function buildIcons({ path, dist }: { path: string; dist: string }) {
   const iconIndex: string[] = ['# Icon Index\n\n', '> List of supported icons (moduleName)\n\n'];
 
   metadata.forEach(async ({ descriptor: { attrs, content }, moduleName }) => {
-    const component = template({ attrs, content });
+    const component = template({ attrs, content, moduleName });
     const componentName = `${moduleName}.svelte`;
     const componentFolder = `${dist}/${moduleName}`;
     const componentPath = `${componentFolder}/${componentName}`;

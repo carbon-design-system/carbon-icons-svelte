@@ -13,7 +13,15 @@ interface IAttributes {
 
 const attributes: IAttributes = getAttributes();
 
-function template({ attrs, content }: { attrs: IIconAttrs; content: IconContent }) {
+function template({
+  attrs,
+  content,
+  moduleName
+}: {
+  attrs: IIconAttrs;
+  content: IconContent;
+  moduleName: string;
+}) {
   const markup = `<script>
   let className = undefined;
   export { className as class };
@@ -38,6 +46,7 @@ function template({ attrs, content }: { attrs: IIconAttrs; content: IconContent 
 </script>
 
 <svg
+  data-carbon-icon="${moduleName}"
   on:click
   on:mouseover
   on:mouseenter
