@@ -81,11 +81,37 @@ All props are optional.
 </Add16>
 ```
 
-### Recipes
+## Forwarded Events
 
-#### Custom Fill Color
+Event directives are forwarded directly to the SVG element.
 
-##### Using `class`
+```html
+<Add16
+  on:click="{() => {}}"
+  on:mouseenter="{() => {}}"
+  on:mouseover="{() => {}}"
+  on:mouseleave="{() => {}}"
+/>
+```
+
+### `data-carbon-icon` selector
+
+Each icon includes a data attribute and value for easier querying. This is especially useful for automated testing in a headless browser.
+
+```html
+<svg data-carbon-icon="Add16">...</svg>
+```
+
+```js
+document.querySelectorAll('[data-carbon-icon]'); // all carbon icons
+document.querySelectorAll('[data-carbon-icon="Add16"]'); // all Add16 icons
+```
+
+## Recipes
+
+### Custom Fill Color
+
+#### Using `class`
 
 ```html
 <style>
@@ -97,43 +123,30 @@ All props are optional.
 <Add16 class="custom-class" />
 ```
 
-##### Using `style`
+#### Using `style`
 
 ```html
 <Add16 style="fill: blue" />
 ```
 
-#### Labelled
+### Labelled
 
 ```html
 <Add16 aria-label="Add" />
 ```
 
-#### Labelled with Focus
+### Labelled with Focus
 
 ```html
 <Add16 aria-label="Add" tabindex="0" />
 ```
 
-#### Labelled by
+### Labelled by
 
 ```html
 <label id="addFile">Add file</label>
 
 <Add16 aria-labelledby="addFile" />
-```
-
-### Forwarded Events
-
-Event directives are forwarded directly to the SVG element.
-
-```html
-<Add16
-  on:click="{() => {}}"
-  on:mouseenter="{() => {}}"
-  on:mouseover="{() => {}}"
-  on:mouseleave="{() => {}}"
-/>
 ```
 
 ## Limitations
