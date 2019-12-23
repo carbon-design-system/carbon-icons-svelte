@@ -7,7 +7,7 @@
 
 > Svelte components for icons in digital and software products using the Carbon Design System.
 
-This library uses [@carbon/icons](https://github.com/carbon-design-system/carbon/tree/master/packages/icons) to build [Carbon icons](https://www.carbondesignsystem.com/guidelines/icons/library) with zero dependencies.
+This zero dependency library uses [@carbon/icons](https://github.com/carbon-design-system/carbon/tree/master/packages/icons) to build [Carbon Design System icons](https://www.carbondesignsystem.com/guidelines/icons/library).
 
 ## Getting Started
 
@@ -21,7 +21,7 @@ npm i -D carbon-icons-svelte
 
 ## Usage
 
-Supported icon sizes include `16`, `20`, `24` and `32`. Refer to the [Icon Index](docs/ICON_INDEX.md) for a list of available icons.
+Supported icon sizes include `16`, `20`, `24` and `32`.
 
 ### Basic
 
@@ -48,8 +48,10 @@ For faster compiling, import icons individually.
 #### Import Path Pattern
 
 ```js
-import Icon from 'carbon-icons-svelte/lib/<IconModuleName>';
+import Icon from 'carbon-icons-svelte/lib/<ModuleName>';
 ```
+
+Refer to the [Icon Index](docs/ICON_INDEX.md) for a list of available icons.
 
 ## API
 
@@ -59,6 +61,7 @@ All props are optional.
 
 | Name            | Value                                           |
 | --------------- | ----------------------------------------------- |
+| id              | `string`                                        |
 | aria-label      | `string`                                        |
 | aria-labelledby | `string`                                        |
 | tabindex        | `string`                                        |
@@ -72,9 +75,7 @@ All props are optional.
 
 ```html
 <Add16 title="Add" />
-
 <!-- OR -->
-
 <Add16>
   <title>Add</title>
 </Add16>
@@ -82,16 +83,24 @@ All props are optional.
 
 ### Recipes
 
-#### Custom Class
+#### Custom Fill Color
+
+##### Using `class`
 
 ```html
 <style>
-  :global(.custom-class) {
-    outline: 1px solid #000;
+  :global(svg.custom-class) {
+    fill: blue;
   }
 </style>
 
 <Add16 class="custom-class" />
+```
+
+##### Using `style`
+
+```html
+<Add16 style="fill: blue" />
 ```
 
 #### Labelled
@@ -116,7 +125,7 @@ All props are optional.
 
 ### Forwarded Events
 
-Event directives can be forwarded directly to the SVG element.
+Event directives are forwarded directly to the SVG element.
 
 ```html
 <Add16
@@ -129,9 +138,9 @@ Event directives can be forwarded directly to the SVG element.
 
 ## Limitations
 
-Currently, this library supports the `ES` format. `UMD` is not supported.
+This library supports the `ES` format. Currently, `UMD` is not supported.
 
-Use Webpack or Rollup for application bundling (see [examples](examples)).
+Use Webpack or Rollup for application bundling (see [examples](examples) for sample set-ups).
 
 ## Examples
 
