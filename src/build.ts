@@ -1,50 +1,6 @@
+import BuildIcons from '@carbon/icons';
 import { ensureDir, existsSync, readFile, remove, writeFile } from 'fs-extra';
 import { template } from './template';
-
-type IconSize = 16 | 20 | 24 | 32;
-
-interface IPath {
-  elem: 'path';
-  attrs: { d: string };
-}
-
-interface ICircle {
-  elem: 'circle';
-  attrs: { cx: string; cy: string; r: string };
-}
-
-interface IRect {
-  elem: 'rect';
-  attrs: { width: string; height: string; x: string; y: string; rx: string };
-}
-
-export type IconContent = ReadonlyArray<IPath | ICircle | IRect>;
-
-export interface IIconAttrs {
-  xmlns: 'http://www.w3.org/2000/svg';
-  viewBox: string;
-  width: IconSize;
-  height: IconSize;
-}
-
-export interface IBuildIcon {
-  filename: string;
-  basename: string;
-  size: IconSize;
-  prefix: string[];
-  descriptor: {
-    elem: 'svg';
-    attrs: IIconAttrs;
-    content: IconContent;
-    name: string;
-    size: IconSize;
-  };
-  moduleName: string;
-  original: 32;
-  outputOptions: {
-    file: string;
-  };
-}
 
 async function buildIcons({ path, dist }: { path: string; dist: string }) {
   if (!existsSync(path)) {
@@ -52,7 +8,7 @@ async function buildIcons({ path, dist }: { path: string; dist: string }) {
   }
 
   const buffer = await readFile(path);
-  const metadata: IBuildIcon[] = JSON.parse(buffer.toString());
+  const metadata: BuildIcons = JSON.parse(buffer.toString());
 
   await remove(dist);
   await ensureDir(dist);

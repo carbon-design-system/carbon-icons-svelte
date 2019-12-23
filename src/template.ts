@@ -1,17 +1,12 @@
-import { formatAttributes, getAttributes, toString } from '@carbon/icon-helpers';
-import { IconContent, IIconAttrs } from './buildIcons';
+import {
+  formatAttributes,
+  getAttributes,
+  IconContent,
+  IIconAttrs,
+  toString
+} from '@carbon/icon-helpers';
 
-interface IAttributes {
-  focusable: 'false';
-  preserveAspectRatio: 'xMidYMid meet';
-  style: 'will-change: transform;';
-  width: undefined;
-  height: undefined;
-  viewBox: '0 0 undefined undefined';
-  'aria-hidden': true;
-}
-
-const attributes: IAttributes = getAttributes();
+const attributes = getAttributes();
 
 function template({
   attrs,
