@@ -1,22 +1,26 @@
-import { formatAttributes, getAttributes, toString } from '@carbon/icon-helpers';
-import { IconContent, IIconAttrs } from './buildIcons';
+import {
+  formatAttributes,
+  getAttributes,
+  IconContent,
+  IIconAttrs,
+  toString
+} from '@carbon/icon-helpers';
 
-interface IAttributes {
-  focusable: 'false';
-  preserveAspectRatio: 'xMidYMid meet';
-  style: 'will-change: transform;';
-  width: undefined;
-  height: undefined;
-  viewBox: '0 0 undefined undefined';
-  'aria-hidden': true;
-}
+const attributes = getAttributes();
 
-const attributes: IAttributes = getAttributes();
-
-function template({ attrs, content }: { attrs: IIconAttrs; content: IconContent }) {
+function template({
+  attrs,
+  content,
+  moduleName
+}: {
+  attrs: IIconAttrs;
+  content: IconContent;
+  moduleName: string;
+}) {
   const markup = `<script>
   let className = undefined;
   export { className as class };
+  export let id = undefined;
   export let tabindex = undefined;
   export let focusable = ${attributes.focusable};
   export let title = undefined;
@@ -37,6 +41,7 @@ function template({ attrs, content }: { attrs: IIconAttrs; content: IconContent 
 </script>
 
 <svg
+  data-carbon-icon="${moduleName}"
   on:click
   on:mouseover
   on:mouseenter
@@ -45,6 +50,7 @@ function template({ attrs, content }: { attrs: IIconAttrs; content: IconContent 
   class={className}
   {preserveAspectRatio}
   {style}
+  {id}
   {...attributes}>
   ${content.map(element => toString(element)).join('')}
   <slot>

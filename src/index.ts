@@ -1,4 +1,4 @@
-import { buildIcons } from './buildIcons';
+import { buildIcons } from './build';
 
 async function build() {
   const path = 'node_modules/@carbon/icons/build-info.json';
