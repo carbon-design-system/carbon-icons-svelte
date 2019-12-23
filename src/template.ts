@@ -17,6 +17,7 @@ function template({ attrs, content }: { attrs: IIconAttrs; content: IconContent 
   const markup = `<script>
   let className = undefined;
   export { className as class };
+  export let id = undefined;
   export let tabindex = undefined;
   export let focusable = ${attributes.focusable};
   export let title = undefined;
@@ -45,6 +46,7 @@ function template({ attrs, content }: { attrs: IIconAttrs; content: IconContent 
   class={className}
   {preserveAspectRatio}
   {style}
+  {id}
   {...attributes}>
   ${content.map(element => toString(element)).join('')}
   <slot>
