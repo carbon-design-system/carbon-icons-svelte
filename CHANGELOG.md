@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.8.0](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.8.0) - 2019-12-22
+
+- Upgrade @carbon/icons to 10.8.0
+  ([#11](https://github.com/IBM/carbon-icons-svelte/issues/11))
+
+- Support optional `id` prop
+  ([#14](https://github.com/IBM/carbon-icons-svelte/issues/14))
+
+- Add data selector to svg element for easier querying
+  ([#15](https://github.com/IBM/carbon-icons-svelte/issues/1))
+
 ## [10.8.0-rc.0](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.8.0-rc.0) - 2019-12-14
 
 - Upgrade @carbon/icons to 10.8.0-rc.0
