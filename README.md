@@ -140,6 +140,8 @@ Use Webpack or Rollup for application bundling (see [examples](examples)).
 
 ## [Changelog](CHANGELOG.md)
 
+## [Contributing](CONTRIBUTING.md)
+
 ## License
 
 [Apache 2.0](LICENSE)
