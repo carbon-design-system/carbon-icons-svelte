@@ -27,10 +27,10 @@ function template({
   export let style = '${attributes.style}';
 
   const preserveAspectRatio = '${attributes.preserveAspectRatio}';
-  const ariaLabel = $$props['aria-label'];
-  const ariaLabelledBy = $$props['aria-labelledby'];
-  const labelled = ariaLabel || ariaLabelledBy || title;
-  const attributes = {
+  $: ariaLabel = $$props['aria-label'];
+  $: ariaLabelledBy = $$props['aria-labelledby'];
+  $: labelled = ariaLabel || ariaLabelledBy || title;
+  $: attributes = {
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledBy,
     'aria-hidden': labelled ? undefined : true,
