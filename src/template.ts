@@ -46,6 +46,10 @@ function template({
   on:mouseover
   on:mouseenter
   on:mouseleave
+  on:keyup
+  on:keydown
+  on:focus
+  on:blur
   ${formatAttributes(attrs)}
   class={className}
   {preserveAspectRatio}
