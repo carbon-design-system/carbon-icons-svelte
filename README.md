@@ -9,6 +9,8 @@
 
 This library builds [Carbon Design System icons](https://www.carbondesignsystem.com/guidelines/icons/library) using [@carbon/icons](https://github.com/carbon-design-system/carbon/tree/master/packages/icons) with zero dependencies.
 
+Try it in the [Svelte REPL](https://svelte.dev/repl/eaf7b2a9cef64f42b54e58ddf45d7982?version=3.16.7).
+
 ## Getting Started
 
 `carbon-icons-svelte` can be installed as a development dependency.
