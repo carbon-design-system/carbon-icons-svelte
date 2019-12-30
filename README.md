@@ -5,25 +5,31 @@
 [![Build][build]][build-badge]
 [![Coverage][codecov-shield]][codecov]
 
-> Svelte components for icons in digital and software products using the Carbon Design System.
+> Svelte components for icons in digital and software products using the [Carbon Design System](https://github.com/carbon-design-system).
 
-This zero dependency library uses [@carbon/icons](https://github.com/carbon-design-system/carbon/tree/master/packages/icons) to build [Carbon Design System icons](https://www.carbondesignsystem.com/guidelines/icons/library).
+This library builds [Carbon Design System icons](https://www.carbondesignsystem.com/guidelines/icons/library) using [@carbon/icons](https://github.com/carbon-design-system/carbon/tree/master/packages/icons) with zero dependencies.
 
 ## Getting Started
 
-`carbon-icons-svelte` can be installed as a development dependency using yarn or npm.
+`carbon-icons-svelte` can be installed as a development dependency.
+
+### yarn
 
 ```bash
 yarn add -D carbon-icons-svelte
-# OR
+```
+
+### npm
+
+```bash
 npm i -D carbon-icons-svelte
 ```
 
 ## Usage
 
-Supported icon sizes include `16`, `20`, `24` and `32`.
+Supported icon sizes include `16`, `20`, `24` and `32`. See the [Icon Index](docs/ICON_INDEX.md) for a list of supported icons.
 
-### Basic
+### Base Import
 
 ```html
 <script>
@@ -33,16 +39,12 @@ Supported icon sizes include `16`, `20`, `24` and `32`.
 <Add16 />
 ```
 
-### Recommended
+### Individual Import (Recommended)
 
 For faster compiling, import icons individually.
 
-```html
-<script>
-  import Add16 from 'carbon-icons-svelte/lib/Add16';
-</script>
-
-<Add16 />
+```js
+import Add16 from 'carbon-icons-svelte/lib/Add16';
 ```
 
 #### Import Path Pattern
@@ -51,7 +53,7 @@ For faster compiling, import icons individually.
 import Icon from 'carbon-icons-svelte/lib/<ModuleName>';
 ```
 
-Refer to the [Icon Index](docs/ICON_INDEX.md) for a list of available icons.
+See the [Icon Index](docs/ICON_INDEX.md) for icon module names.
 
 ## API
 
@@ -69,7 +71,7 @@ All props are optional.
 | class           | `string`                                        |
 | style           | `string` (default: `"will-change: transform;"`) |
 
-### Slot
+#### `title` as a Slot
 
 `title` can be passed as a prop or through the slot as an element.
 
@@ -81,7 +83,7 @@ All props are optional.
 </Add16>
 ```
 
-## Forwarded Events
+### Forwarded Events
 
 Event directives are forwarded directly to the SVG element.
 
@@ -91,20 +93,27 @@ Event directives are forwarded directly to the SVG element.
   on:mouseenter="{() => {}}"
   on:mouseover="{() => {}}"
   on:mouseleave="{() => {}}"
+  on:keyup="{() => {}}"
+  on:keydown="{() => {}}"
+  on:focus="{() => {}}"
+  on:blur="{() => {}}"
 />
 ```
 
 ### `data-carbon-icon` selector
 
-Each icon includes a data attribute and value for easier querying. This is especially useful for automated testing in a headless browser.
+Each icon embeds its module name in the `data-carbon-icon` selector for easier querying. This may be useful for automated testing in a headless browser.
 
 ```html
 <svg data-carbon-icon="Add16">...</svg>
 ```
 
 ```js
-document.querySelectorAll('[data-carbon-icon]'); // all carbon icons
-document.querySelectorAll('[data-carbon-icon="Add16"]'); // all Add16 icons
+// selects all carbon icons
+document.querySelectorAll('[data-carbon-icon]');
+
+// selects all `Add16` icons
+document.querySelectorAll('[data-carbon-icon="Add16"]');
 ```
 
 ## Recipes
