@@ -70,6 +70,7 @@ All props are optional.
 | aria-labelledby | `string`                                        |
 | tabindex        | `string`                                        |
 | title           | `string`                                        |
+| focusable       | `boolean` (default: `false`)                    |
 | class           | `string`                                        |
 | style           | `string` (default: `"will-change: transform;"`) |
 
@@ -97,8 +98,6 @@ Event directives are forwarded directly to the SVG element.
   on:mouseleave="{() => {}}"
   on:keyup="{() => {}}"
   on:keydown="{() => {}}"
-  on:focus="{() => {}}"
-  on:blur="{() => {}}"
 />
 ```
 

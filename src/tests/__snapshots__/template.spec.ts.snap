@@ -32,8 +32,6 @@ exports[`icon matches the snapshot 1`] = `
   on:mouseleave
   on:keyup
   on:keydown
-  on:focus
-  on:blur
   xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 32 32\\" width=\\"32\\" height=\\"32\\"
   class={className}
   {preserveAspectRatio}
