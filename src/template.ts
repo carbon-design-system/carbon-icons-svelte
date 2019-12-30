@@ -35,7 +35,7 @@ function template({
     'aria-labelledby': ariaLabelledBy,
     'aria-hidden': labelled ? undefined : true,
     role: labelled ? 'img' : undefined,
-    focusable: tabindex ? true : focusable,
+    focusable: tabindex === '0' ? true : focusable,
     tabindex
   };
 </script>
@@ -48,8 +48,6 @@ function template({
   on:mouseleave
   on:keyup
   on:keydown
-  on:focus
-  on:blur
   ${formatAttributes(attrs)}
   class={className}
   {preserveAspectRatio}
