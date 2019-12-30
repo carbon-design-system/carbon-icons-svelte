@@ -35,7 +35,7 @@ function template({
     'aria-labelledby': ariaLabelledBy,
     'aria-hidden': labelled ? undefined : true,
     role: labelled ? 'img' : undefined,
-    focusable: tabindex ? true : focusable,
+    focusable: tabindex === '0' ? true : focusable,
     tabindex
   };
 </script>
