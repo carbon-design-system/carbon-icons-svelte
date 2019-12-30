@@ -8,7 +8,7 @@
     "postbuild": "hash-static build/index.html"
   },
   "devDependencies": {
-    "carbon-icons-svelte": "^10.8.0-rc.0",
+    "carbon-icons-svelte": "^10.8.2",
     "hash-static": "^0.1.2",
     "rimraf": "^3.0.0",
     "rollup": "^1.27.13",

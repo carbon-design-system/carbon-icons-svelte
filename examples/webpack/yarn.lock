@@ -724,10 +724,10 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001004:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001008.tgz#b8841b1df78a9f5ed9702537ef592f1f8772c0d9"
   integrity sha512-b8DJyb+VVXZGRgJUa30cbk8gKHZ3LOZTBLaUEEVr2P4xpmFigOCc62CO4uzquW641Ouq1Rm9N+rWLWdSYDaDIw==
 
-carbon-icons-svelte@^10.8.0-rc.0:
-  version "10.8.0-rc.0"
-  resolved "https://registry.yarnpkg.com/carbon-icons-svelte/-/carbon-icons-svelte-10.8.0-rc.0.tgz#1ea853c737a7f03d34f7a1a8171eaca97eaead12"
-  integrity sha512-g4Jwtu5VlXKzC2lOrnrmQXkcJRnM+if1fvxh5r71/0dm6cO5PUrXG0BDZLdVBjnSjEbxduTI2oWVukUCFnHtVA==
+carbon-icons-svelte@^10.8.2:
+  version "10.8.2"
+  resolved "https://registry.npmjs.org/carbon-icons-svelte/-/carbon-icons-svelte-10.8.2.tgz#b1432c8de8a19210f50b42e1498b08d01c25b86b"
+  integrity sha512-5kPCxcED9OXV96NRFKqWbUGRfBf4qX0XcvYqV4c5IL8yGaJGWu1qows7ldENqhwVGXrfsBNQ7tDoR0fIC3CSsw==
 
 chalk@2.4.2, chalk@^2.4.1, chalk@^2.4.2:
   version "2.4.2"
