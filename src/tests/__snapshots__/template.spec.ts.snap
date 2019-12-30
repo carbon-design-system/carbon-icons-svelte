@@ -11,10 +11,10 @@ exports[`icon matches the snapshot 1`] = `
   export let style = 'will-change: transform;';
 
   const preserveAspectRatio = 'xMidYMid meet';
-  const ariaLabel = $$props['aria-label'];
-  const ariaLabelledBy = $$props['aria-labelledby'];
-  const labelled = ariaLabel || ariaLabelledBy || title;
-  const attributes = {
+  $: ariaLabel = $$props['aria-label'];
+  $: ariaLabelledBy = $$props['aria-labelledby'];
+  $: labelled = ariaLabel || ariaLabelledBy || title;
+  $: attributes = {
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledBy,
     'aria-hidden': labelled ? undefined : true,
@@ -30,6 +30,10 @@ exports[`icon matches the snapshot 1`] = `
   on:mouseover
   on:mouseenter
   on:mouseleave
+  on:keyup
+  on:keydown
+  on:focus
+  on:blur
   xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 32 32\\" width=\\"32\\" height=\\"32\\"
   class={className}
   {preserveAspectRatio}

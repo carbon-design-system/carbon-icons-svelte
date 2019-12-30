@@ -42,7 +42,7 @@ export {
 
   await writeFile(`${dist}/index.js`, baseFile);
   await ensureDir('docs');
-  await writeFile(`docs/ICON_INDEX.md`, iconIndex.join(''));
+  await writeFile('docs/ICON_INDEX.md', iconIndex.join(''));
 }
 
 export { buildIcons };
