@@ -2,6 +2,8 @@
 
 > Rollup example using [svelte-rollup-template](https://github.com/metonym/svelte-rollup-template).
 
+## [CodeSandbox](https://codesandbox.io/s/github/IBM/carbon-icons-svelte/tree/master/examples/rollup)
+
 ## Getting Started
 
 Install the project dependencies.
