@@ -13,18 +13,12 @@ This library builds [Carbon Design System icons](https://www.carbondesignsystem.
 
 ## Getting Started
 
-`carbon-icons-svelte` can be installed as a development dependency.
-
-### Using `yarn`
+`carbon-icons-svelte` can be installed using `yarn` or `npm`.
 
 ```bash
-yarn add -D carbon-icons-svelte
-```
-
-### Using `npm`
-
-```bash
-npm i -D carbon-icons-svelte
+yarn add carbon-icons-svelte
+# OR
+npm i carbon-icons-svelte
 ```
 
 ## Usage
@@ -43,7 +37,9 @@ Supported icon sizes include `16`, `20`, `24` and `32`. See the [Icon Index](doc
 
 ### Individual Import (Recommended)
 
-For faster compiling, import icons individually.
+Import icons individually for faster compiling.
+
+**Note:** Even if using the base import method, a modern application bundler (e.g. Rollup, Webpack) should treeshake unused icons.
 
 ```js
 import Add16 from 'carbon-icons-svelte/lib/Add16';
@@ -55,7 +51,7 @@ import Add16 from 'carbon-icons-svelte/lib/Add16';
 import Icon from 'carbon-icons-svelte/lib/<ModuleName>';
 ```
 
-See the [Icon Index](docs/ICON_INDEX.md) for icon module names.
+See the [Icon Index](docs/ICON_INDEX.md) for a list of icon module names.
 
 ## API
 
