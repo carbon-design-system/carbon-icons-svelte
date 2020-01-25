@@ -2,6 +2,7 @@
 
 [![NPM][npm]][npm-url]
 [![Dependencies][deps]][deps-badge]
+![npm](https://img.shields.io/npm/dt/carbon-icons-svelte)
 [![Build][build]][build-badge]
 [![Coverage][codecov-shield]][codecov]
 
