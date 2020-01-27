@@ -28,7 +28,7 @@
     "ts-jest": "^24.2.0",
     "tslint": "^6.0.0",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.5"
   },
   "husky": {
     "hooks": {
