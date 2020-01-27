@@ -40,11 +40,11 @@ Supported icon sizes include `16`, `20`, `24` and `32`. See the [Icon Index](doc
 
 Import icons individually for faster compiling.
 
-**Note:** Even if using the base import method, a modern application bundler (e.g. Rollup, Webpack) should treeshake unused icons.
-
 ```js
 import Add16 from 'carbon-icons-svelte/lib/Add16';
 ```
+
+**Note:** Even if using the base import method, a modern application bundler (e.g. Rollup, Webpack) should treeshake unused icons.
 
 #### Import Path Pattern
 
@@ -164,8 +164,8 @@ Use Webpack or Rollup for application bundling (see [examples](examples) for sam
 
 ## Examples
 
-- [examples/Webpack](examples/webpack) ([CodeSandbox](https://codesandbox.io/s/github/IBM/carbon-icons-svelte/tree/master/examples/webpack))
-- [examples/Rollup](examples/rollup) ([CodeSandbox](https://codesandbox.io/s/github/IBM/carbon-icons-svelte/tree/master/examples/rollup))
+- [examples/Webpack](examples/webpack) (Try it on [CodeSandbox](https://codesandbox.io/s/github/IBM/carbon-icons-svelte/tree/master/examples/webpack))
+- [examples/Rollup](examples/rollup) (Try it on [CodeSandbox](https://codesandbox.io/s/github/IBM/carbon-icons-svelte/tree/master/examples/rollup))
 
 ## [Changelog](CHANGELOG.md)
 
