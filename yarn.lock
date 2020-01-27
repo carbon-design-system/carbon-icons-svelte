@@ -130,10 +130,10 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@carbon/icon-helpers@10.5.0":
-  version "10.5.0"
-  resolved "https://registry.yarnpkg.com/@carbon/icon-helpers/-/icon-helpers-10.5.0.tgz#dca43b95ead0555d308a583983835804b869f810"
-  integrity sha512-ivKSCd3sl+Qm0PCLhGje7FAHnK8anX8Fml0rYgraIptU5JOASWrBKu14EUtGZwL9UP/tzszvufrzwO599cN9Qw==
+"@carbon/icon-helpers@10.5.1":
+  version "10.5.1"
+  resolved "https://registry.yarnpkg.com/@carbon/icon-helpers/-/icon-helpers-10.5.1.tgz#a13426cf137eb6080cfe46405a567bd470b597a3"
+  integrity sha512-CPNDoDQYjCGg51WfI7w2Iwgz0S+svh0E3hWh3aybnDMhUPlikz8QFiWNpD55NSXAYe1C21CtRla6Rgxa1EkmNg==
 
 "@carbon/icons@10.8.0":
   version "10.8.0"
