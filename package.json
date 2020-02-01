@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@carbon/icon-helpers": "10.5.1",
-    "@carbon/icons": "10.8.1",
+    "@carbon/icons": "10.8.2",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
     "@types/fs-extra": "^8.0.1",
