@@ -13,7 +13,7 @@
     "prepublishOnly": "yarn build"
   },
   "devDependencies": {
-    "@carbon/icon-helpers": "10.5.1",
+    "@carbon/icon-helpers": "10.5.2",
     "@carbon/icons": "10.8.2",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
