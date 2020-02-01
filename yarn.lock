@@ -142,10 +142,10 @@
   resolved "https://registry.yarnpkg.com/@carbon/icon-helpers/-/icon-helpers-10.5.1.tgz#a13426cf137eb6080cfe46405a567bd470b597a3"
   integrity sha512-CPNDoDQYjCGg51WfI7w2Iwgz0S+svh0E3hWh3aybnDMhUPlikz8QFiWNpD55NSXAYe1C21CtRla6Rgxa1EkmNg==
 
-"@carbon/icons@10.8.1":
-  version "10.8.1"
-  resolved "https://registry.yarnpkg.com/@carbon/icons/-/icons-10.8.1.tgz#c8338f72154e3056948c7548916f9e118c60c989"
-  integrity sha512-f7gyiUATCluNnPlUhU1ZLTVNoivGp7ZtzCE/UTsnN+p+WbIEZVxBVQXOw1OikCZJQ7TwjKGQ/jF+3XcSXc4AGA==
+"@carbon/icons@10.8.2":
+  version "10.8.2"
+  resolved "https://registry.yarnpkg.com/@carbon/icons/-/icons-10.8.2.tgz#76d66f5c075bf1e0e1d44929fb18819c74488866"
+  integrity sha512-91fMYCIbu06dTRRu3TPtqgcS51NOKNkAWd0iTce1qa3S5iRt0idcGqL2zdj75vzxw3wlIjVxqS01wyx+gdpqYw==
 
 "@cnakazawa/watch@^1.0.3":
   version "1.0.3"
