@@ -38,8 +38,7 @@
   },
   "lint-staged": {
     "*.{ts}": [
-      "tslint --fix -p .",
-      "git add"
+      "tslint --fix -p ."
     ]
   },
   "prettier": {
