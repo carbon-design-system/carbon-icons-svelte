@@ -1,4 +1,4 @@
-<img alt="Carbon Icons Svelte" src="docs/banner.png" width="100%" />
+<a href="https://ibm.github.io/carbon-icons-svelte/"><img alt="Carbon Icons Svelte" src="docs/banner.png" width="100%" /></a>
 
 # carbon-icons-svelte
 
