@@ -1,3 +1,5 @@
+<img alt="Carbon Icons Svelte" src="docs/banner.png" width="100%" />
+
 # carbon-icons-svelte
 
 [![NPM][npm]][npm-url]
