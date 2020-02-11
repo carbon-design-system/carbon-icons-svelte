@@ -12,6 +12,8 @@ This library builds [Carbon Design System icons](https://www.carbondesignsystem.
 
 **Try it in the [Svelte REPL](https://svelte.dev/repl/931e6a3461434622adad0557579c0a29?version=3.16.7) or on [CodeSandbox](https://codesandbox.io/s/github/IBM/carbon-icons-svelte/tree/master/examples/webpack).**
 
+## [Icon Preview](https://ibm.github.io/carbon-icons-svelte/)
+
 ## Getting Started
 
 `carbon-icons-svelte` can be installed using `yarn` or `npm`.
@@ -24,7 +26,7 @@ npm i carbon-icons-svelte
 
 ## Usage
 
-Supported icon sizes include `16`, `20`, `24` and `32`. See the [Icon Index](docs/ICON_INDEX.md) for a list of supported icons.
+Supported icon sizes include `16`, `20`, `24` and `32`. See the [Icon Preview](https://ibm.github.io/carbon-icons-svelte/) for a list of supported icons.
 
 ### Base Import
 
@@ -52,7 +54,7 @@ import Add16 from 'carbon-icons-svelte/lib/Add16';
 import Icon from 'carbon-icons-svelte/lib/<ModuleName>';
 ```
 
-See the [Icon Index](docs/ICON_INDEX.md) for a list of icon module names.
+See the [Icon Preview](https://ibm.github.io/carbon-icons-svelte/) for sample usage.
 
 ## API
 
