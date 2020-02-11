@@ -1,0 +1,19 @@
+{
+  "name": "preview",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "rm -rf dist && parcel build src/index.html --public-url . --no-source-maps",
+    "deploy": "node gh-pages.js"
+  },
+  "dependencies": {
+    "@carbon/icon-helpers": "^10.5.2",
+    "@carbon/icons": "^10.8.2"
+  },
+  "devDependencies": {
+    "gh-pages": "^2.2.0",
+    "parcel-bundler": "^1.12.4"
+  }
+}
