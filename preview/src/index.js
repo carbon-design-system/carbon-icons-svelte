@@ -6,17 +6,17 @@
 
   function highlightIcon(node, moduleName) {
     if (activeIcon != null) {
-      activeIcon.style.fill = '#161616';
+      activeIcon.parentNode.classList.remove('active');
     }
 
     activeIcon = node;
+    activeIcon.parentNode.classList.add('active');
 
-    node.style.fill = '#0f62fe';
-    code.innerHTML = `&lt;script&gt;
-  import ${moduleName} from "carbon-icons-svelte/lib/${moduleName}";
-&lt;/script&gt;
+    code.innerHTML = `<span style="color: #0f62fe">&lt;script&gt;</span>
+  <span style="color: #a56eff">import</span> <span style="color: #002d9c;">${moduleName}</span> <span style="color: #a56eff">from</span> <span style="color: #002d9c;">"carbon-icons-svelte/lib/${moduleName}"</span>;
+<span style="color: #0f62fe">&lt;/script&gt;</span>
 
-&lt;${moduleName} /&gt;
+<span style="color: #0f62fe">&lt;${moduleName} /&gt;</span>
 `;
   }
 
