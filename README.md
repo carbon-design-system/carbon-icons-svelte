@@ -1,3 +1,5 @@
+<a href="https://ibm.github.io/carbon-icons-svelte/" target="_blank"><img alt="Carbon Icons Svelte" src="docs/banner.png" width="100%" /></a>
+
 # carbon-icons-svelte
 
 [![NPM][npm]][npm-url]
