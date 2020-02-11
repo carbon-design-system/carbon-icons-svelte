@@ -16,28 +16,42 @@ function createIcon(icon, key) {
 export function build(limit) {
   const list = [];
 
-  Object.keys(icons).forEach((iconKey, i) => {
-    if (i < limit) {
-      const icon = createIcon(icons[iconKey], iconKey);
+  Object.keys(icons)
+    .filter(
+      iconKey =>
+        ![
+          'ChevronDownGlyph',
+          'ChevronLeftGlyph',
+          'ChevronRightGlyph',
+          'ChevronUpGlyph',
+          'CaretDownGlyph',
+          'CaretLeftGlyph',
+          'CaretRightGlyph',
+          'CaretUpGlyph'
+        ].includes(iconKey)
+    )
+    .forEach((iconKey, i) => {
+      if (i < limit) {
+        const icon = createIcon(icons[iconKey], iconKey);
 
-      if (i % 4 === 0) {
-        list.push(
-          '<div class="icon--row">',
-          `<div class="icon--name">
+        if (i % 4 === 0) {
+          list.push(
+            '<div class="icon--row">',
+            `<div class="icon--name">
             <div class="icon--technical-name">${icons[iconKey].name}</div>
             <div class="icon--module-name">${iconKey.slice(0, -2)}XX</div>
           </div>`,
-          '<div class="icon--elements">'
-        );
-      }
+            '<div class="icon--elements">'
+          );
+        }
 
-      list.push(icon.element);
+        list.push(icon.element);
 
-      if (i % 4 === 3) {
-        list.push('</div>', '</div>');
+        if (i % 4 === 3) {
+          list.push('</div>', '</div>');
+        }
       }
-    }
-  });
+    });
 
   return list.join('');
 }
