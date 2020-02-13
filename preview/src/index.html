@@ -5,130 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="shortcut icon" href="./fav.png" />
     <title>Icon Preview</title>
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/carbon-components@10.9.3/css/carbon-components.min.css"
-    />
-    <style>
-      body {
-        min-width: 70rem;
-        background-color: #f4f4f4;
-      }
-
-      .icon--usage {
-        position: fixed;
-        top: 4.1875rem;
-        left: 30rem;
-        width: 36rem;
-        padding: 1rem;
-      }
-
-      pre {
-        line-height: 1.4;
-        overflow-x: auto;
-        min-height: 9.25rem;
-        margin-top: 0.625rem;
-        margin-left: -1rem;
-        padding: 1rem;
-        background-color: #fff;
-      }
-
-      .icon--table {
-        margin-top: 4.1875rem;
-        max-width: 28rem;
-      }
-
-      .icon--row {
-        display: flex;
-        align-items: center;
-        padding: 1rem;
-        border-bottom: 1px solid #e0e0e0;
-      }
-
-      .icon--name {
-        min-width: 14rem;
-        margin-right: 1rem;
-      }
-
-      .icon--usage-name,
-      .icon--sizes--title,
-      .icon--technical-name {
-        margin-bottom: 0.375rem;
-        font-weight: 600;
-      }
-
-      .icon--technical-name {
-        margin-top: -.875rem;
-      }
-
-      .icon--module-name {
-        font-family: 'IBM Plex Mono', monospace;
-        display: none;
-      }
-
-      .icon--elements {
-        display: flex;
-        align-items: baseline;
-      }
-
-      .icon {
-        padding: .5rem;
-        cursor: pointer;
-      }
-
-      .icon.active {
-        background-color: #e0e0e0;
-        border-radius: .25rem;
-      }
-
-      .icon.active svg {
-        fill: #0f62fe;
-      }
-
-      svg {
-        fill: #161616;
-      }
-
-      .icon--table--header {
-        position: fixed;
-        min-width: 28rem;
-        background-color: #e0e0e0;
-        border-bottom: 0;
-        top: 0;
-        left: 0;
-      }
-
-      .icon--sizes,
-      .icon--sizes--title {
-        margin-left: .5rem;
-      }
-
-      .icon--sizes {
-        display: flex;
-      }
-
-      .icon--sizes div {
-        margin-right: 1rem;
-      }
-
-      .icon--sizes div:nth-child(1) {
-        min-width: 1rem;
-      }
-
-      .icon--sizes div:nth-child(2) {
-        min-width: 1.25rem;
-      }
-
-      .icon--sizes div:nth-child(3) {
-        min-width: 1.5rem;
-      }
-
-      .icon--sizes div:nth-child(4) {
-        min-width: 2rem;
-      }
-    </style>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <header>
+      <a href="https://github.com/IBM/carbon-icons-svelte">carbon-icons-svelte</a> <span class="version"><code>v10.9.0-rc.0</code></span>
+      <div class="section">
+        Svelte components for icons in digital and software products using the Carbon Design System.
+      </div>
+      <div class="section">
+        <h5>Install</h5>
+        <div><pre><code tabindex="0">yarn add carbon-icons-svelte</code></pre></div>
+      </div>
+      <div class="section">
+        <h5>Usage</h5>
+        <div>Select an icon on the right to view its import path.</div>
+        <div><pre><code tabindex="0" id="code"></code></pre></div>
+      </div>
+    </header>
+    
     <div id="root">
       <div class="icon--table">
         <div class="icon--table--header">
@@ -140,10 +35,10 @@
             <div>
               <div class="icon--sizes--title">Icon sizes</div>
               <div class="icon--sizes">
-                <div>16</div>
-                <div>20</div>
-                <div>24</div>
-                <div>32</div>
+                <div><code>16</code></div>
+                <div><code>20</code></div>
+                <div><code>24</code></div>
+                <div><code>32</code></div>
               </div>
             </div>
           </div>
@@ -3086,10 +2981,7 @@
         </div><div class="icon--elements"><div class="icon"><svg data-module-name="_4KFilled16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" preserveAspectRatio="xMidYMid meet"><path d="M28,6H4A2,2,0,0,0,2,8V24a2,2,0,0,0,2,2H28a2,2,0,0,0,2-2V8A2,2,0,0,0,28,6ZM14,21H12V17H8V11h2v4h2V11h2Zm10.19,0H22l-2.09-4.06L19,18.27V21H17V11h2v4.39L22,11h2.19l-3,4.38Z"></path></svg></div><div class="icon"><svg data-module-name="_4KFilled20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" preserveAspectRatio="xMidYMid meet"><path d="M28,6H4A2,2,0,0,0,2,8V24a2,2,0,0,0,2,2H28a2,2,0,0,0,2-2V8A2,2,0,0,0,28,6ZM14,21H12V17H8V11h2v4h2V11h2Zm10.19,0H22l-2.09-4.06L19,18.27V21H17V11h2v4.39L22,11h2.19l-3,4.38Z"></path></svg></div><div class="icon"><svg data-module-name="_4KFilled24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24" height="24" preserveAspectRatio="xMidYMid meet"><path d="M28,6H4A2,2,0,0,0,2,8V24a2,2,0,0,0,2,2H28a2,2,0,0,0,2-2V8A2,2,0,0,0,28,6ZM14,21H12V17H8V11h2v4h2V11h2Zm10.19,0H22l-2.09-4.06L19,18.27V21H17V11h2v4.39L22,11h2.19l-3,4.38Z"></path></svg></div><div class="icon"><svg data-module-name="_4KFilled32" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" preserveAspectRatio="xMidYMid meet"><path d="M28,6H4A2,2,0,0,0,2,8V24a2,2,0,0,0,2,2H28a2,2,0,0,0,2-2V8A2,2,0,0,0,28,6ZM14,21H12V17H8V11h2v4h2V11h2Zm10.19,0H22l-2.09-4.06L19,18.27V21H17V11h2v4.39L22,11h2.19l-3,4.38Z"></path></svg></div></div></div>  
       
       </div> <!-- table -->
-      <div class="icon--usage">
-        <div class="icon--usage-name">Usage</div>
-        <pre><code id="code"></code></pre>
-      </div>
+      
     </div> <!-- root -->
     <script src="index.js"></script>
   </body>
