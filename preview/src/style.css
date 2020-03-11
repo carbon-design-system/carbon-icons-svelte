@@ -45,13 +45,14 @@ h5 {
 
 header a {
   text-decoration: none;
-  color: #0f62fe;
-  font-size: 1.5rem;
-  font-weight: 400;
+  color: #161616;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .version {
   margin-left: 0.5rem;
+  font-size: 0.75rem;
 }
 
 html {

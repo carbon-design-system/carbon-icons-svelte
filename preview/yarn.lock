@@ -759,10 +759,10 @@
   resolved "https://registry.npmjs.org/@carbon/icon-helpers/-/icon-helpers-10.5.2.tgz#7975fc091206f4a423e812dada89519df52c2041"
   integrity sha512-L3pK5YbXj2B/lXHb0NyHbGzOLpMBOP0uL9J4wARCr/NNvuyqJEkgj9JSSX7OAORkOk9NncOdpgCyKzjIBheU6w==
 
-"@carbon/icons@^10.9.0-rc.0":
-  version "10.9.0-rc.0"
-  resolved "https://registry.npmjs.org/@carbon/icons/-/icons-10.9.0-rc.0.tgz#6612b1a40afe1fe46f380489dccaac882ae01b32"
-  integrity sha512-SLUPHIdwlBYn1x+khnYfwoDX091G096f9GAtyMs9KBxf9PTiwa2xXXpQaReYFeIXKTFfmvWKsW0b+rJdSbgMSw==
+"@carbon/icons@^10.9.2-rc.0":
+  version "10.9.2-rc.0"
+  resolved "https://registry.npmjs.org/@carbon/icons/-/icons-10.9.2-rc.0.tgz#c093050bb41de612d12183bee3237f26ce617d85"
+  integrity sha512-likz7zNtV/ZbDs83nJHt+9dtgW7ZAsurH/UP+NgQfyrhOBlAgvRUYiAN8WkOvyvvQwF7a9IoT294Rod8oAUl1g==
 
 "@iarna/toml@^2.2.0":
   version "2.2.3"
