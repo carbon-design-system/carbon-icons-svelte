@@ -8,7 +8,7 @@
 
 > Svelte components for icons in digital and software products using the [Carbon Design System](https://github.com/carbon-design-system).
 
-This library builds [Carbon Design System icons](https://www.carbondesignsystem.com/guidelines/icons/library) using [@carbon/icons](https://github.com/carbon-design-system/carbon/tree/master/packages/icons) with zero dependencies.
+This **zero dependency** icon library builds [Carbon Design System icons](https://www.carbondesignsystem.com/guidelines/icons/library) as svelte components. Although best paired with [carbon-components-svelte](https://github.com/IBM/carbon-components-svelte), these icons can be consumed standalone.
 
 **Try it in the [Svelte REPL](https://svelte.dev/repl/931e6a3461434622adad0557579c0a29?version=3.16.7) or on [CodeSandbox](https://codesandbox.io/s/github/IBM/carbon-icons-svelte/tree/master/examples/webpack).**
 
@@ -38,9 +38,9 @@ Supported icon sizes include `16`, `20`, `24` and `32`. See the [Icon Preview](h
 <Add16 />
 ```
 
-### Individual Import (Recommended)
+### Direct Import (recommended)
 
-Import icons individually for faster compiling.
+Import icons directly for faster compiling.
 
 ```js
 import Add16 from 'carbon-icons-svelte/lib/Add16';
