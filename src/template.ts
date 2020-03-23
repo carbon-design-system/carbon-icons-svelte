@@ -2,18 +2,18 @@ import {
   formatAttributes,
   getAttributes,
   IconContent,
-  IIconAttrs,
+  IconAttributes,
   toString
 } from '@carbon/icon-helpers';
 
-const attributes = getAttributes();
+const attributes = getAttributes({ width: 16, height: 16 });
 
 function template({
   attrs,
   content,
   moduleName
 }: {
-  attrs: IIconAttrs;
+  attrs: IconAttributes;
   content: IconContent;
   moduleName: string;
 }) {
