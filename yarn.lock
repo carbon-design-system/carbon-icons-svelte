@@ -649,6 +649,11 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/carbon__icon-helpers@^10.6.0":
+  version "10.6.0"
+  resolved "https://registry.npmjs.org/@types/carbon__icon-helpers/-/carbon__icon-helpers-10.6.0.tgz#dea8ab118b43224235cac793d7967009135e73d4"
+  integrity sha512-B1b2PQMSJaNCAWSUsE/RFu45pu2o1nbCyA9TZil70/UQtpB7qQ6aoNQgPSVe7h12+AjNjMf3jZSVZVzGS19o9w==
+
 "@types/color-name@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
