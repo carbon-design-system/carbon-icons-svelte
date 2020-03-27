@@ -19,18 +19,11 @@
 - ChevronSort16
 - ChevronUp16
 - CloseFilled16
-- Code16
-- Delete16
 - Download16
-- EditOff16
-- Email16
 - ErrorFilled16
 - ErrorOutline16
 - Export16
 - Fade16
-- FavoriteFilled16
-- Favorite16
-- Grid16
 - HelpFilled16
 - Help16
 - InformationFilled16
@@ -39,7 +32,6 @@
 - Launch16
 - Light16
 - ListBulleted16
-- Locked16
 - Maximize16
 - Menu16
 - Minimize16
@@ -70,7 +62,6 @@
 - StopOutlineFilled16
 - StopOutline16
 - Stop16
-- TrashCan16
 - Undo16
 - Unlocked16
 - Upload16
@@ -989,6 +980,7 @@
 - Code32
 - Code24
 - Code20
+- Code16
 - Cognitive32
 - Cognitive24
 - Cognitive20
@@ -1184,6 +1176,7 @@
 - Delete32
 - Delete24
 - Delete20
+- Delete16
 - DeliveryTruck32
 - DeliveryTruck24
 - DeliveryTruck20
@@ -1354,6 +1347,7 @@
 - EditOff32
 - EditOff24
 - EditOff20
+- EditOff16
 - Edit32
 - Edit24
 - Edit20
@@ -1373,6 +1367,7 @@
 - Email32
 - Email24
 - Email20
+- Email16
 - Enterprise32
 - Enterprise24
 - Enterprise20
@@ -1506,9 +1501,11 @@
 - FavoriteFilled32
 - FavoriteFilled24
 - FavoriteFilled20
+- FavoriteFilled16
 - Favorite32
 - Favorite24
 - Favorite20
+- Favorite16
 - FetchUploadCloud32
 - FetchUploadCloud24
 - FetchUploadCloud20
@@ -1668,6 +1665,7 @@
 - Grid32
 - Grid24
 - Grid20
+- Grid16
 - Group32
 - Group24
 - Group20
@@ -1979,6 +1977,7 @@
 - Locked32
 - Locked24
 - Locked20
+- Locked16
 - Login32
 - Login24
 - Login20
@@ -3415,6 +3414,7 @@
 - TrashCan32
 - TrashCan24
 - TrashCan20
+- TrashCan16
 - TreeViewAlt32
 - TreeViewAlt24
 - TreeViewAlt20
