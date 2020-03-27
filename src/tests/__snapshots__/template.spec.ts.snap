@@ -8,9 +8,8 @@ exports[`icon matches the snapshot 1`] = `
   export let tabindex = undefined;
   export let focusable = false;
   export let title = undefined;
-  export let style = 'will-change: transform;';
+  export let style = undefined;
 
-  const preserveAspectRatio = 'xMidYMid meet';
   $: ariaLabel = $$props['aria-label'];
   $: ariaLabelledBy = $$props['aria-labelledby'];
   $: labelled = ariaLabel || ariaLabelledBy || title;
@@ -34,7 +33,7 @@ exports[`icon matches the snapshot 1`] = `
   on:keydown
   xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 32 32\\" width=\\"32\\" height=\\"32\\"
   class={className}
-  {preserveAspectRatio}
+  preserveAspectRatio=\\"xMidYMid meet\\"
   {style}
   {id}
   {...attributes}>

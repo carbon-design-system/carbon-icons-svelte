@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@carbon/icon-helpers": "10.5.2",
-    "@carbon/icons": "^10.9.2"
+    "@carbon/icons": "^10.9.3"
   },
   "devDependencies": {
     "gh-pages": "2.2.0",

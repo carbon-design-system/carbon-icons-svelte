@@ -1,6 +1,6 @@
 {
   "name": "carbon-icons-svelte",
-  "version": "10.9.2",
+  "version": "10.9.3",
   "license": "Apache-2.0",
   "description": "Svelte components for icons in digital and software products using the Carbon Design System",
   "author": "Eric Liu (https://github.com/metonym)",
@@ -13,8 +13,8 @@
     "prepublishOnly": "yarn build"
   },
   "devDependencies": {
-    "@carbon/icon-helpers": "10.5.2",
-    "@carbon/icons": "^10.9.2",
+    "@carbon/icon-helpers": "^10.6.0",
+    "@carbon/icons": "^10.9.3",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
     "@types/carbon__icon-helpers": "^10.6.0",
@@ -43,7 +43,7 @@
     ]
   },
   "prettier": {
-    "printWidth": 100,
+    "printWidth": 120,
     "tabWidth": 2,
     "semi": true,
     "singleQuote": true

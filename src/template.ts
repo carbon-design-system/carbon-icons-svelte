@@ -1,32 +1,15 @@
-import {
-  formatAttributes,
-  getAttributes,
-  IconContent,
-  IconAttributes,
-  toString
-} from '@carbon/icon-helpers';
+import { formatAttributes, IconContent, IconAttributes, toString, defaultAttributes } from '@carbon/icon-helpers';
 
-const attributes = getAttributes({ width: 16, height: 16 });
-
-function template({
-  attrs,
-  content,
-  moduleName
-}: {
-  attrs: IconAttributes;
-  content: IconContent;
-  moduleName: string;
-}) {
-  const markup = `<script>
+function template({ attrs, content, moduleName }: { attrs: IconAttributes; content: IconContent; moduleName: string }) {
+  return `<script>
   let className = undefined;
   export { className as class };
   export let id = undefined;
   export let tabindex = undefined;
-  export let focusable = ${attributes.focusable};
+  export let focusable = ${defaultAttributes.focusable};
   export let title = undefined;
-  export let style = '${attributes.style}';
+  export let style = undefined;
 
-  const preserveAspectRatio = '${attributes.preserveAspectRatio}';
   $: ariaLabel = $$props['aria-label'];
   $: ariaLabelledBy = $$props['aria-labelledby'];
   $: labelled = ariaLabel || ariaLabelledBy || title;
@@ -50,7 +33,7 @@ function template({
   on:keydown
   ${formatAttributes(attrs)}
   class={className}
-  {preserveAspectRatio}
+  preserveAspectRatio="${defaultAttributes.preserveAspectRatio}"
   {style}
   {id}
   {...attributes}>
@@ -61,8 +44,6 @@ function template({
     {/if}
   </slot>
 </svg>`;
-
-  return markup;
 }
 
 export { template };
