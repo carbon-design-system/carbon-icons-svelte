@@ -62,16 +62,16 @@ See the [Icon Preview](https://ibm.github.io/carbon-icons-svelte/) for sample us
 
 All props are optional.
 
-| Name            | Value                                           |
-| --------------- | ----------------------------------------------- |
-| id              | `string`                                        |
-| aria-label      | `string`                                        |
-| aria-labelledby | `string`                                        |
-| tabindex        | `string`                                        |
-| title           | `string`                                        |
-| focusable       | `boolean` (default: `false`)                    |
-| class           | `string`                                        |
-| style           | `string` (default: `"will-change: transform;"`) |
+| Name            | Value                        |
+| --------------- | ---------------------------- |
+| id              | `string`                     |
+| aria-label      | `string`                     |
+| aria-labelledby | `string`                     |
+| tabindex        | `string`                     |
+| title           | `string`                     |
+| focusable       | `boolean` (default: `false`) |
+| class           | `string`                     |
+| style           | `string`                     |
 
 #### `title` as a Slot
 
