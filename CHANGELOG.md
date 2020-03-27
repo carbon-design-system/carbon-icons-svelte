@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.9.3](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.9.3) - 2020-03-27
+
+- Bump `@carbon/icons` build dependency to 10.9.3
+
+- Bump `@carbon/icon-helpers` build dependency to 10.6.0
+
+- Use `defaultAttributes.preserveAspectRatio` from `@carbon/icon-helpers`
+
 ## [10.9.2](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.9.2) - 2020-03-20
 
 - Bump `@carbon/icons` build dependency to 10.9.2
