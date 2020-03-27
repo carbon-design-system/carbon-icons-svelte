@@ -276,10 +276,10 @@
   resolved "https://registry.npmjs.org/@carbon/icon-helpers/-/icon-helpers-10.6.0.tgz#72a5bbd1edbee3728e47fa6d17c2aca67dbb101c"
   integrity sha512-4Nh6l+B8SRNyw1RpgNT4Z83Aa5UwRFmKJ2mx5m7mE5TqxPkfIZjyyLHyv5gl3gPtaVwq78ZGz80wG0NRQzRM7g==
 
-"@carbon/icons@^10.9.2":
-  version "10.9.2"
-  resolved "https://registry.npmjs.org/@carbon/icons/-/icons-10.9.2.tgz#d7ffe047965e3db4c251976a17d98872fea33bde"
-  integrity sha512-FFAynS/jzGErCoTyDBvkVypqln5wTAkMvwdIE9oOWq4YJB3CQn+LYQD7GcW6H2nat2VSEqcfiTTTkXQIqZXKPw==
+"@carbon/icons@^10.9.3":
+  version "10.9.3"
+  resolved "https://registry.npmjs.org/@carbon/icons/-/icons-10.9.3.tgz#1e6f9cf705251964fa948f047bfe70f38c1312f2"
+  integrity sha512-BMgK8OYq/yh2h5RpfrzzMNoNkX6Nul0nfYEQX8OfLqhiRCcA3Dx1SEqfm7dQj1Cz7ndQdfqp3DT+xDHTNIodoQ==
 
 "@cnakazawa/watch@^1.0.3":
   version "1.0.3"
