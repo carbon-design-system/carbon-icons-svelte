@@ -13,7 +13,7 @@
     "prepublishOnly": "yarn build"
   },
   "devDependencies": {
-    "@carbon/icon-helpers": "10.5.2",
+    "@carbon/icon-helpers": "^10.6.0",
     "@carbon/icons": "^10.9.2",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
@@ -43,7 +43,7 @@
     ]
   },
   "prettier": {
-    "printWidth": 100,
+    "printWidth": 120,
     "tabWidth": 2,
     "semi": true,
     "singleQuote": true
