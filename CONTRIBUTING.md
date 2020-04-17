@@ -39,13 +39,13 @@ yarn install
 
 ### Developing
 
-When developing the library, run `yarn test:tdd` to run Jest in watch mode.
+Run `yarn test` when developing the library.
 
 ### Building
 
-When building, run `yarn build`.
+Run `yarn prepack` to build the library.
 
-First, the library is transpiled to JavaScript in the `dist` folder.
+First, the library from `src` is transpiled to JavaScript in the `dist` folder.
 
 Then, the transpiled code is executed which generates the `lib` folder.
 
