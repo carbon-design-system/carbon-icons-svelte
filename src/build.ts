@@ -1,21 +1,19 @@
-import BuildIcons from '@carbon/icons';
-import { ensureDir, existsSync, readFile, remove, writeFile } from 'fs-extra';
-import { template } from './template';
+import BuildIcons from "@carbon/icons";
+import { readFileSync, rmdirSync, mkdirSync, writeFileSync } from "fs";
+import { template } from "./template";
 
 async function buildIcons({ path, dist }: { path: string; dist: string }) {
-  if (!existsSync(path)) {
-    throw Error(`${path} does not exist.`);
-  }
+  const metadata: BuildIcons = JSON.parse(readFileSync(path).toString());
 
-  const buffer = await readFile(path);
-  const metadata: BuildIcons = JSON.parse(buffer.toString());
-
-  await remove(dist);
-  await ensureDir(dist);
+  rmdirSync(dist, { recursive: true });
+  mkdirSync(dist);
 
   const baseImports: string[] = [];
   const baseExports: string[] = [];
-  const iconIndex: string[] = ['# Icon Index\n\n', '> List of supported icons (moduleName)\n\n'];
+  const iconIndex: string[] = [
+    "# Icon Index\n\n",
+    "> List of supported icons (moduleName)\n\n",
+  ];
 
   metadata.forEach(async ({ descriptor: { attrs, content }, moduleName }) => {
     const component = template({ attrs, content, moduleName });
@@ -30,19 +28,20 @@ export default ${moduleName};`;
     baseExports.push(moduleName);
     iconIndex.push(`- ${moduleName}\n`);
 
-    await ensureDir(componentFolder);
-    await writeFile(componentPath, component);
-    await writeFile(exportPath, exportFile);
+    mkdirSync(componentFolder);
+    writeFileSync(componentPath, component);
+    writeFileSync(exportPath, exportFile);
   });
 
-  const baseFile = `${baseImports.join('')}
+  const baseFile = `${baseImports.join("")}
 export {
-  ${baseExports.join(',\n  ')}
+  ${baseExports.join(",\n  ")}
 };`;
 
-  await writeFile(`${dist}/index.js`, baseFile);
-  await ensureDir('docs');
-  await writeFile('docs/ICON_INDEX.md', iconIndex.join(''));
+  writeFileSync(`${dist}/index.js`, baseFile);
+  rmdirSync("docs", { recursive: true });
+  mkdirSync("docs");
+  writeFileSync("docs/ICON_INDEX.md", iconIndex.join(""));
 }
 
 export { buildIcons };

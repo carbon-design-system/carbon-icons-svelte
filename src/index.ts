@@ -1,11 +1,11 @@
-import { buildIcons } from './build';
+import { buildIcons } from "./build";
 
-async function build() {
-  const path = 'node_modules/@carbon/icons/build-info.json';
-  const dist = 'lib';
-
+function build() {
   try {
-    await buildIcons({ path, dist });
+    buildIcons({
+      path: "node_modules/@carbon/icons/build-info.json",
+      dist: "lib",
+    });
   } catch (error) {
     process.stderr.write(`${error}\n`);
   }

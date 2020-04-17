@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.10.10](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.10.10) - 2020-04-17
+
+- Bump `@carbon/icons` build dependency to 10.10.0
+
+- Prune development dependencies (husky, commitlint, prettier)
+
+- Replace jest with tape
+
+- Use recursive `fs.rmdirSync` (requires Node.js version >=12)
+
+- Build and run script in Travis CI
+
 ## [10.9.3](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.9.3) - 2020-03-27
 
 - Bump `@carbon/icons` build dependency to 10.9.3
