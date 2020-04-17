@@ -6,13 +6,11 @@
     "start": "webpack-dev-server",
     "build": "NODE_ENV=production webpack"
   },
-  "dependencies": {
-    "carbon-icons-svelte": "^10.9.3",
-    "svelte": "^3.16.4"
-  },
   "devDependencies": {
-    "html-webpack-plugin": "^4.0.2",
-    "style-loader": "^1.0.1",
+    "carbon-icons-svelte": "^10.9.3",
+    "html-webpack-plugin": "^4.2.0",
+    "style-loader": "^1.1.4",
+    "svelte": "^3.20.1",
     "svelte-loader": "^2.13.6",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
