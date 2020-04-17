@@ -2,7 +2,7 @@ import BuildIcons from "@carbon/icons";
 import { readFileSync, rmdirSync, mkdirSync, writeFileSync } from "fs";
 import { template } from "./template";
 
-async function buildIcons({ path, dist }: { path: string; dist: string }) {
+function buildIcons({ path, dist }: { path: string; dist: string }) {
   const metadata: BuildIcons = JSON.parse(readFileSync(path).toString());
 
   rmdirSync(dist, { recursive: true });
@@ -15,7 +15,7 @@ async function buildIcons({ path, dist }: { path: string; dist: string }) {
     "> List of supported icons (moduleName)\n\n",
   ];
 
-  metadata.forEach(async ({ descriptor: { attrs, content }, moduleName }) => {
+  metadata.forEach(({ descriptor: { attrs, content }, moduleName }) => {
     const component = template({ attrs, content, moduleName });
     const componentName = `${moduleName}.svelte`;
     const componentFolder = `${dist}/${moduleName}`;
