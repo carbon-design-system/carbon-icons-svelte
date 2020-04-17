@@ -1,4 +1,6 @@
 language: node_js
-node_js: 10
+node_js: 12
 cache: yarn
-after_success: npx codecov
+scripts:
+  - yarn test
+  - tsc && node dist

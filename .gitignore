@@ -1,8 +1,6 @@
-/coverage
-/node_modules
-/lib
-/dist
 .DS_Store
+/dist
+/lib
+/node_modules
 yarn-debug.log*
 yarn-error.log*
-*.tgz

@@ -4,7 +4,6 @@
 [![Dependencies][deps]][deps-badge]
 ![npm](https://img.shields.io/npm/dt/carbon-icons-svelte)
 [![Build][build]][build-badge]
-[![Coverage][codecov-shield]][codecov]
 
 > Svelte components for icons in digital and software products using the [Carbon Design System](https://github.com/carbon-design-system).
 
@@ -32,7 +31,7 @@ Supported icon sizes include `16`, `20`, `24` and `32`. See the [Icon Preview](h
 
 ```html
 <script>
-  import { Add16 } from 'carbon-icons-svelte';
+  import { Add16 } from "carbon-icons-svelte";
 </script>
 
 <Add16 />
@@ -43,7 +42,7 @@ Supported icon sizes include `16`, `20`, `24` and `32`. See the [Icon Preview](h
 Import icons directly for faster compiling.
 
 ```js
-import Add16 from 'carbon-icons-svelte/lib/Add16';
+import Add16 from "carbon-icons-svelte/lib/Add16";
 ```
 
 **Note:** Even if using the base import method, a modern application bundler (e.g. Rollup, Webpack) should treeshake unused icons.
@@ -51,7 +50,7 @@ import Add16 from 'carbon-icons-svelte/lib/Add16';
 #### Import Path Pattern
 
 ```js
-import Icon from 'carbon-icons-svelte/lib/<ModuleName>';
+import Icon from "carbon-icons-svelte/lib/<ModuleName>";
 ```
 
 See the [Icon Preview](https://ibm.github.io/carbon-icons-svelte/) for sample usage.
@@ -110,7 +109,7 @@ Each icon embeds its module name in the `data-carbon-icon` selector for easier q
 
 ```js
 // selects all carbon icons
-document.querySelectorAll('[data-carbon-icon]');
+document.querySelectorAll("[data-carbon-icon]");
 
 // selects all `Add16` icons
 document.querySelectorAll('[data-carbon-icon="Add16"]');
@@ -183,5 +182,3 @@ Use Webpack or Rollup for application bundling (see [examples](examples) for sam
 [deps-badge]: https://david-dm.org/ibm/carbon-icons-svelte
 [build]: https://travis-ci.com/ibm/carbon-icons-svelte.svg?branch=master
 [build-badge]: https://travis-ci.com/ibm/carbon-icons-svelte
-[codecov]: https://codecov.io/gh/ibm/carbon-icons-svelte
-[codecov-shield]: https://img.shields.io/codecov/c/github/ibm/carbon-icons-svelte.svg

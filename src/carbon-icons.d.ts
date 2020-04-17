@@ -1,5 +1,5 @@
-declare module '@carbon/icons' {
-  import { IconContent, IconSize, IconAttributes } from '@carbon/icon-helpers';
+declare module "@carbon/icons" {
+  import { IconContent, IconSize, IconAttributes } from "@carbon/icon-helpers";
 
   export interface IBuildIcon {
     filename: string;
@@ -7,7 +7,7 @@ declare module '@carbon/icons' {
     size: IconSize;
     prefix: string[];
     descriptor: {
-      elem: 'svg';
+      elem: "svg";
       attrs: IconAttributes;
       content: IconContent;
       name: string;

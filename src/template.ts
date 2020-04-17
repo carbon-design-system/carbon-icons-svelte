@@ -1,6 +1,20 @@
-import { formatAttributes, IconContent, IconAttributes, toString, defaultAttributes } from '@carbon/icon-helpers';
+import {
+  formatAttributes,
+  IconContent,
+  IconAttributes,
+  toString,
+  defaultAttributes,
+} from "@carbon/icon-helpers";
 
-function template({ attrs, content, moduleName }: { attrs: IconAttributes; content: IconContent; moduleName: string }) {
+function template({
+  attrs,
+  content,
+  moduleName,
+}: {
+  attrs: IconAttributes;
+  content: IconContent;
+  moduleName: string;
+}) {
   return `<script>
   let className = undefined;
   export { className as class };
@@ -37,7 +51,7 @@ function template({ attrs, content, moduleName }: { attrs: IconAttributes; conte
   {style}
   {id}
   {...attributes}>
-  ${content.map(element => toString(element)).join('')}
+  ${content.map((element) => toString(element)).join("")}
   <slot>
     {#if title}
       <title>{title}</title>

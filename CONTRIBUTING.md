@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-For MacOS, prerequisites include [homebrew](https://docs.brew.sh/Installation), [node](https://nodejs.org/en/download/package-manager/#macos) and [yarn](https://yarnpkg.com/en/docs/install#mac-stable).
+For MacOS, prerequisites include [homebrew](https://docs.brew.sh/Installation), [node (version >=12)](https://nodejs.org/en/download/package-manager/#macos) and [yarn](https://yarnpkg.com/en/docs/install#mac-stable).
 
 Run the following shell commands to install all three prerequisites.
 
