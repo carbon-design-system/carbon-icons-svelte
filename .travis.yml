@@ -3,4 +3,4 @@ node_js: 12
 cache: yarn
 scripts:
   - yarn test
-  - tsc && node dist
+  - yarn prepack
