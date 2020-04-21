@@ -1,7 +1,6 @@
 # carbon-icons-svelte
 
 [![NPM][npm]][npm-url]
-[![Dependencies][deps]][deps-badge]
 ![npm](https://img.shields.io/npm/dt/carbon-icons-svelte)
 [![Build][build]][build-badge]
 
@@ -62,7 +61,7 @@ See the [Icon Preview](https://ibm.github.io/carbon-icons-svelte/) for sample us
 All props are optional.
 
 | Name            | Value                        |
-| --------------- | ---------------------------- |
+| :-------------- | :--------------------------- |
 | id              | `string`                     |
 | aria-label      | `string`                     |
 | aria-labelledby | `string`                     |
@@ -178,7 +177,5 @@ Use Webpack or Rollup for application bundling (see [examples](examples) for sam
 
 [npm]: https://img.shields.io/npm/v/carbon-icons-svelte.svg?color=blue
 [npm-url]: https://npmjs.com/package/carbon-icons-svelte
-[deps]: https://david-dm.org/ibm/carbon-icons-svelte/status.svg
-[deps-badge]: https://david-dm.org/ibm/carbon-icons-svelte
 [build]: https://travis-ci.com/ibm/carbon-icons-svelte.svg?branch=master
 [build-badge]: https://travis-ci.com/ibm/carbon-icons-svelte
