@@ -7,9 +7,6 @@
   "svelte": "lib/index.js",
   "main": "lib/index.js",
   "sideEffects": false,
-  "engines": {
-    "node": ">=12"
-  },
   "scripts": {
     "test": "ts-node node_modules/tape/bin/tape src/**.test.ts",
     "prepack": "tsc && node dist"
