@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "@carbon/icon-helpers": "^10.6.0",
-    "@carbon/icons": "10.10.0",
+    "@carbon/icons": "10.10.2",
     "@types/carbon__icon-helpers": "^10.6.0",
     "@types/tape": "^4.2.34",
     "tape": "^4.13.2",
