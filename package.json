@@ -12,7 +12,7 @@
     "prepack": "tsc && node dist"
   },
   "devDependencies": {
-    "@carbon/icon-helpers": "^10.6.0",
+    "@carbon/icon-helpers": "^10.7.0",
     "@carbon/icons": "10.10.0",
     "@types/carbon__icon-helpers": "^10.6.0",
     "@types/tape": "^4.2.34",
