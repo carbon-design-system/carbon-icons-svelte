@@ -1,22 +1,21 @@
 {
   "name": "carbon-icons-svelte",
-  "version": "10.10.1",
+  "version": "10.10.2",
   "license": "Apache-2.0",
-  "description": "Svelte components for icons in digital and software products using the Carbon Design System",
+  "description": "Carbon Design System SVG icons as Svelte components",
   "author": "Eric Liu (https://github.com/metonym)",
   "svelte": "lib/index.js",
   "main": "lib/index.js",
   "sideEffects": false,
   "scripts": {
-    "test": "tsnd node_modules/tape/bin/tape src/**.test.ts",
-    "prepack": "tsc && node dist"
+    "test": "tsnd src/*.test.ts",
+    "prepack": "tsc && node dist/src"
   },
   "devDependencies": {
     "@carbon/icon-helpers": "^10.6.0",
-    "@carbon/icons": "10.10.0",
+    "@carbon/icons": "10.10.2",
     "@types/carbon__icon-helpers": "^10.6.0",
-    "@types/tape": "^4.13.0",
-    "tape": "^5.0.0",
+    "@types/node": "^13.13.4",
     "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.8.3"
   },
@@ -28,10 +27,12 @@
   "bugs": "https://github.com/ibm/carbon-icons-svelte/issues",
   "keywords": [
     "carbon",
+    "carbon design system",
     "carbon icons",
     "icons",
     "components",
-    "svelte"
+    "svelte",
+    "svg"
   ],
   "files": [
     "lib"

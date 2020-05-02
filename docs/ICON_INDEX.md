@@ -1,6 +1,6 @@
 # Icon Index
 
-> List of supported icons (moduleName)
+> 4056 icons from @carbon/icons@10.10.2
 
 - Apps16
 - ArrowDown16
@@ -1017,10 +1017,6 @@
 - Compass24
 - Compass20
 - Compass16
-- ComposerEdit32
-- ComposerEdit24
-- ComposerEdit20
-- ComposerEdit16
 - Concept32
 - Concept24
 - Concept20

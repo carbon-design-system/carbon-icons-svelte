@@ -4,7 +4,7 @@
 ![npm](https://img.shields.io/npm/dt/carbon-icons-svelte)
 [![Build][build]][build-badge]
 
-> Svelte components for icons in digital and software products using the [Carbon Design System](https://github.com/carbon-design-system).
+> [Carbon Design System](https://github.com/carbon-design-system) SVG icons as Svelte components.
 
 This **zero dependency** icon library builds [Carbon Design System icons](https://www.carbondesignsystem.com/guidelines/icons/library) as svelte components. Although best paired with [carbon-components-svelte](https://github.com/IBM/carbon-components-svelte), these icons can be consumed standalone.
 
