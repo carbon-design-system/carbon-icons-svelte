@@ -12,8 +12,11 @@ const mkdir = promisify(fs.mkdir);
 
 (async () => {
   const start = performance.now();
-  const source = await readFile("node_modules/@carbon/icons/build-info.json");
-  const metadata: BuildIcons = JSON.parse(source.toString());
+  const source = await readFile(
+    "node_modules/@carbon/icons/build-info.json",
+    "utf8"
+  );
+  const metadata: BuildIcons = JSON.parse(source);
 
   await rmdir("lib", { recursive: true });
   await rmdir("docs", { recursive: true });

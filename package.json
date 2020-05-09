@@ -9,7 +9,7 @@
   "sideEffects": false,
   "scripts": {
     "test": "tsnd src/*.test.ts",
-    "prepack": "tsc && node dist/src"
+    "prepack": "tsnd src"
   },
   "devDependencies": {
     "@carbon/icon-helpers": "^10.6.0",
