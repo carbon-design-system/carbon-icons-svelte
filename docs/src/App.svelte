@@ -6,13 +6,14 @@
   import { match } from "fuzzy";
 
   let ref = undefined;
-  let install = "yarn add -D carbon-icons-svelte";
+  let yarn = "yarn add -D carbon-icons-svelte";
+  let npm = "npm i -D carbon-icons-svelte";
   let shown = window.ICONS;
 
   afterUpdate(() => {
     shown = 0;
 
-    document.querySelectorAll("svg[data-module-name]").forEach(item => {
+    document.querySelectorAll(".row svg[data-module-name]").forEach(item => {
       if (match(value, item.getAttribute("data-module-name")) == null) {
         item.style.display = "none";
       } else {
@@ -48,8 +49,8 @@
   }
 
   .bx--grid {
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
   }
 
   .version {
@@ -58,7 +59,11 @@
 
   .header {
     display: flex;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin-bottom: 1rem;
   }
 </style>
 
@@ -105,25 +110,42 @@
     </div>
   </div>
 
-  <div class="bx--row" style="position: relative; z-index: 1;">
-    <div class="bx--col-sm-1">
-      <h4>Install</h4>
-      <CodeSnippet
-        type="inline"
-        code={install}
-        on:click={() => {
-          copy(install);
-        }} />
+  <div class="bx--row">
+    <div class="bx--col-md-2">
+      <p>
+        This zero dependency icon library builds Carbon Design System SVG icons
+        as Svelte components.
+      </p>
+    </div>
+    <div class="bx--col">
+      <p>
+        Install:
+        <CodeSnippet
+          type="inline"
+          code={yarn}
+          on:click={() => {
+            copy(yarn);
+          }} />
+        <span>or</span>
+        <CodeSnippet
+          type="inline"
+          code={npm}
+          on:click={() => {
+            copy(npm);
+          }} />
+      </p>
     </div>
   </div>
 
   <Search
     autofocus
-    style="margin-top: 2rem; margin-bottom: 1rem;"
+    style="margin-top: 1rem; margin-bottom: .75rem;"
     small
     bind:value />
 
   <div class="bx--row" style="margin-bottom: 3rem;">
-    <div class="bx--col">Showing {shown} of {window.ICONS} icons</div>
+    <div class="bx--col" style="font-size: .75rem;">
+      Showing {shown} of {window.ICONS} icons
+    </div>
   </div>
 </div>
