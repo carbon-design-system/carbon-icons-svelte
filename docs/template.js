@@ -1,51 +1,65 @@
-const fs = require('fs');
-const posthtml = require('posthtml');
-const { insertAt } = require('posthtml-insert-at');
-const icons = require('@carbon/icons');
-const { formatAttributes, getAttributes, toString } = require('@carbon/icon-helpers');
+const fs = require("fs");
+const posthtml = require("posthtml");
+const { insertAt } = require("posthtml-insert-at");
+const icons = require("@carbon/icons");
+const {
+  formatAttributes,
+  getAttributes,
+  toString,
+} = require("@carbon/icon-helpers");
 
 const attributes = getAttributes();
 
 let bySize = {
-  "16": '',
-  "20": '',
-  "24": '',
-  "32": ''
+  "16": "",
+  "20": "",
+  "24": "",
+  "32": "",
 };
 
-// TODO: add glyphs
-// let glyphs = '';
+let glyphs = "";
 
 Object.keys(icons).forEach((iconKey) => {
   const icon = icons[iconKey];
 
-if (icon.size in bySize) {
+  if (icon.size in bySize) {
     bySize[icon.size] += `<svg data-module-name="${iconKey}" ${formatAttributes(
       icon.attrs
-    )} preserveAspectRatio="${attributes.preserveAspectRatio}">${icon.content
-      .map(element => toString(element))
-      .join('')}</svg>`;
+    )} preserveAspectRatio="${
+      attributes.preserveAspectRatio
+    }">${icon.content.map((element) => toString(element)).join("")}</svg>`;
+  } else {
+    glyphs += `<svg data-module-name="${iconKey}" ${formatAttributes(
+      icon.attrs
+    )} preserveAspectRatio="${
+      attributes.preserveAspectRatio
+    }">${icon.content.map((element) => toString(element)).join("")}</svg>`;
   }
 });
 
-const content = Object.keys(bySize).map(size => {
-  return `
-  <div  class="row">
+const content = Object.keys(bySize)
+  .map((size) => {
+    return `
+  <div class="row">
     <div class="size"><h4>${size}px</h4></div>
     <div>${bySize[size]}</div>
   </div>
-  `
-}).join('')
+  `;
+  })
+  .join("");
 
 async function build() {
-const result = await posthtml()
-  .use(
+  const result = await posthtml().use(
     insertAt({
-      selector: '.bx--grid',
-      append: content,
+      selector: ".bx--grid",
+      append: `
+      <div class="row">
+        <div class="size"><h4>Glyphs</h4></div>
+        <div>${glyphs}</div>
+      </div>
+      ${content}`,
     })
-  )
-  .process(`<!DOCTYPE html>
+  ).process(`<!DOCTYPE html>
   <html lang="en">
     <head>
       <meta charset="utf-8" />
@@ -71,14 +85,18 @@ const result = await posthtml()
           margin-bottom: 1rem;
         }
       </style>
+      <script>
+        var VERSION = "<%= VERSION %>";
+        var ICONS = <%= ICONS %>;
+      </script>
     </head>
     <body>
       <div id="app"></div>
       <div class="bx--grid"></div>
     </body>
-  </html>`)
+  </html>`);
 
-  fs.writeFileSync('./public/index.html', result.html)
+  fs.writeFileSync("./public/index.html", result.html);
 }
 
-module.exports = { build }
+module.exports = { build };

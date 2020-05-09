@@ -675,6 +675,9 @@ carbon-components-svelte@^0.6.2:
     carbon-icons-svelte "10.9.3"
     flatpickr "4.6.3"
 
+carbon-icons-svelte@../:
+  version "10.10.2"
+
 carbon-icons-svelte@10.9.3:
   version "10.9.3"
   resolved "https://registry.yarnpkg.com/carbon-icons-svelte/-/carbon-icons-svelte-10.9.3.tgz#bbd297c52b581884c5cb52727830045c517637bf"

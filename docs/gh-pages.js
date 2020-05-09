@@ -1,1 +1,1 @@
-require('gh-pages').publish('build');
+require("gh-pages").publish("build");
