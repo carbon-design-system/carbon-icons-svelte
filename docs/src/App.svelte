@@ -1,6 +1,6 @@
 <script>
   import { Link, Search, CodeSnippet, Modal } from "carbon-components-svelte";
-  import LogoGithub32 from "carbon-icons-svelte/lib/LogoGithub32";
+  import LogoGithub20 from "carbon-icons-svelte/lib/LogoGithub20";
   import copy from "clipboard-copy";
   import { afterUpdate } from "svelte";
   import { match } from "fuzzy";
@@ -53,13 +53,11 @@
   }
 
   .version {
-    margin-left: 0.25rem;
+    font-size: 0.75rem;
   }
 
   .header {
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
     margin-bottom: 1.5rem;
   }
 </style>
@@ -91,26 +89,27 @@
 <div class="bx--grid">
   <div class="bx--row">
     <div class="header bx--col">
-      <h2>
+      <h5>
         Carbon Icons Svelte
-        <span class="version">
-          <Link href="https://yarnpkg.com/package/carbon-icons-svelte">
-            v{window.VERSION}
-          </Link>
-        </span>
-      </h2>
+        <Link
+          style="margin-left: 0.125rem; margin-right: .75rem;"
+          href="https://yarnpkg.com/package/carbon-icons-svelte">
+          <span class="version">v{window.VERSION}</span>
+        </Link>
+      </h5>
       <div>
         <Link href="https://github.com/IBM/carbon-icons-svelte">
-          <LogoGithub32 />
+          <LogoGithub20 />
         </Link>
       </div>
     </div>
-
   </div>
-  <div class="bx--row">
+
+  <div class="bx--row" style="position: relative; z-index: 1;">
     <div class="bx--col-sm-1">
       <h4>Install</h4>
       <CodeSnippet
+        type="inline"
         code={install}
         on:click={() => {
           copy(install);
@@ -120,7 +119,7 @@
 
   <Search
     autofocus
-    style="margin-top: 3rem; margin-bottom: 1rem;"
+    style="margin-top: 2rem; margin-bottom: 1rem;"
     small
     bind:value />
 

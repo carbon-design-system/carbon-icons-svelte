@@ -68,7 +68,7 @@ async function build() {
       <link rel="stylesheet" href="https://unpkg.com/carbon-components/css/carbon-components.min.css" />
       <style>
         svg[data-module-name] {
-          margin: 1rem;
+          margin: .75rem;
           cursor: pointer;
         }
 
