@@ -24,7 +24,7 @@ npm i carbon-icons-svelte
 
 ## Usage
 
-Supported icon sizes include `16`, `20`, `24` and `32`. See the [Icon Preview](https://ibm.github.io/carbon-icons-svelte/) for a list of supported icons.
+Supported icon sizes include `16`, `20`, `24` and `32`. See the [Icon Index](ICON_INDEX.md) for a list of supported icons.
 
 ### Base Import
 
@@ -44,7 +44,7 @@ Import icons directly for faster compiling.
 import Add16 from "carbon-icons-svelte/lib/Add16";
 ```
 
-**Note:** Even if using the base import method, a modern application bundler (e.g. Rollup, Webpack) should treeshake unused icons.
+**Note:** Even if using the base import method, a modern application bundler like Rollup or webpack should [treeshake](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking) unused imports.
 
 #### Import Path Pattern
 
@@ -52,7 +52,7 @@ import Add16 from "carbon-icons-svelte/lib/Add16";
 import Icon from "carbon-icons-svelte/lib/<ModuleName>";
 ```
 
-See the [Icon Preview](https://ibm.github.io/carbon-icons-svelte/) for sample usage.
+Refer to the [Icon Index](ICON_INDEX.md) for a list of all icons by module name.
 
 ## API
 
