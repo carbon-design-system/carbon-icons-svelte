@@ -5,16 +5,20 @@
   import { afterUpdate } from "svelte";
   import { match } from "fuzzy";
 
+  const yarn = "yarn add -D carbon-icons-svelte";
+  const npm = "npm i -D carbon-icons-svelte";
+
+  const root = document.getElementById("svg-root");
+  const dataAttribute = "data-svg-carbon-icon";
+
   let ref = undefined;
-  let yarn = "yarn add -D carbon-icons-svelte";
-  let npm = "npm i -D carbon-icons-svelte";
   let shown = window.ICONS;
 
   afterUpdate(() => {
     shown = 0;
 
-    document.querySelectorAll(".row svg[data-module-name]").forEach(item => {
-      if (match(value, item.getAttribute("data-module-name")) == null) {
+    root.querySelectorAll(`[${dataAttribute}]`).forEach(item => {
+      if (match(value, item.getAttribute(dataAttribute)) == null) {
         item.style.display = "none";
       } else {
         shown += 1;
@@ -70,13 +74,13 @@
 <svelte:options immutable />
 <svelte:body
   on:click={e => {
-    if (e.target.tagName === 'svg' && e.target.getAttribute('data-module-name')) {
+    if (e.target.tagName === 'svg' && e.target.getAttribute(dataAttribute)) {
       node = e.target.cloneNode(true);
-      moduleName = e.target.getAttribute('data-module-name');
+      moduleName = e.target.getAttribute(dataAttribute);
     }
-    if (e.target.parentNode.tagName === 'svg' && e.target.parentNode.getAttribute('data-module-name')) {
+    if (e.target.parentNode.tagName === 'svg' && e.target.parentNode.getAttribute(dataAttribute)) {
       node = e.target.parentNode.cloneNode(true);
-      moduleName = e.target.parentNode.getAttribute('data-module-name');
+      moduleName = e.target.parentNode.getAttribute(dataAttribute);
     }
   }} />
 

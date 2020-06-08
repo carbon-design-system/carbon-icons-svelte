@@ -2,8 +2,6 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const path = require("path");
-const { devDependencies } = require("./package.json");
-const icons = require("@carbon/icons");
 const { build } = require("./template");
 
 const NODE_ENV = process.env.NODE_ENV || "development";
@@ -27,24 +25,13 @@ module.exports = async () => {
       rules: [
         {
           test: /\.svelte$/,
-          use: {
-            loader: "svelte-loader",
-            options: { emitCss: true, hotReload: true },
-          },
-        },
-        {
-          test: /\.css$/,
-          use: ["style-loader", "css-loader"],
+          use: { loader: "svelte-loader", options: { hotReload: true } },
         },
       ],
     },
     plugins: [
       new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({ template: "public/index.html" }),
-      new webpack.DefinePlugin({
-        VERSION: JSON.stringify(devDependencies["@carbon/icons"]),
-        ICONS: JSON.stringify(Object.keys(icons).length),
-      }),
     ],
   };
 };

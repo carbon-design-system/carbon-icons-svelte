@@ -4,3 +4,4 @@
 /public
 yarn-debug.log*
 yarn-error.log*
+build-info.json

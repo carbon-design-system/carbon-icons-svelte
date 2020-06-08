@@ -1,65 +1,27 @@
 const fs = require("fs");
 const posthtml = require("posthtml");
 const { insertAt } = require("posthtml-insert-at");
-const icons = require("@carbon/icons");
-const {
-  formatAttributes,
-  getAttributes,
-  toString,
-} = require("@carbon/icon-helpers");
-
-const attributes = getAttributes();
-
-let bySize = {
-  "16": "",
-  "20": "",
-  "24": "",
-  "32": "",
-};
-
-let glyphs = "";
-
-Object.keys(icons).forEach((iconKey) => {
-  const icon = icons[iconKey];
-
-  if (icon.size in bySize) {
-    bySize[icon.size] += `<svg data-module-name="${iconKey}" ${formatAttributes(
-      icon.attrs
-    )} preserveAspectRatio="${
-      attributes.preserveAspectRatio
-    }">${icon.content.map((element) => toString(element)).join("")}</svg>`;
-  } else {
-    glyphs += `<svg data-module-name="${iconKey}" ${formatAttributes(
-      icon.attrs
-    )} preserveAspectRatio="${
-      attributes.preserveAspectRatio
-    }">${icon.content.map((element) => toString(element)).join("")}</svg>`;
-  }
-});
-
-const content = Object.keys(bySize)
-  .map((size) => {
-    return `
-  <div class="row">
-    <div class="size"><h4>${size}px</h4></div>
-    <div>${bySize[size]}</div>
-  </div>
-  `;
-  })
-  .join("");
+const buildInfo = require("./build-info.json");
 
 async function build() {
-  const result = await posthtml().use(
-    insertAt({
-      selector: ".bx--grid",
-      append: `
-      <div class="row">
-        <div class="size"><h4>Glyphs</h4></div>
-        <div>${glyphs}</div>
-      </div>
-      ${content}`,
-    })
-  ).process(`<!DOCTYPE html>
+  try {
+    const result = await posthtml().use(
+      insertAt({
+        selector: ".bx--grid",
+        append: ["glyph", "16", "20", "24", "32"]
+          .map(
+            (size) => `
+        <div class="row">
+          <div class="size"><h4>${size}${
+              size !== "glyph" ? "px" : ""
+            }</h4></div>
+          <div>${buildInfo.bySize[size].join("")}</div>
+        </div>
+        `
+          )
+          .join(""),
+      })
+    ).process(`<!DOCTYPE html>
   <html lang="en">
     <head>
       <meta charset="utf-8" />
@@ -67,7 +29,7 @@ async function build() {
       <title>carbon-icons-svelte</title>
       <link rel="stylesheet" href="https://unpkg.com/carbon-components/css/carbon-components.min.css" />
       <style>
-        svg[data-module-name] {
+        #svg-root [data-svg-carbon-icon] {
           margin: .75rem;
           cursor: pointer;
         }
@@ -86,17 +48,20 @@ async function build() {
         }
       </style>
       <script>
-        var VERSION = "<%= VERSION %>";
-        var ICONS = <%= ICONS %>;
+        var VERSION = "${buildInfo.VERSION}";
+        var ICONS = ${buildInfo.total};
       </script>
     </head>
     <body>
       <div id="app"></div>
-      <div class="bx--grid"></div>
+      <div id="svg-root" class="bx--grid"></div>
     </body>
   </html>`);
 
-  fs.writeFileSync("./public/index.html", result.html);
+    fs.writeFileSync("./public/index.html", result.html);
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 module.exports = { build };
