@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.12.0](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.12.0) - 2020-06-08
+
+- Bump `@carbon/icons` build dependency to 10.12.0 (468 new icons)
+
+- Add new default SVG attribute `fill="currentColor"` which can still be overridden using the style attribute (e.g. `<CarbonIcon style="fill: red" />`)
+
 ## [10.10.2](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.10.2) - 2020-05-02
 
 - Bump `@carbon/icons` build dependency to 10.10.2
