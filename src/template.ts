@@ -1,20 +1,13 @@
 import {
   formatAttributes,
-  IconContent,
-  IconAttributes,
   toString,
   defaultAttributes,
 } from "@carbon/icon-helpers";
+import { IconOutput } from "@carbon/icons";
 
-function template({
-  attrs,
-  content,
-  moduleName,
-}: {
-  attrs: IconAttributes;
-  content: IconContent;
-  moduleName: string;
-}) {
+function template(output: IconOutput) {
+  const { moduleName, descriptor } = output;
+
   return `<script>
   let className = undefined;
   export { className as class };
@@ -45,13 +38,13 @@ function template({
   on:mouseleave
   on:keyup
   on:keydown
-  ${formatAttributes(attrs)}
+  ${formatAttributes(descriptor.attrs)}
   class={className}
   preserveAspectRatio="${defaultAttributes.preserveAspectRatio}"
   {style}
   {id}
   {...attributes}>
-  ${content.map((element) => toString(element)).join("")}
+  ${descriptor.content.map((element) => toString(element)).join("")}
   <slot>
     {#if title}
       <title>{title}</title>
@@ -60,4 +53,14 @@ function template({
 </svg>`;
 }
 
-export { template };
+function templateSvg(output: IconOutput) {
+  const { moduleName, descriptor } = output;
+
+  return `<svg data-svg-carbon-icon="${moduleName}"
+  ${formatAttributes(descriptor.attrs)}
+  preserveAspectRatio="${defaultAttributes.preserveAspectRatio}">
+  ${descriptor.content.map((element) => toString(element)).join("")}
+</svg>`;
+}
+
+export { template, templateSvg };

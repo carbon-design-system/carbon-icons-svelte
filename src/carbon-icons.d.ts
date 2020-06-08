@@ -1,26 +1,40 @@
 declare module "@carbon/icons" {
-  import { IconContent, IconSize, IconAttributes } from "@carbon/icon-helpers";
+  import { IconAttributes, Descriptor, IconSize } from "@carbon/icon-helpers";
 
-  export interface IBuildIcon {
-    filename: string;
-    basename: string;
-    size: IconSize;
-    prefix: string[];
+  export type ModuleName = string;
+
+  export interface IconOutput {
+    moduleName: ModuleName;
+    filepath: string;
     descriptor: {
       elem: "svg";
       attrs: IconAttributes;
-      content: IconContent;
+      content: Descriptor[];
       name: string;
-      size: IconSize;
     };
-    moduleName: string;
-    original: 32;
-    outputOptions: {
-      file: string;
-    };
+    size: IconSize;
   }
 
-  type BuildIcons = ReadonlyArray<IBuildIcon>;
+  type BuildIcons = {
+    icons: ReadonlyArray<{
+      name: string;
+      friendlyName: string;
+      namespace: [];
+      assets: [
+        {
+          filepath: string;
+          source: string;
+          optimized: {
+            data: string;
+            info: {};
+            path: string;
+          };
+        }
+      ];
+      output: IconOutput[];
+      category: string;
+    }>;
+  };
 
   export default BuildIcons;
 }
