@@ -1,7 +1,8 @@
 import { strict as test } from "assert";
 import { template } from "./template";
+import { IconOutput } from "@carbon/icons";
 
-const icon = {
+const icon: IconOutput = {
   moduleName: "Add32",
   filepath: "add/32.js",
   descriptor: {
