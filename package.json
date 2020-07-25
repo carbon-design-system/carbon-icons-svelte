@@ -6,6 +6,7 @@
   "author": "Eric Liu (https://github.com/metonym)",
   "svelte": "./lib/index.js",
   "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "sideEffects": false,
   "scripts": {
     "test": "tsnd src/*.test.ts",
