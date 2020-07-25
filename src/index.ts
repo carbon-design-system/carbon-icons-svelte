@@ -3,7 +3,7 @@ import * as fs from "fs";
 import { promisify } from "util";
 import { template, templateSvg } from "./template";
 import { performance } from "perf_hooks";
-import { devDependencies } from "../package.json";
+import { name, devDependencies } from "../package.json";
 
 const VERSION = devDependencies["@carbon/icons"];
 
@@ -34,6 +34,51 @@ const mkdir = promisify(fs.mkdir);
   await mkdir("lib");
 
   let libExport = "";
+  let definitions = `declare class Icon {
+    $$prop_def: {
+      /** @type {string} [id] */
+      id?: string;
+
+      /** @type {string} [class] */
+      class?: string;
+
+      /** @type {string} [tabindex] */
+      tabindex?: string;
+
+      /** @type {boolean} [focusable] */
+      focusable?: boolean;
+
+      /** @type {string} [title] */
+      title?: string;
+
+      /** @type {string} [style] */
+      style?: string;
+
+      /**
+       * Fill color
+       * @type {string} [fill="#161616"]
+       */
+      fill?: string;
+
+      /**
+       * Stroke color
+       * @type {string} [stroke="currentColor"]
+       */
+      stroke?: string;
+
+      /** @type {string} [width="48"] */
+      width?: string;
+
+      /** @type {string} [height="48"] */
+      height?: string;
+    };
+
+    $$slot_def: {
+      /** @type {{}} [default] */
+      default?: {};
+    };
+  }
+  `;
 
   const bySize: Record<string, string[]> = {
     glyph: [],
@@ -50,6 +95,7 @@ const mkdir = promisify(fs.mkdir);
       bySize[icon.size.toString()].push(templateSvg(icon));
 
       libExport += `export { default as ${moduleName} } from "./${moduleName}";\n`;
+      definitions += `declare module "carbon-icons-svelte/lib/${moduleName}" { export default class ${moduleName} extends Icon {} }\n`;
 
       await mkdir(`lib/${moduleName}`);
       await writeFile(`lib/${moduleName}/${moduleName}.svelte`, template(icon));
@@ -64,7 +110,15 @@ const mkdir = promisify(fs.mkdir);
 
   const version = `[@carbon/icons@${VERSION}](https://unpkg.com/browse/@carbon/icons@${VERSION}/)`;
   const total = iconModuleNames.length;
+  const packageMetadata = `${total} icons from @carbon/icons@${devDependencies["@carbon/icons"]}`;
 
+  await writeFile(
+    "lib/index.d.ts",
+    `// Type definitions for ${name}
+// ${packageMetadata}
+
+${definitions}`
+  );
   await writeFile(
     "ICON_INDEX.md",
     `# Icon Index\n
