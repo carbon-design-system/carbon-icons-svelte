@@ -35,50 +35,53 @@ const mkdir = promisify(fs.mkdir);
 
   let libExport = "";
   let definitions = `declare class Icon {
-    $$prop_def: {
-      /** @type {string} [id] */
-      id?: string;
+  $$prop_def: {
+    /** @type {string} [id] */
+    id?: string;
 
-      /** @type {string} [class] */
-      class?: string;
+    /** @type {string} [class] */
+    class?: string;
 
-      /** @type {string} [tabindex] */
-      tabindex?: string;
+    /** @type {string} [tabindex] */
+    tabindex?: string;
 
-      /** @type {boolean} [focusable] */
-      focusable?: boolean;
+    /** @type {boolean} [focusable] */
+    focusable?: boolean;
 
-      /** @type {string} [title] */
-      title?: string;
+    /** @type {string} [title] */
+    title?: string;
 
-      /** @type {string} [style] */
-      style?: string;
+    /** @type {string} [style] */
+    style?: string;
 
-      /**
-       * Fill color
-       * @type {string} [fill="#161616"]
-       */
-      fill?: string;
+    /**
+     * Fill color
+     * @type {string} [fill="#161616"]
+     */
+    fill?: string;
 
-      /**
-       * Stroke color
-       * @type {string} [stroke="currentColor"]
-       */
-      stroke?: string;
+    /**
+     * Stroke color
+     * @type {string} [stroke="currentColor"]
+     */
+    stroke?: string;
 
-      /** @type {string} [width="48"] */
-      width?: string;
+    /** @type {string} [width="48"] */
+    width?: string;
 
-      /** @type {string} [height="48"] */
-      height?: string;
-    };
+    /** @type {string} [height="48"] */
+    height?: string;
+  };
 
-    $$slot_def: {
-      /** @type {{}} [default] */
-      default?: {};
-    };
-  }
-  `;
+  $$slot_def: {
+    /** @type {{}} [default] */
+    default?: {};
+  };
+
+  /** stub 'on:event' directive as any */
+  $on(eventname: string, handler: (e: Event) => any): () => void;
+}
+`;
 
   const bySize: Record<string, string[]> = {
     glyph: [],

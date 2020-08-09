@@ -166,6 +166,7 @@ Use Webpack or Rollup for application bundling (see [examples](examples) for sam
 
 - [examples/webpack](examples/webpack) (Try it on [CodeSandbox](https://codesandbox.io/s/github/IBM/carbon-icons-svelte/tree/master/examples/webpack))
 - [examples/rollup](examples/rollup) (Try it on [CodeSandbox](https://codesandbox.io/s/github/IBM/carbon-icons-svelte/tree/master/examples/rollup))
+- [examples/rollup-typescript](examples/rollup-typescript)
 
 ## [Changelog](CHANGELOG.md)
 
