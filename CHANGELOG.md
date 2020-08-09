@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.15.0](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.15.0) - 2020-08-09
+
+- Fix TypeScript definitions to stub the `on:event` directive
+- Bump `@carbon/icons` build dependency to 10.15.0
+
 ## [10.14.1](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.14.1) - 2020-07-24
 
 - Add TypeScript definitions for module imports
