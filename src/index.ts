@@ -34,7 +34,16 @@ const mkdir = promisify(fs.mkdir);
   await mkdir("lib");
 
   let libExport = "";
-  let definitions = `declare class Icon {
+  let definitions = `export interface CarbonIconEvents {
+  click: MouseEvent,
+  mouseover: MouseEvent,
+  mouseenter: MouseEvent,
+  mouseleave: MouseEvent,
+  keyup: KeyboardEvent,
+  keydown: KeyboardEvent
+}
+
+export declare class CarbonIcon {
   $$prop_def: {
     /** @type {string} [id] */
     id?: string;
@@ -78,10 +87,14 @@ const mkdir = promisify(fs.mkdir);
     default?: {};
   };
 
-  /** stub 'on:event' directive as any */
-  $on(eventname: string, handler: (e: Event) => any): () => void;
-}
-`;
+  $$events_def: CarbonIconEvents;
+
+  /**
+   * stub $on method from svelte-shims.d.ts
+   * https://github.com/sveltejs/language-tools/blob/master/packages/svelte2tsx/svelte-shims.d.ts#L48
+   */
+  $on<K extends keyof CarbonIconEvents>(event: K, handler: (e: CarbonIconEvents[K]) => any): void;
+}\n\n`;
 
   const bySize: Record<string, string[]> = {
     glyph: [],
@@ -98,13 +111,19 @@ const mkdir = promisify(fs.mkdir);
       bySize[icon.size.toString()].push(templateSvg(icon));
 
       libExport += `export { default as ${moduleName} } from "./${moduleName}";\n`;
-      definitions += `declare module "carbon-icons-svelte/lib/${moduleName}" { export default class ${moduleName} extends Icon {} }\n`;
+      definitions += `export { default as ${moduleName} } from "./${moduleName}";\n`;
 
       await mkdir(`lib/${moduleName}`);
       await writeFile(`lib/${moduleName}/${moduleName}.svelte`, template(icon));
       await writeFile(
         `lib/${moduleName}/index.js`,
         `import ${moduleName} from "./${moduleName}.svelte";\nexport default ${moduleName};`
+      );
+      await writeFile(
+        `lib/${moduleName}/index.d.ts`,
+        `import { CarbonIcon } from "../";
+  
+export default class ${moduleName} extends CarbonIcon {}\n`
       );
     }
   });
