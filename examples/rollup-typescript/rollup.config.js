@@ -44,7 +44,7 @@ export default {
       dev: !production,
       preprocess: sveltePreprocess(),
       css: (css) => {
-        css.write("public/build/bundle.css");
+        css.write("bundle.css");
       },
     }),
     resolve({ browser: true, dedupe: ["svelte"] }),

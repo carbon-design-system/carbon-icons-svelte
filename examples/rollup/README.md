@@ -1,6 +1,6 @@
 # rollup
 
-> Rollup example using [svelte-rollup-template](https://github.com/metonym/svelte-rollup-template).
+> Example Rollup set-up.
 
 ## [CodeSandbox](https://codesandbox.io/s/github/IBM/carbon-icons-svelte/tree/master/examples/rollup)
 
@@ -16,17 +16,7 @@ yarn install
 
 ### `yarn start`
 
-Runs the app in development mode with livereload enabled. Visit `http://localhost:3000` to view the app.
-
-To configure the port number, modify the `port` value in [rollup.config.js](rollup.config.js#L48).
-
-```diff
-serve({
-  contentBase: ['build'],
-- port: 3000
-+ port: 8080
-})
-```
+Runs the app in development mode.
 
 ### `yarn build`
 
