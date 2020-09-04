@@ -27,7 +27,7 @@ async function build() {
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
       <title>carbon-icons-svelte</title>
-      <link rel="stylesheet" href="https://unpkg.com/carbon-components/css/carbon-components.min.css" />
+      <link rel="stylesheet" href="https://unpkg.com/carbon-components@10.19.0/css/carbon-components.min.css" />
       <style>
         #svg-root [data-svg-carbon-icon] {
           margin: .75rem;
