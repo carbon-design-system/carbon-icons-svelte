@@ -1,6 +1,14 @@
 <script>
-  import { Link, Search, CodeSnippet, Modal } from "carbon-components-svelte";
-  import LogoGithub20 from "carbon-icons-svelte/lib/LogoGithub20";
+  import {
+    Link,
+    Search,
+    CodeSnippet,
+    Modal,
+    Grid,
+    Row,
+    Column,
+    Content,
+  } from "carbon-components-svelte";
   import copy from "clipboard-copy";
   import { afterUpdate } from "svelte";
   import { match } from "fuzzy";
@@ -13,11 +21,14 @@
 
   let ref = undefined;
   let shown = window.ICONS;
+  let node = null;
+  let value = "";
+  let moduleName = null;
 
   afterUpdate(() => {
     shown = 0;
 
-    root.querySelectorAll(`[${dataAttribute}]`).forEach(item => {
+    root.querySelectorAll(`[${dataAttribute}]`).forEach((item) => {
       if (match(value, item.getAttribute(dataAttribute)) == null) {
         item.style.display = "none";
       } else {
@@ -32,9 +43,6 @@
     }
   });
 
-  $: node = null;
-  $: value = "";
-  $: moduleName = null;
   $: code = `
 <script>
   import ${moduleName} from "carbon-icons-svelte/lib/${moduleName}";
@@ -44,36 +52,16 @@
 </script>
 
 <style>
-  :global(body) {
-    overflow-y: scroll;
-  }
-
-  :global(body.bx--body--with-modal-open) {
-    overflow-y: scroll;
-  }
-
-  .bx--grid {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .version {
-    font-size: 0.75rem;
-  }
-
-  .header {
-    display: flex;
-    margin-bottom: 1rem;
-  }
-
-  p {
+  :global(.bx--row),
+  :global(p) {
     margin-bottom: 1rem;
   }
 </style>
 
 <svelte:options immutable />
+
 <svelte:body
-  on:click={e => {
+  on:click={(e) => {
     if (e.target.tagName === 'svg' && e.target.getAttribute(dataAttribute)) {
       node = e.target.cloneNode(true);
       moduleName = e.target.getAttribute(dataAttribute);
@@ -95,61 +83,60 @@
     {code} />
 </Modal>
 
-<div class="bx--grid">
-  <div class="bx--row">
-    <div class="header bx--col">
-      <h5>
-        Carbon Icons Svelte
-        <Link
-          style="margin-left: 0.125rem; margin-right: .75rem;"
-          href="https://yarnpkg.com/package/carbon-icons-svelte">
-          <span class="version">v{window.VERSION}</span>
-        </Link>
-      </h5>
-      <div>
-        <Link href="https://github.com/IBM/carbon-icons-svelte">
-          <LogoGithub20 />
-        </Link>
-      </div>
-    </div>
-  </div>
+<Content style="padding-left: 0; padding-right: 0;">
+  <Grid>
+    <Row>
+      <Column class="header">
+        <h5>
+          Carbon Icons Svelte
+          <Link
+            style="margin-left: 0.125rem; margin-right: .75rem;"
+            href="https://github.com/IBM/carbon-icons-svelte">
+            <span class="version">v{window.VERSION}</span>
+          </Link>
+        </h5>
+      </Column>
+    </Row>
 
-  <div class="bx--row">
-    <div class="bx--col-md-2">
-      <p>
-        This zero dependency icon library builds Carbon Design System SVG icons
-        as Svelte components.
-      </p>
-    </div>
-    <div class="bx--col">
-      <p>
-        Install:
-        <CodeSnippet
-          type="inline"
-          code={yarn}
-          on:click={() => {
-            copy(yarn);
-          }} />
-        <span>or</span>
-        <CodeSnippet
-          type="inline"
-          code={npm}
-          on:click={() => {
-            copy(npm);
-          }} />
-      </p>
-    </div>
-  </div>
+    <Row>
+      <Column lg={4}>
+        <p>
+          This zero dependency icon library builds Carbon Design System SVG
+          icons as Svelte components.
+        </p>
+      </Column>
+      <Column>
+        <p>
+          Install:
+          <CodeSnippet
+            type="inline"
+            code={yarn}
+            on:click={() => {
+              copy(yarn);
+            }} />
+          <span>or</span>
+          <CodeSnippet
+            type="inline"
+            code={npm}
+            on:click={() => {
+              copy(npm);
+            }} />
+        </p>
+      </Column>
+    </Row>
 
-  <Search
-    autofocus
-    style="margin-top: 1rem; margin-bottom: .75rem;"
-    small
-    bind:value />
+    <Row>
+      <Column>
+        <Search
+          autofocus
+          placeholder={`Search icons by name (e.g. "Add")`}
+          small
+          bind:value />
+      </Column>
+    </Row>
 
-  <div class="bx--row" style="margin-bottom: 3rem;">
-    <div class="bx--col" style="font-size: .75rem;">
-      Showing {shown} of {window.ICONS} icons
-    </div>
-  </div>
-</div>
+    <Row>
+      <Column>Showing {shown} of {window.ICONS} Icons</Column>
+    </Row>
+  </Grid>
+</Content>
