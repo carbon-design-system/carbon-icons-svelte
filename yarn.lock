@@ -7,20 +7,20 @@
   resolved "https://registry.npmjs.org/@carbon/icon-helpers/-/icon-helpers-10.9.0.tgz#5aee08e9d253d3bf6f996bc61f739660c62cbb21"
   integrity sha512-JtmCXV7iIc+N5RqQQy+MGT8T+5KcF7+BUKADvHnJKZ8o+ncF5gI4hmrP450dQD76mikI4fqQ0dQflaosesdSPw==
 
-"@carbon/icons@10.17.0":
-  version "10.17.0"
-  resolved "https://registry.npmjs.org/@carbon/icons/-/icons-10.17.0.tgz#c0795f33fd914ad03df9ce560228eb7c1c3ec6d5"
-  integrity sha512-7powaibflfzDXyV1cyJ9sXJycoQ2QDGnmTWQH3HNUR88Pwff2t9AwiNYh96r0as8sp4sJvKT1leL94A9lmVswA==
+"@carbon/icons@10.19.0":
+  version "10.19.0"
+  resolved "https://registry.npmjs.org/@carbon/icons/-/icons-10.19.0.tgz#4e7a27726df547a865297bcd3118fefe7c7a8476"
+  integrity sha512-tz6hLeAXCN1YEAEUC+/b11OFaX3cC10nbnuZrKBti4BhfJKIMbbGOmYrvnGbWJl1fU8vIatPSZPSeFdQRl/4LA==
 
-"@types/carbon__icon-helpers@^10.7.0":
-  version "10.7.0"
-  resolved "https://registry.npmjs.org/@types/carbon__icon-helpers/-/carbon__icon-helpers-10.7.0.tgz#db8e1d353609d26eed4b4d2286e45a624f27705c"
-  integrity sha512-+HIu71FsBjMQB7vZiK7J6W6h9Wj7PsW4RxN5Nmpi9670V/et4MtwApvWt6jPVVX2QTflvjUDCwamqD2kI5ks1g==
+"@types/carbon__icon-helpers@^10.7.1":
+  version "10.7.1"
+  resolved "https://registry.npmjs.org/@types/carbon__icon-helpers/-/carbon__icon-helpers-10.7.1.tgz#f1c4d637308d87f83906aea4c7c2399592e408ef"
+  integrity sha512-At07tODyK5f1tsPIg8ziZm3SHpHbfjh8YdyXLNbD9RdUa416EgUEFa6Xlxb9lgt2YHtRS/qLmy+ysbGx+zMgQg==
 
-"@types/node@^14.6.4":
-  version "14.6.4"
-  resolved "https://registry.npmjs.org/@types/node/-/node-14.6.4.tgz#a145cc0bb14ef9c4777361b7bbafa5cf8e3acb5a"
-  integrity sha512-Wk7nG1JSaMfMpoMJDKUsWYugliB2Vy55pdjLpmLixeyMi7HizW2I/9QoxsPCkXl3dO+ZOVqPumKaDUv5zJu2uQ==
+"@types/node@^14.14.2":
+  version "14.14.2"
+  resolved "https://registry.npmjs.org/@types/node/-/node-14.14.2.tgz#d25295f9e4ca5989a2c610754dc02a9721235eeb"
+  integrity sha512-jeYJU2kl7hL9U5xuI/BhKPZ4vqGM/OmK6whiFAXVhlstzZhVamWhDSmHyGLIp+RVyuF9/d0dqr2P85aFj4BvJg==
 
 "@types/strip-bom@^3.0.0":
   version "3.0.0"
@@ -557,10 +557,10 @@ trim-newlines@^1.0.0:
   resolved "https://registry.npmjs.org/trim-newlines/-/trim-newlines-1.0.0.tgz#5887966bb582a4503a41eb524f7d35011815a613"
   integrity sha1-WIeWa7WCpFA6QetST301ARgVphM=
 
-ts-node-dev@1.0.0-pre.62:
-  version "1.0.0-pre.62"
-  resolved "https://registry.npmjs.org/ts-node-dev/-/ts-node-dev-1.0.0-pre.62.tgz#835644c43669b659a880379b9d06df86cef665ad"
-  integrity sha512-hfsEuCqUZOVnZ86l7A3icxD1nFt1HEmLVbx4YOHCkrbSHPBNWcw+IczAPZo3zz7YiOm9vs0xG6OENNrkgm89tQ==
+ts-node-dev@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/ts-node-dev/-/ts-node-dev-1.0.0.tgz#24a2270d225c29ce269de2a31f88b1b259fc84cb"
+  integrity sha512-leA/3TgGtnVU77fGngBwVZztqyDRXirytR7dMtMWZS5b2hGpLl+VDnB0F/gf3A+HEPSzS/KwxgXFP7/LtgX4MQ==
   dependencies:
     chokidar "^3.4.0"
     dateformat "~1.0.4-1.2.3"
@@ -571,13 +571,13 @@ ts-node-dev@1.0.0-pre.62:
     rimraf "^2.6.1"
     source-map-support "^0.5.12"
     tree-kill "^1.2.2"
-    ts-node "^8.10.2"
+    ts-node "^9.0.0"
     tsconfig "^7.0.0"
 
-ts-node@^8.10.2:
-  version "8.10.2"
-  resolved "https://registry.npmjs.org/ts-node/-/ts-node-8.10.2.tgz#eee03764633b1234ddd37f8db9ec10b75ec7fb8d"
-  integrity sha512-ISJJGgkIpDdBhWVu3jufsWpK3Rzo7bdiIXJjQc0ynKxVOVcg2oIrf2H2cejminGrptVc6q6/uynAHNCuWGbpVA==
+ts-node@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.npmjs.org/ts-node/-/ts-node-9.0.0.tgz#e7699d2a110cc8c0d3b831715e417688683460b3"
+  integrity sha512-/TqB4SnererCDR/vb4S/QvSZvzQMJN8daAslg7MeaiHvD8rDZsSfXmNeNumyZZzMned72Xoq/isQljYSt8Ynfg==
   dependencies:
     arg "^4.1.0"
     diff "^4.0.1"
@@ -595,10 +595,10 @@ tsconfig@^7.0.0:
     strip-bom "^3.0.0"
     strip-json-comments "^2.0.0"
 
-typescript@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-4.0.2.tgz#7ea7c88777c723c681e33bf7988be5d008d05ac2"
-  integrity sha512-e4ERvRV2wb+rRZ/IQeb3jm2VxBsirQLpQhdxplZ2MEzGvDkkMmPglecnNDfSUBivMjP93vRbngYYDQqQ/78bcQ==
+typescript@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.npmjs.org/typescript/-/typescript-4.0.3.tgz#153bbd468ef07725c1df9c77e8b453f8d36abba5"
+  integrity sha512-tEu6DGxGgRJPb/mVPIZ48e69xCn2yRmCgYmDugAVwmJ6o+0u1RI18eO7E7WBTLYLaEVVOhwQmcdhQHweux/WPg==
 
 validate-npm-package-license@^3.0.1:
   version "3.0.4"
