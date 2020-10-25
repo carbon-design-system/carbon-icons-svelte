@@ -158,9 +158,9 @@ document.querySelectorAll('[data-carbon-icon="Add16"]');
 
 ## Limitations
 
-This library supports the `ES` format. Currently, `UMD` is not supported.
+This library only ships `.svelte` files.
 
-Use Webpack or Rollup for application bundling (see [examples](examples) for sample set-ups).
+Refer to the [examples](examples) for sample set-ups.
 
 ## Examples
 
