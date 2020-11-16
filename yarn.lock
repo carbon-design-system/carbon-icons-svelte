@@ -7,20 +7,20 @@
   resolved "https://registry.npmjs.org/@carbon/icon-helpers/-/icon-helpers-10.9.0.tgz#5aee08e9d253d3bf6f996bc61f739660c62cbb21"
   integrity sha512-JtmCXV7iIc+N5RqQQy+MGT8T+5KcF7+BUKADvHnJKZ8o+ncF5gI4hmrP450dQD76mikI4fqQ0dQflaosesdSPw==
 
-"@carbon/icons@10.19.0":
-  version "10.19.0"
-  resolved "https://registry.npmjs.org/@carbon/icons/-/icons-10.19.0.tgz#4e7a27726df547a865297bcd3118fefe7c7a8476"
-  integrity sha512-tz6hLeAXCN1YEAEUC+/b11OFaX3cC10nbnuZrKBti4BhfJKIMbbGOmYrvnGbWJl1fU8vIatPSZPSeFdQRl/4LA==
+"@carbon/icons@10.21.0":
+  version "10.21.0"
+  resolved "https://registry.npmjs.org/@carbon/icons/-/icons-10.21.0.tgz#c68bbc5c3c0603fe8e78ce119890ebf30632e483"
+  integrity sha512-d6SkQ7zYcxbTssuC5DPRhtErMa+j6kXYKBmTlYSwAFIeGHRfVlZXQ+rpb2MYgJIBFV9zaGP7yqgAnpbIqZyOcg==
 
 "@types/carbon__icon-helpers@^10.7.1":
   version "10.7.1"
   resolved "https://registry.npmjs.org/@types/carbon__icon-helpers/-/carbon__icon-helpers-10.7.1.tgz#f1c4d637308d87f83906aea4c7c2399592e408ef"
   integrity sha512-At07tODyK5f1tsPIg8ziZm3SHpHbfjh8YdyXLNbD9RdUa416EgUEFa6Xlxb9lgt2YHtRS/qLmy+ysbGx+zMgQg==
 
-"@types/node@^14.14.2":
-  version "14.14.2"
-  resolved "https://registry.npmjs.org/@types/node/-/node-14.14.2.tgz#d25295f9e4ca5989a2c610754dc02a9721235eeb"
-  integrity sha512-jeYJU2kl7hL9U5xuI/BhKPZ4vqGM/OmK6whiFAXVhlstzZhVamWhDSmHyGLIp+RVyuF9/d0dqr2P85aFj4BvJg==
+"@types/node@^14.14.7":
+  version "14.14.7"
+  resolved "https://registry.npmjs.org/@types/node/-/node-14.14.7.tgz#8ea1e8f8eae2430cf440564b98c6dfce1ec5945d"
+  integrity sha512-Zw1vhUSQZYw+7u5dAwNbIA9TuTotpzY/OF7sJM9FqPOF3SPjKnxrjoTktXDZgUjybf4cWVBP7O8wvKdSaGHweg==
 
 "@types/strip-bom@^3.0.0":
   version "3.0.0"
@@ -595,10 +595,10 @@ tsconfig@^7.0.0:
     strip-bom "^3.0.0"
     strip-json-comments "^2.0.0"
 
-typescript@^4.0.3:
-  version "4.0.3"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-4.0.3.tgz#153bbd468ef07725c1df9c77e8b453f8d36abba5"
-  integrity sha512-tEu6DGxGgRJPb/mVPIZ48e69xCn2yRmCgYmDugAVwmJ6o+0u1RI18eO7E7WBTLYLaEVVOhwQmcdhQHweux/WPg==
+typescript@^4.0.5:
+  version "4.0.5"
+  resolved "https://registry.npmjs.org/typescript/-/typescript-4.0.5.tgz#ae9dddfd1069f1cb5beb3ef3b2170dd7c1332389"
+  integrity sha512-ywmr/VrTVCmNTJ6iV2LwIrfG1P+lv6luD8sUJs+2eI9NLGigaN+nUQc13iHqisq7bra9lnmUSYqbJvegraBOPQ==
 
 validate-npm-package-license@^3.0.1:
   version "3.0.4"
