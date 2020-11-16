@@ -111,7 +111,7 @@ export declare class CarbonIcon {
       bySize[icon.size.toString()].push(templateSvg(icon));
 
       libExport += `export { default as ${moduleName} } from "./${moduleName}";\n`;
-      definitions += `export const ${moduleName}: CarbonIcon;\n`;
+      definitions += `export declare class ${moduleName} extends CarbonIcon {}\n`;
 
       await mkdir(`lib/${moduleName}`);
       await writeFile(`lib/${moduleName}/${moduleName}.svelte`, template(icon));
