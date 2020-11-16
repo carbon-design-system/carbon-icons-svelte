@@ -5,11 +5,11 @@
     "build": "NODE_ENV=production webpack"
   },
   "dependencies": {
-    "carbon-icons-svelte": "^10.15.0",
-    "svelte": "^3.24.1"
+    "carbon-icons-svelte": "^10.21.0",
+    "svelte": "^3.29.7"
   },
   "devDependencies": {
-    "html-webpack-plugin": "^4.4.1",
+    "html-webpack-plugin": "^4.5.0",
     "svelte-loader": "^2.13.6",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",

@@ -159,8 +159,10 @@ callsites@^3.0.0:
   resolved "https://registry.npmjs.org/callsites/-/callsites-3.1.0.tgz#b3630abd8943432f54b3f0519238e33cd7df2f73"
   integrity sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==
 
-carbon-icons-svelte@../../:
+carbon-icons-svelte@^10.21.0:
   version "10.21.0"
+  resolved "https://registry.npmjs.org/carbon-icons-svelte/-/carbon-icons-svelte-10.21.0.tgz#9bbdd37d5513d484e9706d6335c121f60f3186c4"
+  integrity sha512-5NNaRdmbS4N36dUGNj72Ys3VqVjH3fZ69AhYUHx+bH02GFYCwAaE49qjtP77kP7DKMtDV9NmMEti/P/JB83aYQ==
 
 chalk@^2.0.0:
   version "2.4.2"
