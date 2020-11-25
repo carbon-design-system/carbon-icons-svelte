@@ -17,9 +17,9 @@ This **zero dependency** icon library builds [Carbon Design System icons](https:
 `carbon-icons-svelte` can be installed using `yarn` or `npm`.
 
 ```bash
-yarn add carbon-icons-svelte
+yarn add -D carbon-icons-svelte
 # OR
-npm i carbon-icons-svelte
+npm i -D carbon-icons-svelte
 ```
 
 ## Usage
@@ -28,7 +28,7 @@ Supported icon sizes include `16`, `20`, `24` and `32`. See the [Icon Index](ICO
 
 ### Base Import
 
-```html
+```svelte
 <script>
   import { Add16 } from "carbon-icons-svelte";
 </script>
@@ -75,7 +75,7 @@ All props are optional.
 
 `title` can be passed as a prop or through the slot as an element.
 
-```html
+```svelte
 <Add16 title="Add" />
 <!-- OR -->
 <Add16>
@@ -87,7 +87,7 @@ All props are optional.
 
 Event directives are forwarded directly to the SVG element.
 
-```html
+```svelte
 <Add16
   on:click="{() => {}}"
   on:mouseenter="{() => {}}"
@@ -120,7 +120,7 @@ document.querySelectorAll('[data-carbon-icon="Add16"]');
 
 #### Using `class`
 
-```html
+```svelte
 <style>
   :global(svg.custom-class) {
     fill: blue;
@@ -132,25 +132,25 @@ document.querySelectorAll('[data-carbon-icon="Add16"]');
 
 #### Using `style`
 
-```html
+```svelte
 <Add16 style="fill: blue" />
 ```
 
 ### Labelled
 
-```html
+```svelte
 <Add16 aria-label="Add" />
 ```
 
 ### Labelled with Focus
 
-```html
+```svelte
 <Add16 aria-label="Add" tabindex="0" />
 ```
 
 ### Labelled by
 
-```html
+```svelte
 <label id="addFile">Add file</label>
 
 <Add16 aria-labelledby="addFile" />

@@ -1,6 +1,5 @@
 <script>
   import {
-    Link,
     Search,
     CodeSnippet,
     Modal,
@@ -8,22 +7,29 @@
     Row,
     Column,
     Content,
+    Select,
+    SelectItem,
   } from "carbon-components-svelte";
   import copy from "clipboard-copy";
-  import { afterUpdate } from "svelte";
+  import { onMount, afterUpdate } from "svelte";
   import { match } from "fuzzy";
-
-  const yarn = "yarn add -D carbon-icons-svelte";
-  const npm = "npm i -D carbon-icons-svelte";
+  import Header from "./Header.svelte";
 
   const root = document.getElementById("svg-root");
   const dataAttribute = "data-svg-carbon-icon";
 
-  let ref = undefined;
+  let ref = null;
   let shown = window.ICONS;
   let node = null;
   let value = "";
   let moduleName = null;
+  let theme = "g100";
+
+  $: document.documentElement.setAttribute("theme", theme);
+
+  onMount(() => {
+    document.documentElement.setAttribute("mounted", true);
+  });
 
   afterUpdate(() => {
     shown = 0;
@@ -52,13 +58,22 @@
 </script>
 
 <style>
-  :global(.bx--row),
-  :global(p) {
-    margin-bottom: 1rem;
+  .flex {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: var(--cds-layout-01);
+  }
+
+  :global(#select-theme) {
+    width: 9rem;
+  }
+
+  p {
+    margin-bottom: var(--cds-layout-02);
   }
 </style>
 
-<svelte:options immutable />
+<Header />
 
 <svelte:body
   on:click={(e) => {
@@ -73,7 +88,7 @@
   }} />
 
 <Modal passiveModal open={moduleName != null} modalHeading={moduleName}>
-  <div bind:this={ref} />
+  <div style="margin-bottom: var(--cds-layout-01);" bind:this={ref} />
   <CodeSnippet
     light
     type="multi"
@@ -83,60 +98,39 @@
     {code} />
 </Modal>
 
-<Content style="padding-left: 0; padding-right: 0;">
+<Content style="background: none; padding: var(--cds-spacing-06) 0;">
   <Grid>
     <Row>
-      <Column class="header">
-        <h5>
-          Carbon Icons Svelte
-          <Link
-            style="margin-left: 0.125rem; margin-right: .75rem;"
-            href="https://github.com/IBM/carbon-icons-svelte">
-            <span class="version">v{window.VERSION}</span>
-          </Link>
-        </h5>
-      </Column>
-    </Row>
-
-    <Row>
-      <Column lg={4}>
-        <p>
-          This zero dependency icon library builds Carbon Design System SVG
-          icons as Svelte components.
-        </p>
-      </Column>
       <Column>
-        <p>
-          Install:
-          <CodeSnippet
-            type="inline"
-            code={yarn}
-            on:click={() => {
-              copy(yarn);
-            }} />
-          <span>or</span>
-          <CodeSnippet
-            type="inline"
-            code={npm}
-            on:click={() => {
-              copy(npm);
-            }} />
-        </p>
+        <div class="flex">
+          <Select
+            id="select-theme"
+            size="xl"
+            labelText="Carbon theme"
+            bind:selected={theme}>
+            <SelectItem value="white" text="White" />
+            <SelectItem value="g10" text="Gray 10" />
+            <SelectItem value="g90" text="Gray 90" />
+            <SelectItem value="g100" text="Gray 100" />
+          </Select>
+          <Search
+            style="border-left: 1px solid var(--cds-ui-03);"
+            titleText="Search"
+            labelText="Search"
+            placeholder={`Search icons by name (e.g. "Add")`}
+            bind:value />
+        </div>
       </Column>
     </Row>
 
     <Row>
       <Column>
-        <Search
-          autofocus
-          placeholder={`Search icons by name (e.g. "Add")`}
-          small
-          bind:value />
+        <span style="color: var(--cds-text-02)">Showing
+          {shown}
+          of
+          {window.ICONS}
+          icons</span>
       </Column>
-    </Row>
-
-    <Row>
-      <Column>Showing {shown} of {window.ICONS} Icons</Column>
     </Row>
   </Grid>
 </Content>

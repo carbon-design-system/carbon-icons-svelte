@@ -22,15 +22,15 @@ async function build() {
           .join(""),
       })
     ).process(`<!DOCTYPE html>
-  <html lang="en">
+  <html lang="en" theme="g100">
     <head>
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+      <meta name="description" content="Carbon Design System icons as Svelte components" />
       <title>carbon-icons-svelte</title>
-      <link rel="stylesheet" href="https://unpkg.com/carbon-components@10.19.0/css/carbon-components.min.css" />
       <style>
         #svg-root [data-svg-carbon-icon] {
-          margin: .75rem;
+          margin: .5rem;
           cursor: pointer;
         }
 
@@ -40,11 +40,28 @@ async function build() {
         }
       
         .size {
-          border-bottom: 1px solid #e0e0e0;
+          padding: var(--cds-layout-01) 0;
+          margin-bottom: var(--cds-layout-02);
+          border-bottom: 1px solid var(--cds-ui-03);
         }
 
-        h4 {
-          margin-bottom: 1rem;
+        html[mounted="true"] .skeleton {
+          display: none;
+        }
+
+        .skeleton {
+          position: relative;
+          min-height: 12.375rem;
+        }
+
+        .skeleton:before {
+          position: absolute;
+          top: 0;
+          left: 0;
+          content: '';
+          height: 3rem;
+          width: 100%;
+          border-bottom: 1px solid var(--cds-ui-03);
         }
       </style>
       <script>
@@ -53,6 +70,7 @@ async function build() {
       </script>
     </head>
     <body>
+      <div class="skeleton"></div>
       <div id="app"></div>
       <div id="svg-root" class="bx--grid"></div>
     </body>

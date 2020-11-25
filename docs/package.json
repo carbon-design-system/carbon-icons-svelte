@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server",
+    "dev": "webpack-dev-server",
     "build": "NODE_ENV=production webpack",
     "deploy": "npx gh-pages -d build"
   },
@@ -9,8 +9,10 @@
     "carbon-components-svelte": "^0.22.0",
     "clean-webpack-plugin": "^3.0.0",
     "clipboard-copy": "^3.2.0",
+    "css-loader": "^5.0.1",
     "fuzzy": "^0.1.3",
     "html-webpack-plugin": "^4.5.0",
+    "mini-css-extract-plugin": "^1.3.1",
     "posthtml": "^0.14.0",
     "posthtml-insert-at": "^0.2.6",
     "svelte": "^3.29.7",
