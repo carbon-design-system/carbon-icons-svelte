@@ -1,8 +1,8 @@
 # carbon-icons-svelte
 
 [![NPM][npm]][npm-url]
-![npm downloads to date](https://img.shields.io/npm/dt/carbon-icons-svelte?color=262626&style=for-the-badge)
 ![GitHub](https://img.shields.io/github/license/ibm/carbon-icons-svelte?color=262626&style=for-the-badge)
+![npm downloads to date](https://img.shields.io/npm/dt/carbon-icons-svelte?color=262626&style=for-the-badge)
 [![Build][build]][build-badge]
 
 > [Carbon Design System](https://github.com/carbon-design-system) SVG icons as Svelte components.
@@ -11,7 +11,7 @@ This **zero dependency** icon library builds [Carbon Design System icons](https:
 
 **Try it in the [Svelte REPL](https://svelte.dev/repl/931e6a3461434622adad0557579c0a29?version=3.16.7) or on [CodeSandbox](https://codesandbox.io/s/github/IBM/carbon-icons-svelte/tree/master/examples/webpack).**
 
-## [Icon Preview](https://ibm.github.io/carbon-icons-svelte/)
+## [Preview](https://ibm.github.io/carbon-icons-svelte/)
 
 ## Install
 
@@ -181,5 +181,5 @@ Refer to the [examples](examples) for sample set-ups.
 
 [npm]: https://img.shields.io/npm/v/carbon-icons-svelte.svg?color=262626&style=for-the-badge
 [npm-url]: https://npmjs.com/package/carbon-icons-svelte
-[build]: https://travis-ci.com/ibm/carbon-icons-svelte.svg?color=24a148&style=for-the-badge
+[build]: https://img.shields.io/travis/com/ibm/carbon-icons-svelte?color=24a148&style=for-the-badge
 [build-badge]: https://travis-ci.com/ibm/carbon-icons-svelte
