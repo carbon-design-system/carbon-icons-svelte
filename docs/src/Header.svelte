@@ -8,10 +8,6 @@
     HeaderPanelLink,
     HeaderPanelDivider,
     SkipToContent,
-    SideNav,
-    SideNavItems,
-    SideNavMenu,
-    SideNavMenuItem,
   } from "carbon-components-svelte";
   import LogoGithub20 from "carbon-icons-svelte/lib/LogoGithub20";
 </script>

@@ -1,7 +1,8 @@
 # carbon-icons-svelte
 
 [![NPM][npm]][npm-url]
-![npm](https://img.shields.io/npm/dt/carbon-icons-svelte)
+![npm downloads to date](https://img.shields.io/npm/dt/carbon-icons-svelte?color=262626&style=for-the-badge)
+![GitHub](https://img.shields.io/github/license/ibm/carbon-icons-svelte?color=262626&style=for-the-badge)
 [![Build][build]][build-badge]
 
 > [Carbon Design System](https://github.com/carbon-design-system) SVG icons as Svelte components.
@@ -12,7 +13,7 @@ This **zero dependency** icon library builds [Carbon Design System icons](https:
 
 ## [Icon Preview](https://ibm.github.io/carbon-icons-svelte/)
 
-## Getting Started
+## Install
 
 `carbon-icons-svelte` can be installed using `yarn` or `npm`.
 
@@ -42,9 +43,11 @@ Import icons directly for faster compiling.
 
 ```js
 import Add16 from "carbon-icons-svelte/lib/Add16";
+// OR
+import Add16 from "carbon-icons-svelte/lib/Add16/Add16.svelte";
 ```
 
-**Note:** Even if using the base import method, a modern application bundler like Rollup or webpack should [treeshake](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking) unused imports.
+**Note:** Even if using the base import method, an application bundler like Rollup or webpack should [treeshake](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking) unused imports.
 
 #### Import Path Pattern
 
@@ -176,7 +179,7 @@ Refer to the [examples](examples) for sample set-ups.
 
 [Apache 2.0](LICENSE)
 
-[npm]: https://img.shields.io/npm/v/carbon-icons-svelte.svg?color=blue
+[npm]: https://img.shields.io/npm/v/carbon-icons-svelte.svg?color=262626&style=for-the-badge
 [npm-url]: https://npmjs.com/package/carbon-icons-svelte
-[build]: https://travis-ci.com/ibm/carbon-icons-svelte.svg?branch=master
+[build]: https://travis-ci.com/ibm/carbon-icons-svelte.svg?color=24a148&style=for-the-badge
 [build-badge]: https://travis-ci.com/ibm/carbon-icons-svelte

@@ -67,10 +67,6 @@
   :global(#select-theme) {
     width: 9rem;
   }
-
-  p {
-    margin-bottom: var(--cds-layout-02);
-  }
 </style>
 
 <Header />
