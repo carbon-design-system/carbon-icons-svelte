@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "start": "rollup -cw",
+    "dev": "rollup -cw",
     "build": "rollup -c"
   },
   "dependencies": {

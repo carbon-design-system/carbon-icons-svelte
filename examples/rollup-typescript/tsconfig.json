@@ -5,5 +5,5 @@
     "importsNotUsedAsValues": "remove",
     "types": ["svelte", "carbon-icons-svelte"]
   },
-  "exclude": ["node_modules/*", "__sapper__/*", "public/*"]
+  "exclude": ["node_modules/*", "public/*"]
 }
