@@ -14,9 +14,9 @@ yarn install
 
 ## Available Scripts
 
-### `yarn start`
+### `yarn dev`
 
-Runs the app in development mode with livereload enabled.
+Runs the app in development mode.
 
 ### `yarn build`
 

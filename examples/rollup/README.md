@@ -14,7 +14,7 @@ yarn install
 
 ## Available Scripts
 
-### `yarn start`
+### `yarn dev`
 
 Runs the app in development mode.
 
