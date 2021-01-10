@@ -18,6 +18,12 @@ yarn install
 
 Runs the app in development mode.
 
+Preview the app by serving `public/index.html`:
+
+```bash
+npx serve public
+```
+
 ### `yarn build`
 
 Builds the app in production mode.
