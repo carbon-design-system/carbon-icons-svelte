@@ -57,27 +57,18 @@
 <${moduleName} />`.trim();
 </script>
 
-<style>
-  .flex {
-    display: flex;
-    align-items: flex-end;
-    margin-bottom: var(--cds-layout-01);
-  }
-
-  :global(#select-theme) {
-    width: 9rem;
-  }
-</style>
-
 <Header />
 
 <svelte:body
   on:click={(e) => {
-    if (e.target.tagName === 'svg' && e.target.getAttribute(dataAttribute)) {
+    if (e.target.tagName === "svg" && e.target.getAttribute(dataAttribute)) {
       node = e.target.cloneNode(true);
       moduleName = e.target.getAttribute(dataAttribute);
     }
-    if (e.target.parentNode.tagName === 'svg' && e.target.parentNode.getAttribute(dataAttribute)) {
+    if (
+      e.target.parentNode.tagName === "svg" &&
+      e.target.parentNode.getAttribute(dataAttribute)
+    ) {
       node = e.target.parentNode.cloneNode(true);
       moduleName = e.target.parentNode.getAttribute(dataAttribute);
     }
@@ -91,7 +82,8 @@
     on:click={() => {
       copy(code);
     }}
-    {code} />
+    {code}
+  />
 </Modal>
 
 <Content style="background: none; padding: var(--cds-spacing-06) 0;">
@@ -103,7 +95,8 @@
             id="select-theme"
             size="xl"
             labelText="Carbon theme"
-            bind:selected={theme}>
+            bind:selected={theme}
+          >
             <SelectItem value="white" text="White" />
             <SelectItem value="g10" text="Gray 10" />
             <SelectItem value="g90" text="Gray 90" />
@@ -111,22 +104,39 @@
           </Select>
           <Search
             style="border-left: 1px solid var(--cds-ui-03);"
+            autocomplete="off"
+            spellcheck="false"
             titleText="Search"
             labelText="Search"
             placeholder={`Search icons by name (e.g. "Add")`}
-            bind:value />
+            bind:value
+          />
         </div>
       </Column>
     </Row>
 
     <Row>
       <Column>
-        <span style="color: var(--cds-text-02)">Showing
+        <span style="color: var(--cds-text-02)"
+          >Showing
           {shown}
           of
           {window.ICONS}
-          icons</span>
+          icons</span
+        >
       </Column>
     </Row>
   </Grid>
 </Content>
+
+<style>
+  .flex {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: var(--cds-layout-01);
+  }
+
+  :global(#select-theme) {
+    width: 9rem;
+  }
+</style>

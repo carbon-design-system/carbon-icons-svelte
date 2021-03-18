@@ -76,6 +76,10 @@ async function build() {
     </body>
   </html>`);
 
+    if (!fs.existsSync("./public")) {
+      fs.mkdirSync("./public");
+    }
+
     fs.writeFileSync("./public/index.html", result.html);
   } catch (error) {
     console.error(error);
