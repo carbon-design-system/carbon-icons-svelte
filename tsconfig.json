@@ -4,8 +4,7 @@
     "moduleResolution": "node",
     "outDir": "dist",
     "resolveJsonModule": true,
-    "strict": true,
-    "target": "es5"
+    "strict": true
   },
   "include": ["src"],
   "exclude": ["src/*.test.ts"]

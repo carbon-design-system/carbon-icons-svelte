@@ -34,67 +34,63 @@ const mkdir = promisify(fs.mkdir);
   await mkdir("lib");
 
   let libExport = "";
-  let definitions = `export interface CarbonIconEvents {
-  click: MouseEvent,
-  mouseover: MouseEvent,
-  mouseenter: MouseEvent,
-  mouseleave: MouseEvent,
-  keyup: KeyboardEvent,
-  keydown: KeyboardEvent
-}
+  let definitions = `/// <reference types="svelte" />
+import { SvelteComponentTyped } from "svelte";
+  
 
-export declare class CarbonIcon {
-  $$prop_def: {
-    /** @type {string} [id] */
-    id?: string;
 
-    /** @type {string} [class] */
-    class?: string;
+export interface CarbonIconProps extends svelte.JSX.HTMLAttributes<HTMLElementTagNameMap["svg"]> {
+  /** @type {string} [id] */
+  id?: string;
 
-    /** @type {string} [tabindex] */
-    tabindex?: string;
+  /** @type {string} [class] */
+  class?: string;
 
-    /** @type {boolean} [focusable] */
-    focusable?: boolean;
+  /** @type {string} [tabindex] */
+  tabindex?: string;
 
-    /** @type {string} [title] */
-    title?: string;
+  /** @type {boolean} [focusable] */
+  focusable?: boolean;
 
-    /** @type {string} [style] */
-    style?: string;
+  /** @type {string} [title] */
+  title?: string;
 
-    /**
-     * Fill color
-     * @type {string} [fill="#161616"]
-     */
-    fill?: string;
-
-    /**
-     * Stroke color
-     * @type {string} [stroke="currentColor"]
-     */
-    stroke?: string;
-
-    /** @type {string} [width="48"] */
-    width?: string;
-
-    /** @type {string} [height="48"] */
-    height?: string;
-  };
-
-  $$slot_def: {
-    /** @type {{}} [default] */
-    default?: {};
-  };
-
-  $$events_def: CarbonIconEvents;
+  /** @type {string} [style] */
+  style?: string;
 
   /**
-   * stub $on method from svelte-shims.d.ts
-   * https://github.com/sveltejs/language-tools/blob/master/packages/svelte2tsx/svelte-shims.d.ts#L48
+   * Fill color
+   * @type {string} [fill="#161616"]
    */
-  $on<K extends keyof CarbonIconEvents>(event: K, handler: (e: CarbonIconEvents[K]) => any): void;
-}\n\n`;
+  fill?: string;
+
+  /**
+   * Stroke color
+   * @type {string} [stroke="currentColor"]
+   */
+  stroke?: string;
+
+  /** @type {string} [width="48"] */
+  width?: string;
+
+  /** @type {string} [height="48"] */
+  height?: string;
+}
+
+export interface CarbonIconEvents {
+  click: WindowEventMap["click"];
+  mouseover: WindowEventMap["mouseover"];
+  mouseenter: WindowEventMap["mouseenter"];
+  mouseleave: WindowEventMap["mouseleave"];
+  keyup: WindowEventMap["keyup"];
+  keydown: WindowEventMap["keydown"];
+}
+
+export declare class CarbonIcon extends SvelteComponentTyped<
+  CarbonIconProps,
+  CarbonIconEvents,
+  { default: {}; }
+> {}\n\n`;
 
   const bySize: Record<string, string[]> = {
     glyph: [],

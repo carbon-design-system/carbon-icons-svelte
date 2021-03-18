@@ -159,6 +159,10 @@ document.querySelectorAll('[data-carbon-icon="Add16"]');
 <Add16 aria-labelledby="addFile" />
 ```
 
+## TypeScript support
+
+Svelte version 3.31 or greater is required to use this library with TypeScript.
+
 ## Limitations
 
 This library only ships `.svelte` files.
