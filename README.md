@@ -7,9 +7,9 @@
 
 > [Carbon Design System](https://github.com/carbon-design-system) SVG icons as Svelte components.
 
-This **zero dependency** icon library builds [Carbon Design System icons](https://www.carbondesignsystem.com/guidelines/icons/library) as Svelte components. Although best paired with [carbon-components-svelte](https://github.com/IBM/carbon-components-svelte), these icons can be consumed standalone.
+This zero dependency icon library builds [Carbon Design System icons](https://www.carbondesignsystem.com/guidelines/icons/library) as Svelte components. Although best paired with [carbon-components-svelte](https://github.com/IBM/carbon-components-svelte), these icons can be consumed standalone.
 
-**Try it in the [Svelte REPL](https://svelte.dev/repl/931e6a3461434622adad0557579c0a29?version=3.16.7) or on [CodeSandbox](https://codesandbox.io/s/github/IBM/carbon-icons-svelte/tree/master/examples/webpack).**
+Try it in the [Svelte REPL](https://svelte.dev/repl/931e6a3461434622adad0557579c0a29).
 
 ## [Preview](https://ibm.github.io/carbon-icons-svelte/)
 
