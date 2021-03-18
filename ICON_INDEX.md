@@ -1,6 +1,6 @@
 # Icon Index
 
-> 6188 icons from [@carbon/icons@10.23.0](https://unpkg.com/browse/@carbon/icons@10.23.0/)
+> 6188 icons from [@carbon/icons@10.27.0](https://unpkg.com/browse/@carbon/icons@10.27.0/)
 
 - Accessibility16
 - Accessibility20
