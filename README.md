@@ -11,7 +11,7 @@ This zero dependency icon library builds [Carbon Design System icons](https://ww
 
 Try it in the [Svelte REPL](https://svelte.dev/repl/931e6a3461434622adad0557579c0a29).
 
-## [Preview](https://ibm.github.io/carbon-icons-svelte/)
+## [Preview](https://ibm.github.io/carbon-icons-svelte/) · [Icon Index](ICON_INDEX.md)
 
 ## Install
 
