@@ -2,15 +2,15 @@
 # yarn lockfile v1
 
 
-"@carbon/icon-helpers@^10.14.0":
-  version "10.14.0"
-  resolved "https://registry.yarnpkg.com/@carbon/icon-helpers/-/icon-helpers-10.14.0.tgz#8c24ff6519d5210bb609c07cf5badb4c3125f5e8"
-  integrity sha512-dTU/+YYojsqwqGdh+QPMqj28C4gj2dP/ImlWoZsk8syiKqEZ7DeHksGIGz6EweQ8UhGEJFP1rFV7WwQ/ybXrFw==
+"@carbon/icon-helpers@^10.15.0":
+  version "10.15.0"
+  resolved "https://registry.yarnpkg.com/@carbon/icon-helpers/-/icon-helpers-10.15.0.tgz#3a358bdf6b6743a44a39d0f8302bebc98a96562e"
+  integrity sha512-TpCvRARVI1XnyuhxM8BgHl3m+HRlUkkef32SC6NGhz2cF99/3EsWAzcPz98JNCojAYYXHjGiEfO6K61z53u+lg==
 
-"@carbon/icons@10.27.0":
-  version "10.27.0"
-  resolved "https://registry.yarnpkg.com/@carbon/icons/-/icons-10.27.0.tgz#0009a31ba3c0768d47c1b1055c1915d4667b89cd"
-  integrity sha512-lxgmO3InfNnPqG/GGfVWAzQe3b1gK7QvglzshoYqeZLbbYj3IW4acII/ht+qf4eoCg9IOlYvsgYeUQNe7zqXbA==
+"@carbon/icons@10.28.0":
+  version "10.28.0"
+  resolved "https://registry.yarnpkg.com/@carbon/icons/-/icons-10.28.0.tgz#54d94972e5c0cf56aab9c424e8c436a4c7fe9818"
+  integrity sha512-UjdnLry5JRy9cJAGeu7dTlMPkBlV/KMqRBEBADX4Ak0CJVDcT3zpvo2x+tFlJnjsmnxW8TIO7rP1ZMtosbuIBA==
 
 "@types/carbon__icon-helpers@^10.7.1":
   version "10.7.1"
@@ -638,10 +638,10 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-svelte-check@^1.2.5:
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/svelte-check/-/svelte-check-1.2.5.tgz#7f1581fe85f0ab454ded7993121cc6e138391503"
-  integrity sha512-1hqlH/J86lpuXk6+SSeZRfCfxXvCpqYGfgPb2sD0YW+tueknbJGR9oaGaLzytU0dgja4ShG+zQzHEsjKb0tFeA==
+svelte-check@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/svelte-check/-/svelte-check-1.3.0.tgz#1fda3c3588f5f09347dbba06eaf40576095ba3d7"
+  integrity sha512-FMLZr/wv9S0MzCALo9BlHYyu1wlgXRdHWSjXDiknhraL9Igm0EVb00/tR6CMJ7j4q2kphRIEYcSRQJ7AtXHk+g==
   dependencies:
     chalk "^4.0.0"
     chokidar "^3.4.1"
