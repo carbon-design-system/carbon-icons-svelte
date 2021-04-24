@@ -21,6 +21,8 @@ Try it in the [Svelte REPL](https://svelte.dev/repl/931e6a3461434622adad0557579c
 yarn add -D carbon-icons-svelte
 # OR
 npm i -D carbon-icons-svelte
+# OR
+pnpm i -D carbon-icons-svelte
 ```
 
 ## Usage
