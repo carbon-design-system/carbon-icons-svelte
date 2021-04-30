@@ -3,7 +3,7 @@
   "version": "10.28.0",
   "license": "Apache-2.0",
   "description": "Carbon Design System SVG icons as Svelte components",
-  "author": "Eric Liu (https://github.com/metonym)",
+  "author": "IBM",
   "svelte": "./lib/index.js",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
