@@ -14,14 +14,14 @@
     "test:types": "svelte-check --workspace=src"
   },
   "devDependencies": {
-    "@carbon/icon-helpers": "^10.16.0",
-    "@carbon/icons": "10.31.0",
+    "@carbon/icon-helpers": "^10.18.0",
+    "@carbon/icons": "10.33.0",
     "@types/carbon__icon-helpers": "^10.7.1",
-    "@types/node": "^15.0.1",
-    "svelte": "^3.38.0",
-    "svelte-check": "^1.5.2",
+    "@types/node": "^15.12.2",
+    "svelte": "^3.38.2",
+    "svelte-check": "^2.1.0",
     "ts-node-dev": "1.1.6",
-    "typescript": "^4.2.4"
+    "typescript": "^4.3.2"
   },
   "repository": {
     "type": "git",
