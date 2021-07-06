@@ -10,7 +10,6 @@
     Select,
     SelectItem,
   } from "carbon-components-svelte";
-  import copy from "clipboard-copy";
   import { onMount, afterUpdate } from "svelte";
   import { match } from "fuzzy";
   import Header from "./Header.svelte";
@@ -23,7 +22,7 @@
   let node = null;
   let value = "";
   let moduleName = null;
-  let theme = "g100";
+  let theme = "white";
 
   $: document.documentElement.setAttribute("theme", theme);
 
@@ -79,9 +78,6 @@
   <CodeSnippet
     light
     type="multi"
-    on:click={() => {
-      copy(code);
-    }}
     {code}
   />
 </Modal>
@@ -99,12 +95,15 @@
           >
             <SelectItem value="white" text="White" />
             <SelectItem value="g10" text="Gray 10" />
+            <SelectItem value="g80" text="Gray 80" />
             <SelectItem value="g90" text="Gray 90" />
             <SelectItem value="g100" text="Gray 100" />
           </Select>
           <Search
             style="border-left: 1px solid var(--cds-ui-03);"
             autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
             spellcheck="false"
             titleText="Search"
             labelText="Search"
