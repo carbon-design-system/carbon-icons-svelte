@@ -22,7 +22,7 @@ async function build() {
           .join(""),
       })
     ).process(`<!DOCTYPE html>
-  <html lang="en" theme="g100">
+  <html lang="en" theme="white">
     <head>
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
