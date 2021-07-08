@@ -1,6 +1,6 @@
 # Icon Index
 
-> 6484 icons from [@carbon/icons@10.33.0](https://unpkg.com/browse/@carbon/icons@10.33.0/)
+> 6460 icons from [@carbon/icons@10.35.0](https://unpkg.com/browse/@carbon/icons@10.35.0/)
 
 - Accessibility16
 - Accessibility20
@@ -638,6 +638,8 @@
 - CategoryNewEach20
 - CategoryNewEach24
 - CategoryNewEach32
+- CautionGlyph
+- CautionInvertedGlyph
 - Cda16
 - Cda20
 - Cda24
@@ -1034,6 +1036,7 @@
 - CircleDash20
 - CircleDash24
 - CircleDash32
+- CircleFillGlyph
 - CircleFilled16
 - CircleFilled20
 - CircleFilled24
@@ -1042,6 +1045,7 @@
 - CirclePacking20
 - CirclePacking24
 - CirclePacking32
+- CircleStrokeGlyph
 - Classification16
 - Classification20
 - Classification24
@@ -1306,6 +1310,7 @@
 - Credentials20
 - Credentials24
 - Credentials32
+- CriticalGlyph
 - Crop16
 - Crop20
 - Crop24
@@ -2402,45 +2407,13 @@
 - Globe20
 - Globe24
 - Globe32
-- GlyphCaution16
-- GlyphCaution20
-- GlyphCaution24
-- GlyphCaution32
 - GlyphCautionGlyph
-- GlyphCautionInverted16
-- GlyphCautionInverted20
-- GlyphCautionInverted24
-- GlyphCautionInverted32
 - GlyphCautionInvertedGlyph
-- GlyphCircleFill16
-- GlyphCircleFill20
-- GlyphCircleFill24
-- GlyphCircleFill32
 - GlyphCircleFillGlyph
-- GlyphCircleStroke16
-- GlyphCircleStroke20
-- GlyphCircleStroke24
-- GlyphCircleStroke32
 - GlyphCircleStrokeGlyph
-- GlyphCritical16
-- GlyphCritical20
-- GlyphCritical24
-- GlyphCritical32
 - GlyphCriticalGlyph
-- GlyphIncomplete16
-- GlyphIncomplete20
-- GlyphIncomplete24
-- GlyphIncomplete32
 - GlyphIncompleteGlyph
-- GlyphSquareFill16
-- GlyphSquareFill20
-- GlyphSquareFill24
-- GlyphSquareFill32
 - GlyphSquareFillGlyph
-- GlyphUndefined16
-- GlyphUndefined20
-- GlyphUndefined24
-- GlyphUndefined32
 - GlyphUndefinedGlyph
 - Gradient16
 - Gradient20
@@ -2666,6 +2639,7 @@
 - IncompleteError20
 - IncompleteError24
 - IncompleteError32
+- IncompleteGlyph
 - IncompleteWarning16
 - IncompleteWarning20
 - IncompleteWarning24
@@ -4950,6 +4924,7 @@
 - Sql20
 - Sql24
 - Sql32
+- SquareFillGlyph
 - StackLimitation16
 - StackLimitation20
 - StackLimitation24
@@ -5594,6 +5569,7 @@
 - UndefinedFilled20
 - UndefinedFilled24
 - UndefinedFilled32
+- UndefinedGlyph
 - Undo16
 - Undo20
 - Undo24
