@@ -77,7 +77,9 @@
   passiveModal
   open={moduleName != null}
   modalHeading={moduleName}
-  on:close={() => (moduleName = null)}
+  on:transitionend={({ detail }) => {
+    if (!detail.open) moduleName = null;
+  }}
 >
   <div style="margin-bottom: var(--cds-layout-01);" bind:this={ref} />
   <CodeSnippet light type="multi" {code} />
