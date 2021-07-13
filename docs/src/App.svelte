@@ -73,13 +73,14 @@
     }
   }} />
 
-<Modal passiveModal open={moduleName != null} modalHeading={moduleName}>
+<Modal
+  passiveModal
+  open={moduleName != null}
+  modalHeading={moduleName}
+  on:close={() => (moduleName = null)}
+>
   <div style="margin-bottom: var(--cds-layout-01);" bind:this={ref} />
-  <CodeSnippet
-    light
-    type="multi"
-    {code}
-  />
+  <CodeSnippet light type="multi" {code} />
 </Modal>
 
 <Content style="background: none; padding: var(--cds-spacing-06) 0;">
