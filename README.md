@@ -13,19 +13,25 @@ Try it in the [Svelte REPL](https://svelte.dev/repl/931e6a3461434622adad0557579c
 
 ## [Preview](https://ibm.github.io/carbon-icons-svelte/) · [Icon Index](ICON_INDEX.md)
 
-## Install
+## Installation
 
-`carbon-icons-svelte` can be installed using `yarn` or `npm`.
+Install `carbon-icons-svelte` as a development dependency.
 
-```bash
+**Yarn**
+
+```sh
 yarn add -D carbon-icons-svelte
-# OR
+```
+
+**NPM**
+
+```sh
 npm i -D carbon-icons-svelte
 ```
 
 ## Usage
 
-Supported icon sizes include `16`, `20`, `24` and `32`. See the [Icon Index](ICON_INDEX.md) for a list of supported icons.
+Supported icon sizes include `16`, `20`, `24`, and `32`. See the [Icon Index](ICON_INDEX.md) for a list of supported icons.
 
 ### Base Import
 
@@ -47,7 +53,7 @@ import Add16 from "carbon-icons-svelte/lib/Add16";
 import Add16 from "carbon-icons-svelte/lib/Add16/Add16.svelte";
 ```
 
-**Note:** Even if using the base import method, an application bundler like Rollup or webpack should [treeshake](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking) unused imports.
+**Note:** Even if using the base import method, an application bundler like Rollup or webpack should [tree shake](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking) unused imports.
 
 #### Import Path Pattern
 
