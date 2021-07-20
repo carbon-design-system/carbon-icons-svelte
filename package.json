@@ -3,7 +3,6 @@
   "version": "10.35.0",
   "license": "Apache-2.0",
   "description": "Carbon Design System SVG icons as Svelte components",
-  "author": "IBM",
   "svelte": "./lib/index.js",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -25,10 +24,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ibm/carbon-icons-svelte.git"
+    "url": "https://github.com/carbon-design-system/carbon-icons-svelte.git"
   },
-  "homepage": "https://github.com/ibm/carbon-icons-svelte",
-  "bugs": "https://github.com/ibm/carbon-icons-svelte/issues",
+  "homepage": "https://github.com/carbon-design-system/carbon-icons-svelte",
+  "bugs": "https://github.com/carbon-design-system/carbon-icons-svelte/issues",
   "keywords": [
     "carbon",
     "carbon design system",

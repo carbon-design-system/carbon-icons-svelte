@@ -25,7 +25,7 @@
   <HeaderUtilities>
     <HeaderActionLink
       icon={LogoGithub20}
-      href="https://github.com/IBM/carbon-icons-svelte"
+      href="https://github.com/carbon-design-system/carbon-icons-svelte"
       target="_blank"
     />
     <HeaderAction transition={false}>
