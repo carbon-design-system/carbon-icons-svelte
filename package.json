@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@carbon/icon-helpers": "^10.19.0",
-    "@carbon/icons": "10.35.0",
+    "@carbon/icons": "10.36.0-rc.0",
     "@types/carbon__icon-helpers": "^10.7.2",
     "@types/node": "^16.3.3",
     "svelte": "^3.38.3",
