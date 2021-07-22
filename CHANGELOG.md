@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.36.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.36.0) - 2021-07-22
+
+**Features**
+
+- upgrade `@carbon/icons` to v10.36 (net +570 icons)
+
+**Fixes**
+
+- ignore `a11y-mouse-events-have-key-events` warning
+
 ## [10.35.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.35.0) - 2021-07-08
 
 - upgrade `@carbon/icons` to v10.35 (net -20 icons)
