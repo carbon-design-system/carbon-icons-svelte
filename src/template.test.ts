@@ -51,6 +51,7 @@ const expected = `<script>
   };
 </script>
 
+<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 <svg
   data-carbon-icon="Add32"
   on:click
