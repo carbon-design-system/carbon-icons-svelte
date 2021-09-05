@@ -10,17 +10,17 @@
   "scripts": {
     "prepack": "tsnd --transpile-only src",
     "test": "tsnd --transpile-only src/*.test.ts",
-    "test:types": "svelte-check --workspace=src"
+    "test:types": "svelte-check --workspace src"
   },
   "devDependencies": {
-    "@carbon/icon-helpers": "^10.20.0",
-    "@carbon/icons": "10.36.0",
+    "@carbon/icon-helpers": "^10.21.0",
+    "@carbon/icons": "10.37.0",
     "@types/carbon__icon-helpers": "^10.7.2",
-    "@types/node": "^16.4.0",
-    "svelte": "^3.40.1",
-    "svelte-check": "^2.2.3",
+    "@types/node": "^16.7.10",
+    "svelte": "^3.42.4",
+    "svelte-check": "^2.2.5",
     "ts-node-dev": "1.1.8",
-    "typescript": "^4.3.5"
+    "typescript": "^4.4.2"
   },
   "repository": {
     "type": "git",

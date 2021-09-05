@@ -2,15 +2,15 @@
 # yarn lockfile v1
 
 
-"@carbon/icon-helpers@^10.20.0":
-  version "10.20.0"
-  resolved "https://registry.yarnpkg.com/@carbon/icon-helpers/-/icon-helpers-10.20.0.tgz#4e6752b984fcbfd5851af5c4dfdab5031bb4aa1d"
-  integrity sha512-Qe/xHnMDwji541+2ibn90eFI5xWh51SQ6ehmHncagNrPIJb3a+x1DMhQcAMUF6YKwGzSbb5VQfay5wFoxcaf+A==
+"@carbon/icon-helpers@^10.21.0":
+  version "10.21.0"
+  resolved "https://registry.yarnpkg.com/@carbon/icon-helpers/-/icon-helpers-10.21.0.tgz#446223e26afe436455cfffcc4da235e6a23dfe3f"
+  integrity sha512-axRNtdg5PAIpPFXGYAHRk2JudHhgHlu/o00BkFlsbMhgsLhEgsUddLZoVjCByBCEPxLwt9CSk048VmcKuJzm7w==
 
-"@carbon/icons@10.36.0":
-  version "10.36.0"
-  resolved "https://registry.yarnpkg.com/@carbon/icons/-/icons-10.36.0.tgz#255de337aafe50c5507e223b92deaaa464b51ef0"
-  integrity sha512-5p/62+zZRdg21GIFk0+BtDiDqC2rfdqM4fjstW/nhugob/zjZMNUXwNYH001bhEuOLvewzENgF3EQwGYb1NFfg==
+"@carbon/icons@10.37.0":
+  version "10.37.0"
+  resolved "https://registry.yarnpkg.com/@carbon/icons/-/icons-10.37.0.tgz#017c6cee1a6c108d3ccc7a00e64261530df72292"
+  integrity sha512-9dLevNsei6SL0RG5k5P0niOYwFVp3iNSwQ+4MFRitOGSsHUo9Vvxv/fib0ATgK7vu/Wpyiyyn+f6wJYhhzf9Qw==
   dependencies:
     svgson "^5.2.1"
 
@@ -24,10 +24,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.35.tgz#42c953a4e2b18ab931f72477e7012172f4ffa313"
   integrity sha512-Lt+wj8NVPx0zUmUwumiVXapmaLUcAk3yPuHCFVXras9k5VT9TdhJqKqGVUQCD60OTMCl0qxJ57OiTL0Mic3Iag==
 
-"@types/node@^16.4.0":
-  version "16.4.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.4.0.tgz#2c219eaa3b8d1e4d04f4dd6e40bc68c7467d5272"
-  integrity sha512-HrJuE7Mlqcjj+00JqMWpZ3tY8w7EUd+S0U3L1+PQSWiXZbOgyQDvi+ogoUxaHApPJq5diKxYBQwA3iIlNcPqOg==
+"@types/node@^16.7.10":
+  version "16.7.10"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.7.10.tgz#7aa732cc47341c12a16b7d562f519c2383b6d4fc"
+  integrity sha512-S63Dlv4zIPb8x6MMTgDq5WWRJQe56iBEY0O3SOFA9JrRienkOVDXSXBjjJw6HTNQYSE2JI6GMCR6LVbIMHJVvA==
 
 "@types/pug@^2.0.4":
   version "2.0.4"
@@ -471,10 +471,10 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-svelte-check@^2.2.3:
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/svelte-check/-/svelte-check-2.2.3.tgz#8d702b86607049e18dfc9b36dd72e0fe830f3023"
-  integrity sha512-mqe/lgF0Ew+54YI4bPW5D26sMolh+MofQiz41U0c1GvUsP3bKsLLH0mjs4P4Xc+ajUFJtvGBo5PWaf0dd46sIQ==
+svelte-check@^2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/svelte-check/-/svelte-check-2.2.5.tgz#fc3d99494b38478dde6ba2060e8cbf5297e2025a"
+  integrity sha512-EstDoqxjqWStWELh7Z0qytqUDl/ikdNEr21dveNc4fUDnhnqO2F2jHEufqoNnC3GfBji3GIUHvoXsp/I5lMbCg==
   dependencies:
     chalk "^4.0.0"
     chokidar "^3.4.1"
@@ -496,10 +496,10 @@ svelte-preprocess@^4.0.0:
     detect-indent "^6.0.0"
     strip-indent "^3.0.0"
 
-svelte@^3.40.1:
-  version "3.40.1"
-  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.40.1.tgz#0c1fa443c812f042ce5ccd8d3bec1654a612c259"
-  integrity sha512-IreCwsCD5yoKlXCDXCyHZ0mh1wNwm3/5QD+nVNBzSWug5dUiWcah/8QWnDcC3IYbJbn0ZRT04b8y4ITMtr1bNQ==
+svelte@^3.42.4:
+  version "3.42.4"
+  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.42.4.tgz#838ed98fa7b26fc5fffe4df0d7ba345f1c54cf4f"
+  integrity sha512-DqC0AmDdBrrbIA+Kzl3yhBb6qCn4vZOAfxye2pTnIpinLegyagC5sLI8Pe9GPlXu9VpHBXIwpDDedpMfu++epA==
 
 svgson@^5.2.1:
   version "5.2.1"
@@ -564,10 +564,10 @@ typescript@*:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.3.tgz#39062d8019912d43726298f09493d598048c1ce3"
   integrity sha512-qOcYwxaByStAWrBf4x0fibwZvMRG+r4cQoTjbPtUlrWjBHbmCAww1i448U0GJ+3cNNEtebDteo/cHOR3xJ4wEw==
 
-typescript@^4.3.5:
-  version "4.3.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.3.5.tgz#4d1c37cc16e893973c45a06886b7113234f119f4"
-  integrity sha512-DqQgihaQ9cUrskJo9kIyW/+g0Vxsk8cDtZ52a3NGh0YNTfpUSArXSohyUGnvbPazEPLu398C0UxmKSOrPumUzA==
+typescript@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.4.2.tgz#6d618640d430e3569a1dfb44f7d7e600ced3ee86"
+  integrity sha512-gzP+t5W4hdy4c+68bfcv0t400HVJMMd2+H9B7gae1nQlBzCqvrXX+6GL/b3GAgyTH966pzrZ70/fRjwAtZksSQ==
 
 unset-value@^0.1.1:
   version "0.1.2"
