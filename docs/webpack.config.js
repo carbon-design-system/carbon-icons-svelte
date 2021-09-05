@@ -1,4 +1,3 @@
-const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
@@ -14,7 +13,7 @@ module.exports = async () => {
   return {
     stats: "errors-only",
     mode: NODE_ENV,
-    devtool: PROD ? false : "cheap-eval-source-map",
+    devtool: PROD ? false : "source-map",
     entry: { bundle: ["./src/index.js"] },
     resolve: {
       alias: { svelte: path.resolve("node_modules", "svelte") },
