@@ -92,19 +92,34 @@ export declare class CarbonIcon extends SvelteComponentTyped<
   { default: {}; }
 > {}\n\n`;
 
-  const bySize: Record<string, string[]> = {
-    glyph: [],
-    "16": [],
-    "20": [],
-    "24": [],
-    "32": [],
+  type Size = "glyph" | "16" | "20" | "24" | "32";
+
+  interface BySize {
+    order: Size[];
+    sizes: Record<Size, string[]>;
+  }
+
+  const byModuleName: Record<string, string> = {};
+
+  const bySize: BySize = {
+    order: ["glyph", "16", "20", "24", "32"],
+    sizes: {
+      glyph: [],
+      "16": [],
+      "20": [],
+      "24": [],
+      "32": [],
+    },
   };
 
   iconModuleNames.forEach(async (moduleName) => {
     const icon = iconMap.get(moduleName);
 
     if (icon) {
-      bySize[icon.size.toString()].push(templateSvg(icon));
+      const size = icon.size.toString() as Size;
+
+      bySize.sizes[size].push(moduleName);
+      byModuleName[moduleName] = templateSvg(icon);
 
       libExport += `export { default as ${moduleName} } from "./${moduleName}";\n`;
       definitions += `export declare class ${moduleName} extends CarbonIcon {}\n`;
@@ -146,7 +161,7 @@ ${iconModuleNames.map((moduleName) => `- ${moduleName}`).join("\n")}\n`
   console.log(`Built ${total} icons in ${bench.toFixed(2)}s.`);
 
   await writeFile(
-    "docs/build-info.json",
-    JSON.stringify({ VERSION, total, bySize })
+    "preview/build-info.json",
+    JSON.stringify({ VERSION, total, bySize, byModuleName, iconModuleNames })
   );
 })();
