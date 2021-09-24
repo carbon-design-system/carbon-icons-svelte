@@ -11,7 +11,7 @@ This zero dependency icon library builds [Carbon Design System icons](https://ww
 
 Try it in the [Svelte REPL](https://svelte.dev/repl/931e6a3461434622adad0557579c0a29).
 
-## [Preview](https://carbon-design-system.github.io/carbon-icons-svelte/) · [Icon Index](ICON_INDEX.md)
+## [Preview](https://carbon-icons-svelte.onrender.com) · [Icon Index](ICON_INDEX.md)
 
 ## Installation
 
@@ -53,7 +53,7 @@ import Add16 from "carbon-icons-svelte/lib/Add16";
 import Add16 from "carbon-icons-svelte/lib/Add16/Add16.svelte";
 ```
 
-**Note:** Even if using the base import method, an application bundler like Rollup or webpack should [tree shake](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking) unused imports.
+**Note:** Even if using the base import method, application bundlers like Rollup or webpack should [tree shake](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking) unused imports.
 
 #### Import Path Pattern
 
@@ -168,18 +168,6 @@ document.querySelectorAll('[data-carbon-icon="Add16"]');
 ## TypeScript support
 
 Svelte version 3.31 or greater is required to use this library with TypeScript.
-
-## Limitations
-
-This library only ships `.svelte` files.
-
-Refer to the [examples](examples) for sample set-ups.
-
-## Examples
-
-- [examples/webpack](examples/webpack) (Try it on [CodeSandbox](https://codesandbox.io/s/github/IBM/carbon-icons-svelte/tree/master/examples/webpack))
-- [examples/rollup](examples/rollup) (Try it on [CodeSandbox](https://codesandbox.io/s/github/IBM/carbon-icons-svelte/tree/master/examples/rollup))
-- [examples/rollup-typescript](examples/rollup-typescript)
 
 ## [Changelog](CHANGELOG.md)
 
