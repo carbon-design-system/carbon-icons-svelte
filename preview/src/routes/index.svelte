@@ -7,7 +7,7 @@
 </script>
 
 <script>
-  /** @type {{ VERSION?:string; iconModuleNames?: string[]; byModuleName: Record<string, string>; bySize?: { order: string[]; sizes: Record<string, string>; }; total?: number; }} */
+  /** @type {{ VERSION?: string; iconModuleNames?: string[]; byModuleName: Record<string, string>; bySize?: { order: string[]; sizes: Record<string, string>; }; total?: number; }} */
   export let data = {};
 
   import "carbon-components-svelte/css/all.css";
