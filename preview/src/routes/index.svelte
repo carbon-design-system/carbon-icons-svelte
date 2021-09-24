@@ -26,6 +26,7 @@
 
   const { match } = fuzzy;
 
+  let ref = null;
   let value = "";
 
   $: filteredModuleNames = data?.iconModuleNames.filter((name) =>
@@ -42,6 +43,14 @@
 
   $: code = `<script>\n  import ${moduleName} from "carbon-icons-svelte/lib/${moduleName}";\n<\/script>\n\n<${moduleName} />`;
 </script>
+
+<svelte:body
+  on:keydown={(e) => {
+    if (e.key === "/" && document.activeElement !== ref) {
+      e.preventDefault();
+      ref.focus();
+    }
+  }} />
 
 <Header version={data?.VERSION} />
 
@@ -83,6 +92,7 @@
             titleText="Search"
             labelText="Search"
             placeholder={`Search icons (e.g. "Add")`}
+            bind:ref
             bind:value
           />
         </div>
@@ -93,9 +103,9 @@
       <Column>
         <span class="text-02"
           >Showing
-          {filteredModuleNames.length}
+          {filteredModuleNames.length.toLocaleString()}
           of
-          {data?.total}
+          {data?.total.toLocaleString()}
           icons</span
         >
       </Column>
