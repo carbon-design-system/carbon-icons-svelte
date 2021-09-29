@@ -3,7 +3,6 @@
 [![NPM][npm]][npm-url]
 ![GitHub](https://img.shields.io/github/license/ibm/carbon-icons-svelte?color=262626&style=for-the-badge)
 ![npm downloads to date](https://img.shields.io/npm/dt/carbon-icons-svelte?color=262626&style=for-the-badge)
-[![Build][build]][build-badge]
 
 > [Carbon Design System](https://github.com/carbon-design-system) SVG icons as Svelte components.
 
@@ -185,5 +184,3 @@ The icon preview is deployed to [Render](https://render.com) as a Static Site. S
 
 [npm]: https://img.shields.io/npm/v/carbon-icons-svelte.svg?color=262626&style=for-the-badge
 [npm-url]: https://npmjs.com/package/carbon-icons-svelte
-[build]: https://img.shields.io/travis/com/ibm/carbon-icons-svelte?color=24a148&style=for-the-badge
-[build-badge]: https://travis-ci.com/ibm/carbon-icons-svelte
