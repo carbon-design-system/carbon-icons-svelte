@@ -5,6 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install dependencies and build the library
+        uses: ./
         run: |
           yarn
           yarn prepack
