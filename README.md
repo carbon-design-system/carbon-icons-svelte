@@ -173,6 +173,12 @@ Svelte version 3.31 or greater is required to use this library with TypeScript.
 
 ## [Contributing](CONTRIBUTING.md)
 
+## Deploying
+
+The icon preview is deployed to [Render](https://render.com) as a Static Site. See [render.yaml](render.yaml) for details.
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/carbon-design-system/carbon-icons-svelte)
+
 ## License
 
 [Apache 2.0](LICENSE)
