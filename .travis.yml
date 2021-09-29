@@ -1,7 +1,0 @@
-language: node_js
-node_js: 14
-cache: yarn
-scripts:
-  - yarn test
-  - yarn prepack
-  - yarn test:types
