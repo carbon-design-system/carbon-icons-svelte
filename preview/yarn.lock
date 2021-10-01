@@ -16,16 +16,16 @@
   integrity sha512-vutVoloX35E6QnnrNofToOWn/er/Li2yoR15NbTPZ26Gp3M6A2ckQJNMJrDbBA5XZsktNIXchIVGaADnKIJrow==
 
 "@sveltejs/kit@next":
-  version "1.0.0-next.176"
-  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.176.tgz#4c8ed4782ad1e50ff1adf5b695ff67a79c4332aa"
-  integrity sha512-aFwZ1PjOcxOSAX93Py3jfJBgZgWmANO5Vt2fb8abvNGLTA/d6VVArdPXSccaSxLYCGmgzvx+CAr8P+P8FcJ+Ng==
+  version "1.0.0-next.178"
+  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.0.0-next.178.tgz#b0e511f88942ff04a4ddba7a215b6ab76f6d52f5"
+  integrity sha512-Hai7bqZkn4JQMQwh8gUMJEbyBeRPIx1oQUhGZjHlH4yIqVf2Oz9Nf4FkGcQAa5eGF907qRhE/gghPpsZk6KkeQ==
   dependencies:
-    "@sveltejs/vite-plugin-svelte" "^1.0.0-next.24"
+    "@sveltejs/vite-plugin-svelte" "^1.0.0-next.26"
     cheap-watch "^1.0.4"
     sade "^1.7.4"
-    vite "^2.5.7"
+    vite "^2.6.0"
 
-"@sveltejs/vite-plugin-svelte@^1.0.0-next.24":
+"@sveltejs/vite-plugin-svelte@^1.0.0-next.26":
   version "1.0.0-next.26"
   resolved "https://registry.yarnpkg.com/@sveltejs/vite-plugin-svelte/-/vite-plugin-svelte-1.0.0-next.26.tgz#853744d35fa97b03aab1c939db3d2b6167f649ca"
   integrity sha512-+Rx3IBa4disskQmr+0/Rh+NYavkM6Vi8BnkTGjKnblawysw4INXkq2WEQBp8luGpUZEkjwczdL9Z9Q2hISvIeA==
@@ -433,9 +433,9 @@ rimraf@^2.5.2:
     glob "^7.1.3"
 
 rollup@^2.57.0:
-  version "2.57.0"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.57.0.tgz#c1694475eb22e1022477c0f4635fd0ac80713173"
-  integrity sha512-bKQIh1rWKofRee6mv8SrF2HdP6pea5QkwBZSMImJysFj39gQuiV8MEPBjXOCpzk3wSYp63M2v2wkWBmFC8O/rg==
+  version "2.58.0"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.58.0.tgz#a643983365e7bf7f5b7c62a8331b983b7c4c67fb"
+  integrity sha512-NOXpusKnaRpbS7ZVSzcEXqxcLDOagN6iFS8p45RkoiMqPHDLwJm758UF05KlMoCRbLBTZsPOIa887gZJ1AiXvw==
   optionalDependencies:
     fsevents "~2.3.2"
 
@@ -489,9 +489,9 @@ svelte-hmr@^0.14.7:
   integrity sha512-pDrzgcWSoMaK6AJkBWkmgIsecW0GChxYZSZieIYfCP0v2oPyx2CYU/zm7TBIcjLVUPP714WxmViE9Thht4etog==
 
 svelte-preprocess@^4.7.3:
-  version "4.9.5"
-  resolved "https://registry.yarnpkg.com/svelte-preprocess/-/svelte-preprocess-4.9.5.tgz#e11bdf3fcdacbd90188cdf29a7371030991f9eba"
-  integrity sha512-RbJbtuwKbuZq9RyzlljZUmmFNaojrg/zUEyDrS8io7haTcuITQmE4NERx8qiqHreApo6cQst5Qtp4MxUwr58Ew==
+  version "4.9.7"
+  resolved "https://registry.yarnpkg.com/svelte-preprocess/-/svelte-preprocess-4.9.7.tgz#80610768e6094361cc20e29fc963f3f4f1c5b181"
+  integrity sha512-jPiizMqGTp4X3Hv00qTPbGH2r5khuqNazzlqSXZNJKo44nLVQYMyDYM1rOq3MRrzCs5Xk3J48k67u8c6fGBsvQ==
   dependencies:
     "@types/pug" "^2.0.4"
     "@types/sass" "^1.16.0"
@@ -500,10 +500,10 @@ svelte-preprocess@^4.7.3:
     sorcery "^0.10.0"
     strip-indent "^3.0.0"
 
-svelte@^3.43.0:
-  version "3.43.0"
-  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.43.0.tgz#d28d06ec523bf0cea3de15558a3241c339a85762"
-  integrity sha512-T2pMPHrxXp+SM8pLLUXLQgkdo+JhTls7aqj9cD7z8wT2ccP+OrCAmtQS7h6pvMjitaZhXFNnCK582NxDpy8HSw==
+svelte@^3.43.1:
+  version "3.43.1"
+  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.43.1.tgz#8370c08a970bcc1c118baaa86a38fae82e0a8396"
+  integrity sha512-nvPIaKx4HLzYlSdquISZpgG1Kqr2VAWQjZOt3Iwm3UhbqmA0LnSx4k1YpRMEhjQYW3ZCqQoK8Egto9tv4YewMA==
 
 typescript@^4.2.4:
   version "4.4.3"
@@ -515,10 +515,10 @@ util-deprecate@^1.0.2:
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
 
-vite@^2.5.7:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-2.6.0.tgz#91392de5188257e26fc4c0dd9fb91d7fcad2a72d"
-  integrity sha512-JNUJ0D/Cx4+xLD0BVy+nnUn2CECKMTR9eUKsvw/pfkG+hhVJFzFyCL5PK1eYV1ehNDIgr8Zl3jWjvwLwZWstLA==
+vite@^2.6.0:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-2.6.2.tgz#5bbb4afe1f69ed9d6482e51a0f761f8cfc230e22"
+  integrity sha512-HSIg9U15LOnbD3CUxX364Pdrm7DUjftuBljowGxvkFHgDZU/SKPqApg9t86MX/Qq1VCO7wS+mGJHlfuTF7c0Sg==
   dependencies:
     esbuild "^0.13.2"
     postcss "^8.3.8"
