@@ -5,53 +5,83 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [10.28.0](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.28.0) - 2021-03-24
+## [10.38.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.38.0) - 2021-09-05
+
+**Features**
+
+- upgrade `@carbon/icons` to v10.38 (net +356 icons)
+
+## [10.37.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.37.0) - 2021-09-05
+
+**Features**
+
+- upgrade `@carbon/icons` to v10.37 (no net change)
+
+## [10.36.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.36.0) - 2021-07-22
+
+**Features**
+
+- upgrade `@carbon/icons` to v10.36 (net +570 icons)
+
+**Fixes**
+
+- ignore `a11y-mouse-events-have-key-events` warning
+
+## [10.35.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.35.0) - 2021-07-08
+
+- upgrade `@carbon/icons` to v10.35 (net -20 icons)
+
+## [10.33.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.33.0) - 2021-06-14
+
+- upgrade `@carbon/icons` to v10.33.0 (net +140 icons)
+
+## [10.28.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.28.0) - 2021-03-24
 
 - upgrade `@carbon/icons` to v10.28.0 (net +156 icons)
 
-## [10.27.0](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.27.0) - 2021-03-18
+## [10.27.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.27.0) - 2021-03-18
 
 - Bump `@carbon/icons` to v10.27.0 (no net change)
 - use `SvelteComponentTyped` interface for type definitions
 
-## [10.23.0](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.23.0) - 2021-01-10
+## [10.23.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.23.0) - 2021-01-10
 
 - Bump `@carbon/icons` to 10.23.0 (net +328 icons)
 
-## [10.21.0](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.21.0) - 2020-11-16
+## [10.21.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.21.0) - 2020-11-16
 
 - Bump `@carbon/icons` to 10.21.0 (net +772 icons)
 - Refactor TypeScript definitions to be more concise/performant
 
-## [10.17.0](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.17.0) - 2020-09-04
+## [10.17.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.17.0) - 2020-09-04
 
 - Bump `@carbon/icons` to 10.17.0 (+216 icons)
 - Use new Svelte component events interface in TypeScript definitions
 
-## [10.15.0](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.15.0) - 2020-08-09
+## [10.15.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.15.0) - 2020-08-09
 
 - Fix TypeScript definitions to stub the `on:event` directive
 - Bump `@carbon/icons` build dependency to 10.15.0
 
-## [10.14.1](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.14.1) - 2020-07-24
+## [10.14.1](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.14.1) - 2020-07-24
 
 - Add TypeScript definitions for module imports
 
-## [10.14.0](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.14.0) - 2020-07-20
+## [10.14.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.14.0) - 2020-07-20
 
 - Bump `@carbon/icons` build dependency to 10.14.0 (348 icons)
 
-## [10.13.0](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.13.0) - 2020-06-20
+## [10.13.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.13.0) - 2020-06-20
 
 - Bump `@carbon/icons` build dependency to 10.13.0
 
-## [10.12.0](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.12.0) - 2020-06-08
+## [10.12.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.12.0) - 2020-06-08
 
 - Bump `@carbon/icons` build dependency to 10.12.0 (468 new icons)
 
 - Add new default SVG attribute `fill="currentColor"` which can still be overridden using the style attribute (e.g. `<CarbonIcon style="fill: red" />`)
 
-## [10.10.2](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.10.2) - 2020-05-02
+## [10.10.2](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.10.2) - 2020-05-02
 
 - Bump `@carbon/icons` build dependency to 10.10.2
 
@@ -59,11 +89,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Replace `tape` with Node.js `assert`
 
-## [10.10.1](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.10.1) - 2020-04-21
+## [10.10.1](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.10.1) - 2020-04-21
 
 - Remove `engines` field from package.json because node version >=12 is only required for development, not consumption
 
-## [10.10.0](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.10.0) - 2020-04-17
+## [10.10.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.10.0) - 2020-04-17
 
 - Bump `@carbon/icons` build dependency to 10.10.0
 
@@ -75,7 +105,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Build and run script in Travis CI
 
-## [10.9.3](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.9.3) - 2020-03-27
+## [10.9.3](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.9.3) - 2020-03-27
 
 - Bump `@carbon/icons` build dependency to 10.9.3
 
@@ -83,76 +113,76 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Use `defaultAttributes.preserveAspectRatio` from `@carbon/icon-helpers`
 
-## [10.9.2](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.9.2) - 2020-03-20
+## [10.9.2](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.9.2) - 2020-03-20
 
 - Bump `@carbon/icons` build dependency to 10.9.2
 
-## [10.9.2-rc.0](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.9.2-rc.0) - 2020-03-11
+## [10.9.2-rc.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.9.2-rc.0) - 2020-03-11
 
 - Bump `@carbon/icons` build dependency to 10.9.2-rc.0; skips version 10.9.1 due to breaking change (resolved by [carbon-design-system/carbon/pull/5536](https://github.com/carbon-design-system/carbon/pull/5536))
 
-## [10.9.0-rc.0](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.9.0-rc.0) - 2020-02-12
+## [10.9.0-rc.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.9.0-rc.0) - 2020-02-12
 
 - Bump `@carbon/icons` build dependency to 10.9.0-rc.0
 
-## [10.8.4](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.8.4) - 2020-02-01
+## [10.8.4](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.8.4) - 2020-02-01
 
 - Bump `@carbon/icons` build dependency to 10.8.2
 
-## [10.8.3](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.8.3) - 2020-01-27
+## [10.8.3](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.8.3) - 2020-01-27
 
 - Bump `@carbon/icons` build dependency to 10.8.1
 
 - Update documentation in README to include CodeSandbox examples
 
-## [10.8.2](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.8.2) - 2019-12-30
+## [10.8.2](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.8.2) - 2019-12-30
 
 - Fix focusring bug by removing `on:focus`, `on:blur` events
-  ([#20](https://github.com/IBM/carbon-icons-svelte/issues/20))
+  ([#20](https://github.com/carbon-design-system/carbon-icons-svelte/issues/20))
 
 - Use strict equality check for `tabindex` ('0') to override `focusable` prop
 
-## [10.8.1](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.8.1) - 2019-12-29
+## [10.8.1](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.8.1) - 2019-12-29
 
 - Forward `on:keyup`, `on:keydown`, `on:focus`, `on:blur` events
-  ([#17](https://github.com/IBM/carbon-icons-svelte/issues/17))
+  ([#17](https://github.com/carbon-design-system/carbon-icons-svelte/issues/17))
 
 - Mark constant assignments as reactive
-  ([#18](https://github.com/IBM/carbon-icons-svelte/issues/18))
+  ([#18](https://github.com/carbon-design-system/carbon-icons-svelte/issues/18))
 
-## [10.8.0](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.8.0) - 2019-12-22
+## [10.8.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.8.0) - 2019-12-22
 
 - Upgrade @carbon/icons to 10.8.0
-  ([#11](https://github.com/IBM/carbon-icons-svelte/issues/11))
+  ([#11](https://github.com/carbon-design-system/carbon-icons-svelte/issues/11))
 
 - Support optional `id` prop
-  ([#14](https://github.com/IBM/carbon-icons-svelte/issues/14))
+  ([#14](https://github.com/carbon-design-system/carbon-icons-svelte/issues/14))
 
 - Add data selector to svg element for easier querying
-  ([#15](https://github.com/IBM/carbon-icons-svelte/issues/1))
+  ([#15](https://github.com/carbon-design-system/carbon-icons-svelte/issues/1))
 
-## [10.8.0-rc.0](https://github.com/IBM/carbon-icons-svelte/releases/tag/v10.8.0-rc.0) - 2019-12-14
+## [10.8.0-rc.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v10.8.0-rc.0) - 2019-12-14
 
 - Upgrade @carbon/icons to 10.8.0-rc.0
 
 - Use build-info.json from @carbon/icons to generate library and icon index
-  ([#6](https://github.com/IBM/carbon-icons-svelte/issues/6))
+  ([#6](https://github.com/carbon-design-system/carbon-icons-svelte/issues/6))
 
-## [1.0.1](https://github.com/IBM/carbon-icons-svelte/releases/tag/v1.0.1) - 2019-12-14
+## [1.0.1](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v1.0.1) - 2019-12-14
 
 - Add rollup set-up to examples
-  ([#3](https://github.com/IBM/carbon-icons-svelte/issues/3))
+  ([#3](https://github.com/carbon-design-system/carbon-icons-svelte/issues/3))
 
 - Update documentation for usage, API, forwarded events
-  ([#2](https://github.com/IBM/carbon-icons-svelte/issues/2))
+  ([#2](https://github.com/carbon-design-system/carbon-icons-svelte/issues/2))
 
-## [1.0.0](https://github.com/IBM/carbon-icons-svelte/releases/tag/v1.0.0) - 2019-12-13
+## [1.0.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v1.0.0) - 2019-12-13
 
 - Breaking changes: remove `width`, `height` props, change `focusable` prop from string to boolean
 
 - Use `formatAttributes`, `toString` utilities from `@carbon/icon-helpers`
-  ([#4](https://github.com/IBM/carbon-icons-svelte/issues/4))
+  ([#4](https://github.com/carbon-design-system/carbon-icons-svelte/issues/4))
 
-## [0.1.0](https://github.com/IBM/carbon-icons-svelte/releases/tag/v0.1.0) - 2019-12-13
+## [0.1.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v0.1.0) - 2019-12-13
 
 - Initial release (using `@carbon/icons@10.6.1`, `@carbon/icon-helpers@10.4.0`)

@@ -30,6 +30,7 @@ function template(output: IconOutput) {
   };
 </script>
 
+<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 <svg
   data-carbon-icon="${moduleName}"
   on:click

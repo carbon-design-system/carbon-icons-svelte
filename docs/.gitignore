@@ -1,7 +1,0 @@
-.DS_Store
-/build
-/node_modules
-/public
-yarn-debug.log*
-yarn-error.log*
-build-info.json

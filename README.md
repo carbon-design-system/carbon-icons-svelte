@@ -3,7 +3,6 @@
 [![NPM][npm]][npm-url]
 ![GitHub](https://img.shields.io/github/license/ibm/carbon-icons-svelte?color=262626&style=for-the-badge)
 ![npm downloads to date](https://img.shields.io/npm/dt/carbon-icons-svelte?color=262626&style=for-the-badge)
-[![Build][build]][build-badge]
 
 > [Carbon Design System](https://github.com/carbon-design-system) SVG icons as Svelte components.
 
@@ -11,23 +10,31 @@ This zero dependency icon library builds [Carbon Design System icons](https://ww
 
 Try it in the [Svelte REPL](https://svelte.dev/repl/931e6a3461434622adad0557579c0a29).
 
-## [Preview](https://ibm.github.io/carbon-icons-svelte/) · [Icon Index](ICON_INDEX.md)
+## [Preview](https://carbon-icons-svelte.onrender.com) · [Icon Index](ICON_INDEX.md)
 
-## Install
+## Installation
 
-`carbon-icons-svelte` can be installed using `yarn` or `npm` or `pnpm`.
+**Yarn**
 
-```bash
+```sh
 yarn add -D carbon-icons-svelte
-# OR
+```
+
+**NPM**
+
+```sh
 npm i -D carbon-icons-svelte
-# OR
+```
+
+**pnpm**
+
+```sh
 pnpm i -D carbon-icons-svelte
 ```
 
 ## Usage
 
-Supported icon sizes include `16`, `20`, `24` and `32`. See the [Icon Index](ICON_INDEX.md) for a list of supported icons.
+Supported icon sizes include `16`, `20`, `24`, and `32`. See the [Icon Index](ICON_INDEX.md) for a list of supported icons.
 
 ### Base Import
 
@@ -49,7 +56,7 @@ import Add16 from "carbon-icons-svelte/lib/Add16";
 import Add16 from "carbon-icons-svelte/lib/Add16/Add16.svelte";
 ```
 
-**Note:** Even if using the base import method, an application bundler like Rollup or webpack should [treeshake](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking) unused imports.
+**Note:** Even if using the base import method, application bundlers like Rollup or webpack should [tree shake](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking) unused imports.
 
 #### Import Path Pattern
 
@@ -165,21 +172,15 @@ document.querySelectorAll('[data-carbon-icon="Add16"]');
 
 Svelte version 3.31 or greater is required to use this library with TypeScript.
 
-## Limitations
-
-This library only ships `.svelte` files.
-
-Refer to the [examples](examples) for sample set-ups.
-
-## Examples
-
-- [examples/webpack](examples/webpack) (Try it on [CodeSandbox](https://codesandbox.io/s/github/IBM/carbon-icons-svelte/tree/master/examples/webpack))
-- [examples/rollup](examples/rollup) (Try it on [CodeSandbox](https://codesandbox.io/s/github/IBM/carbon-icons-svelte/tree/master/examples/rollup))
-- [examples/rollup-typescript](examples/rollup-typescript)
-
 ## [Changelog](CHANGELOG.md)
 
 ## [Contributing](CONTRIBUTING.md)
+
+## Deploying
+
+The icon preview is deployed to [Render](https://render.com) as a Static Site. See [render.yaml](render.yaml) for details.
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/carbon-design-system/carbon-icons-svelte)
 
 ## License
 
@@ -187,5 +188,3 @@ Refer to the [examples](examples) for sample set-ups.
 
 [npm]: https://img.shields.io/npm/v/carbon-icons-svelte.svg?color=262626&style=for-the-badge
 [npm-url]: https://npmjs.com/package/carbon-icons-svelte
-[build]: https://img.shields.io/travis/com/ibm/carbon-icons-svelte?color=24a148&style=for-the-badge
-[build-badge]: https://travis-ci.com/ibm/carbon-icons-svelte

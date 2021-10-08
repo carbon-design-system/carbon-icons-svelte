@@ -1,4 +1,6 @@
 <script>
+  export let version = undefined;
+
   import {
     Header,
     HeaderUtilities,
@@ -9,23 +11,23 @@
     HeaderPanelDivider,
     SkipToContent,
   } from "carbon-components-svelte";
-  import LogoGithub20 from "carbon-icons-svelte/lib/LogoGithub20";
+  import { LogoGithub20 } from "carbon-icons-svelte";
 </script>
 
-<Header aria-label="Navigation" href="/carbon-icons-svelte/">
-  <div slot="skip-to-content">
+<Header aria-label="Navigation" href="/">
+  <svelte:fragment slot="skip-to-content">
     <SkipToContent />
-  </div>
+  </svelte:fragment>
 
   <span slot="platform" class="platform-name">
     Carbon Icons Svelte
-    <code>v{window.VERSION}</code>
+    <code title="Version {version}">v{version}</code>
   </span>
 
   <HeaderUtilities>
     <HeaderActionLink
       icon={LogoGithub20}
-      href="https://github.com/IBM/carbon-icons-svelte"
+      href="https://github.com/carbon-design-system/carbon-icons-svelte"
       target="_blank"
     />
     <HeaderAction transition={false}>
@@ -41,6 +43,9 @@
           href="https://github.com/carbon-design-system/carbon-charts/tree/master/packages/svelte"
         >
           Carbon Charts Svelte
+        </HeaderPanelLink>
+        <HeaderPanelLink href="https://github.com/IBM/carbon-preprocess-svelte">
+          Carbon Preprocess Svelte
         </HeaderPanelLink>
         <HeaderPanelDivider>Resources</HeaderPanelDivider>
         <HeaderPanelLink href="https://www.carbondesignsystem.com/">
@@ -67,9 +72,5 @@
     letter-spacing: var(--cds-code-01-letter-spacing);
     line-height: var(--cds-code-01-line-height);
     color: #c6c6c6;
-  }
-
-  :global(.bx--header__menu-toggle) {
-    display: none;
   }
 </style>

@@ -1,34 +1,33 @@
 {
   "name": "carbon-icons-svelte",
-  "version": "10.28.0",
+  "version": "10.38.0",
   "license": "Apache-2.0",
   "description": "Carbon Design System SVG icons as Svelte components",
-  "author": "Eric Liu (https://github.com/metonym)",
   "svelte": "./lib/index.js",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "sideEffects": false,
   "scripts": {
+    "prepack": "tsnd --transpile-only src",
     "test": "tsnd --transpile-only src/*.test.ts",
-    "test:types": "svelte-check --workspace=src",
-    "prepack": "tsnd --transpile-only src"
+    "test:types": "svelte-check --workspace src"
   },
   "devDependencies": {
-    "@carbon/icon-helpers": "^10.15.0",
-    "@carbon/icons": "10.28.0",
-    "@types/carbon__icon-helpers": "^10.7.1",
-    "@types/node": "^14.14.35",
-    "svelte": "^3.35.0",
-    "svelte-check": "^1.3.0",
-    "ts-node-dev": "1.1.6",
-    "typescript": "^4.2.3"
+    "@carbon/icon-helpers": "^10.21.0",
+    "@carbon/icons": "10.38.0",
+    "@types/carbon__icon-helpers": "^10.7.2",
+    "@types/node": "^16.7.10",
+    "svelte": "^3.42.4",
+    "svelte-check": "^2.2.5",
+    "ts-node-dev": "1.1.8",
+    "typescript": "^4.4.2"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ibm/carbon-icons-svelte.git"
+    "url": "https://github.com/carbon-design-system/carbon-icons-svelte.git"
   },
-  "homepage": "https://github.com/ibm/carbon-icons-svelte",
-  "bugs": "https://github.com/ibm/carbon-icons-svelte/issues",
+  "homepage": "https://github.com/carbon-design-system/carbon-icons-svelte",
+  "bugs": "https://github.com/carbon-design-system/carbon-icons-svelte/issues",
   "keywords": [
     "carbon",
     "carbon design system",
@@ -40,5 +39,8 @@
   ],
   "files": [
     "lib"
+  ],
+  "contributors": [
+    "Eric Liu (https://github.com/metonym)"
   ]
 }
