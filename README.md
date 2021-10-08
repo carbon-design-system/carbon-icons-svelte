@@ -14,8 +14,6 @@ Try it in the [Svelte REPL](https://svelte.dev/repl/931e6a3461434622adad0557579c
 
 ## Installation
 
-Install `carbon-icons-svelte` as a development dependency.
-
 **Yarn**
 
 ```sh
@@ -26,6 +24,12 @@ yarn add -D carbon-icons-svelte
 
 ```sh
 npm i -D carbon-icons-svelte
+```
+
+**pnpm**
+
+```sh
+pnpm i -D carbon-icons-svelte
 ```
 
 ## Usage
