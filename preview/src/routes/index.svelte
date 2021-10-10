@@ -22,6 +22,7 @@
     Theme,
   } from "carbon-components-svelte";
   import fuzzy from "fuzzy";
+  import FocusKey from "svelte-focus-key";
   import Header from "$lib/Header.svelte";
 
   const { match } = fuzzy;
@@ -44,13 +45,7 @@
   $: code = `<script>\n  import ${moduleName} from "carbon-icons-svelte/lib/${moduleName}";\n<\/script>\n\n<${moduleName} />`;
 </script>
 
-<svelte:body
-  on:keydown={(e) => {
-    if (e.key === "/" && document.activeElement !== ref) {
-      e.preventDefault();
-      ref.focus();
-    }
-  }} />
+<FocusKey element={ref} />
 
 <Header version={data?.VERSION} />
 

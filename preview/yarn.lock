@@ -483,6 +483,11 @@ strip-indent@^3.0.0:
   dependencies:
     min-indent "^1.0.0"
 
+svelte-focus-key@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/svelte-focus-key/-/svelte-focus-key-0.1.0.tgz#8ef43a8cf357bed96128c5f6d7651b707a99b8ce"
+  integrity sha512-OW9Jc5ER6GUz6QxOJ20X2pnvVJA5ImaRud2rZQXHuMX5ukCFFyC/7xV2jWNlbtNiR7gY6NxNtVYmZxvHAsGetA==
+
 svelte-hmr@^0.14.7:
   version "0.14.7"
   resolved "https://registry.yarnpkg.com/svelte-hmr/-/svelte-hmr-0.14.7.tgz#7fa8261c7b225d9409f0a86f3b9ea5c3ca6f6607"
