@@ -7,7 +7,14 @@ const config = {
   kit: {
     target: "#svelte",
     adapter: adapter(),
-    ssr: false
+    ssr: false,
+    vite: {
+      server: {
+        fs: {
+          allow: [".."],
+        },
+      },
+    },
   },
 };
 
