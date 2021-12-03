@@ -45,7 +45,7 @@
   $: code = `<script>\n  import ${moduleName} from "carbon-icons-svelte/lib/${moduleName}";\n<\/script>\n\n<${moduleName} />`;
 </script>
 
-<FocusKey element={ref} />
+<FocusKey element={ref} selectText />
 
 <Header version={data?.VERSION} />
 

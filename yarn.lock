@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@carbon/icon-helpers/-/icon-helpers-10.21.0.tgz#446223e26afe436455cfffcc4da235e6a23dfe3f"
   integrity sha512-axRNtdg5PAIpPFXGYAHRk2JudHhgHlu/o00BkFlsbMhgsLhEgsUddLZoVjCByBCEPxLwt9CSk048VmcKuJzm7w==
 
-"@carbon/icons@10.38.0":
-  version "10.38.0"
-  resolved "https://registry.yarnpkg.com/@carbon/icons/-/icons-10.38.0.tgz#78a192909a7d1000261728ed5c18869bb2e45ede"
-  integrity sha512-l6LdiWhO5Ye6gaIz8uPsw0phd5vQU43WSVVYTInfx4ihIUP7wCaOtDOQkpEyQKdl0ZOh/k/eRhNt11XvwNPNNg==
+"@carbon/icons@10.44.0":
+  version "10.44.0"
+  resolved "https://registry.yarnpkg.com/@carbon/icons/-/icons-10.44.0.tgz#d6babe0f1e191c73aa6759777117324de79f2030"
+  integrity sha512-nAWRXZ1sXVk+jBhRn2edY94Tz1ISqCg6dygwWDLNQVG0jIvILcwA9lCGwBhYfYQdRglUpj7pmAa1ScDYU4SC4g==
   dependencies:
     svgson "^5.2.1"
 

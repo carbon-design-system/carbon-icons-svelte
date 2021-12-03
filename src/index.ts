@@ -9,7 +9,7 @@ const VERSION = devDependencies["@carbon/icons"];
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
-const rmdir = promisify(fs.rmdir);
+const rm = promisify(fs.rm);
 const mkdir = promisify(fs.mkdir);
 
 (async () => {
@@ -30,7 +30,10 @@ const mkdir = promisify(fs.mkdir);
     .flat()
     .sort();
 
-  await rmdir("lib", { recursive: true });
+  if (fs.existsSync("lib")) {
+    await rm("lib", { recursive: true });
+  }
+  
   await mkdir("lib");
 
   let libExport = "";
