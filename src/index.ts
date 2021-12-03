@@ -30,7 +30,10 @@ const mkdir = promisify(fs.mkdir);
     .flat()
     .sort();
 
-  await rm("lib", { recursive: true });
+  if (fs.existsSync("lib")) {
+    await rm("lib", { recursive: true });
+  }
+  
   await mkdir("lib");
 
   let libExport = "";
