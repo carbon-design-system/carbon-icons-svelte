@@ -3,7 +3,7 @@ import * as fs from "fs";
 import { promisify } from "util";
 import { template, templateSvg } from "./template";
 import { performance } from "perf_hooks";
-import { name, devDependencies } from "../package.json";
+import { name, version as PKG_VERSION, devDependencies } from "../package.json";
 
 const VERSION = devDependencies["@carbon/icons"];
 
@@ -33,7 +33,7 @@ const mkdir = promisify(fs.mkdir);
   if (fs.existsSync("lib")) {
     await rm("lib", { recursive: true });
   }
-  
+
   await mkdir("lib");
 
   let libExport = "";
@@ -165,6 +165,12 @@ ${iconModuleNames.map((moduleName) => `- ${moduleName}`).join("\n")}\n`
 
   await writeFile(
     "preview/build-info.json",
-    JSON.stringify({ VERSION, total, bySize, byModuleName, iconModuleNames })
+    JSON.stringify({
+      VERSION: PKG_VERSION,
+      total,
+      bySize,
+      byModuleName,
+      iconModuleNames,
+    })
   );
 })();
