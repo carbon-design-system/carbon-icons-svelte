@@ -42,5 +42,6 @@
   ],
   "contributors": [
     "Eric Liu (https://github.com/metonym)"
-  ]
+  ],
+  "type": "module"
 }
