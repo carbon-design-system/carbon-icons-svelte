@@ -9,11 +9,11 @@
   "devDependencies": {
     "@sveltejs/adapter-static": "next",
     "@sveltejs/kit": "next",
-    "carbon-components-svelte": "^0.50.2",
+    "carbon-components-svelte": "^0.51.3",
     "carbon-icons-svelte": "^10.44.3",
     "carbon-preprocess-svelte": "^0.6.0",
     "fuzzy": "^0.1.3",
-    "svelte": "^3.44.3",
+    "svelte": "^3.46.2",
     "svelte-focus-key": "^0.2.4"
   }
 }
