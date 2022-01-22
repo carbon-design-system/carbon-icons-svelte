@@ -137,6 +137,10 @@ export declare class CarbonIcon extends SvelteComponentTyped<
         `lib/${moduleName}/index.d.ts`,
         `export { ${moduleName} as default } from "../";\n`
       );
+      await writeFile(
+        `lib/${moduleName}/${moduleName}.svelte.d.ts`,
+        `export { ${moduleName} as default } from "../";\n`
+      );
     }
   });
 
