@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Add16, BookmarkAdd16, BreakingChange16, Beta16 } from "../lib";
   import Icon from "../lib/Accessibility16";
+  import IconSvelte from "../lib/Accessibility16/Accessibility16.svelte";
 
   const icon = new Icon({ target: document.body, props: { focusable: true } });
 
@@ -22,3 +23,5 @@
 <BreakingChange16 />
 
 <svelte:component this={Beta16} />
+
+<IconSvelte title="" />
