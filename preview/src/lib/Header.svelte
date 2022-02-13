@@ -11,7 +11,7 @@
     HeaderPanelDivider,
     SkipToContent,
   } from "carbon-components-svelte";
-  import { LogoGithub20 } from "carbon-icons-svelte";
+  import LogoGithub20 from "../../../lib/LogoGithub20/LogoGithub20.svelte";
 </script>
 
 <Header aria-label="Navigation" href="/">
