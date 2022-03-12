@@ -7,6 +7,5 @@
     "resolveJsonModule": true,
     "strict": true,
     "allowJs": true
-  },
-  "include": ["src", "tests"]
+  }
 }
