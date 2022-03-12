@@ -9,7 +9,7 @@
   "sideEffects": false,
   "scripts": {
     "prepack": "tsnd --transpile-only src",
-    "test": "tsnd --transpile-only src/*.test.ts",
+    "test": "vitest",
     "test:types": "svelte-check --workspace src"
   },
   "devDependencies": {
