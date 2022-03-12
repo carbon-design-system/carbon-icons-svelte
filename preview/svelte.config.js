@@ -6,6 +6,9 @@ const config = {
   preprocess: [optimizeImports()],
   kit: {
     adapter: adapter(),
+    prerender: {
+      default: true,
+    },
     vite: {
       server: {
         fs: {
