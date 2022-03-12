@@ -1,11 +1,10 @@
 {
   "compilerOptions": {
+    "allowJs": true,
+    "esModuleInterop": true,
     "lib": ["esnext", "DOM"],
     "moduleResolution": "node",
-    "outDir": "dist",
     "resolveJsonModule": true,
     "strict": true
-  },
-  "include": ["src"],
-  "exclude": ["src/*.test.ts"]
+  }
 }

@@ -1,6 +1,5 @@
 .DS_Store
 /.vscode
-/dist
 /lib
 /node_modules
 yarn-debug.log*
