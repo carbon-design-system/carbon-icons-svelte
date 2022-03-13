@@ -72,10 +72,10 @@ buffer-crc32@^0.2.5:
   resolved "https://registry.yarnpkg.com/buffer-crc32/-/buffer-crc32-0.2.13.tgz#0d333e3f00eac50aa1454abd30ef8c2a5d9a7242"
   integrity sha1-DTM+PwDqxQqhRUq9MO+MKl2ackI=
 
-carbon-components-svelte@^0.60.0:
-  version "0.60.0"
-  resolved "https://registry.yarnpkg.com/carbon-components-svelte/-/carbon-components-svelte-0.60.0.tgz#b2fe62114c4bee0f24e5a6038cf98df73cc7c6db"
-  integrity sha512-2Ppr5wqiEQpU8NmD9SIsq1P2ci4zekt/0L4YWuCEDN5YwQlfas687jVsHrWjUz3OzyBTej8Wd521ftP7lsXXhQ==
+carbon-components-svelte@^0.61.1:
+  version "0.61.1"
+  resolved "https://registry.yarnpkg.com/carbon-components-svelte/-/carbon-components-svelte-0.61.1.tgz#f1ec652e9936de86e6a88c1febd65cc2f4d01587"
+  integrity sha512-ykKLlBcIap/IYXJdPLiPnsHPWBOEpuzWdQps7Q17Db1EeNUr5S1TFJr0RAYT1gwYJvJokqPbqmfF6Ztz8mHnKQ==
   dependencies:
     flatpickr "4.6.9"
 
