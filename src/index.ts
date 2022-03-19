@@ -37,47 +37,44 @@ const mkdir = promisify(fs.mkdir);
   await mkdir("lib");
 
   let libExport = "";
-  let definitions = `/// <reference types="svelte" />
-import { SvelteComponentTyped } from "svelte";
-  
+  let definitions = `import { SvelteComponentTyped } from "svelte";
 
-
-export interface CarbonIconProps extends svelte.JSX.HTMLAttributes<HTMLElementTagNameMap["svg"]> {
-  /** @type {string} [id] */
+export interface CarbonIconProps {
+  /**
+   * Specify an id.
+   * @default undefined
+   */
   id?: string;
 
-  /** @type {string} [class] */
+  /**
+   * Specify a class.
+   * @default undefined
+   */
   class?: string;
 
-  /** @type {string} [tabindex] */
+  /**
+   * Set to "0" for the icon to be focusable.
+   * @default undefined
+   */
   tabindex?: string;
 
-  /** @type {boolean} [focusable] */
+  /**
+   * Set to \`true\` for the icon to be focusable.
+   * @default false
+   */
   focusable?: boolean;
 
-  /** @type {string} [title] */
+  /**
+   * Set a title for the icon.
+   * @default undefined
+   */
   title?: string;
 
-  /** @type {string} [style] */
+  /**
+   * Set a style for the icon.
+   * @default undefined
+   */
   style?: string;
-
-  /**
-   * Fill color
-   * @type {string} [fill="#161616"]
-   */
-  fill?: string;
-
-  /**
-   * Stroke color
-   * @type {string} [stroke="currentColor"]
-   */
-  stroke?: string;
-
-  /** @type {string} [width="48"] */
-  width?: string;
-
-  /** @type {string} [height="48"] */
-  height?: string;
 }
 
 export interface CarbonIconEvents {
