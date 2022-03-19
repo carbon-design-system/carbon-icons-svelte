@@ -11,7 +11,7 @@
 
 <Add16
   title="Title"
-  fill="red"
+  style="fill: red"
   on:click={(e) => {
     console.log(e);
   }}

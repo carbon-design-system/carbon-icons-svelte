@@ -37,12 +37,9 @@ const mkdir = promisify(fs.mkdir);
   await mkdir("lib");
 
   let libExport = "";
-  let definitions = `/// <reference types="svelte" />
-import { SvelteComponentTyped } from "svelte";
-  
+  let definitions = `import { SvelteComponentTyped } from "svelte";
 
-
-export interface CarbonIconProps extends svelte.JSX.HTMLAttributes<HTMLElementTagNameMap["svg"]> {
+export interface CarbonIconProps {
   /** @type {string} [id] */
   id?: string;
 
@@ -60,24 +57,6 @@ export interface CarbonIconProps extends svelte.JSX.HTMLAttributes<HTMLElementTa
 
   /** @type {string} [style] */
   style?: string;
-
-  /**
-   * Fill color
-   * @type {string} [fill="#161616"]
-   */
-  fill?: string;
-
-  /**
-   * Stroke color
-   * @type {string} [stroke="currentColor"]
-   */
-  stroke?: string;
-
-  /** @type {string} [width="48"] */
-  width?: string;
-
-  /** @type {string} [height="48"] */
-  height?: string;
 }
 
 export interface CarbonIconEvents {
