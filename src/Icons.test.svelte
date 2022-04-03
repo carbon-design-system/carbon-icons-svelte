@@ -1,28 +1,21 @@
 <script lang="ts">
-  import { Add16, BookmarkAdd16, BreakingChange16, Beta16, Assembly16 } from "../lib";
-  import Icon from "../lib/Accessibility16";
-  import IconSvelte from "../lib/Accessibility16/Accessibility16.svelte";
+  import { Add, Assembly, Beta, BookmarkAdd, BreakingChange } from "../lib";
+  import type { CarbonIconProps } from "../lib";
+  import Icon from "../lib/Accessibility.svelte";
 
-  const icon = new Icon({ target: document.body, props: { focusable: true } });
+  const props: CarbonIconProps = {
+    size: 32,
+    fill: "red",
+  };
+
+  const icon = new Icon({ target: document.body, props });
 
   $: console.log(icon.$$prop_def);
-  $: console.log(typeof Assembly16);
+  $: console.log(typeof Assembly);
 </script>
 
-<Add16
-  title="Title"
-  style="fill: red"
-  on:click={(e) => {
-    console.log(e);
-  }}
-/>
-
-<Icon title="Title" />
-
-<BookmarkAdd16 />
-
-<BreakingChange16 />
-
-<svelte:component this={Beta16} />
-
-<IconSvelte title="" />
+<Add size={20} fill="red" title="title" />
+<Icon />
+<BookmarkAdd />
+<BreakingChange />
+<svelte:component this={Beta} />

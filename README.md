@@ -14,57 +14,79 @@ Try it in the [Svelte REPL](https://svelte.dev/repl/931e6a3461434622adad0557579c
 
 ## Installation
 
+Install `carbon-icons-svelte` as a development dependency.
+
 **Yarn**
 
 ```sh
+# Yarn
 yarn add -D carbon-icons-svelte
-```
 
-**NPM**
-
-```sh
+# npm
 npm i -D carbon-icons-svelte
-```
 
-**pnpm**
-
-```sh
+# pnpm
 pnpm i -D carbon-icons-svelte
 ```
 
 ## Usage
 
-Supported icon sizes include `16`, `20`, `24`, and `32`. See the [Icon Index](ICON_INDEX.md) for a list of supported icons.
+### Basic
 
-### Base Import
+Import the icon from the `carbon-icons-svelte/lib` folder. See the [Icon Index](ICON_INDEX.md) for a list of supported icons.
 
 ```svelte
 <script>
-  import { Add16 } from "carbon-icons-svelte";
+  import Add from "carbon-icons-svelte/lib/Add.svelte";
 </script>
 
-<Add16 />
+<Add />
 ```
 
-### Direct Import (recommended)
+### Custom size
 
-Import icons directly for faster compiling.
+Use the `size` prop to specify the icon size.
 
-```js
-import Add16 from "carbon-icons-svelte/lib/Add16";
-// OR
-import Add16 from "carbon-icons-svelte/lib/Add16/Add16.svelte";
+Supported icon sizes include `16`, `20`, `24`, and `32`.
+
+The default size is `16`.
+
+```svelte
+<Add size={16} />
+<Add size={20} />
+<Add size={24} />
+<Add size={32} />
 ```
 
-**Note:** Even if using the base import method, application bundlers like Rollup or webpack should [tree shake](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking) unused imports.
+### Custom props
 
-#### Import Path Pattern
+`$$restProps` are forwarded to the `svg` element.
 
-```js
-import Icon from "carbon-icons-svelte/lib/<ModuleName>";
+You can use `fill` to customize the color or pass any other valid `svg` attribute to the component.
+
+```svelte
+<Add fill="red" class="icon" />
 ```
 
-Refer to the [Icon Index](ICON_INDEX.md) for a list of all icons by module name.
+### Labelled
+
+```svelte
+<Add aria-label="Add" />
+```
+
+### Labelled icon that is focusable
+
+```svelte
+<Add aria-label="Add" tabindex="0" />
+```
+
+### Labelled by
+
+```svelte
+<label id="add-file">Add file</label>
+
+<Add aria-labelledby="add-file" />
+```
 
 ## API
 
@@ -72,105 +94,10 @@ Refer to the [Icon Index](ICON_INDEX.md) for a list of all icons by module name.
 
 All props are optional.
 
-| Name            | Value                        |
-| :-------------- | :--------------------------- |
-| id              | `string`                     |
-| aria-label      | `string`                     |
-| aria-labelledby | `string`                     |
-| tabindex        | `string`                     |
-| title           | `string`                     |
-| focusable       | `boolean` (default: `false`) |
-| class           | `string`                     |
-| style           | `string`                     |
-
-#### `title` as a Slot
-
-`title` can be passed as a prop or through the slot as an element.
-
-```svelte
-<Add16 title="Add" />
-<!-- OR -->
-<Add16>
-  <title>Add</title>
-</Add16>
-```
-
-### Forwarded Events
-
-Event directives are forwarded directly to the SVG element.
-
-```svelte
-<Add16
-  on:click="{() => {}}"
-  on:mouseenter="{() => {}}"
-  on:mouseover="{() => {}}"
-  on:mouseleave="{() => {}}"
-  on:keyup="{() => {}}"
-  on:keydown="{() => {}}"
-/>
-```
-
-### `data-carbon-icon` selector
-
-Each icon embeds its module name in the `data-carbon-icon` selector for easier querying. This may be useful for automated testing in a headless browser.
-
-```html
-<svg data-carbon-icon="Add16">...</svg>
-```
-
-```js
-// selects all carbon icons
-document.querySelectorAll("[data-carbon-icon]");
-
-// selects all `Add16` icons
-document.querySelectorAll('[data-carbon-icon="Add16"]');
-```
-
-## Recipes
-
-### Custom Fill Color
-
-#### Using `class`
-
-```svelte
-<style>
-  :global(svg.custom-class) {
-    fill: blue;
-  }
-</style>
-
-<Add16 class="custom-class" />
-```
-
-#### Using `style`
-
-```svelte
-<Add16 style="fill: blue" />
-```
-
-### Labelled
-
-```svelte
-<Add16 aria-label="Add" />
-```
-
-### Labelled with Focus
-
-```svelte
-<Add16 aria-label="Add" tabindex="0" />
-```
-
-### Labelled by
-
-```svelte
-<label id="addFile">Add file</label>
-
-<Add16 aria-labelledby="addFile" />
-```
-
-## TypeScript support
-
-Svelte version 3.31 or greater is required to use this library with TypeScript.
+| Name  | Type                                          | Default value |
+| :---- | :-------------------------------------------- | :------------ |
+| size  | <code>16 &#124; 20 &#124; 24 &#124; 32</code> | `16`          |
+| title | `string`                                      | `undefined`   |
 
 ## [Changelog](CHANGELOG.md)
 

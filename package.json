@@ -13,16 +13,16 @@
     "test:types": "svelte-check --workspace src"
   },
   "devDependencies": {
-    "@carbon/icon-helpers": "^10.28.0",
-    "@carbon/icons": "10.48.0",
-    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.39",
+    "@carbon/icon-helpers": "^10.29.0",
+    "@carbon/icons": "11.0.1",
+    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.40",
     "@types/carbon__icon-helpers": "^10.7.2",
-    "@types/node": "^17.0.21",
-    "svelte": "^3.46.4",
-    "svelte-check": "^2.4.5",
+    "@types/node": "^17.0.23",
+    "svelte": "^3.46.6",
+    "svelte-check": "^2.4.6",
     "ts-node-dev": "1.1.8",
-    "typescript": "^4.4.2",
-    "vitest": "^0.6.0"
+    "typescript": "^4.6.3",
+    "vitest": "^0.8.4"
   },
   "repository": {
     "type": "git",

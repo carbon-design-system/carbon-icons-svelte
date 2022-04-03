@@ -1,15 +1,6 @@
-<script context="module">
-  import buildInfo from "../../build-info.json";
-
-  export function load() {
-    return { props: { data: buildInfo } };
-  }
-</script>
-
 <script>
   /** @type {{ VERSION?: string; iconModuleNames?: string[]; byModuleName: Record<string, string>; bySize?: { order: string[]; sizes: Record<string, string>; }; total?: number; }} */
-  export let data = {};
-
+  import data from "../../build-info.json";
   import "carbon-components-svelte/css/all.css";
   import {
     Search,
@@ -30,7 +21,7 @@
   let ref = null;
   let value = "";
 
-  $: filteredModuleNames = data?.iconModuleNames.filter((name) =>
+  $: filteredModuleNames = data.iconModuleNames.filter((name) =>
     match(value, name)
   );
 
@@ -42,12 +33,12 @@
 
   let moduleName = null;
 
-  $: code = `<script>\n  import ${moduleName} from "carbon-icons-svelte/lib/${moduleName}";\n<\/script>\n\n<${moduleName} />`;
+  $: code = `<script>\n  import ${moduleName} from "carbon-icons-svelte/lib/${moduleName}.svelte";\n<\/script>\n\n<${moduleName} />`;
 </script>
 
 <FocusKey element={ref} selectText />
 
-<Header version={data?.VERSION} />
+<Header version={data.VERSION} />
 
 <Modal
   passiveModal
@@ -58,7 +49,7 @@
   }}
 >
   <div style="margin-bottom: var(--cds-spacing-06);">
-    {@html data?.byModuleName[moduleName]}
+    {@html data.byModuleName[moduleName]}
   </div>
   <CodeSnippet light type="multi" {code} />
 </Modal>
@@ -96,30 +87,30 @@
 
     <Row>
       <Column>
-        <span class="text-02"
-          >Showing
+        <span class="text-02">
+          Showing
           {filteredModuleNames.length.toLocaleString()}
           of
-          {data?.total.toLocaleString()}
-          icons</span
-        >
+          {data.total.toLocaleString()}
+          icons
+        </span>
       </Column>
     </Row>
     <Row>
       <Column>
-        {#each data?.bySize.order as size}
+        {#each data.bySize.order as size (size)}
           <div class="divider" role="separator">
-            <h4>{size}{size !== "glyph" ? "px" : ""}</h4>
+            <h4>{size}</h4>
           </div>
           <div style="margin-bottom: var(--cds-spacing-09)">
-            {#each data?.bySize.sizes[size] as _moduleName}
-              {#if filteredModuleNames.includes(_moduleName)}
+            {#each data.bySize.sizes[size] as name (name)}
+              {#if filteredModuleNames.includes(name)}
                 <button
                   type="button"
-                  title={_moduleName}
-                  on:click={() => (moduleName = _moduleName)}
+                  title={name}
+                  on:click={() => (moduleName = name)}
                 >
-                  {@html data?.byModuleName[_moduleName]}
+                  {@html data.byModuleName[name]}
                 </button>
               {/if}
             {/each}
@@ -155,6 +146,10 @@
     margin-bottom: var(--cds-spacing-04);
     padding-bottom: var(--cds-spacing-04);
     border-bottom: 1px solid var(--cds-ui-03);
+  }
+
+  :global(body) {
+    overflow-y: scroll;
   }
 
   :global(#select-theme) {

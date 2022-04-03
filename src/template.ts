@@ -1,67 +1,46 @@
-import {
-  formatAttributes,
-  toString,
-  defaultAttributes,
-} from "@carbon/icon-helpers";
-import { IconOutput } from "@carbon/icons";
+import { toString, formatAttributes } from "@carbon/icon-helpers";
+import type { IconOutput } from "@carbon/icons";
 
-function template(output: IconOutput) {
-  const { moduleName, descriptor } = output;
+export const template = ({ descriptor }: IconOutput) => `<script>
+  export let size = 16;
 
-  return `<script>
-  let className = undefined;
-  export { className as class };
-  export let id = undefined;
-  export let tabindex = undefined;
-  export let focusable = ${defaultAttributes.focusable};
   export let title = undefined;
-  export let style = undefined;
 
-  $: ariaLabel = $$props['aria-label'];
-  $: ariaLabelledBy = $$props['aria-labelledby'];
-  $: labelled = ariaLabel || ariaLabelledBy || title;
+  $: labelled = $$props["aria-label"] || $$props["aria-labelledby"] || title;
   $: attributes = {
-    'aria-label': ariaLabel,
-    'aria-labelledby': ariaLabelledBy,
-    'aria-hidden': labelled ? undefined : true,
-    role: labelled ? 'img' : undefined,
-    focusable: tabindex === '0' ? true : focusable,
-    tabindex
+    "aria-hidden": labelled ? undefined : true,
+    role: labelled ? "img" : undefined,
+    focusable: Number($$props["tabindex"]) === 0 ? true : undefined
   };
 </script>
 
-<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 <svg
-  data-carbon-icon="${moduleName}"
-  on:click
-  on:mouseover
-  on:mouseenter
-  on:mouseleave
-  on:keyup
-  on:keydown
-  ${formatAttributes(descriptor.attrs)}
-  class={className}
-  preserveAspectRatio="${defaultAttributes.preserveAspectRatio}"
-  {style}
-  {id}
-  {...attributes}>
-  ${descriptor.content.map((element) => toString(element)).join("")}
-  <slot>
-    {#if title}
-      <title>{title}</title>
-    {/if}
-  </slot>
-</svg>`;
-}
-
-function templateSvg(output: IconOutput) {
-  const { moduleName, descriptor } = output;
-
-  return `<svg data-svg-carbon-icon="${moduleName}"
-  ${formatAttributes(descriptor.attrs)}
-  preserveAspectRatio="${defaultAttributes.preserveAspectRatio}">
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 32 32"
+  fill="currentColor"
+  preserveAspectRatio="xMidYMid meet"
+  width={size}
+  height={size}
+  {...attributes}
+  {...$$restProps}>
+  {#if title}<title>{title}</title>{/if}
   ${descriptor.content.map((element) => toString(element)).join("")}
 </svg>`;
-}
 
-export { template, templateSvg };
+export const templateSvg = ({ moduleName, descriptor }: IconOutput) => {
+  const isGlyph = /Glyph$/.test(moduleName);
+  const { width, height, ...rest } = descriptor.attrs;
+
+  let attrs = formatAttributes(
+    isGlyph ? descriptor.attrs : { ...rest, width: 16, height: 16 }
+  );
+
+  return `<svg
+  data-svg-carbon-icon="${moduleName}"
+  xmlns="http://www.w3.org/2000/svg"
+  ${attrs}
+  fill="currentColor"
+  preserveAspectRatio="xMidYMid meet">
+  ${descriptor.content.map((element) => toString(element)).join("")}
+</svg>`;
+};
