@@ -1,17 +1,11 @@
-import type BuildIcons, { IconOutput, ModuleName } from "@carbon/icons";
-import * as fs from "fs";
-import { promisify } from "util";
-import { template, templateSvg } from "./template";
+import fsp from "fs/promises";
 import { performance } from "perf_hooks";
-import { name, version as PKG_VERSION, devDependencies } from "../package.json";
 import metadata from "@carbon/icons/metadata.json";
+import type { BuildIcons, IconOutput, ModuleName } from "@carbon/icons";
+import { template, templateSvg } from "./template";
+import { name, version as PKG_VERSION, devDependencies } from "../package.json";
 
 const VERSION = devDependencies["@carbon/icons"];
-
-const readFile = promisify(fs.readFile);
-const writeFile = promisify(fs.writeFile);
-const rm = promisify(fs.rm);
-const mkdir = promisify(fs.mkdir);
 
 (async () => {
   const start = performance.now();
@@ -33,10 +27,10 @@ const mkdir = promisify(fs.mkdir);
     )
     .flat()
     .filter(Boolean)
-    .sort();
+    .sort() as string[];
 
-  if (fs.existsSync("lib")) await rm("lib", { recursive: true });
-  await mkdir("lib");
+  await fsp.rm("lib", { recursive: true, force: true });
+  await fsp.mkdir("lib");
 
   let libExport = "";
   let definitions = `/// <reference types="svelte" />
@@ -48,6 +42,12 @@ export interface CarbonIconProps extends svelte.JSX.SVGAttributes<SVGSVGElement>
    * @default 16
    */
   size?: 16 | 20 | 24 | 32;
+
+  /**
+   * Specify the icon title.
+   * @default undefined
+   */
+  title?: string;
 }
 
 export declare class CarbonIcon extends SvelteComponentTyped<
@@ -76,7 +76,7 @@ export declare class CarbonIcon extends SvelteComponentTyped<
   iconModuleNames.forEach((moduleName) => {
     let name = moduleName;
 
-    const icon = iconMap.get(name);
+    const icon = iconMap.get(name)!;
 
     if (/Glyph$/.test(name)) {
       name = moduleName.replace(/Glyph$/, "");
@@ -91,17 +91,20 @@ export declare class CarbonIcon extends SvelteComponentTyped<
 
     const fileName = `lib/${name}.svelte`;
 
-    writeFile(fileName, template(icon));
-    writeFile(fileName + ".d.ts", `export { ${name} as default } from "./";\n`);
+    fsp.writeFile(fileName, template(icon));
+    fsp.writeFile(
+      fileName + ".d.ts",
+      `export { ${name} as default } from "./";\n`
+    );
   });
 
-  writeFile("lib/index.js", libExport);
+  fsp.writeFile("lib/index.js", libExport);
 
   const version = `[@carbon/icons@${VERSION}](https://unpkg.com/browse/@carbon/icons@${VERSION}/)`;
   const total = iconModuleNames.length;
   const packageMetadata = `${total} icons from @carbon/icons@${devDependencies["@carbon/icons"]}`;
 
-  writeFile(
+  fsp.writeFile(
     "lib/index.d.ts",
     `// Type definitions for ${name}
 // ${packageMetadata}
@@ -112,14 +115,14 @@ ${definitions}`
   const bench = (performance.now() - start) / 1000;
   console.log(`Built ${total} icons in ${bench.toFixed(2)}s.`);
 
-  writeFile(
+  fsp.writeFile(
     "ICON_INDEX.md",
     `# Icon Index\n
 > ${total} icons from ${version}\n
 ${iconModuleNames.map((moduleName) => `- ${moduleName}`).join("\n")}\n`
   );
 
-  writeFile(
+  fsp.writeFile(
     "preview/build-info.json",
     JSON.stringify({
       VERSION: PKG_VERSION,

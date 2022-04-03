@@ -4,7 +4,9 @@ import type { IconOutput } from "@carbon/icons";
 export const template = ({ descriptor }: IconOutput) => `<script>
   export let size = 16;
 
-  $: labelled = $$props["aria-label"] || $$props["aria-labelledby"] || $$props["title"];
+  export let title = undefined;
+
+  $: labelled = $$props["aria-label"] || $$props["aria-labelledby"] || title;
   $: attributes = {
     "aria-hidden": labelled ? undefined : true,
     role: labelled ? "img" : undefined,
@@ -21,6 +23,7 @@ export const template = ({ descriptor }: IconOutput) => `<script>
   height={size}
   {...attributes}
   {...$$restProps}>
+  {#if title}<title>{title}</title>{/if}
   ${descriptor.content.map((element) => toString(element)).join("")}
 </svg>`;
 

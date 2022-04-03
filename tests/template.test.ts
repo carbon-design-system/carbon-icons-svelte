@@ -33,7 +33,9 @@ test("template", () => {
     "<script>
       export let size = 16;
     
-      \$: labelled = \$\$props[\\"aria-label\\"] || \$\$props[\\"aria-labelledby\\"] || \$\$props[\\"title\\"];
+      export let title = undefined;
+    
+      \$: labelled = \$\$props[\\"aria-label\\"] || \$\$props[\\"aria-labelledby\\"] || title;
       \$: attributes = {
         \\"aria-hidden\\": labelled ? undefined : true,
         role: labelled ? \\"img\\" : undefined,
@@ -50,6 +52,7 @@ test("template", () => {
       height={size}
       {...attributes}
       {...\$\$restProps}>
+      {#if title}<title>{title}</title>{/if}
       <path d=\\"M17 15L17 8 15 8 15 15 8 15 8 17 15 17 15 24 17 24 17 17 24 17 24 15z\\"></path>
     </svg>"
   `);

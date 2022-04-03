@@ -20,7 +20,7 @@ declare module "@carbon/icons" {
     size: number;
   }
 
-  type BuildIcons = {
+  export interface BuildIcons {
     icons: ReadonlyArray<{
       name: string;
       friendlyName: string;
@@ -39,7 +39,5 @@ declare module "@carbon/icons" {
       output: IconOutput[];
       category: string;
     }>;
-  };
-
-  export default BuildIcons;
+  }
 }
