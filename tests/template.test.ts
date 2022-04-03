@@ -31,48 +31,26 @@ const icon: IconOutput = {
 test("template", () => {
   expect(template(icon)).toMatchInlineSnapshot(`
     "<script>
-      let className = undefined;
-      export { className as class };
-      export let id = undefined;
-      export let tabindex = undefined;
-      export let focusable = false;
-      export let title = undefined;
-      export let style = undefined;
+      export let size = 16;
     
-      \$: ariaLabel = \$\$props['aria-label'];
-      \$: ariaLabelledBy = \$\$props['aria-labelledby'];
-      \$: labelled = ariaLabel || ariaLabelledBy || title;
+      \$: labelled = \$\$props[\\"aria-label\\"] || \$\$props[\\"aria-labelledby\\"] || \$\$props[\\"title\\"];
       \$: attributes = {
-        'aria-label': ariaLabel,
-        'aria-labelledby': ariaLabelledBy,
-        'aria-hidden': labelled ? undefined : true,
-        role: labelled ? 'img' : undefined,
-        focusable: tabindex === '0' ? true : focusable,
-        tabindex
+        \\"aria-hidden\\": labelled ? undefined : true,
+        role: labelled ? \\"img\\" : undefined,
+        focusable: Number(\$\$props[\\"tabindex\\"]) === 0 ? true : undefined
       };
     </script>
     
-    <!-- svelte-ignore a11y-mouse-events-have-key-events -->
     <svg
-      data-carbon-icon=\\"Add32\\"
-      on:click
-      on:mouseover
-      on:mouseenter
-      on:mouseleave
-      on:keyup
-      on:keydown
-      xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 32 32\\" fill=\\"currentColor\\" width=\\"32\\" height=\\"32\\"
-      class={className}
+      xmlns=\\"http://www.w3.org/2000/svg\\"
+      viewBox=\\"0 0 32 32\\"
+      fill=\\"currentColor\\"
       preserveAspectRatio=\\"xMidYMid meet\\"
-      {style}
-      {id}
-      {...attributes}>
+      width={size}
+      height={size}
+      {...attributes}
+      {...\$\$restProps}>
       <path d=\\"M17 15L17 8 15 8 15 15 8 15 8 17 15 17 15 24 17 24 17 17 24 17 24 15z\\"></path>
-      <slot>
-        {#if title}
-          <title>{title}</title>
-        {/if}
-      </slot>
     </svg>"
   `);
 });

@@ -101,12 +101,12 @@ Event directives are forwarded directly to the SVG element.
 
 ```svelte
 <Add16
-  on:click="{() => {}}"
-  on:mouseenter="{() => {}}"
-  on:mouseover="{() => {}}"
-  on:mouseleave="{() => {}}"
-  on:keyup="{() => {}}"
-  on:keydown="{() => {}}"
+  on:click={() => {}}
+  on:mouseenter={() => {}}
+  on:mouseover={() => {}}
+  on:mouseleave={() => {}}
+  on:keyup={() => {}}
+  on:keydown={() => {}}
 />
 ```
 
@@ -133,13 +133,13 @@ document.querySelectorAll('[data-carbon-icon="Add16"]');
 #### Using `class`
 
 ```svelte
+<Add16 class="custom-class" />
+
 <style>
   :global(svg.custom-class) {
     fill: blue;
   }
 </style>
-
-<Add16 class="custom-class" />
 ```
 
 #### Using `style`

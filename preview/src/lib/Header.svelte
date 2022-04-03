@@ -11,7 +11,7 @@
     HeaderPanelDivider,
     SkipToContent,
   } from "carbon-components-svelte";
-  import LogoGithub20 from "../../../lib/LogoGithub20/LogoGithub20.svelte";
+  import LogoGithub from "../../../lib/LogoGithub.svelte";
 </script>
 
 <Header aria-label="Navigation" href="/">
@@ -26,10 +26,11 @@
 
   <HeaderUtilities>
     <HeaderActionLink
-      icon={LogoGithub20}
       href="https://github.com/carbon-design-system/carbon-icons-svelte"
       target="_blank"
-    />
+    >
+      <LogoGithub slot="icon" size={20} />
+    </HeaderActionLink>
     <HeaderAction transition={false}>
       <HeaderPanelLinks>
         <HeaderPanelDivider>Carbon Svelte portfolio</HeaderPanelDivider>
