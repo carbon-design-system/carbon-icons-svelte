@@ -1,8 +1,6 @@
 .DS_Store
+.svelte-kit
 .vscode
 lib
 node_modules
 build
-.svelte-kit
-yarn-debug.log*
-yarn-error.log*
