@@ -73,6 +73,8 @@ export declare class CarbonIcon extends SvelteComponentTyped<
     },
   };
 
+  let names = new Set();
+
   iconModuleNames.forEach((moduleName) => {
     let name = moduleName;
 
@@ -84,6 +86,9 @@ export declare class CarbonIcon extends SvelteComponentTyped<
     } else {
       bySize.sizes.icon.push(name);
     }
+
+    if (names.has(name)) return;
+    names.add(name);
 
     byModuleName[name] = templateSvg(icon);
     libExport += `export { default as ${name} } from "./${name}.svelte";\n`;
