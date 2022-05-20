@@ -28,7 +28,7 @@
   );
 
   let theme = "white";
-  let previewSize = 16;
+  let iconSize = 16;
 
   $: if (typeof document !== "undefined") {
     document.documentElement.setAttribute("theme", theme);
@@ -37,7 +37,7 @@
   let moduleName = null;
 
   $: code = `<script>\n  import ${moduleName} from "carbon-icons-svelte/lib/${moduleName}.svelte";\n<\/script>\n\n<${moduleName}${
-    Number(previewSize) === 16 ? "" : ` size={${previewSize}}`
+    Number(iconSize) === 16 ? "" : ` size={${iconSize}}`
   } />`;
 </script>
 
@@ -53,7 +53,7 @@
     if (!detail.open) moduleName = null;
   }}
 >
-  <div class={`modal-preview preview-size--${previewSize}`}>
+  <div class={`icon-preview icon-size--${iconSize}`}>
     {@html data.byModuleName[moduleName]}
   </div>
   <CodeSnippet light type="multi" {code} />
@@ -75,10 +75,10 @@
             }}
           />
           <Select
-            id="select-preview-size"
-            labelText="Preview size"
+            id="select-icon-size"
+            labelText="Icon size"
             size="xl"
-            bind:selected={previewSize}
+            bind:selected={iconSize}
           >
             <SelectItem value={16}>16</SelectItem>
             <SelectItem value={20}>20</SelectItem>
@@ -118,7 +118,7 @@
           <div class="divider" role="separator">
             <h4>{size}</h4>
           </div>
-          <div class={`list preview-size--${previewSize}`}>
+          <div class={`list icon-size--${iconSize}`}>
             {#each data.bySize.sizes[size] as name (name)}
               {#if filteredModuleNames.includes(name)}
                 <button
@@ -141,7 +141,7 @@
   .options {
     display: grid;
     grid-template-columns: auto auto 1fr;
-    grid-template-areas: "theme preview-size search";
+    grid-template-areas: "theme icon-size search";
     align-items: flex-end;
   }
 
@@ -149,8 +149,8 @@
     grid-area: theme;
   }
 
-  .options :global(#preview-size) {
-    grid-area: preview-size;
+  .options :global(#icon-size) {
+    grid-area: icon-size;
   }
 
   .options :global(.bx--search) {
@@ -161,7 +161,7 @@
   @media screen and (max-width: 672px) {
     .options {
       grid-template-areas:
-        "theme preview-size"
+        "theme icon-size"
         "search search";
       grid-template-columns: 1fr 1fr;
       row-gap: var(--cds-spacing-04);
@@ -191,22 +191,22 @@
     outline-color: var(--cds-interactive-01);
   }
 
-  .preview-size--16 :global(svg) {
+  .icon-size--16 :global(svg) {
     width: 16px;
     height: 16px;
   }
 
-  .preview-size--20 :global(svg) {
+  .icon-size--20 :global(svg) {
     width: 20px;
     height: 20px;
   }
 
-  .preview-size--24 :global(svg) {
+  .icon-size--24 :global(svg) {
     width: 24px;
     height: 24px;
   }
 
-  .preview-size--32 :global(svg) {
+  .icon-size--32 :global(svg) {
     width: 32px;
     height: 32px;
   }
@@ -222,11 +222,11 @@
   }
 
   :global(#select-theme),
-  :global(#select-preview-size) {
+  :global(#select-icon-size) {
     min-width: 4rem;
   }
 
-  :global(#select-preview-size) {
+  :global(#select-icon-size) {
     border-left: 1px solid var(--cds-ui-03);
   }
 
@@ -234,7 +234,7 @@
     color: var(--cds-text-02);
   }
 
-  .modal-preview {
+  .icon-preview {
     margin-bottom: var(--cds-spacing-06);
   }
 </style>
