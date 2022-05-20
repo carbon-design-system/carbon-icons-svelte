@@ -223,7 +223,7 @@
 
   :global(#select-theme),
   :global(#select-preview-size) {
-    min-width: 8rem;
+    min-width: 4rem;
   }
 
   :global(#select-preview-size) {
