@@ -36,7 +36,9 @@
 
   let moduleName = null;
 
-  $: code = `<script>\n  import ${moduleName} from "carbon-icons-svelte/lib/${moduleName}.svelte";\n<\/script>\n\n<${moduleName} />`;
+  $: code = `<script>\n  import ${moduleName} from "carbon-icons-svelte/lib/${moduleName}.svelte";\n<\/script>\n\n<${moduleName}${
+    Number(previewSize) === 16 ? "" : ` size={${previewSize}}`
+  } />`;
 </script>
 
 <FocusKey element={ref} selectText />
