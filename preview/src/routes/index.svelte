@@ -11,6 +11,8 @@
     Column,
     Content,
     Theme,
+    Select,
+    SelectItem,
   } from "carbon-components-svelte";
   import fuzzy from "fuzzy";
   import FocusKey from "svelte-focus-key";
@@ -26,6 +28,7 @@
   );
 
   let theme = "white";
+  let iconSize = 16;
 
   $: if (typeof document !== "undefined") {
     document.documentElement.setAttribute("theme", theme);
@@ -33,7 +36,9 @@
 
   let moduleName = null;
 
-  $: code = `<script>\n  import ${moduleName} from "carbon-icons-svelte/lib/${moduleName}.svelte";\n<\/script>\n\n<${moduleName} />`;
+  $: code = `<script>\n  import ${moduleName} from "carbon-icons-svelte/lib/${moduleName}.svelte";\n<\/script>\n\n<${moduleName}${
+    Number(iconSize) === 16 ? "" : ` size={${iconSize}}`
+  } />`;
 </script>
 
 <FocusKey element={ref} selectText />
@@ -48,7 +53,7 @@
     if (!detail.open) moduleName = null;
   }}
 >
-  <div style="margin-bottom: var(--cds-spacing-06);">
+  <div class={`icon-preview icon-size--${iconSize}`}>
     {@html data.byModuleName[moduleName]}
   </div>
   <CodeSnippet light type="multi" {code} />
@@ -58,7 +63,7 @@
   <Grid padding>
     <Row>
       <Column>
-        <div class="flex">
+        <div class="options">
           <Theme
             bind:theme
             render="select"
@@ -69,8 +74,19 @@
               themes: ["white", "g10", "g80", "g90", "g100"],
             }}
           />
+          <Select
+            id="select-icon-size"
+            labelText="Icon size"
+            size="xl"
+            bind:selected={iconSize}
+          >
+            <SelectItem value={16}>16</SelectItem>
+            <SelectItem value={20}>20</SelectItem>
+            <SelectItem value={24}>24</SelectItem>
+            <SelectItem value={32}>32</SelectItem>
+          </Select>
           <Search
-            style="border-left: 1px solid var(--cds-ui-03);"
+            id="search"
             autocomplete="off"
             autocorrect="off"
             autocapitalize="off"
@@ -102,7 +118,7 @@
           <div class="divider" role="separator">
             <h4>{size}</h4>
           </div>
-          <div style="margin-bottom: var(--cds-spacing-09)">
+          <div class={`list icon-size--${iconSize}`}>
             {#each data.bySize.sizes[size] as name (name)}
               {#if filteredModuleNames.includes(name)}
                 <button
@@ -122,9 +138,42 @@
 </Content>
 
 <style>
-  .flex {
-    display: flex;
+  .options {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    grid-template-areas: "theme icon-size search";
     align-items: flex-end;
+  }
+
+  .options :global(#theme) {
+    grid-area: theme;
+  }
+
+  .options :global(#icon-size) {
+    grid-area: icon-size;
+  }
+
+  .options :global(.bx--search) {
+    grid-area: search;
+    border-left: 1px solid var(--cds-ui-03);
+  }
+
+  @media screen and (max-width: 672px) {
+    .options {
+      grid-template-areas:
+        "theme icon-size"
+        "search search";
+      grid-template-columns: 1fr 1fr;
+      row-gap: var(--cds-spacing-04);
+    }
+
+    .options :global(.bx--search) {
+      border-left: none;
+    }
+  }
+
+  .list {
+    margin-bottom: var(--cds-spacing-09);
   }
 
   button {
@@ -142,6 +191,26 @@
     outline-color: var(--cds-interactive-01);
   }
 
+  .icon-size--16 :global(svg) {
+    width: 16px;
+    height: 16px;
+  }
+
+  .icon-size--20 :global(svg) {
+    width: 20px;
+    height: 20px;
+  }
+
+  .icon-size--24 :global(svg) {
+    width: 24px;
+    height: 24px;
+  }
+
+  .icon-size--32 :global(svg) {
+    width: 32px;
+    height: 32px;
+  }
+
   .divider {
     margin-bottom: var(--cds-spacing-04);
     padding-bottom: var(--cds-spacing-04);
@@ -152,11 +221,20 @@
     overflow-y: scroll;
   }
 
-  :global(#select-theme) {
-    width: 8rem;
+  :global(#select-theme),
+  :global(#select-icon-size) {
+    min-width: 4rem;
+  }
+
+  :global(#select-icon-size) {
+    border-left: 1px solid var(--cds-ui-03);
   }
 
   :global(.text-02) {
     color: var(--cds-text-02);
+  }
+
+  .icon-preview {
+    margin-bottom: var(--cds-spacing-06);
   }
 </style>
