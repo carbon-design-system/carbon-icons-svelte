@@ -1,6 +1,6 @@
 # Icon Index
 
-> 1932 icons from [@carbon/icons@11.0.1](https://unpkg.com/browse/@carbon/icons@11.0.1/)
+> 1948 icons from [@carbon/icons@11.3.0](https://unpkg.com/browse/@carbon/icons@11.3.0/)
 
 - Accessibility
 - AccessibilityAlt
@@ -160,6 +160,8 @@
 - Calculator
 - CalculatorCheck
 - Calendar
+- CalendarAdd
+- CalendarAddAlt
 - CalendarHeatMap
 - CalendarSettings
 - CalendarTools
@@ -447,9 +449,11 @@
 - DataDefinition
 - DataDiode
 - DataEnrichment
+- DataEnrichmentAdd
 - DataError
 - DataFormat
 - DataPlayer
+- DataQualityDefinition
 - DataReference
 - DataRefinery
 - DataRefineryReference
@@ -789,8 +793,10 @@
 - IbmCloudDedicatedHost
 - IbmCloudInternetServices
 - IbmCloudPakApplications
+- IbmCloudPakBusinessAutomation
 - IbmCloudPakData
 - IbmCloudPakIntegration
+- IbmCloudPakMantaAutomatedDataLineage
 - IbmCloudPakMulticloudMgmt
 - IbmCloudPakNetworkAutomation
 - IbmCloudPakSecurity
@@ -802,9 +808,13 @@
 - IbmCloudVpcEndpoints
 - IbmDataReplication
 - IbmMatch_360
+- IbmOpenEnterpriseLanguages
 - IbmSecurity
 - IbmSecurityServices
 - IbmWatsonOrders
+- IbmZCloudModStack
+- IbmZCloudProvisioning
+- IbmZOsPackageManager
 - IceAccretion
 - IceVision
 - IdManagement
@@ -962,6 +972,7 @@
 - LogoInstagram
 - LogoJupyter
 - LogoKeybase
+- LogoKubernetes
 - LogoLinkedin
 - LogoLivestream
 - LogoMedium
@@ -1017,6 +1028,8 @@
 - MicrophoneOff
 - MicrophoneOffFilled
 - Microscope
+- Microservices_1
+- Microservices_2
 - Migrate
 - MigrateAlt
 - Milestone
@@ -1348,6 +1361,7 @@
 - Rss
 - Rule
 - RuleCancelled
+- RuleDataQuality
 - RuleDraft
 - RuleFilled
 - RuleTest
@@ -1399,6 +1413,7 @@
 - ServerProxy
 - ServerTime
 - ServiceDesk
+- ServiceId
 - SessionBorderControl
 - Settings
 - SettingsAdjust
@@ -1912,6 +1927,7 @@
 - WirelessCheckout
 - Wmv
 - WordCloud
+- WorkflowAutomation
 - Workspace
 - WorkspaceImport
 - Worship
