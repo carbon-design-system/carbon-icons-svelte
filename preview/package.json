@@ -9,7 +9,7 @@
   "devDependencies": {
     "@sveltejs/adapter-static": "1.0.0-next.32",
     "@sveltejs/kit": "1.0.0-next.345",
-    "carbon-components-svelte": "^0.64.2",
+    "carbon-components-svelte": "^0.64.3",
     "carbon-preprocess-svelte": "^0.9.0",
     "fuzzy": "^0.1.3",
     "svelte": "^3.48.0",

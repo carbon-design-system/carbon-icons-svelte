@@ -13,6 +13,7 @@
     Theme,
     Select,
     SelectItem,
+    LocalStorage,
   } from "carbon-components-svelte";
   import fuzzy from "fuzzy";
   import FocusKey from "svelte-focus-key";
@@ -66,6 +67,7 @@
         <div class="options">
           <Theme
             bind:theme
+            persist
             render="select"
             select={{
               id: "select-theme",
@@ -74,6 +76,7 @@
               themes: ["white", "g10", "g80", "g90", "g100"],
             }}
           />
+          <LocalStorage key="icon-size" bind:value={iconSize} />
           <Select
             id="select-icon-size"
             labelText="Icon size"
