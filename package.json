@@ -44,8 +44,5 @@
   "contributors": [
     "Eric Liu (https://github.com/metonym)"
   ],
-  "type": "module",
-  "engines": {
-    "node": ">=16.7"
-  }
+  "type": "module"
 }
