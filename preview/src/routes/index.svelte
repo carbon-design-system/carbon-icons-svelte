@@ -38,7 +38,7 @@
   let moduleName = null;
 
   $: code = `<script>\n  import ${moduleName} from "carbon-icons-svelte/lib/${moduleName}.svelte";\n<\/script>\n\n<${moduleName}${
-    Number(iconSize) === 16 ? "" : ` size={${iconSize}}`
+    iconSize === 16 ? "" : ` size={${iconSize}}`
   } />`;
 </script>
 
@@ -83,10 +83,10 @@
             size="xl"
             bind:selected={iconSize}
           >
-            <SelectItem value={16}>16</SelectItem>
-            <SelectItem value={20}>20</SelectItem>
-            <SelectItem value={24}>24</SelectItem>
-            <SelectItem value={32}>32</SelectItem>
+            <SelectItem value={16} />
+            <SelectItem value={20} />
+            <SelectItem value={24} />
+            <SelectItem value={32} />
           </Select>
           <Search
             id="search"
