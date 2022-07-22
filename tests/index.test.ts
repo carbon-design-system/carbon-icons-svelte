@@ -11,7 +11,7 @@ describe("carbon-icons-svelte", () => {
   });
 
   test("imports", () => {
-    expect(icons.length).toMatchInlineSnapshot("1948");
+    expect(icons.length).toMatchInlineSnapshot("1949");
     expect(icons).toMatchSnapshot();
   });
 
