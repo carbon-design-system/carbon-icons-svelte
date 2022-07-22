@@ -792,6 +792,7 @@ exports[`carbon-icons-svelte > imports 2`] = `
   "IbmCloud",
   "IbmCloudDedicatedHost",
   "IbmCloudInternetServices",
+  "IbmCloudKubernetesService",
   "IbmCloudPakApplications",
   "IbmCloudPakBusinessAutomation",
   "IbmCloudPakData",

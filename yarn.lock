@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@carbon/icon-helpers/-/icon-helpers-10.31.0.tgz#6b53d67164ddc8fa6770194821c4082e66de557e"
   integrity sha512-1H7J+mapu1mWS8exIsHuwDMGg0QfCQpz3ho9g/vTGJAhB/s3aPAVBx0yfswB92SLzznriDflSaIHZAi6vshpUg==
 
-"@carbon/icons@11.5.0":
-  version "11.5.0"
-  resolved "https://registry.yarnpkg.com/@carbon/icons/-/icons-11.5.0.tgz#dde7f0093cffea5d9a47b35e23fec74dd5beba98"
-  integrity sha512-2k6TGPsqxQunVsWK6b/zWUQ2tjVFBBxCWRI2shJcgu016XsslMWs+zAa0ASZ7MYxOrhgisDmGvXQDVRU7MF68A==
+"@carbon/icons@11.6.0":
+  version "11.6.0"
+  resolved "https://registry.yarnpkg.com/@carbon/icons/-/icons-11.6.0.tgz#34c9484c3db050e40670a748e5625916b80a199e"
+  integrity sha512-d9X4qJMJY66ICzaD2EmSgNA6W4duJG9ROqs/yEZ/M4lgf9raIIXdrG/dSU9wMy0g10kad+Dx8FPGadzXSFYueQ==
 
 "@rollup/pluginutils@^4.2.1":
   version "4.2.1"
