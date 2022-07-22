@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "allowJs": true,
     "esModuleInterop": true,
     "lib": ["esnext", "DOM"],
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "strict": true
-  }
+  },
+  "include": ["src", "tests"]
 }

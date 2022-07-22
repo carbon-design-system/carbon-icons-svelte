@@ -1,6 +1,6 @@
 .DS_Store
 .svelte-kit
-.vscode
+build-info.json
 lib
 node_modules
 build

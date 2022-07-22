@@ -1948,5 +1948,5 @@
 - ZoomOut
 - ZoomOutArea
 - ZoomReset
-- _4K
-- _4KFilled
+- \_4K
+- \_4KFilled
