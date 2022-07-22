@@ -7,7 +7,7 @@ import { name, version as PKG_VERSION, devDependencies } from "../package.json";
 
 const VERSION = devDependencies["@carbon/icons"];
 
-(async () => {
+export const buildIcons = async () => {
   const start = performance.now();
   const iconMap = new Map<ModuleName, IconOutput>();
   const iconModuleNames = (metadata as BuildIcons).icons
@@ -124,11 +124,13 @@ ${definitions}`
     "ICON_INDEX.md",
     `# Icon Index\n
 > ${total} icons from ${version}\n
-${iconModuleNames.map((moduleName) => `- ${moduleName}`).join("\n")}\n`
+${iconModuleNames
+  .map((moduleName) => `- ${moduleName.replace(/^\_/, "\\_")}`)
+  .join("\n")}\n`
   );
 
   fsp.writeFile(
-    "preview/build-info.json",
+    "preview/src/build-info.json",
     JSON.stringify({
       VERSION: PKG_VERSION,
       total,
@@ -137,4 +139,6 @@ ${iconModuleNames.map((moduleName) => `- ${moduleName}`).join("\n")}\n`
       iconModuleNames,
     })
   );
-})();
+
+  return iconModuleNames;
+};
