@@ -1,6 +1,6 @@
 # Icon Index
 
-> 1948 icons from [@carbon/icons@11.5.0](https://unpkg.com/browse/@carbon/icons@11.5.0/)
+> 1949 icons from [@carbon/icons@11.6.0](https://unpkg.com/browse/@carbon/icons@11.6.0/)
 
 - Accessibility
 - AccessibilityAlt
@@ -792,6 +792,7 @@
 - IbmCloud
 - IbmCloudDedicatedHost
 - IbmCloudInternetServices
+- IbmCloudKubernetesService
 - IbmCloudPakApplications
 - IbmCloudPakBusinessAutomation
 - IbmCloudPakData
