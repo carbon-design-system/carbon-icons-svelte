@@ -15,8 +15,5 @@
     "svelte": "^3.49.0",
     "svelte-focus-key": "^0.3.2",
     "vite": "^3.0.2"
-  },
-  "engines": {
-    "node": ">=16.7"
   }
 }
