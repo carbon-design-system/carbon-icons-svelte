@@ -1,5 +1,4 @@
 import fsp from "fs/promises";
-import { performance } from "perf_hooks";
 import metadata from "@carbon/icons/metadata.json";
 import type { BuildIcons, IconOutput, ModuleName } from "@carbon/icons";
 import { template, templateSvg } from "./template";
@@ -8,7 +7,7 @@ import { name, version as PKG_VERSION, devDependencies } from "../package.json";
 const VERSION = devDependencies["@carbon/icons"];
 
 export const buildIcons = async () => {
-  const start = performance.now();
+  console.time("Built in");
   const iconMap = new Map<ModuleName, IconOutput>();
   const iconModuleNames = (metadata as BuildIcons).icons
     .map((icon) =>
@@ -117,9 +116,6 @@ export declare class CarbonIcon extends SvelteComponentTyped<
 ${definitions}`
   );
 
-  const bench = (performance.now() - start) / 1000;
-  console.log(`Built ${total} icons in ${bench.toFixed(2)}s.`);
-
   fsp.writeFile(
     "ICON_INDEX.md",
     `# Icon Index\n
@@ -139,6 +135,8 @@ ${iconModuleNames
       iconModuleNames,
     })
   );
+
+  console.timeEnd("Built in");
 
   return iconModuleNames;
 };
