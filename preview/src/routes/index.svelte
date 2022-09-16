@@ -20,6 +20,10 @@
   import Header from "$lib/Header.svelte";
 
   const { match } = fuzzy;
+  const sizes = {
+    glyph: "Glyphs",
+    icon: "Icons",
+  };
 
   let ref = null;
   let value = "";
@@ -61,7 +65,7 @@
   <CodeSnippet light type="multi" {code} />
 </Modal>
 
-<Content style="background: none; padding: 0;">
+<Content>
   <Grid padding>
     <Row>
       <Column>
@@ -120,7 +124,7 @@
       <Column>
         {#each data.bySize.order as size (size)}
           <div class="divider" role="separator">
-            <h4>{size}</h4>
+            <h4>{sizes[size]}</h4>
           </div>
           <div class:list={true} class={iconSizeClass}>
             {#each data.bySize.sizes[size] as name (name)}
@@ -142,6 +146,10 @@
 </Content>
 
 <style>
+  :global(.bx--content) {
+    padding: 0;
+  }
+
   .options {
     display: grid;
     grid-template-columns: auto auto 1fr;
