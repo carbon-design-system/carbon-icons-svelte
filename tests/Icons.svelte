@@ -1,5 +1,12 @@
 <script lang="ts">
-  import { Add, Assembly, Beta, BookmarkAdd, BreakingChange } from "../lib";
+  import {
+    Add,
+    Assembly,
+    Beta,
+    BookmarkAdd,
+    BreakingChange,
+    LogoSvelte,
+  } from "../lib";
   import type { CarbonIconProps } from "../lib";
   import Icon from "../lib/Accessibility.svelte";
 
@@ -18,4 +25,5 @@
 <Icon />
 <BookmarkAdd />
 <BreakingChange />
+<LogoSvelte />
 <svelte:component this={Beta} />
