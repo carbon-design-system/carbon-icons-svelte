@@ -40,6 +40,7 @@
   $: code = `<script>\n  import ${moduleName} from "carbon-icons-svelte/lib/${moduleName}.svelte";\n<\/script>\n\n<${moduleName}${
     iconSize === 16 ? "" : ` size={${iconSize}}`
   } />`;
+  $: iconSizeClass = `icon-size--${iconSize}`;
 </script>
 
 <FocusKey element={ref} selectText />
@@ -54,7 +55,7 @@
     if (!detail.open) moduleName = null;
   }}
 >
-  <div class={`icon-preview icon-size--${iconSize}`}>
+  <div class:icon-preview={true} class={iconSizeClass}>
     {@html data.byModuleName[moduleName]}
   </div>
   <CodeSnippet light type="multi" {code} />
@@ -121,7 +122,7 @@
           <div class="divider" role="separator">
             <h4>{size}</h4>
           </div>
-          <div class={`list icon-size--${iconSize}`}>
+          <div class:list={true} class={iconSizeClass}>
             {#each data.bySize.sizes[size] as name (name)}
               {#if filteredModuleNames.includes(name)}
                 <button
