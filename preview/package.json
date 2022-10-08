@@ -7,13 +7,13 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@sveltejs/adapter-static": "1.0.0-next.38",
-    "@sveltejs/kit": "1.0.0-next.401",
-    "carbon-components-svelte": "^0.70.6",
+    "@sveltejs/adapter-static": "1.0.0-next.44",
+    "@sveltejs/kit": "1.0.0-next.511",
+    "carbon-components-svelte": "^0.70.10",
     "carbon-preprocess-svelte": "^0.9.1",
     "fuzzy": "^0.1.3",
     "svelte": "^3.50.1",
     "svelte-focus-key": "^0.3.2",
-    "vite": "^3.1.1"
+    "vite": "^3.1.6"
   }
 }
