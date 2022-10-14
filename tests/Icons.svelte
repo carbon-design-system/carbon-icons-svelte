@@ -6,6 +6,7 @@
     BookmarkAdd,
     BreakingChange,
     LogoSvelte,
+    Plan,
   } from "../lib";
   import type { CarbonIconProps } from "../lib";
   import Icon from "../lib/Accessibility.svelte";
@@ -26,4 +27,5 @@
 <BookmarkAdd />
 <BreakingChange />
 <LogoSvelte />
+<Plan />
 <svelte:component this={Beta} />
