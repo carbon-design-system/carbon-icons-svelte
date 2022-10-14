@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2008 icons from [@carbon/icons@11.8.0](https://unpkg.com/browse/@carbon/icons@11.8.0/)
+> 2012 icons from [@carbon/icons@11.10.0](https://unpkg.com/browse/@carbon/icons@11.10.0/)
 
 - Accessibility
 - AccessibilityAlt
@@ -1276,6 +1276,7 @@
 - PillsSubtract
 - Pin
 - PinFilled
+- Plan
 - Plane
 - PlanePrivate
 - PlaneSea
@@ -1904,6 +1905,9 @@
 - WatsonHealthHoleFilling
 - WatsonHealthHoleFillingCursor
 - WatsonHealthICa_2D
+- WatsonHealthImageAvailabilityLocal
+- WatsonHealthImageAvailabilityRetrieving
+- WatsonHealthImageAvailabilityUnavailable
 - WatsonHealthInteractiveSegmentationCursor
 - WatsonHealthLaunchStudy_1
 - WatsonHealthLaunchStudy_2

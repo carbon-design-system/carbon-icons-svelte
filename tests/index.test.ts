@@ -6,7 +6,7 @@ import { template } from "../src/template";
 describe("carbon-icons-svelte", () => {
   test("imports", async () => {
     const icons = await buildIcons();
-    expect(icons.length).toMatchInlineSnapshot("2008");
+    expect(icons.length).toMatchInlineSnapshot("2012");
     expect(icons).toMatchSnapshot();
   });
 
