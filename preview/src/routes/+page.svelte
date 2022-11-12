@@ -29,7 +29,7 @@
   let value = "";
 
   $: filteredModuleNames = data.iconModuleNames.filter((name) =>
-    match(value, name)
+    match(value.trim().replace(/\s+/g, ""), name)
   );
 
   let theme = "white";
