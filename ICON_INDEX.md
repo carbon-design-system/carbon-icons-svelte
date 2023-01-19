@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2012 icons from [@carbon/icons@11.10.0](https://unpkg.com/browse/@carbon/icons@11.10.0/)
+> 2080 icons from [@carbon/icons@11.16.1](https://unpkg.com/browse/@carbon/icons@11.16.1/)
 
 - Accessibility
 - AccessibilityAlt
@@ -53,6 +53,7 @@
 - App
 - AppConnectivity
 - Apple
+- AppleDash
 - Application
 - ApplicationMobile
 - ApplicationVirtual
@@ -100,6 +101,8 @@
 - Basketball
 - BastionHost
 - Bat
+- BatchJob
+- BatchJobStep
 - BatteryCharging
 - BatteryEmpty
 - BatteryFull
@@ -123,6 +126,8 @@
 - BookmarkFilled
 - Boolean
 - Boot
+- BootVolume
+- BootVolumeAlt
 - BorderBottom
 - BorderFull
 - BorderLeft
@@ -130,6 +135,11 @@
 - BorderRight
 - BorderTop
 - Bot
+- BottlesContainer
+- Bottles_01
+- Bottles_01Dash
+- Bottles_02
+- Bottles_02Dash
 - Box
 - BoxExtraLarge
 - BoxLarge
@@ -176,6 +186,7 @@
 - CarbonAccounting
 - CarbonForIbmDotcom
 - CarbonForIbmProduct
+- CarbonUiBuilder
 - CaretDown
 - CaretDownGlyph
 - CaretLeft
@@ -311,11 +322,17 @@
 - ChooseItem
 - ChoroplethMap
 - CicsCmas
+- CicsDb2Connection
 - CicsExplorer
+- CicsProgram
 - CicsRegion
+- CicsRegionAlt
 - CicsRegionRouting
 - CicsRegionTarget
+- CicsSit
+- CicsSitOverrides
 - CicsSystemGroup
+- CicsTransactionServerZos
 - CicsWuiRegion
 - Cicsplex
 - CircleDash
@@ -377,6 +394,7 @@
 - ConditionWaitPoint
 - Connect
 - ConnectRecursive
+- ConnectReference
 - ConnectSource
 - ConnectTarget
 - ConnectionReceive
@@ -473,6 +491,8 @@
 - DataVis_2
 - DataVis_3
 - DataVis_4
+- DataVolume
+- DataVolumeAlt
 - Data_1
 - Data_2
 - DatabaseDatastax
@@ -484,6 +504,9 @@
 - DatabaseRabbit
 - DatabaseRedis
 - Datastore
+- Db2BufferPool
+- Db2DataSharingGroup
+- Db2Database
 - Debug
 - DecisionTree
 - Delivery
@@ -510,6 +533,7 @@
 - DewPointFilled
 - Diagram
 - DiagramReference
+- DiamondFillGlyph
 - DirectLink
 - DirectionBearRight_01
 - DirectionBearRight_01Filled
@@ -562,6 +586,8 @@
 - DocumentExport
 - DocumentHorizontal
 - DocumentImport
+- DocumentMultiple_01
+- DocumentMultiple_02
 - DocumentPdf
 - DocumentPreliminary
 - DocumentProtected
@@ -590,6 +616,8 @@
 - DrillBack
 - DrillDown
 - DrillThrough
+- Drink_01
+- Drink_02
 - DriverAnalysis
 - Drone
 - DroneDelivery
@@ -632,6 +660,7 @@
 - Events
 - EventsAlt
 - ExamMode
+- ExecutableProgram
 - Exit
 - ExpandAll
 - ExpandCategories
@@ -793,8 +822,11 @@
 - Hurricane
 - HybridNetworking
 - HybridNetworkingAlt
+- IbmBluepay
 - IbmCloud
+- IbmCloudAppId
 - IbmCloudCitrixDaas
+- IbmCloudContinuousDelivery
 - IbmCloudDedicatedHost
 - IbmCloudDirectLink_1Connect
 - IbmCloudDirectLink_1Dedicated
@@ -805,10 +837,13 @@
 - IbmCloudDirectLink_2DedicatedHosting
 - IbmCloudEventNotification
 - IbmCloudEventStreams
+- IbmCloudForEducation
+- IbmCloudHsm
 - IbmCloudHyperProtectCryptoServices
 - IbmCloudHyperProtectDbaas
 - IbmCloudHyperProtectVs
 - IbmCloudInternetServices
+- IbmCloudIpsecVpn
 - IbmCloudKeyProtect
 - IbmCloudKubernetesService
 - IbmCloudLogging
@@ -825,20 +860,28 @@
 - IbmCloudPakSystem
 - IbmCloudPakWatsonAiops
 - IbmCloudPal
+- IbmCloudPrivilegedAccessGateway
 - IbmCloudSecretsManager
 - IbmCloudSecurityComplianceCenter
 - IbmCloudSubnets
 - IbmCloudSysdigSecure
 - IbmCloudTransitGateway
 - IbmCloudVpcEndpoints
+- IbmContentServices
 - IbmDataReplication
 - IbmDatastage
+- IbmDb2
+- IbmDb2Alt
 - IbmMatch_360
 - IbmMq
 - IbmOpenEnterpriseLanguages
 - IbmPowerVs
+- IbmProcessMining
 - IbmSecurity
 - IbmSecurityServices
+- IbmTelehealth
+- IbmTenet
+- IbmToolchain
 - IbmWatsonAssistant
 - IbmWatsonDiscovery
 - IbmWatsonKnowledgeCatalog
@@ -979,8 +1022,10 @@
 - ListBoxes
 - ListBulleted
 - ListChecked
+- ListCheckedMirror
 - ListDropdown
 - ListNumbered
+- ListNumberedMirror
 - LoadBalancerApplication
 - LoadBalancerClassic
 - LoadBalancerGlobal
@@ -1007,6 +1052,7 @@
 - LogicalPartition
 - Login
 - LogoAngular
+- LogoAnsibleCommunity
 - LogoDigg
 - LogoDiscord
 - LogoFacebook
@@ -1029,6 +1075,7 @@
 - LogoQuora
 - LogoRScript
 - LogoReact
+- LogoRedHatAnsible
 - LogoSketch
 - LogoSkype
 - LogoSlack
@@ -1037,6 +1084,7 @@
 - LogoTumblr
 - LogoTwitter
 - LogoVmware
+- LogoVmwareAlt
 - LogoVue
 - LogoWechat
 - LogoXing
@@ -1293,6 +1341,8 @@
 - Police
 - Policy
 - Popup
+- PortInput
+- PortOutput
 - Portfolio
 - Power
 - Ppt
@@ -1362,8 +1412,10 @@
 - Recording
 - RecordingFilled
 - RecordingFilledAlt
+- Recycle
 - Redo
 - RefEvapotranspiration
+- ReferenceArchitecture
 - ReflectHorizontal
 - ReflectVertical
 - Reminder
@@ -1423,6 +1475,7 @@
 - Ruler
 - RulerAlt
 - Run
+- RunMirror
 - SailboatCoastal
 - SailboatOffshore
 - SankeyDiagram
@@ -1446,6 +1499,8 @@
 - Scooter
 - ScooterFront
 - Screen
+- ScreenMap
+- ScreenMapSet
 - ScreenOff
 - Script
 - ScriptReference
@@ -1453,6 +1508,7 @@
 - Search
 - SearchAdvanced
 - SearchLocate
+- SearchLocateMirror
 - Security
 - SecurityServices
 - SelectWindow
@@ -1522,6 +1578,7 @@
 - SkipForwardSolidFilled
 - Sleet
 - Slisor
+- Slm
 - Smell
 - Smoke
 - Snooze
@@ -1582,6 +1639,7 @@
 - Subtract
 - SubtractAlt
 - SummaryKpi
+- SummaryKpiMirror
 - Sun
 - Sunrise
 - Sunset
@@ -1619,6 +1677,7 @@
 - TaskView
 - Taste
 - Taxi
+- TcpIpService
 - Temperature
 - TemperatureCelsius
 - TemperatureCelsiusAlt
@@ -1719,6 +1778,9 @@
 - TrainTicket
 - TrainTime
 - Tram
+- TransformBinary
+- TransformInstructions
+- TransformLanguage
 - Transgender
 - Translate
 - TransmissionLte
@@ -1734,6 +1796,7 @@
 - TropicalStormModelTracks
 - TropicalStormTracks
 - TropicalWarning
+- Tsq
 - Tsunami
 - Tsv
 - TwoFactorAuthentication
@@ -1745,7 +1808,6 @@
 - Umbrella
 - Undefined
 - UndefinedFilled
-- UndefinedGlyph
 - Undo
 - UngroupObjects
 - Unknown
@@ -1783,6 +1845,7 @@
 - UserSettings
 - UserSimulation
 - UserSpeaker
+- UserSponsor
 - UserXRay
 - UvIndex
 - UvIndexAlt
@@ -1971,6 +2034,7 @@
 - Webhook
 - Websheet
 - Wheat
+- WhitePaper
 - Wifi
 - WifiBridge
 - WifiBridgeAlt
@@ -2003,6 +2067,8 @@
 - Xml
 - YAxis
 - ZAxis
+- ZLpar
+- ZSystems
 - Zip
 - ZipReference
 - ZoomArea
@@ -2012,5 +2078,7 @@
 - ZoomOut
 - ZoomOutArea
 - ZoomReset
+- Zos
+- ZosSysplex
 - \_4K
 - \_4KFilled
