@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@carbon/icon-helpers/-/icon-helpers-10.33.0.tgz#6b9e467529c7f950fe87a6f45ae0efdcb9b55a26"
   integrity sha512-cdax+RiemAnrATgxL5zyCsD5CV1rJAVTjORXyKxhKSu9Fw6AFJEovJLR9+QQBbPaj/QNTB4o7mJ3YD15LLlB2w==
 
-"@carbon/icons@11.10.0":
-  version "11.10.0"
-  resolved "https://registry.yarnpkg.com/@carbon/icons/-/icons-11.10.0.tgz#01bd205db95b33e21518a54331f025e944085344"
-  integrity sha512-NUKXGZ5Yi184mvAs9q1sPt0ns2qXOF6dK4DG4mMHq5RgJRjq5diLHIm1t49SIwjF4X8b3KSehmrK7N9H6bf1Zg==
+"@carbon/icons@11.16.1":
+  version "11.16.1"
+  resolved "https://registry.yarnpkg.com/@carbon/icons/-/icons-11.16.1.tgz#9ce1891812eb646874e477ad72b80b48428c8d6d"
+  integrity sha512-rTotfzUulrll8LgnSz2+EfgUgPSSX7lZYQGop2xMcE1lZvdqg13cUb99oD22RVhJd3DJJwkp80lRAVUsIwoUjg==
 
 "@esbuild/android-arm@0.15.10":
   version "0.15.10"
