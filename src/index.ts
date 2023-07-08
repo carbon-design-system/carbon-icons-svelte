@@ -1,8 +1,8 @@
-import fsp from "fs/promises";
-import metadata from "@carbon/icons/metadata.json";
 import type { BuildIcons, IconOutput, ModuleName } from "@carbon/icons";
+import metadata from "@carbon/icons/metadata.json";
+import fsp from "fs/promises";
+import { version as PKG_VERSION, devDependencies, name } from "../package.json";
 import { template, templateSvg } from "./template";
-import { name, version as PKG_VERSION, devDependencies } from "../package.json";
 
 const VERSION = devDependencies["@carbon/icons"];
 
@@ -102,13 +102,13 @@ export declare class CarbonIcon extends SvelteComponentTyped<
     );
   });
 
-  fsp.writeFile("lib/index.js", libExport);
+  await fsp.writeFile("lib/index.js", libExport);
 
   const version = `[@carbon/icons@${VERSION}](https://unpkg.com/browse/@carbon/icons@${VERSION}/)`;
   const total = iconModuleNames.length;
   const packageMetadata = `${total} icons from @carbon/icons@${devDependencies["@carbon/icons"]}`;
 
-  fsp.writeFile(
+  await fsp.writeFile(
     "lib/index.d.ts",
     `// Type definitions for ${name}
 // ${packageMetadata}
@@ -116,7 +116,7 @@ export declare class CarbonIcon extends SvelteComponentTyped<
 ${definitions}`
   );
 
-  fsp.writeFile(
+  await fsp.writeFile(
     "ICON_INDEX.md",
     `# Icon Index\n
 > ${total} icons from ${version}\n
@@ -125,7 +125,7 @@ ${iconModuleNames
   .join("\n")}\n`
   );
 
-  fsp.writeFile(
+  await fsp.writeFile(
     "preview/src/build-info.json",
     JSON.stringify({
       VERSION: PKG_VERSION,
