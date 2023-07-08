@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2080 icons from [@carbon/icons@11.16.1](https://unpkg.com/browse/@carbon/icons@11.16.1/)
+> 2110 icons from [@carbon/icons@^11.16.1](https://unpkg.com/browse/@carbon/icons@^11.16.1/)
 
 - Accessibility
 - AccessibilityAlt
@@ -257,6 +257,7 @@
 - ChartLine
 - ChartLineData
 - ChartLineSmooth
+- ChartLogisticRegression
 - ChartMarimekko
 - ChartMaximum
 - ChartMedian
@@ -452,6 +453,7 @@
 - CurrencyYen
 - Cursor_1
 - Cursor_2
+- CustomerService
 - Cut
 - CutOut
 - Cyclist
@@ -463,6 +465,7 @@
 - DataBaseAlt
 - DataBin
 - DataBlob
+- DataCategorical
 - DataCenter
 - DataCheck
 - DataClass
@@ -479,6 +482,7 @@
 - DataReference
 - DataRefinery
 - DataRefineryReference
+- DataRegular
 - DataSet
 - DataShare
 - DataStructured
@@ -861,8 +865,11 @@
 - IbmCloudPakWatsonAiops
 - IbmCloudPal
 - IbmCloudPrivilegedAccessGateway
+- IbmCloudProjects
+- IbmCloudResiliency
 - IbmCloudSecretsManager
 - IbmCloudSecurityComplianceCenter
+- IbmCloudSecurityComplianceCenterWorkloadProtection
 - IbmCloudSubnets
 - IbmCloudSysdigSecure
 - IbmCloudTransitGateway
@@ -875,13 +882,19 @@
 - IbmMatch_360
 - IbmMq
 - IbmOpenEnterpriseLanguages
+- IbmOpenshiftContainerPlatformOnVpcForRegulatedIndustries
 - IbmPowerVs
+- IbmPowerWithVpc
+- IbmPrivatePathServices
 - IbmProcessMining
+- IbmSapOnPower
+- IbmSecureInfrastructureOnVpcForRegulatedIndustries
 - IbmSecurity
 - IbmSecurityServices
 - IbmTelehealth
 - IbmTenet
 - IbmToolchain
+- IbmVsiOnVpcForRegulatedIndustries
 - IbmWatsonAssistant
 - IbmWatsonDiscovery
 - IbmWatsonKnowledgeCatalog
@@ -899,6 +912,9 @@
 - IbmWatsonToneAnalyzer
 - IbmZCloudModStack
 - IbmZCloudProvisioning
+- IbmZEnvironmentsDevSecOps
+- IbmZOsAiControlInterface
+- IbmZOsContainers
 - IbmZOsPackageManager
 - IceAccretion
 - IceVision
@@ -1067,6 +1083,7 @@
 - LogoKubernetes
 - LogoLinkedin
 - LogoLivestream
+- LogoMastodon
 - LogoMedium
 - LogoNpm
 - LogoOpenshift
@@ -1256,6 +1273,7 @@
 - OverflowMenuVertical
 - Overlay
 - Package
+- PackageTextAnalysis
 - PageBreak
 - PageFirst
 - PageLast
@@ -1269,6 +1287,11 @@
 - Paragraph
 - Parameter
 - ParentChild
+- PartitionAuto
+- PartitionCollection
+- PartitionRepartition
+- PartitionSame
+- PartitionSpecific
 - PartlyCloudy
 - PartlyCloudyNight
 - Partnership
@@ -1437,6 +1460,7 @@
 - Restaurant
 - RestaurantFine
 - Result
+- ResultDraft
 - ResultNew
 - ResultOld
 - RetryFailed
@@ -1471,6 +1495,8 @@
 - RuleDataQuality
 - RuleDraft
 - RuleFilled
+- RuleLocked
+- RulePartial
 - RuleTest
 - Ruler
 - RulerAlt
@@ -1643,6 +1669,7 @@
 - Sun
 - Sunrise
 - Sunset
+- SupportVectorMachine
 - Svg
 - Swim
 - SwitchLayer_2
@@ -1858,6 +1885,9 @@
 - VehicleInsights
 - VehicleServices
 - Version
+- VersionMajor
+- VersionMinor
+- VersionPatch
 - VerticalView
 - Video
 - VideoAdd
