@@ -1,12 +1,12 @@
-import { describe, test, expect } from "vitest";
 import type { IconOutput } from "@carbon/icons";
+import { describe, expect, test } from "vitest";
 import { buildIcons } from "../src";
 import { template } from "../src/template";
 
 describe("carbon-icons-svelte", () => {
   test("imports", async () => {
     const icons = await buildIcons();
-    expect(icons.length).toMatchInlineSnapshot("2012");
+    expect(icons.length).toMatchInlineSnapshot("2110");
     expect(icons).toMatchSnapshot();
   });
 

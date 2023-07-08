@@ -7,6 +7,8 @@
     BreakingChange,
     LogoSvelte,
     Plan,
+    ZSystems,
+    BatchJob,
   } from "../lib";
   import type { CarbonIconProps } from "../lib";
   import Icon from "../lib/Accessibility.svelte";
@@ -28,4 +30,6 @@
 <BreakingChange />
 <LogoSvelte />
 <Plan />
+<ZSystems />
+<BatchJob />
 <svelte:component this={Beta} />
