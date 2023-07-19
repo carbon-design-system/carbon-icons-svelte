@@ -32,10 +32,12 @@ export const buildIcons = async () => {
   await fsp.mkdir("lib");
 
   let libExport = "";
-  let definitions = `/// <reference types="svelte" />
-import type { SvelteComponentTyped } from "svelte";
+  let definitions = `import type { SvelteComponentTyped } from "svelte";
+import type { SvelteHTMLElements } from "svelte/elements";
 
-export interface CarbonIconProps extends svelte.JSX.SVGAttributes<SVGSVGElement> {
+type RestProps = SvelteHTMLElements["svg"];
+
+export interface CarbonIconProps extends RestProps {
   /**
    * Specify the icon size.
    * @default 16
@@ -47,11 +49,13 @@ export interface CarbonIconProps extends svelte.JSX.SVGAttributes<SVGSVGElement>
    * @default undefined
    */
   title?: string;
+
+  [key: \`data-\${string}\`]: any;
 }
 
 export declare class CarbonIcon extends SvelteComponentTyped<
   CarbonIconProps,
-  {},
+  Record<string, any>,
   {}
 > {}\n\n`;
 
