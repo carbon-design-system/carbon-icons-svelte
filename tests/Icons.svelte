@@ -24,8 +24,8 @@
   $: console.log(typeof Assembly);
 </script>
 
-<Add size={20} fill="red" title="title" />
-<Icon />
+<Add size={20} fill="red" title="title" data-test="id" />
+<Icon style={null} />
 <BookmarkAdd />
 <BreakingChange />
 <LogoSvelte />
