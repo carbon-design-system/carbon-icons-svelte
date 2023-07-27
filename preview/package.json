@@ -8,12 +8,12 @@
   },
   "devDependencies": {
     "@sveltejs/adapter-static": "2.0.2",
-    "@sveltejs/kit": "1.22.1",
-    "carbon-components-svelte": "^0.76.0",
-    "carbon-preprocess-svelte": "^0.9.1",
+    "@sveltejs/kit": "1.22.3",
+    "carbon-components-svelte": "^0.79.0",
+    "carbon-preprocess-svelte": "^0.10.0",
     "fuzzy": "^0.1.3",
-    "svelte": "^3.53.1",
+    "svelte": "^4.1.1",
     "svelte-focus-key": "^1.0.0",
-    "vite": "^4.4.2"
+    "vite": "^4.4.7"
   }
 }
