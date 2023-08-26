@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2110 icons from [@carbon/icons@^11.16.1](https://unpkg.com/browse/@carbon/icons@^11.16.1/)
+> 2112 icons from [@carbon/icons@^11.25.0](https://unpkg.com/browse/@carbon/icons@^11.25.0/)
 
 - Accessibility
 - AccessibilityAlt
@@ -513,6 +513,7 @@
 - Db2Database
 - Debug
 - DecisionTree
+- Delete
 - Delivery
 - DeliveryAdd
 - DeliveryParcel
@@ -1464,6 +1465,7 @@
 - ResultNew
 - ResultOld
 - RetryFailed
+- Return
 - Review
 - Rewind_10
 - Rewind_30
