@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2112 icons from [@carbon/icons@^11.25.0](https://unpkg.com/browse/@carbon/icons@^11.25.0/)
+> 2159 icons from [@carbon/icons@^11.26.0](https://unpkg.com/browse/@carbon/icons@^11.26.0/)
 
 - Accessibility
 - AccessibilityAlt
@@ -16,6 +16,7 @@
 - AddAlt
 - AddComment
 - AddFilled
+- AddLarge
 - AgricultureAnalytics
 - AirlineDigitalGate
 - AirlineManageGates
@@ -159,6 +160,7 @@
 - Bullhorn
 - Buoy
 - Bus
+- BusinessProcesses
 - ButtonCentered
 - ButtonFlushLeft
 - CabinCare
@@ -186,6 +188,7 @@
 - CarbonAccounting
 - CarbonForIbmDotcom
 - CarbonForIbmProduct
+- CarbonForMobile
 - CarbonUiBuilder
 - CaretDown
 - CaretDownGlyph
@@ -249,6 +252,7 @@
 - ChartCombo
 - ChartComboStacked
 - ChartCustom
+- ChartDualYAxis
 - ChartErrorBar
 - ChartErrorBarAlt
 - ChartEvaluation
@@ -347,6 +351,7 @@
 - Clean
 - Close
 - CloseFilled
+- CloseLarge
 - CloseOutline
 - ClosedCaption
 - ClosedCaptionAlt
@@ -488,6 +493,7 @@
 - DataStructured
 - DataTable
 - DataTableReference
+- DataUnreal
 - DataUnstructured
 - DataView
 - DataViewAlt
@@ -502,6 +508,7 @@
 - DatabaseDatastax
 - DatabaseElastic
 - DatabaseEnterpriseDb2
+- DatabaseEnterprisedb
 - DatabaseEtcd
 - DatabaseMongodb
 - DatabasePostgreSql
@@ -776,6 +783,7 @@
 - GeneratePdf
 - Gif
 - Gift
+- GlobalLoanAndTrial
 - Globe
 - Gradient
 - GraphicalDataFlow
@@ -827,9 +835,13 @@
 - Hurricane
 - HybridNetworking
 - HybridNetworkingAlt
+- IbmAiOnZ
+- IbmAiopsInsights
 - IbmBluepay
 - IbmCloud
 - IbmCloudAppId
+- IbmCloudBareMetalServer
+- IbmCloudBareMetalServersVpc
 - IbmCloudCitrixDaas
 - IbmCloudContinuousDelivery
 - IbmCloudDedicatedHost
@@ -843,6 +855,7 @@
 - IbmCloudEventNotification
 - IbmCloudEventStreams
 - IbmCloudForEducation
+- IbmCloudHpc
 - IbmCloudHsm
 - IbmCloudHyperProtectCryptoServices
 - IbmCloudHyperProtectDbaas
@@ -874,20 +887,31 @@
 - IbmCloudSubnets
 - IbmCloudSysdigSecure
 - IbmCloudTransitGateway
+- IbmCloudVirtualServerClassic
+- IbmCloudVirtualServerVpc
+- IbmCloudVpc
 - IbmCloudVpcEndpoints
+- IbmCloudant
 - IbmContentServices
 - IbmDataReplication
 - IbmDatastage
 - IbmDb2
 - IbmDb2Alt
+- IbmDb2Warehouse
+- IbmEventAutomation
+- IbmEventEndpointMgmt
+- IbmEventProcessing
+- IbmEventStreams
 - IbmMatch_360
 - IbmMq
 - IbmOpenEnterpriseLanguages
 - IbmOpenshiftContainerPlatformOnVpcForRegulatedIndustries
 - IbmPowerVs
+- IbmPowerVsPrivateCloud
 - IbmPowerWithVpc
 - IbmPrivatePathServices
 - IbmProcessMining
+- IbmSaasConsole
 - IbmSapOnPower
 - IbmSecureInfrastructureOnVpcForRegulatedIndustries
 - IbmSecurity
@@ -895,6 +919,8 @@
 - IbmTelehealth
 - IbmTenet
 - IbmToolchain
+- IbmTurbonomic
+- IbmVpnForVpc
 - IbmVsiOnVpcForRegulatedIndustries
 - IbmWatsonAssistant
 - IbmWatsonDiscovery
@@ -911,9 +937,15 @@
 - IbmWatsonStudio
 - IbmWatsonTextToSpeech
 - IbmWatsonToneAnalyzer
+- IbmWatsonxAssistant
+- IbmWatsonxCodeAssistant
+- IbmWatsonxCodeAssistantForZ
+- IbmWatsonxOrchestrate
+- IbmWaziDeploy
 - IbmZCloudModStack
 - IbmZCloudProvisioning
 - IbmZEnvironmentsDevSecOps
+- IbmZOs
 - IbmZOsAiControlInterface
 - IbmZOsContainers
 - IbmZOsPackageManager
@@ -1076,6 +1108,7 @@
 - LogoFigma
 - LogoFlickr
 - LogoGithub
+- LogoGitlab
 - LogoGlassdoor
 - LogoInstagram
 - LogoInvision
@@ -1167,6 +1200,7 @@
 - ModelBuilder
 - ModelBuilderReference
 - ModelReference
+- ModelTuned
 - Money
 - Monster
 - Monument
@@ -1380,6 +1414,7 @@
 - ProgressBar
 - ProgressBarRound
 - Promote
+- PromptSession
 - PropertyRelationship
 - Purchase
 - QBarrier
@@ -1557,6 +1592,7 @@
 - Settings
 - SettingsAdjust
 - SettingsCheck
+- SettingsEdit
 - SettingsServices
 - SettingsView
 - ShapeExcept
@@ -1666,12 +1702,14 @@
 - SubnetAclRules
 - Subtract
 - SubtractAlt
+- SubtractLarge
 - SummaryKpi
 - SummaryKpiMirror
 - Sun
 - Sunrise
 - Sunset
 - SupportVectorMachine
+- Sustainability
 - Svg
 - Swim
 - SwitchLayer_2
@@ -1749,11 +1787,13 @@
 - TextLineSpacing
 - TextLink
 - TextLinkAnalysis
+- TextLongParagraph
 - TextMining
 - TextMiningApplier
 - TextNewLine
 - TextScale
 - TextSelection
+- TextShortParagraph
 - TextSmallCaps
 - TextStrikethrough
 - TextSubscript
@@ -1828,6 +1868,7 @@
 - Tsq
 - Tsunami
 - Tsv
+- Tuning
 - TwoFactorAuthentication
 - TwoPersonLift
 - Txt
@@ -1882,6 +1923,8 @@
 - ValueVariable
 - Van
 - VegetationAsset
+- VegetationEncroachment
+- VegetationHeight
 - VehicleApi
 - VehicleConnected
 - VehicleInsights
@@ -2056,6 +2099,10 @@
 - WatsonHealthWindowPreset
 - WatsonHealthZoomPan
 - WatsonMachineLearning
+- Watsonx
+- WatsonxAi
+- WatsonxData
+- WatsonxGovernance
 - WaveDirection
 - WaveHeight
 - WavePeriod
