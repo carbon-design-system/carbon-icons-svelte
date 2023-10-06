@@ -12,12 +12,12 @@
   },
   "devDependencies": {
     "@carbon/icon-helpers": "^10.44.0",
-    "@carbon/icons": "^11.26.0",
-    "@sveltejs/vite-plugin-svelte": "^2.4.5",
+    "@carbon/icons": "^11.28.0",
+    "@sveltejs/vite-plugin-svelte": "^2.4.6",
     "@types/carbon__icon-helpers": "^10.7.2",
-    "svelte": "^4.2.0",
+    "svelte": "^4.2.1",
     "typescript": "^5.2.2",
-    "vitest": "^0.34.3"
+    "vitest": "^0.34.6"
   },
   "repository": {
     "type": "git",
