@@ -1,0 +1,27 @@
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18.x"
+          registry-url: "https://registry.npmjs.org"
+      - name: Publish package
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+        # Currently, only npm supports publishing packages with provenance
+        # https://docs.npmjs.com/generating-provenance-statements
+        run: |
+          npm install --force
+          npm run test
+          npm publish --provenance --access public

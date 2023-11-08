@@ -48,3 +48,40 @@ git merge upstream/master
 ### Submit a PR
 
 After you've pushed your changes to remote, submit your PR. Make sure you are comparing `<YOUR_USER_ID>/feature` to `origin/master`.
+
+## Maintainer guide
+
+The following items only apply to project maintainers.
+
+### Release
+
+This library is published to NPM with [provenance](https://docs.npmjs.com/generating-provenance-statements) via a [GitHub workflow](https://github.com/carbon-design-system/carbon-icons-svelte/blob/master/.github/workflows/release.yml).
+
+The workflow is automatically triggered when pushing a tag that begins with `v` (e.g., `v12.3.0`).
+
+However, maintainers must perform a few things in preparation for a release.
+
+```sh
+# 1. Install and re-build the library.
+yarn; yarn prepack;
+
+# 2. Commit the changes using the new version as the commit message.
+git commit -am "v12.3.0"
+
+# 3. Create a tag.
+git tag v12.3.0
+
+# 4. Push the tag to the remote.
+# This will trigger the `release.yml` workflow to publish a new package to NPM (with provenance).
+git push origin v12.3.0
+```
+
+If all goes as expected, the [`release.yml` workflow](https://github.com/carbon-design-system/carbon-components-svelte/actions/workflows/release.yml) should trigger a new run and publish the new version to NPM.
+
+### Post-release checklist
+
+After confirming that the new release is published to NPM, perform the following:
+
+1. Create a [new release](https://github.com/carbon-design-system/carbon-components-svelte/releases/new) on GitHub. Click "Generate release notes" to automatically list changes by commit with the relevant Pull Request and author metadata. You may manually remove notes that are not relevant to the release (e.g., CI changes).
+
+2. Publish the release as the latest release.
