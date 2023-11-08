@@ -76,12 +76,12 @@ git tag v12.3.0
 git push origin v12.3.0
 ```
 
-If all goes as expected, the [`release.yml` workflow](https://github.com/carbon-design-system/carbon-components-svelte/actions/workflows/release.yml) should trigger a new run and publish the new version to NPM.
+If all goes as expected, the [`release.yml` workflow](https://github.com/carbon-design-system/carbon-icons-svelte/actions/workflows/release.yml) should trigger a new run and publish the new version to NPM.
 
 ### Post-release checklist
 
 After confirming that the new release is published to NPM, perform the following:
 
-1. Create a [new release](https://github.com/carbon-design-system/carbon-components-svelte/releases/new) on GitHub. Click "Generate release notes" to automatically list changes by commit with the relevant Pull Request and author metadata. You may manually remove notes that are not relevant to the release (e.g., CI changes).
+1. Create a [new release](https://github.com/carbon-design-system/carbon-icons-svelte/releases/new) on GitHub. Click "Generate release notes" to automatically list changes by commit with the relevant Pull Request and author metadata. You may manually remove notes that are not relevant to the release (e.g., CI changes).
 
 2. Publish the release as the latest release.
