@@ -11,11 +11,11 @@
     "test": "vitest -r tests"
   },
   "devDependencies": {
-    "@carbon/icon-helpers": "^10.44.0",
+    "@carbon/icon-helpers": "^10.45.1",
     "@carbon/icons": "^11.28.0",
     "@sveltejs/vite-plugin-svelte": "^2.4.6",
-    "@types/carbon__icon-helpers": "^10.7.2",
-    "svelte": "^4.2.1",
+    "@types/carbon__icon-helpers": "^10.7.4",
+    "svelte": "^4.2.2",
     "typescript": "^5.2.2",
     "vitest": "^0.34.6"
   },
