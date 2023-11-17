@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2159 icons from [@carbon/icons@^11.28.0](https://unpkg.com/browse/@carbon/icons@^11.28.0/)
+> 2229 icons from [@carbon/icons@11.31.0-rc.0](https://unpkg.com/browse/@carbon/icons@11.31.0-rc.0/)
 
 - Accessibility
 - AccessibilityAlt
@@ -18,6 +18,10 @@
 - AddFilled
 - AddLarge
 - AgricultureAnalytics
+- Ai
+- AiGovernanceLifecycle
+- AiGovernanceTracked
+- AiGovernanceUntracked
 - AirlineDigitalGate
 - AirlineManageGates
 - AirlinePassengerCare
@@ -63,6 +67,8 @@
 - Archive
 - Area
 - AreaCustom
+- ArithmeticMean
+- ArithmeticMedian
 - Arrival
 - ArrowDown
 - ArrowDownLeft
@@ -85,6 +91,7 @@
 - AssetDigitalTwin
 - AssetView
 - Asterisk
+- Async
 - At
 - Attachment
 - AudioConsole
@@ -179,6 +186,9 @@
 - CalendarSettings
 - CalendarTools
 - Calibrate
+- Calls
+- CallsAll
+- CallsIncoming
 - Camera
 - CameraAction
 - Campsite
@@ -271,6 +281,7 @@
 - ChartNetwork
 - ChartParallel
 - ChartPie
+- ChartPlanningWaterfall
 - ChartPoint
 - ChartPopulation
 - ChartRadar
@@ -312,6 +323,7 @@
 - ChemistryReference
 - ChevronDown
 - ChevronDownGlyph
+- ChevronDownOutline
 - ChevronLeft
 - ChevronLeftGlyph
 - ChevronMini
@@ -322,6 +334,7 @@
 - ChevronSortUp
 - ChevronUp
 - ChevronUpGlyph
+- ChevronUpOutline
 - Chip
 - Choices
 - ChooseItem
@@ -458,6 +471,7 @@
 - CurrencyYen
 - Cursor_1
 - Cursor_2
+- Customer
 - CustomerService
 - Cut
 - CutOut
@@ -465,6 +479,7 @@
 - Dashboard
 - DashboardReference
 - DataAccessor
+- DataAnalytics
 - DataBackup
 - DataBase
 - DataBaseAlt
@@ -510,6 +525,7 @@
 - DatabaseEnterpriseDb2
 - DatabaseEnterprisedb
 - DatabaseEtcd
+- DatabaseMessaging
 - DatabaseMongodb
 - DatabasePostgreSql
 - DatabaseRabbit
@@ -525,6 +541,7 @@
 - DeliveryAdd
 - DeliveryParcel
 - DeliveryTruck
+- Demo
 - Departure
 - Deploy
 - DeployRules
@@ -541,6 +558,7 @@
 - DeskAdjustable
 - Development
 - Devices
+- DevicesApps
 - DewPoint
 - DewPointFilled
 - Diagram
@@ -621,6 +639,7 @@
 - DoubleInteger
 - DownToBottom
 - Download
+- Downstream
 - DragHorizontal
 - DragVertical
 - Draggable
@@ -662,13 +681,17 @@
 - Encryption
 - EnergyRenewable
 - Enterprise
+- EqualApproximately
 - Equalizer
 - Erase
 - Error
 - ErrorFilled
 - ErrorOutline
 - Event
+- EventChange
+- EventIncident
 - EventSchedule
+- EventWarning
 - Events
 - EventsAlt
 - ExamMode
@@ -761,6 +784,7 @@
 - Forward_10
 - Forward_30
 - Forward_5
+- FoundationModel
 - Fragile
 - Friendship
 - FruitBowl
@@ -893,15 +917,22 @@
 - IbmCloudVpcEndpoints
 - IbmCloudant
 - IbmContentServices
+- IbmDataProductExchange
 - IbmDataReplication
 - IbmDatastage
 - IbmDb2
 - IbmDb2Alt
 - IbmDb2Warehouse
+- IbmDynamicRouteServer
+- IbmEngineeringSystemsDesignRhapsodyModelManager
+- IbmEngineeringSystemsDesignRhapsodySn1
+- IbmEngineeringSystemsDesignRhapsodySn2
 - IbmEventAutomation
 - IbmEventEndpointMgmt
 - IbmEventProcessing
 - IbmEventStreams
+- IbmIbv
+- IbmInstana
 - IbmMatch_360
 - IbmMq
 - IbmOpenEnterpriseLanguages
@@ -940,6 +971,7 @@
 - IbmWatsonxAssistant
 - IbmWatsonxCodeAssistant
 - IbmWatsonxCodeAssistantForZ
+- IbmWatsonxCodeAssistantForZRefactor
 - IbmWatsonxOrchestrate
 - IbmWaziDeploy
 - IbmZCloudModStack
@@ -949,6 +981,7 @@
 - IbmZOsAiControlInterface
 - IbmZOsContainers
 - IbmZOsPackageManager
+- IbmZProcessorCapacityReference
 - IceAccretion
 - IceVision
 - IdManagement
@@ -973,6 +1006,7 @@
 - IncompleteWarning
 - IncreaseLevel
 - Industry
+- Infinity
 - Information
 - InformationDisabled
 - InformationFilled
@@ -1003,6 +1037,7 @@
 - InventoryManagement
 - IotConnect
 - IotPlatform
+- Ip
 - Iso
 - IsoFilled
 - IsoOutline
@@ -1012,6 +1047,7 @@
 - JoinOuter
 - JoinRight
 - Jpg
+- JsError
 - Json
 - JsonReference
 - JumpLink
@@ -1019,6 +1055,8 @@
 - Keyboard
 - KeyboardOff
 - Kubernetes
+- KubernetesIpAddress
+- KubernetesPod
 - Label
 - Language
 - Laptop
@@ -1138,12 +1176,14 @@
 - LogoVmwareAlt
 - LogoVue
 - LogoWechat
+- LogoX
 - LogoXing
 - LogoYelp
 - LogoYoutube
 - Logout
 - Loop
 - LowSeverityGlyph
+- Mac
 - MacCommand
 - MacOption
 - MacShift
@@ -1192,8 +1232,14 @@
 - MobileAdd
 - MobileAudio
 - MobileCheck
+- MobileCrash
 - MobileDownload
+- MobileEvent
 - MobileLandscape
+- MobileRequest
+- MobileSession
+- MobileView
+- MobileViewOrientation
 - MobilityServices
 - Model
 - ModelAlt
@@ -1220,6 +1266,7 @@
 - Music
 - MusicAdd
 - MusicRemove
+- Mysql
 - NameSpace
 - NavaidCivil
 - NavaidDme
@@ -1238,6 +1285,7 @@
 - Need
 - NetworkAdminControl
 - NetworkEnterprise
+- NetworkInterface
 - NetworkOverlay
 - NetworkPublic
 - Network_1
@@ -1386,6 +1434,7 @@
 - Plane
 - PlanePrivate
 - PlaneSea
+- Platforms
 - Play
 - PlayFilled
 - PlayFilledAlt
@@ -1410,11 +1459,14 @@
 - PreviousFilled
 - PreviousOutline
 - Printer
+- Process
+- ProcessAutomate
 - Product
 - ProgressBar
 - ProgressBarRound
 - Promote
 - PromptSession
+- PromptTemplate
 - PropertyRelationship
 - Purchase
 - QBarrier
@@ -1539,8 +1591,10 @@
 - RulerAlt
 - Run
 - RunMirror
+- Running
 - SailboatCoastal
 - SailboatOffshore
+- SalesOps
 - SankeyDiagram
 - SankeyDiagramAlt
 - Satellite
@@ -1588,6 +1642,7 @@
 - ServerTime
 - ServiceDesk
 - ServiceId
+- ServiceLevels
 - SessionBorderControl
 - Settings
 - SettingsAdjust
@@ -1697,11 +1752,13 @@
 - Strawberry
 - StringInteger
 - StringText
+- Subdirectory
 - Subflow
 - SubflowLocal
 - SubnetAclRules
 - Subtract
 - SubtractAlt
+- SubtractFilled
 - SubtractLarge
 - SummaryKpi
 - SummaryKpiMirror
@@ -1819,6 +1876,7 @@
 - Tides
 - Tif
 - Time
+- TimeFilled
 - TimePlot
 - Timer
 - ToolBox
@@ -1834,6 +1892,7 @@
 - Touch_1Filled
 - Touch_2
 - Touch_2Filled
+- Tour
 - TrafficCone
 - TrafficEvent
 - TrafficFlow
@@ -1889,6 +1948,8 @@
 - UpdateNow
 - Upgrade
 - Upload
+- Upstream
+- Url
 - Usb
 - User
 - UserAccess
@@ -1940,6 +2001,7 @@
 - VideoFilled
 - VideoOff
 - VideoOffFilled
+- VideoPlayer
 - View
 - ViewFilled
 - ViewMode_1
@@ -1981,9 +2043,11 @@
 - WarningAltFilled
 - WarningAltInverted
 - WarningAltInvertedFilled
+- WarningDiamond
 - WarningFilled
 - WarningHex
 - WarningHexFilled
+- WarningMultiple
 - WarningOther
 - WarningSquare
 - WarningSquareFilled
@@ -2110,6 +2174,12 @@
 - WeatherFrontStationary
 - WeatherFrontWarm
 - WeatherStation
+- WebServicesCluster
+- WebServicesContainer
+- WebServicesDefinition
+- WebServicesService
+- WebServicesTask
+- WebServicesTaskDefinitionVersion
 - Webhook
 - Websheet
 - Wheat
