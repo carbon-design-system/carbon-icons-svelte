@@ -9,7 +9,7 @@
     HeaderPanelDivider,
     SkipToContent,
   } from "carbon-components-svelte";
-  import LogoGithub from "../../../lib/LogoGithub.svelte";
+  import LogoGithub from "./LogoGithub.svelte";
   import { version } from "../../../package.json";
 </script>
 
