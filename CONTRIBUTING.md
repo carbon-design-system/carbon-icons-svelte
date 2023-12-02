@@ -19,19 +19,17 @@ git remote add upstream git@github.com:carbon-design-system/carbon-icons-svelte.
 git remote -v
 ```
 
-Install the project dependencies:
+## Prerequisites
 
-```bash
-yarn install
-```
+This repo uses `bun`. See the docs for [installation instructions](https://bun.sh/docs/installation).
 
 ## Workflow
 
 ### Building
 
-Icons are generated using `vitest` as a test runner.
+Icons are generated using `bun` as a test runner.
 
-Run `yarn prepack` to build the library. Icons should be emitted to the `lib` folder and tests should pass.
+Run `bun prepack` to build the library. Icons should be emitted to the `lib` folder and tests should pass.
 
 ## Submitting a Pull Request
 
