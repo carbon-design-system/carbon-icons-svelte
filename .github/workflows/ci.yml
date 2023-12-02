@@ -8,16 +8,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/cache@v3
-        id: yarn-cache
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - uses: oven-sh/setup-bun@v1
 
       - name: Run unit tests
         run: |
-          yarn
-          yarn test
+          bun install
+          bun prepack
 
       - name: Trigger deploy
         if: github.ref == 'refs/heads/master'

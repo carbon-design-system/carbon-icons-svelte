@@ -7,17 +7,15 @@
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "scripts": {
-    "prepack": "yarn test run",
-    "test": "vitest -r tests"
+    "prepack": "bun test"
   },
   "devDependencies": {
     "@carbon/icon-helpers": "^10.45.1",
     "@carbon/icons": "11.31.0-rc.0",
-    "@sveltejs/vite-plugin-svelte": "^2.4.6",
     "@types/carbon__icon-helpers": "^10.7.4",
+    "bun-types": "latest",
     "svelte": "^4.2.2",
-    "typescript": "^5.2.2",
-    "vitest": "^0.34.6"
+    "typescript": "^5.2.2"
   },
   "repository": {
     "type": "git",

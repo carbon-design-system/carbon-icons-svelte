@@ -17,7 +17,7 @@
   } from "carbon-components-svelte";
   import fuzzy from "fuzzy";
   import FocusKey from "svelte-focus-key";
-  import Header from "$lib/Header.svelte";
+  import Header from "./Header.svelte";
 
   const { match } = fuzzy;
   const sizes = {
@@ -49,7 +49,7 @@
 
 <FocusKey element={ref} selectText />
 
-<Header version={data.VERSION} />
+<Header />
 
 <Modal
   passiveModal

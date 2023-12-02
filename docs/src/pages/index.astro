@@ -1,7 +1,11 @@
-<!DOCTYPE html>
+---
+import Home from "../components/index.svelte";
+---
+
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
@@ -9,9 +13,8 @@
       content="Carbon Design System icons as Svelte components"
     />
     <title>Carbon Icons Svelte</title>
-    %sveltekit.head%
   </head>
   <body>
-    <div>%sveltekit.body%</div>
+    <Home client:load />
   </body>
 </html>

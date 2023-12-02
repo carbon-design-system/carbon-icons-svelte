@@ -9,9 +9,9 @@
     Plan,
     ZSystems,
     BatchJob,
-  } from "../lib";
-  import type { CarbonIconProps } from "../lib";
-  import Icon from "../lib/Accessibility.svelte";
+  } from "carbon-icons-svelte";
+  import type { CarbonIconProps } from "carbon-icons-svelte";
+  import Icon from "carbon-icons-svelte/lib/Accessibility.svelte";
 
   const props: CarbonIconProps = {
     size: 32,
