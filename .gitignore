@@ -1,6 +1,4 @@
 .DS_Store
-.svelte-kit
-build-info.json
 lib
 node_modules
-build
+dist

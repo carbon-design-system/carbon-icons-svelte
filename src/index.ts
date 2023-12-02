@@ -1,7 +1,7 @@
 import type { BuildIcons, IconOutput, ModuleName } from "@carbon/icons";
 import metadata from "@carbon/icons/metadata.json";
 import fsp from "fs/promises";
-import { version as PKG_VERSION, devDependencies, name } from "../package.json";
+import { devDependencies, name } from "../package.json";
 import { template, templateSvg } from "./template";
 
 const VERSION = devDependencies["@carbon/icons"];
@@ -130,9 +130,8 @@ ${iconModuleNames
   );
 
   await fsp.writeFile(
-    "preview/src/build-info.json",
+    "docs/src/build-info.json",
     JSON.stringify({
-      VERSION: PKG_VERSION,
       total,
       bySize,
       byModuleName,
