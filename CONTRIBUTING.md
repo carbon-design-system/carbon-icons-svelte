@@ -2,8 +2,6 @@
 
 ## Getting Started
 
-For MacOS, prerequisites include Node and Yarn.
-
 Fork the repo and clone your fork:
 
 ```bash
@@ -61,7 +59,7 @@ However, maintainers must perform a few things in preparation for a release.
 
 ```sh
 # 1. Install and re-build the library.
-yarn; yarn prepack;
+bun install; bun prepack;
 
 # 2. Commit the changes using the new version as the commit message.
 git commit -am "v12.3.0"
