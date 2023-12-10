@@ -1,5 +1,5 @@
 <script>
-  /** @type {{ VERSION?: string; iconModuleNames?: string[]; byModuleName: Record<string, string>; bySize?: { order: string[]; sizes: Record<string, string>; }; total?: number; }} */
+  /** @type {{ iconModuleNames?: string[]; byModuleName: Record<string, string>; bySize?: { order: string[]; sizes: Record<string, string>; }; total?: number; }} */
   import data from "../build-info.json";
   import "carbon-components-svelte/css/all.css";
   import {
