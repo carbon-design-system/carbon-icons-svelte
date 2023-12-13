@@ -1,4 +1,5 @@
 ---
+import "carbon-components-svelte/css/all.css";
 import Home from "../components/index.svelte";
 ---
 
@@ -13,8 +14,17 @@ import Home from "../components/index.svelte";
       content="Carbon Design System icons as Svelte components"
     />
     <title>Carbon Icons Svelte</title>
+    <script is:inline>
+      try {
+        const theme = localStorage.getItem("theme");
+
+        if (["white", "g10", "g80", "g90", "g100"].includes(theme)) {
+          document.documentElement.setAttribute("theme", theme);
+        }
+      } catch (e) {}
+    </script>
   </head>
   <body>
-    <Home client:load />
+    <Home client:idle />
   </body>
 </html>
