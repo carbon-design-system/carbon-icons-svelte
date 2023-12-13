@@ -7,9 +7,9 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "@astrojs/svelte": "^4.0.4",
-    "astro": "^3.6.4",
-    "svelte": "^4.2.0"
+    "@astrojs/svelte": "^5.0.1",
+    "astro": "^4.0.4",
+    "svelte": "^4.2.8"
   },
   "devDependencies": {
     "carbon-components-svelte": "^0.82.4",
