@@ -6,6 +6,12 @@
   "svelte": "./lib/index.js",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
+  "exports": {
+    ".": {
+      "svelte": "./lib/index.js"
+    },
+    "./lib/*": "./lib/*"
+  },
   "scripts": {
     "prepack": "bun test"
   },
