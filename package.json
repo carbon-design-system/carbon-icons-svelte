@@ -8,9 +8,13 @@
   "types": "./lib/index.d.ts",
   "exports": {
     ".": {
+      "types": "./lib/index.d.ts",
       "svelte": "./lib/index.js"
     },
-    "./lib/*": "./lib/*"
+    "./lib/*.svelte": {
+      "types": "./lib/*.svelte.d.ts",
+      "import": "./lib/*.svelte"
+    }
   },
   "scripts": {
     "prepack": "bun test"
