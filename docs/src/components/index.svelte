@@ -36,6 +36,12 @@
   let iconSize = 16;
 
   $: mounted = typeof document !== "undefined";
+  $: if (mounted) {
+    document.documentElement.style.setProperty(
+      "color-scheme",
+      ["white", "g10"].includes(theme) ? "light" : "dark"
+    );
+  }
 
   let moduleName = null;
 
