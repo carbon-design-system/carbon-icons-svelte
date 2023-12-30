@@ -12,6 +12,7 @@
     Theme,
     Select,
     SelectItem,
+    SelectSkeleton,
     LocalStorage,
   } from "carbon-components-svelte";
   import fuzzy from "fuzzy";
@@ -34,9 +35,7 @@
   let theme = "white";
   let iconSize = 16;
 
-  $: if (typeof document !== "undefined") {
-    document.documentElement.setAttribute("theme", theme);
-  }
+  $: mounted = typeof document !== "undefined";
 
   let moduleName = null;
 
@@ -69,31 +68,35 @@
     <Row>
       <Column>
         <div class="options">
-          <Theme
-            bind:theme
-            persist
-            render="select"
-            select={{
-              id: "select-theme",
-              size: "xl",
-              labelText: "Carbon theme",
-              themes: ["white", "g10", "g80", "g90", "g100"],
-            }}
-          />
-          <LocalStorage key="icon-size" bind:value={iconSize} />
-          <Select
-            id="select-icon-size"
-            labelText="Icon size"
-            size="xl"
-            bind:selected={iconSize}
-          >
-            <SelectItem value={16} />
-            <SelectItem value={20} />
-            <SelectItem value={24} />
-            <SelectItem value={32} />
-          </Select>
+          {#if mounted}
+            <Theme
+              bind:theme
+              persist
+              render="select"
+              select={{
+                id: "select-theme",
+                labelText: "Carbon theme",
+                themes: ["white", "g10", "g80", "g90", "g100"],
+              }}
+            />
+            <LocalStorage key="icon-size" bind:value={iconSize} />
+            <Select
+              id="select-icon-size"
+              labelText="Icon size"
+              bind:selected={iconSize}
+            >
+              <SelectItem value={16} />
+              <SelectItem value={20} />
+              <SelectItem value={24} />
+              <SelectItem value={32} />
+            </Select>
+          {:else}
+            <SelectSkeleton class="select-skeleton" />
+            <SelectSkeleton class="select-skeleton" />
+          {/if}
           <Search
             id="search"
+            size="lg"
             autocomplete="off"
             autocorrect="off"
             autocapitalize="off"
@@ -230,6 +233,13 @@
 
   :global(body) {
     overflow-y: scroll;
+  }
+
+  :global(.select-skeleton) {
+    position: relative;
+    height: 64px;
+    top: 2px;
+    min-width: 6.42rem;
   }
 
   :global(#select-theme),
