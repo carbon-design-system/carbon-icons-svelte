@@ -10,7 +10,7 @@
     SkipToContent,
   } from "carbon-components-svelte";
   import LogoGithub from "./LogoGithub.svelte";
-  import { version } from "../../../package.json";
+  import { VERSION } from "../constants";
 </script>
 
 <Header aria-label="Navigation" href="/">
@@ -20,7 +20,7 @@
 
   <span slot="platform" class="platform-name">
     Carbon Icons Svelte
-    <code title="Version {version}">v{version}</code>
+    <code title="Version {VERSION}">v{VERSION}</code>
   </span>
 
   <HeaderUtilities>
