@@ -7,12 +7,12 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "@astrojs/svelte": "^5.0.1",
-    "astro": "^4.0.4",
-    "svelte": "^4.2.8"
+    "@astrojs/svelte": "^5.0.3",
+    "astro": "^4.2.1",
+    "svelte": "^4.2.9"
   },
   "devDependencies": {
-    "carbon-components-svelte": "^0.82.7",
+    "carbon-components-svelte": "^0.82.8",
     "fuzzy": "^0.1.3",
     "svelte-focus-key": "^1.0.0"
   }
