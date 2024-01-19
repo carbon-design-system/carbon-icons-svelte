@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2229 icons from [@carbon/icons@11.31.0-rc.0](https://unpkg.com/browse/@carbon/icons@11.31.0-rc.0/)
+> 2231 icons from [@carbon/icons@11.36.0](https://unpkg.com/browse/@carbon/icons@11.36.0/)
 
 - Accessibility
 - AccessibilityAlt
@@ -22,6 +22,7 @@
 - AiGovernanceLifecycle
 - AiGovernanceTracked
 - AiGovernanceUntracked
+- AiLaunch
 - AirlineDigitalGate
 - AirlineManageGates
 - AirlinePassengerCare
@@ -199,6 +200,7 @@
 - CarbonForIbmDotcom
 - CarbonForIbmProduct
 - CarbonForMobile
+- CarbonForSalesforce
 - CarbonUiBuilder
 - CaretDown
 - CaretDownGlyph
@@ -784,7 +786,6 @@
 - Forward_10
 - Forward_30
 - Forward_5
-- FoundationModel
 - Fragile
 - Friendship
 - FruitBowl
@@ -1006,7 +1007,7 @@
 - IncompleteWarning
 - IncreaseLevel
 - Industry
-- Infinity
+- InfinitySymbol
 - Information
 - InformationDisabled
 - InformationFilled
@@ -1772,6 +1773,7 @@
 - SwitchLayer_2
 - SwitchLayer_3
 - Switcher
+- SyncSettings
 - SysProvision
 - Table
 - TableAlias
