@@ -21,7 +21,7 @@ declare module "@carbon/icons" {
   }
 
   export interface BuildIcons {
-    icons: ReadonlyArray<{
+    icons: Array<{
       name: string;
       friendlyName: string;
       namespace: [];
