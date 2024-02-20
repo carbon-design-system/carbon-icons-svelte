@@ -1,13 +1,40 @@
 import type { BuildIcons, IconOutput, ModuleName } from "@carbon/icons";
-import metadata from "@carbon/icons/metadata.json";
+import metadata_11_31 from "@carbon/icons-11.31/metadata.json";
+import metadata_latest from "@carbon/icons/metadata.json";
 import fsp from "fs/promises";
 import { devDependencies, name } from "../package.json";
 import { template, templateSvg } from "./template";
 
 const VERSION = devDependencies["@carbon/icons"];
 
+/**
+ * This library is built using the `@carbon/icons` package.
+ * However, `@carbon/icons` may remove icons between minor versions.
+ * This library has a different contract; icons are not removed
+ * in minor versions. To ensure that icons are not removed, we
+ * maintain a list of deprecated icons that are merged in.
+ */
+const DEPRECATED_ICONS = new Set([
+  // From 11.31.x
+  "FoundationModel",
+  "Infinity",
+]);
+
+const metadata = { ...metadata_latest } as BuildIcons;
+
+// Merge in deprecated icons
+(metadata_11_31 as BuildIcons).icons.forEach((icon) => {
+  icon.output.forEach((output) => {
+    const iconName = output.moduleName.slice(0, -2);
+
+    if (DEPRECATED_ICONS.has(iconName)) {
+      metadata.icons.push(icon);
+    }
+  });
+});
+
 export const buildIcons = async () => {
-  console.time("Built in");
+  console.time("buildIcons");
   const iconMap = new Map<ModuleName, IconOutput>();
   const iconModuleNames = (metadata as BuildIcons).icons
     .map((icon) =>
@@ -139,7 +166,7 @@ ${iconModuleNames
     })
   );
 
-  console.timeEnd("Built in");
+  console.timeEnd("buildIcons");
 
   return iconModuleNames;
 };
