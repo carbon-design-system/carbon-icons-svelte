@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2233 icons from [@carbon/icons@11.36.0](https://unpkg.com/browse/@carbon/icons@11.36.0/)
+> 2237 icons from [@carbon/icons@11.37.0](https://unpkg.com/browse/@carbon/icons@11.37.0/)
 
 - Accessibility
 - AccessibilityAlt
@@ -1560,6 +1560,10 @@
 - Rewind_10
 - Rewind_30
 - Rewind_5
+- RightPanelClose
+- RightPanelCloseFilled
+- RightPanelOpen
+- RightPanelOpenFilled
 - Road
 - RoadWeather
 - Roadmap
