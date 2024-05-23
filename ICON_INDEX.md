@@ -1,7 +1,8 @@
 # Icon Index
 
-> 2262 icons from [@carbon/icons@11.41.0](https://unpkg.com/browse/@carbon/icons@11.41.0/)
+> 2365 icons from [@carbon/icons@11.42.0](https://unpkg.com/browse/@carbon/icons@11.42.0/)
 
+- AcceptActionUsage
 - Accessibility
 - AccessibilityAlt
 - AccessibilityColor
@@ -11,6 +12,8 @@
 - AccumulationPrecipitation
 - AccumulationRain
 - AccumulationSnow
+- ActionDefinition
+- ActionUsage
 - Activity
 - Add
 - AddAlt
@@ -19,6 +22,7 @@
 - AddLarge
 - AgricultureAnalytics
 - Ai
+- AiFinancialSustainabilityCheck
 - AiGovernanceLifecycle
 - AiGovernanceTracked
 - AiGovernanceUntracked
@@ -53,8 +57,10 @@
 - Analytics
 - AnalyticsCustom
 - AnalyticsReference
+- Anchor
 - Aperture
 - Api
+- ApiKey
 - Api_1
 - App
 - AppConnectivity
@@ -70,6 +76,8 @@
 - AreaCustom
 - ArithmeticMean
 - ArithmeticMedian
+- ArrangeHorizontal
+- ArrangeVertical
 - Arrival
 - ArrowDown
 - ArrowDownLeft
@@ -122,6 +130,8 @@
 - BeeBat
 - Beta
 - Bicycle
+- Binding_01
+- Binding_02
 - Binoculars
 - BlockStorage
 - BlockStorageAlt
@@ -149,6 +159,10 @@
 - Bottles_01Dash
 - Bottles_02
 - Bottles_02Dash
+- BottomPanelClose
+- BottomPanelCloseFilled
+- BottomPanelOpen
+- BottomPanelOpenFilled
 - Box
 - BoxExtraLarge
 - BoxLarge
@@ -197,6 +211,7 @@
 - CarFront
 - Carbon
 - CarbonAccounting
+- CarbonForAem
 - CarbonForIbmDotcom
 - CarbonForIbmProduct
 - CarbonForMobile
@@ -394,6 +409,7 @@
 - CloudUpload
 - Cloudy
 - Code
+- CodeBlock
 - CodeHide
 - CodeReference
 - CodeSigningService
@@ -419,13 +435,23 @@
 - ConnectReference
 - ConnectSource
 - ConnectTarget
+- ConnectionFlowUsage
 - ConnectionReceive
 - ConnectionSend
 - ConnectionSignal
 - ConnectionSignalOff
 - ConnectionTwoWay
+- ConnectionUsage
+- Constraint
 - Construction
+- ContainerEngine
+- ContainerImage
+- ContainerImagePull
+- ContainerImagePush
+- ContainerImagePushPull
 - ContainerRegistry
+- ContainerRuntime
+- ContainerRuntimeMonitor
 - ContainerServices
 - ContainerSoftware
 - ContentDeliveryNetwork
@@ -538,6 +564,7 @@
 - Db2DataSharingGroup
 - Db2Database
 - Debug
+- DecisionNode
 - DecisionTree
 - Delete
 - Delivery
@@ -616,6 +643,8 @@
 - DocumentAttachment
 - DocumentAudio
 - DocumentBlank
+- DocumentComment
+- DocumentConfiguration
 - DocumentDownload
 - DocumentEpdf
 - DocumentExport
@@ -626,10 +655,12 @@
 - DocumentPdf
 - DocumentPreliminary
 - DocumentProtected
+- DocumentRequirements
 - DocumentSecurity
 - DocumentSentiment
 - DocumentSigned
 - DocumentSketch
+- DocumentSubject
 - DocumentSubtract
 - DocumentTasks
 - DocumentUnknown
@@ -686,6 +717,8 @@
 - Encryption
 - EnergyRenewable
 - Enterprise
+- EnumerationDefinition
+- EnumerationUsage
 - EqualApproximately
 - Equalizer
 - Erase
@@ -730,6 +763,9 @@
 - Favorite
 - FavoriteFilled
 - FavoriteHalf
+- FeatureMembership
+- FeatureMembershipFilled
+- FeatureTyping
 - FetchUpload
 - FetchUploadCloud
 - FileStorage
@@ -785,6 +821,7 @@
 - ForecastLightning
 - ForecastLightning_30
 - Fork
+- ForkNode
 - Forum
 - Forward_10
 - Forward_30
@@ -807,6 +844,7 @@
 - GatewaySecurity
 - GatewayUserAccess
 - GatewayVpn
+- Gears
 - GenderFemale
 - GenderMale
 - GeneratePdf
@@ -933,15 +971,29 @@
 - IbmDb2Alt
 - IbmDb2Warehouse
 - IbmDynamicRouteServer
+- IbmEloAutomotiveCompliance
+- IbmEloEngineeringInsights
+- IbmEloMethodComposer
+- IbmEloPublishing
+- IbmEngineeringLifecycleMgmt
+- IbmEngineeringRequirementsDoorsNext
+- IbmEngineeringSystemsDesignRhapsody
 - IbmEngineeringSystemsDesignRhapsodyModelManager
 - IbmEngineeringSystemsDesignRhapsodySn1
 - IbmEngineeringSystemsDesignRhapsodySn2
+- IbmEngineeringTestMgmt
+- IbmEngineeringWorkflowMgmt
 - IbmEventAutomation
 - IbmEventEndpointMgmt
 - IbmEventProcessing
 - IbmEventStreams
+- IbmGcm
 - IbmIbv
 - IbmInstana
+- IbmJrs
+- IbmLaunchpadS4
+- IbmLpa
+- IbmLqe
 - IbmMatch_360
 - IbmMq
 - IbmOpenEnterpriseLanguages
@@ -1003,6 +1055,7 @@
 - ImageSearch
 - ImageSearchAlt
 - ImageService
+- ImageStoreLocal
 - ImportExport
 - ImproveRelevance
 - InProgress
@@ -1042,6 +1095,7 @@
 - IntentRequestUninstall
 - IntentRequestUpgrade
 - Interactions
+- InterfaceUsage
 - Intersect
 - IntrusionPrevention
 - InventoryManagement
@@ -1054,6 +1108,7 @@
 - JoinFull
 - JoinInner
 - JoinLeft
+- JoinNode
 - JoinOuter
 - JoinRight
 - Jpg
@@ -1062,11 +1117,16 @@
 - JsonReference
 - JumpLink
 - KeepDry
+- Key
 - Keyboard
 - KeyboardOff
+- Kubelet
 - Kubernetes
+- KubernetesControlPlaneNode
 - KubernetesIpAddress
+- KubernetesOperator
 - KubernetesPod
+- KubernetesWorkerNode
 - Label
 - Language
 - Laptop
@@ -1074,6 +1134,7 @@
 - LassoPolygon
 - Launch
 - Layers
+- LayersExternal
 - Legend
 - LetterAa
 - LetterBb
@@ -1115,6 +1176,7 @@
 - Link
 - Linux
 - LinuxAlt
+- LinuxNamespace
 - List
 - ListBoxes
 - ListBulleted
@@ -1140,6 +1202,8 @@
 - LocationHazardFilled
 - LocationHeart
 - LocationHeartFilled
+- LocationInfo
+- LocationInfoFilled
 - LocationPerson
 - LocationPersonFilled
 - LocationSave
@@ -1220,6 +1284,8 @@
 - MedicationAlert
 - MedicationReminder
 - Menu
+- Merge
+- MergeNode
 - MessageQueue
 - Meter
 - MeterAlt
@@ -1318,6 +1384,7 @@
 - Notebook
 - NotebookReference
 - Notification
+- NotificationCounter
 - NotificationFilled
 - NotificationNew
 - NotificationOff
@@ -1366,6 +1433,7 @@
 - OverflowMenuVertical
 - Overlay
 - Package
+- PackageNode
 - PackageTextAnalysis
 - PageBreak
 - PageFirst
@@ -1380,6 +1448,8 @@
 - Paragraph
 - Parameter
 - ParentChild
+- PartDefinition
+- PartUsage
 - PartitionAuto
 - PartitionCollection
 - PartitionRepartition
@@ -1466,8 +1536,10 @@
 - Police
 - Policy
 - Popup
+- PortDefinition
 - PortInput
 - PortOutput
+- PortUsage
 - Portfolio
 - Power
 - Ppt
@@ -1476,6 +1548,11 @@
 - PressureFilled
 - PreviousFilled
 - PreviousOutline
+- PricingConsumption
+- PricingContainer
+- PricingQuickProposal
+- PricingTailored
+- PricingTraditional
 - Printer
 - Process
 - ProcessAutomate
@@ -1486,6 +1563,7 @@
 - PromptSession
 - PromptTemplate
 - PropertyRelationship
+- PullRequest
 - Purchase
 - QBarrier
 - QBlochSphere
@@ -1513,11 +1591,13 @@
 - QX
 - QY
 - QZ
+- Qiskit
 - QqPlot
 - QrCode
 - QuadrantPlot
 - Query
 - QueryQueue
+- QuestionAnswering
 - Queued
 - Quotes
 - Radar
@@ -1528,6 +1608,7 @@
 - RadioButtonChecked
 - RadioCombat
 - RadioPushToTalk
+- Rag
 - Rain
 - RainDrizzle
 - RainDrop
@@ -1560,6 +1641,8 @@
 - Report
 - ReportData
 - RequestQuote
+- RequirementDefinition
+- RequirementUsage
 - Reset
 - ResetAlt
 - Restart
@@ -1622,6 +1705,8 @@
 - Satellite
 - SatelliteRadar
 - SatelliteWeather
+- SatisfyDefinition
+- SatisfyUsage
 - Save
 - SaveModel
 - Scale
@@ -1654,6 +1739,7 @@
 - Select_01
 - Select_02
 - Send
+- SendActionUsage
 - SendAlt
 - SendAltFilled
 - SendBackward
@@ -1677,6 +1763,7 @@
 - ShapeIntersect
 - ShapeJoin
 - ShapeUnite
+- Shapes
 - Share
 - ShareKnowledge
 - ShoppingBag
@@ -1773,17 +1860,22 @@
 - StorageRequest
 - Store
 - StormTracker
+- StrategyPlay
 - Strawberry
 - StringInteger
 - StringText
+- Subclassification
 - Subdirectory
 - Subflow
 - SubflowLocal
+- SubjectDefinition
+- SubjectUsage
 - SubnetAclRules
 - Subtract
 - SubtractAlt
 - SubtractFilled
 - SubtractLarge
+- Succession
 - SummaryKpi
 - SummaryKpiMirror
 - Sun
@@ -1798,6 +1890,7 @@
 - Switcher
 - SyncSettings
 - SysProvision
+- SysplexDistributor
 - Table
 - TableAlias
 - TableBuilt
@@ -1843,6 +1936,7 @@
 - Tennis
 - TennisBall
 - Term
+- TermReference
 - Terminal
 - Terminal_3270
 - TestTool
@@ -1904,6 +1998,7 @@
 - TimeFilled
 - TimePlot
 - Timer
+- TimingBelt
 - ToolBox
 - ToolKit
 - Tools
@@ -1932,6 +2027,7 @@
 - TrainTime
 - Tram
 - TransformBinary
+- TransformCode
 - TransformInstructions
 - TransformLanguage
 - Transgender
@@ -1983,9 +2079,14 @@
 - Upload
 - Upstream
 - Url
+- UsageIncludedUseCase
 - Usb
+- UseCaseDefinition
+- UseCaseUsage
 - User
 - UserAccess
+- UserAccessLocked
+- UserAccessUnlocked
 - UserActivity
 - UserAdmin
 - UserAvatar
@@ -1996,6 +2097,7 @@
 - UserFavorite
 - UserFavoriteAlt
 - UserFavoriteAltFilled
+- UserFeedback
 - UserFilled
 - UserFollow
 - UserIdentification
@@ -2005,6 +2107,7 @@
 - UserProfile
 - UserProfileAlt
 - UserRole
+- UserService
 - UserServiceDesk
 - UserSettings
 - UserSimulation
