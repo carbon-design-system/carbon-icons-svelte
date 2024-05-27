@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2237 icons from [@carbon/icons@11.37.0](https://unpkg.com/browse/@carbon/icons@11.37.0/)
+> 2262 icons from [@carbon/icons@11.41.0](https://unpkg.com/browse/@carbon/icons@11.41.0/)
 
 - Accessibility
 - AccessibilityAlt
@@ -358,6 +358,7 @@
 - CircleDash
 - CircleFillGlyph
 - CircleFilled
+- CircleOutline
 - CirclePacking
 - CircleSolid
 - CircleStrokeGlyph
@@ -566,6 +567,8 @@
 - Diagram
 - DiagramReference
 - DiamondFillGlyph
+- DiamondOutline
+- DiamondSolid
 - DirectLink
 - DirectionBearRight_01
 - DirectionBearRight_01Filled
@@ -847,6 +850,10 @@
 - Help
 - HelpDesk
 - HelpFilled
+- HexagonOutline
+- HexagonSolid
+- HexagonVerticalOutline
+- HexagonVerticalSolid
 - Home
 - HorizontalView
 - Hospital
@@ -1404,6 +1411,14 @@
 - PenFountain
 - Pending
 - PendingFilled
+- PentagonDownOutline
+- PentagonDownSolid
+- PentagonLeftOutline
+- PentagonLeftSolid
+- PentagonOutline
+- PentagonRightOutline
+- PentagonRightSolid
+- PentagonSolid
 - Percentage
 - PercentageFilled
 - Person
@@ -1736,6 +1751,8 @@
 - Sprout
 - Sql
 - SquareFillGlyph
+- SquareOutline
+- SquareSolid
 - StackLimitation
 - Stamp
 - Star
@@ -1926,6 +1943,14 @@
 - TreeFallRisk
 - TreeView
 - TreeViewAlt
+- TriangleDownOutline
+- TriangleDownSolid
+- TriangleLeftOutline
+- TriangleLeftSolid
+- TriangleOutline
+- TriangleRightOutline
+- TriangleRightSolid
+- TriangleSolid
 - Trophy
 - TrophyFilled
 - TropicalStorm
