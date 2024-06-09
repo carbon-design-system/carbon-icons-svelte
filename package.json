@@ -1,6 +1,6 @@
 {
   "name": "carbon-icons-svelte",
-  "version": "12.8.0",
+  "version": "12.9.0",
   "license": "Apache-2.0",
   "description": "Carbon Design System SVG icons as Svelte components",
   "svelte": "./lib/index.js",
