@@ -1,7 +1,7 @@
 import type { BuildIcons, IconOutput, ModuleName } from "@carbon/icons";
 import metadata_11_31 from "@carbon/icons-11.31/metadata.json";
 import metadata_latest from "@carbon/icons/metadata.json";
-import fsp from "fs/promises";
+import { $ } from "bun";
 import { devDependencies, name } from "../package.json";
 import { template, templateSvg } from "./template";
 
@@ -55,8 +55,8 @@ export const buildIcons = async () => {
     .filter(Boolean)
     .sort() as string[];
 
-  await fsp.rm("lib", { recursive: true, force: true });
-  await fsp.mkdir("lib");
+  await $`rm -rf lib`;
+  await $`mkdir lib`;
 
   let libExport = "";
   let definitions = `import type { SvelteComponentTyped } from "svelte";
@@ -126,20 +126,17 @@ export declare class CarbonIcon extends SvelteComponentTyped<
 
     const fileName = `lib/${name}.svelte`;
 
-    fsp.writeFile(fileName, template(icon));
-    fsp.writeFile(
-      fileName + ".d.ts",
-      `export { ${name} as default } from "./";\n`
-    );
+    Bun.write(fileName, template(icon));
+    Bun.write(fileName + ".d.ts", `export { ${name} as default } from "./";\n`);
   });
 
-  await fsp.writeFile("lib/index.js", libExport);
+  await Bun.write("lib/index.js", libExport);
 
   const version = `[@carbon/icons@${VERSION}](https://unpkg.com/browse/@carbon/icons@${VERSION}/)`;
   const total = iconModuleNames.length;
   const packageMetadata = `${total} icons from @carbon/icons@${devDependencies["@carbon/icons"]}`;
 
-  await fsp.writeFile(
+  await Bun.write(
     "lib/index.d.ts",
     `// Type definitions for ${name}
 // ${packageMetadata}
@@ -147,7 +144,7 @@ export declare class CarbonIcon extends SvelteComponentTyped<
 ${definitions}`
   );
 
-  await fsp.writeFile(
+  await Bun.write(
     "ICON_INDEX.md",
     `# Icon Index\n
 > ${total} icons from ${version}\n
@@ -156,7 +153,7 @@ ${iconModuleNames
   .join("\n")}\n`
   );
 
-  await fsp.writeFile(
+  await Bun.write(
     "docs/src/build-info.json",
     JSON.stringify({
       total,
