@@ -845,6 +845,8 @@ exports[`imports 1`] = `
   "GatewayUserAccess",
   "GatewayVpn",
   "Gears",
+  "Gem",
+  "GemReference",
   "GenderFemale",
   "GenderMale",
   "GeneratePdf",

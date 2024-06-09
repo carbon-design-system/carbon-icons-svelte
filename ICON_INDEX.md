@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2365 icons from [@carbon/icons@11.42.0](https://unpkg.com/browse/@carbon/icons@11.42.0/)
+> 2367 icons from [@carbon/icons@11.43.0](https://unpkg.com/browse/@carbon/icons@11.43.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -845,6 +845,8 @@
 - GatewayUserAccess
 - GatewayVpn
 - Gears
+- Gem
+- GemReference
 - GenderFemale
 - GenderMale
 - GeneratePdf
