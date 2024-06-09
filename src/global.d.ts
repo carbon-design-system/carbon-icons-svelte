@@ -1,4 +1,6 @@
 declare module "@carbon/icons" {
+  import type IconDescriptor from "@carbon/icon-helpers/lib/types";
+
   export type ModuleName = string;
 
   export interface IconOutput {
@@ -13,7 +15,7 @@ declare module "@carbon/icons" {
         width: number;
         height: number;
       };
-      content: { elem: string; attrs: object }[];
+      content: IconDescriptor[];
       name: string;
       size: number;
     };
