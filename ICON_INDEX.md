@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2367 icons from [@carbon/icons@11.43.0](https://unpkg.com/browse/@carbon/icons@11.43.0/)
+> 2369 icons from [@carbon/icons@11.44.1](https://unpkg.com/browse/@carbon/icons@11.44.1/)
 
 - AcceptActionUsage
 - Accessibility
@@ -23,10 +23,12 @@
 - AgricultureAnalytics
 - Ai
 - AiFinancialSustainabilityCheck
+- AiGenerate
 - AiGovernanceLifecycle
 - AiGovernanceTracked
 - AiGovernanceUntracked
 - AiLaunch
+- AiRecommend
 - AirlineDigitalGate
 - AirlineManageGates
 - AirlinePassengerCare
