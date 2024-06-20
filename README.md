@@ -17,14 +17,17 @@ Try it in the [Svelte REPL](https://svelte.dev/repl/931e6a3461434622adad0557579c
 Install `carbon-icons-svelte` as a development dependency.
 
 ```sh
-# Yarn
-yarn add -D carbon-icons-svelte
-
 # npm
 npm i -D carbon-icons-svelte
 
 # pnpm
 pnpm i -D carbon-icons-svelte
+
+# Yarn
+yarn add -D carbon-icons-svelte
+
+# Bun
+bun add -D carbon-icons-svelte
 ```
 
 ## Usage
