@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2369 icons from [@carbon/icons@11.44.1](https://unpkg.com/browse/@carbon/icons@11.44.1/)
+> 2371 icons from [@carbon/icons@11.48.0](https://unpkg.com/browse/@carbon/icons@11.48.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -1308,6 +1308,7 @@
 - Misuse
 - MisuseOutline
 - MixedRainHail
+- MlModelReference
 - Mobile
 - MobileAdd
 - MobileAudio
@@ -1325,6 +1326,7 @@
 - ModelAlt
 - ModelBuilder
 - ModelBuilderReference
+- ModelFoundation
 - ModelReference
 - ModelTuned
 - Money
