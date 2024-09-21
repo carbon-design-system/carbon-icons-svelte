@@ -1,8 +1,8 @@
-import type { BuildIcons, IconOutput, ModuleName } from "@carbon/icons";
-import metadata_11_31 from "@carbon/icons-11.31/metadata.json";
-import metadata_latest from "@carbon/icons/metadata.json";
+import type { IconOutput, ModuleName } from "@carbon/icons";
+import metadata_11_31 from "@carbon/icons-11.31/metadata.json" assert { type: "json" };
+import metadata_latest from "@carbon/icons/metadata.json" assert { type: "json" };
 import { $ } from "bun";
-import { devDependencies, name } from "../package.json";
+import { devDependencies, name } from "../package.json" assert { type: "json" };
 import { template, templateSvg } from "./template";
 
 const VERSION = devDependencies["@carbon/icons"];
@@ -20,10 +20,10 @@ const DEPRECATED_ICONS = new Set([
   "Infinity",
 ]);
 
-const metadata = { ...metadata_latest } as BuildIcons;
+const metadata = { ...metadata_latest };
 
 // Merge in deprecated icons
-(metadata_11_31 as BuildIcons).icons.forEach((icon) => {
+metadata_11_31.icons.forEach((icon) => {
   icon.output.forEach((output) => {
     const iconName = output.moduleName.slice(0, -2);
 
@@ -36,7 +36,7 @@ const metadata = { ...metadata_latest } as BuildIcons;
 export const buildIcons = async () => {
   console.time("buildIcons");
   const iconMap = new Map<ModuleName, IconOutput>();
-  const iconModuleNames = (metadata as BuildIcons).icons
+  const iconModuleNames = metadata.icons
     .map((icon) =>
       icon.output.map((icon) => {
         let moduleName = icon.moduleName;

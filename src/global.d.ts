@@ -43,3 +43,15 @@ declare module "@carbon/icons" {
     }>;
   }
 }
+
+declare module "@carbon/icons/metadata.json" {
+  import type { BuildIcons } from "@carbon/icons";
+  const value: BuildIcons;
+  export default value;
+}
+
+declare module "@carbon/icons-11.31/metadata.json" {
+  import type { BuildIcons } from "@carbon/icons";
+  const value: BuildIcons;
+  export default value;
+}
