@@ -24,15 +24,16 @@ export const template = ({ descriptor }: IconOutput) => `<script>
   {...attributes}
   {...$$restProps}>
   {#if title}<title>{title}</title>{/if}
-  ${descriptor?.content?.map((element) => toString(element)).join("")}
+  ${(descriptor?.content ?? []).map((element) => toString(element)).join("")}
 </svg>`;
 
 export const templateSvg = ({ moduleName, descriptor }: IconOutput) => {
   const isGlyph = /Glyph$/.test(moduleName);
   const { width, height, ...rest } = descriptor?.attrs;
+  const content = descriptor?.content ?? [];
 
-  if (!descriptor?.content) {
-    console.error(`No content found for ${moduleName}`);
+  if (!content) {
+    console.error(`No content found for ${moduleName}`, descriptor);
   }
 
   let attrs = formatAttributes(
@@ -45,6 +46,6 @@ export const templateSvg = ({ moduleName, descriptor }: IconOutput) => {
   ${attrs}
   fill="currentColor"
   preserveAspectRatio="xMidYMid meet">
-  ${descriptor?.content?.map((element) => toString(element)).join("")}
+  ${content.map((element) => toString(element)).join("")}
 </svg>`;
 };
