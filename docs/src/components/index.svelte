@@ -1,4 +1,5 @@
 <script>
+  // @ts-check
   /** @type {{ iconModuleNames?: string[]; byModuleName: Record<string, string>; bySize?: { order: string[]; sizes: Record<string, string>; }; total?: number; }} */
   import data from "../build-info.json";
   import {
@@ -32,6 +33,7 @@
     match(value.trim().replace(/\s+/g, ""), name)
   );
 
+  /** @type {import("svelte").ComponentProps<Theme>["theme"]} */
   let theme = "white";
   let iconSize = 16;
 
@@ -107,7 +109,6 @@
             autocorrect="off"
             autocapitalize="off"
             spellcheck="false"
-            titleText="Search"
             labelText="Search"
             placeholder={`Search icons (e.g. "Add")`}
             bind:ref
