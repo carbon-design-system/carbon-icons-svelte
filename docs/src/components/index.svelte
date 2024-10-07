@@ -137,15 +137,15 @@
           </div>
           <div class:list={true} class={iconSizeClass}>
             {#each data.bySize.sizes[size] as name (name)}
-              {#if filteredModuleNames.includes(name)}
-                <button
-                  type="button"
-                  title={name}
-                  on:click={() => (moduleName = name)}
-                >
-                  {@html data.byModuleName[name]}
-                </button>
-              {/if}
+              {@const isFiltered = filteredModuleNames.includes(name)}
+              <button
+                type="button"
+                title={name}
+                style:display={isFiltered ? "inline" : "none"}
+                on:click={() => (moduleName = name)}
+              >
+                {@html data.byModuleName[name]}
+              </button>
             {/each}
           </div>
         {/each}
