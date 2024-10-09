@@ -1016,6 +1016,7 @@ exports[`imports 1`] = `
   "IbmTenet",
   "IbmToolchain",
   "IbmTurbonomic",
+  "IbmUnstructuredDataProcessor",
   "IbmVpnForVpc",
   "IbmVsiOnVpcForRegulatedIndustries",
   "IbmWatsonAssistant",
