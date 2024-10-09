@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2371 icons from [@carbon/icons@11.48.0](https://unpkg.com/browse/@carbon/icons@11.48.0/)
+> 2372 icons from [@carbon/icons@11.51.0](https://unpkg.com/browse/@carbon/icons@11.51.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -1016,6 +1016,7 @@
 - IbmTenet
 - IbmToolchain
 - IbmTurbonomic
+- IbmUnstructuredDataProcessor
 - IbmVpnForVpc
 - IbmVsiOnVpcForRegulatedIndustries
 - IbmWatsonAssistant
