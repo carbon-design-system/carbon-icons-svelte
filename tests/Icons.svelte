@@ -12,13 +12,14 @@
   } from "carbon-icons-svelte";
   import type { CarbonIconProps } from "carbon-icons-svelte";
   import Icon from "carbon-icons-svelte/lib/Accessibility.svelte";
+  import { mount } from "svelte";
 
   const props: CarbonIconProps = {
     size: 32,
     fill: "red",
   };
 
-  const icon = new Icon({ target: document.body, props });
+  const icon = mount(Icon, { target: document.body, props });
 
   $: console.log(icon.$$prop_def);
   $: console.log(typeof Assembly);
