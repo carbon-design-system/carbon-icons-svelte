@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2372 icons from [@carbon/icons@11.51.0](https://unpkg.com/browse/@carbon/icons@11.51.0/)
+> 2421 icons from [@carbon/icons@11.52.0](https://unpkg.com/browse/@carbon/icons@11.52.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -27,6 +27,7 @@
 - AiGovernanceLifecycle
 - AiGovernanceTracked
 - AiGovernanceUntracked
+- AiLabel
 - AiLaunch
 - AiRecommend
 - AirlineDigitalGate
@@ -80,6 +81,11 @@
 - ArithmeticMedian
 - ArrangeHorizontal
 - ArrangeVertical
+- ArrayBooleans
+- ArrayDates
+- ArrayNumbers
+- ArrayObjects
+- ArrayStrings
 - Arrival
 - ArrowDown
 - ArrowDownLeft
@@ -135,6 +141,7 @@
 - Binding_01
 - Binding_02
 - Binoculars
+- BlandAltmanPlot
 - BlockStorage
 - BlockStorageAlt
 - Blockchain
@@ -176,6 +183,8 @@
 - BrightnessContrast
 - BringForward
 - BringToFront
+- BuildImage
+- BuildRun
 - BuildTool
 - Building
 - BuildingInsights_1
@@ -656,6 +665,7 @@
 - DocumentMultiple_02
 - DocumentPdf
 - DocumentPreliminary
+- DocumentProcessor
 - DocumentProtected
 - DocumentRequirements
 - DocumentSecurity
@@ -834,6 +844,7 @@
 - FruitBowl
 - Function
 - FunctionMath
+- Function_2
 - GameConsole
 - GameWireless
 - Gamification
@@ -912,13 +923,20 @@
 - HybridNetworkingAlt
 - IbmAiOnZ
 - IbmAiopsInsights
+- IbmApiConnect
+- IbmAppConnectEnterprise
+- IbmAspera
 - IbmBluepay
 - IbmCloud
 - IbmCloudAppId
+- IbmCloudBackupAndRecovery
+- IbmCloudBackupServiceVpc
 - IbmCloudBareMetalServer
 - IbmCloudBareMetalServersVpc
 - IbmCloudCitrixDaas
+- IbmCloudCodeEngine
 - IbmCloudContinuousDelivery
+- IbmCloudDatabases
 - IbmCloudDedicatedHost
 - IbmCloudDirectLink_1Connect
 - IbmCloudDirectLink_1Dedicated
@@ -930,6 +948,7 @@
 - IbmCloudEventNotification
 - IbmCloudEventStreams
 - IbmCloudForEducation
+- IbmCloudGateKeeper
 - IbmCloudHpc
 - IbmCloudHsm
 - IbmCloudHyperProtectCryptoServices
@@ -941,6 +960,7 @@
 - IbmCloudKubernetesService
 - IbmCloudLogging
 - IbmCloudMassDataMigration
+- IbmCloudObservability
 - IbmCloudPakApplications
 - IbmCloudPakBusinessAutomation
 - IbmCloudPakData
@@ -957,23 +977,32 @@
 - IbmCloudProjects
 - IbmCloudResiliency
 - IbmCloudSecretsManager
+- IbmCloudSecurity
 - IbmCloudSecurityComplianceCenter
 - IbmCloudSecurityComplianceCenterWorkloadProtection
+- IbmCloudSecurityGroups
 - IbmCloudSubnets
 - IbmCloudSysdigSecure
 - IbmCloudTransitGateway
 - IbmCloudVirtualServerClassic
 - IbmCloudVirtualServerVpc
 - IbmCloudVpc
+- IbmCloudVpcBlockStorageSnapshots
+- IbmCloudVpcClientVpn
 - IbmCloudVpcEndpoints
+- IbmCloudVpcFileStorage
+- IbmCloudVpcImages
 - IbmCloudant
 - IbmContentServices
+- IbmDataPower
 - IbmDataProductExchange
 - IbmDataReplication
 - IbmDatastage
 - IbmDb2
 - IbmDb2Alt
 - IbmDb2Warehouse
+- IbmDeployableArchitecture
+- IbmDevopsControl
 - IbmDynamicRouteServer
 - IbmEloAutomotiveCompliance
 - IbmEloEngineeringInsights
@@ -992,26 +1021,37 @@
 - IbmEventProcessing
 - IbmEventStreams
 - IbmGcm
+- IbmGlobalStorageArchitecture
+- IbmGranite
 - IbmIbv
 - IbmInstana
 - IbmJrs
+- IbmKnowledgeCatalog
+- IbmKnowledgeCatalogPremium
+- IbmKnowledgeCatalogStandard
 - IbmLaunchpadS4
 - IbmLpa
 - IbmLqe
+- IbmMachineLearningForZos
 - IbmMatch_360
 - IbmMq
 - IbmOpenEnterpriseLanguages
 - IbmOpenshiftContainerPlatformOnVpcForRegulatedIndustries
+- IbmPlanningAnalytics
 - IbmPowerVs
 - IbmPowerVsPrivateCloud
 - IbmPowerWithVpc
 - IbmPrivatePathServices
 - IbmProcessMining
+- IbmQuantumSafeAdvisor
+- IbmQuantumSafeExplorer
+- IbmQuantumSafeRemediator
 - IbmSaasConsole
 - IbmSapOnPower
 - IbmSecureInfrastructureOnVpcForRegulatedIndustries
 - IbmSecurity
 - IbmSecurityServices
+- IbmStreamsets
 - IbmTelehealth
 - IbmTenet
 - IbmToolchain
@@ -1038,11 +1078,13 @@
 - IbmWatsonxCodeAssistant
 - IbmWatsonxCodeAssistantForZ
 - IbmWatsonxCodeAssistantForZRefactor
+- IbmWatsonxCodeAssistantForZValidationAssistant
 - IbmWatsonxOrchestrate
 - IbmWaziDeploy
 - IbmZCloudModStack
 - IbmZCloudProvisioning
 - IbmZEnvironmentsDevSecOps
+- IbmZOpenEditor
 - IbmZOs
 - IbmZOsAiControlInterface
 - IbmZOsContainers
@@ -1110,6 +1152,8 @@
 - Iso
 - IsoFilled
 - IsoOutline
+- JobDaemon
+- JobRun
 - JoinFull
 - JoinInner
 - JoinLeft
@@ -1371,6 +1415,7 @@
 - NetworkInterface
 - NetworkOverlay
 - NetworkPublic
+- NetworkTimeProtocol
 - Network_1
 - Network_2
 - Network_3
@@ -1416,6 +1461,7 @@
 - Number_7
 - Number_8
 - Number_9
+- Object
 - ObjectStorage
 - ObjectStorageAlt
 - ObservedHail
@@ -1571,6 +1617,7 @@
 - PromptTemplate
 - PropertyRelationship
 - PullRequest
+- PunctuationCheck
 - Purchase
 - QBarrier
 - QBlochSphere
@@ -1992,6 +2039,8 @@
 - ThumbsDown
 - ThumbsDownFilled
 - ThumbsUp
+- ThumbsUpDouble
+- ThumbsUpDoubleFilled
 - ThumbsUpFilled
 - Thunderstorm
 - ThunderstormScattered
