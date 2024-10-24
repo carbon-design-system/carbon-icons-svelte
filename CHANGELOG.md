@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [12.13.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v12.13.0) - 2024-10-24
+
+**Features**
+
+- upgrade `@carbon/icons` to v11.52.0 (net +49 icons)
+
 ## [12.12.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v12.12.0) - 2024-10-09
 
 **Features**
