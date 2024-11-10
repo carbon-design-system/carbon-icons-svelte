@@ -11,7 +11,10 @@
     "astro": "latest",
     "carbon-components-svelte": "latest",
     "fuzzy": "latest",
-    "svelte": "^5.1.3",
+    "svelte": "^5.1.13",
     "svelte-focus-key": "latest"
+  },
+  "overrides": {
+    "@sveltejs/vite-plugin-svelte": "^4.0.0"
   }
 }

@@ -24,7 +24,7 @@
     "@carbon/icons": "11.52.0",
     "@carbon/icons-11.31": "npm:@carbon/icons@~11.31.0",
     "@types/bun": "latest",
-    "svelte": "^5.1.9",
+    "svelte": "^5.1.13",
     "typescript": "latest"
   },
   "repository": {
