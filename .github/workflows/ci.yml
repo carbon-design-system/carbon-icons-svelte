@@ -16,6 +16,9 @@ jobs:
       - name: Build package
         run: bun run prepack
 
+      - name: Test types
+        run: bun run test:types
+
       - name: Trigger deploy
         if: github.ref == 'refs/heads/master'
         env:

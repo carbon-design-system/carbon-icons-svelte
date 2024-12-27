@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:types": "svelte-check"
+  },
+  "dependencies": {
+    "carbon-icons-svelte": "link:carbon-icons-svelte"
+  },
+  "devDependencies": {
+    "svelte": "^3.59.2",
+    "svelte-check": "^3.8.6",
+    "typescript": "^5.7.2"
+  }
+}
