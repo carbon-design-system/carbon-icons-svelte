@@ -17,7 +17,8 @@
     }
   },
   "scripts": {
-    "prepack": "bun test"
+    "prepack": "bun test",
+    "test:types": "bun tests/test-types.ts"
   },
   "devDependencies": {
     "@carbon/icon-helpers": "latest",
