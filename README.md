@@ -116,6 +116,29 @@ You can use `fill` to customize the color or pass any other valid `svg` attribut
 <Add aria-label="Add" tabindex={0} />
 ```
 
+## TypeScript
+
+This library offers TypeScript support for Svelte 4 and Svelte 5.
+
+For Svelte 3 compatibility, use [`carbon-icons-svelte@12.13.0`](https://github.com/carbon-design-system/carbon-icons-svelte/tree/v12.13.0).
+
+For convenience, a `CarbonIconProps` type is exported from the library.
+
+```svelte
+<script lang="ts">
+  import Add from "carbon-icons-svelte/lib/Add.svelte";
+  import type { CarbonIconProps } from "carbon-icons-svelte";
+
+  const props: CarbonIconProps = {
+    size: 16,
+    fill: "red",
+    "data-test": "id",
+  };
+</script>
+
+<Add {...props} />
+```
+
 ## [Changelog](CHANGELOG.md)
 
 ## [Contributing](CONTRIBUTING.md)
