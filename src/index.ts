@@ -59,32 +59,22 @@ export const buildIcons = async () => {
   await $`mkdir lib`;
 
   let libExport = "";
-  let definitions = `import type { SvelteComponentTyped } from "svelte";
+  let definitions = `import type { Component } from "svelte";
 import type { SvelteHTMLElements } from "svelte/elements";
 
-type RestProps = SvelteHTMLElements["svg"];
-
-export interface CarbonIconProps extends RestProps {
-  /**
-   * Specify the icon size.
-   * @default 16
-   */
-  size?: 16 | 20 | 24 | 32;
-
+export type CarbonIconProps = SvelteHTMLElements["svg"] & {
   /**
    * Specify the icon title.
    * @default undefined
    */
   title?: string;
 
-  [key: \`data-\${string}\`]: any;
-}
-
-export declare class CarbonIcon extends SvelteComponentTyped<
-  CarbonIconProps,
-  Record<string, any>,
-  {}
-> {}\n\n`;
+  /**
+   * Specify the icon size.
+   * @default 16
+   */
+  size?: 16 | 20 | 24 | 32;
+}\n\n`;
 
   type Size = "glyph" | "icon";
 
@@ -122,7 +112,7 @@ export declare class CarbonIcon extends SvelteComponentTyped<
 
     byModuleName[name] = templateSvg(icon);
     libExport += `export { default as ${name} } from "./${name}.svelte";\n`;
-    definitions += `export declare class ${name} extends CarbonIcon {}\n`;
+    definitions += `export declare const ${name}: Component<CarbonIconProps>;\n`;
 
     const fileName = `lib/${name}.svelte`;
 
@@ -149,8 +139,8 @@ ${definitions}`
     `# Icon Index\n
 > ${total} icons from ${version}\n
 ${iconModuleNames
-  .map((moduleName) => `- ${moduleName.replace(/^\_/, "\\_")}`)
-  .join("\n")}\n`
+      .map((moduleName) => `- ${moduleName.replace(/^\_/, "\\_")}`)
+      .join("\n")}\n`
   );
 
   await Bun.write(

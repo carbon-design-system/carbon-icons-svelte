@@ -12,15 +12,30 @@
   } from "carbon-icons-svelte";
   import type { CarbonIconProps } from "carbon-icons-svelte";
   import Icon from "carbon-icons-svelte/lib/Accessibility.svelte";
+  import { mount } from "svelte";
 
-  const props: CarbonIconProps = {
+  // Use the exported `CarbonIconProps` type for typing objects since the 
+  // idiomatic `ComponentProps` utility is not compatible with `Component` in Svelte 4.
+  const props = {
     size: 32,
     fill: "red",
-  };
+    "data-test": "id",
+  } satisfies CarbonIconProps;
 
-  const icon = new Icon({ target: document.body, props });
+  // Instead, you can use a const assertion for type safety.
+  const component_props = {
+    size: 16,
+    fill: "red",
+    "data-test": "id",
+  } as const;
 
-  $: console.log(icon.$$prop_def);
+  // @ts-expect-error (Svelte components are no longer classes)
+  // See https://svelte.dev/docs/svelte/v5-migration-guide#Components-are-no-longer-classes
+  const icon_class = new Icon({ target: document.body, props });
+
+  // Instead, use the `mount` function to manually instantiate the component.
+  mount(Icon, { target: document.body, props: component_props });
+
   $: console.log(typeof Assembly);
 </script>
 
