@@ -30,7 +30,7 @@ bun add carbon-icons-svelte
 
 ## Usage
 
-### Basic
+### Direct Import
 
 Import the icon from the `carbon-icons-svelte/lib` folder. See the [Icon Index](ICON_INDEX.md) for a list of supported icons.
 
@@ -41,6 +41,27 @@ Import the icon from the `carbon-icons-svelte/lib` folder. See the [Icon Index](
 
 <Add />
 ```
+
+### Base Import with Preprocessor
+
+> [!TIP]
+> Use [optimizeImports](https://github.com/carbon-design-system/carbon-preprocess-svelte#optimizeimports) from [carbon-preprocess-svelte](https://github.com/carbon-design-system/carbon-preprocess-svelte) to speed up development times.
+
+Due to the size of the library, importing directly from the barrel file may result in slow development times, since the entire barrel file is imported (thousands of icons).
+
+[optimizeImports](https://github.com/carbon-design-system/carbon-preprocess-svelte#optimizeimports) is a Svelte preprocessor that optimizes import paths from Carbon Svelte libraries. It enables you to use the barrel file import syntax without importing the entire library.
+
+For example, the following is automatically re-written by `optimizeImports`:
+
+```diff
+- import { Add } from "carbon-icons-svelte";
++ import Add from "carbon-icons-svelte/lib/Add.svelte";
+```
+
+This offers the best of both worlds:
+
+- Concise import syntax
+- Fast development times (only the icons you need are imported)
 
 ### Custom size
 
@@ -56,6 +77,15 @@ The default size is `16`.
 <Add size={24} />
 <Add size={32} />
 ```
+
+## API
+
+All props are optional.
+
+| Name  | Type                                          | Default value |
+| :---- | :-------------------------------------------- | :------------ |
+| size  | <code>16 &#124; 20 &#124; 24 &#124; 32</code> | `16`          |
+| title | `string`                                      | `undefined`   |
 
 ### Custom props
 
@@ -73,30 +103,18 @@ You can use `fill` to customize the color or pass any other valid `svg` attribut
 <Add aria-label="Add" />
 ```
 
-### Labelled icon that is focusable
-
-```svelte
-<Add aria-label="Add" tabindex="0" />
-```
-
 ### Labelled by
 
 ```svelte
 <label id="add-file">Add file</label>
-
 <Add aria-labelledby="add-file" />
 ```
 
-## API
+### Focusable
 
-### Props
-
-All props are optional.
-
-| Name  | Type                                          | Default value |
-| :---- | :-------------------------------------------- | :------------ |
-| size  | <code>16 &#124; 20 &#124; 24 &#124; 32</code> | `16`          |
-| title | `string`                                      | `undefined`   |
+```svelte
+<Add aria-label="Add" tabindex={0} />
+```
 
 ## [Changelog](CHANGELOG.md)
 
