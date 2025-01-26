@@ -33,7 +33,7 @@
     "type": "git",
     "url": "git+https://github.com/carbon-design-system/carbon-icons-svelte.git"
   },
-  "homepage": "https://github.com/carbon-design-system/carbon-icons-svelte",
+  "homepage": "https://carbon-icons-svelte.onrender.com/",
   "bugs": "https://github.com/carbon-design-system/carbon-icons-svelte/issues",
   "keywords": [
     "carbon",
