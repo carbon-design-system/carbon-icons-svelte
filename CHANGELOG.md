@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [13.0.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v13.0.0) - 2025-01-26
+
+**Breaking Changes**
+
+For TypeScript users, this library requires Svelte 4 or Svelte 5.
+
+For Svelte 3 compatibility, use [`carbon-icons-svelte@12.13.0`](https://github.com/carbon-design-system/carbon-icons-svelte/tree/v12.13.0).
+
+- replace deprecated `SvelteComponentTyped` with `Component` in TypeScript definitions
+- exported `CarbonIconProps` type is changed from an interface to a type alias
+
 ## [12.13.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v12.13.0) - 2024-10-24
 
 **Features**
