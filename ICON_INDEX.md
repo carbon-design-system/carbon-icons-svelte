@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2421 icons from [@carbon/icons@11.52.0](https://unpkg.com/browse/@carbon/icons@11.52.0/)
+> 2423 icons from [@carbon/icons@11.54.0](https://unpkg.com/browse/@carbon/icons@11.54.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -22,6 +22,7 @@
 - AddLarge
 - AgricultureAnalytics
 - Ai
+- AiBusinessImpactAssessment
 - AiFinancialSustainabilityCheck
 - AiGenerate
 - AiGovernanceLifecycle
@@ -193,6 +194,7 @@
 - Bullhorn
 - Buoy
 - Bus
+- BusinessMetrics
 - BusinessProcesses
 - ButtonCentered
 - ButtonFlushLeft
