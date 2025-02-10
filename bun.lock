@@ -5,7 +5,7 @@
       "name": "carbon-icons-svelte",
       "devDependencies": {
         "@carbon/icon-helpers": "latest",
-        "@carbon/icons": "11.54.0",
+        "@carbon/icons": "11.55.0",
         "@carbon/icons-11.31": "npm:@carbon/icons@~11.31.0",
         "@types/bun": "latest",
         "culls": "^0.1.1",
@@ -19,7 +19,7 @@
 
     "@carbon/icon-helpers": ["@carbon/icon-helpers@10.54.0", "", { "dependencies": { "@ibm/telemetry-js": "^1.5.0" } }, "sha512-IJ6uzwRA/6yvSG6tTCQoKIcGehwZYYqjvLHylILmEwyfB8kWV9VmJu957hfrfbS2rmuCXwmN6kCAnb4WS8FnFw=="],
 
-    "@carbon/icons": ["@carbon/icons@11.54.0", "", { "dependencies": { "@ibm/telemetry-js": "^1.5.0" } }, "sha512-bqNW8lnABpeyhr9npdrW8GFefGd36kTOk2tUfCQ7vlq5tw5pO/gzVEoXcsRW1aXs+wwxZ73Sp5dUd5EBM2vW1g=="],
+    "@carbon/icons": ["@carbon/icons@11.55.0", "", { "dependencies": { "@ibm/telemetry-js": "^1.5.0" } }, "sha512-JkDnI3FwZbL1iUkflA193N8qhcTOJ+0diuBxAwxqtAFVDezGgmNbFoyvB7OGpZQbmqeZBlJEXAOnS8AOZ1sHRg=="],
 
     "@carbon/icons-11.31": ["@carbon/icons@11.31.0", "", {}, "sha512-sQ7ghpj4vtvU71s6U82UZDWZ7Om9tVnKPNBNZrejQYJqAJWQ0L1MIzQATnnOxKPK76ZxqvszpwPOwgy47USRCQ=="],
 
