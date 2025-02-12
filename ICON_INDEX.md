@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2423 icons from [@carbon/icons@11.54.0](https://unpkg.com/browse/@carbon/icons@11.54.0/)
+> 2441 icons from [@carbon/icons@11.55.0](https://unpkg.com/browse/@carbon/icons@11.55.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -82,6 +82,7 @@
 - ArithmeticMedian
 - ArrangeHorizontal
 - ArrangeVertical
+- Array
 - ArrayBooleans
 - ArrayDates
 - ArrayNumbers
@@ -107,6 +108,7 @@
 - Asset
 - AssetConfirm
 - AssetDigitalTwin
+- AssetMovement
 - AssetView
 - Asterisk
 - Async
@@ -116,6 +118,7 @@
 - AugmentedReality
 - Automatic
 - Autoscaling
+- Avro
 - Awake
 - Badge
 - BaggageClaim
@@ -131,10 +134,12 @@
 - BatchJobStep
 - BatteryCharging
 - BatteryEmpty
+- BatteryError
 - BatteryFull
 - BatteryHalf
 - BatteryLow
 - BatteryQuarter
+- BatteryWarning
 - Bee
 - BeeBat
 - Beta
@@ -261,6 +266,7 @@
 - Certificate
 - CertificateCheck
 - ChangeCatalog
+- Channels
 - CharacterDecimal
 - CharacterFraction
 - CharacterInteger
@@ -487,6 +493,7 @@
 - Cough
 - Course
 - Covariate
+- CreateLink
 - Credentials
 - CriticalGlyph
 - CriticalSeverityGlyph
@@ -583,6 +590,7 @@
 - Delivery
 - DeliveryAdd
 - DeliveryParcel
+- DeliverySettings
 - DeliveryTruck
 - Demo
 - Departure
@@ -995,10 +1003,14 @@
 - IbmCloudVpcFileStorage
 - IbmCloudVpcImages
 - IbmCloudant
+- IbmConsultingAdvantageAgent
+- IbmConsultingAdvantageApplication
+- IbmConsultingAdvantageAssistant
 - IbmContentServices
 - IbmDataPower
 - IbmDataProductExchange
 - IbmDataReplication
+- IbmDataband
 - IbmDatastage
 - IbmDb2
 - IbmDb2Alt
@@ -1171,6 +1183,7 @@
 - Key
 - Keyboard
 - KeyboardOff
+- KioskDevice
 - Kubelet
 - Kubernetes
 - KubernetesControlPlaneNode
@@ -1270,6 +1283,7 @@
 - LogoFacebook
 - LogoFigma
 - LogoFlickr
+- LogoGit
 - LogoGithub
 - LogoGitlab
 - LogoGlassdoor
@@ -1289,6 +1303,7 @@
 - LogoQuora
 - LogoRScript
 - LogoReact
+- LogoRedHatAiInstructlabOnIbmCloud
 - LogoRedHatAnsible
 - LogoSketch
 - LogoSkype
@@ -1392,6 +1407,7 @@
 - Mp4
 - Mpeg
 - Mpg2
+- MultiuserDevice
 - Music
 - MusicAdd
 - MusicRemove
@@ -1892,6 +1908,7 @@
 - SplitScreen
 - SprayPaint
 - Sprout
+- SpyreAccelerator
 - Sql
 - SquareFillGlyph
 - SquareOutline
@@ -2105,6 +2122,7 @@
 - TriangleRightOutline
 - TriangleRightSolid
 - TriangleSolid
+- Trigger
 - Trophy
 - TrophyFilled
 - TropicalStorm
