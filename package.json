@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@carbon/icon-helpers": "latest",
-    "@carbon/icons": "11.55.0",
+    "@carbon/icons": "11.56.0",
     "@carbon/icons-11.31": "npm:@carbon/icons@~11.31.0",
     "@types/bun": "latest",
     "svelte": "^5.0.3",
