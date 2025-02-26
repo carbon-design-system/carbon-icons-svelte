@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2441 icons from [@carbon/icons@11.55.0](https://unpkg.com/browse/@carbon/icons@11.55.0/)
+> 2455 icons from [@carbon/icons@11.56.0](https://unpkg.com/browse/@carbon/icons@11.56.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -80,6 +80,7 @@
 - AreaCustom
 - ArithmeticMean
 - ArithmeticMedian
+- Arrange
 - ArrangeHorizontal
 - ArrangeVertical
 - Array
@@ -736,6 +737,7 @@
 - Education
 - Email
 - EmailNew
+- EmissionsManagement
 - Encryption
 - EnergyRenewable
 - Enterprise
@@ -796,6 +798,7 @@
 - FilterRemove
 - FilterReset
 - Finance
+- FinancialAssets
 - FingerprintRecognition
 - Fire
 - Firewall
@@ -850,6 +853,7 @@
 - Forward_5
 - FoundationModel
 - Fragile
+- Fragments
 - Friendship
 - FruitBowl
 - Function
@@ -935,6 +939,7 @@
 - IbmAiopsInsights
 - IbmApiConnect
 - IbmAppConnectEnterprise
+- IbmApplicationAndDiscoveryDeliveryIntelligence
 - IbmAspera
 - IbmBluepay
 - IbmCloud
@@ -955,6 +960,7 @@
 - IbmCloudDirectLink_2Connect
 - IbmCloudDirectLink_2Dedicated
 - IbmCloudDirectLink_2DedicatedHosting
+- IbmCloudEssentialSecurityAndObservabilityServices
 - IbmCloudEventNotification
 - IbmCloudEventStreams
 - IbmCloudForEducation
@@ -1048,6 +1054,7 @@
 - IbmLqe
 - IbmMachineLearningForZos
 - IbmMatch_360
+- IbmMaximoApplicationSuite
 - IbmMq
 - IbmOpenEnterpriseLanguages
 - IbmOpenshiftContainerPlatformOnVpcForRegulatedIndustries
@@ -1068,6 +1075,7 @@
 - IbmStreamsets
 - IbmTelehealth
 - IbmTenet
+- IbmTestAcceleratorForZ
 - IbmToolchain
 - IbmTurbonomic
 - IbmUnstructuredDataProcessor
@@ -1090,6 +1098,7 @@
 - IbmWatsonToneAnalyzer
 - IbmWatsonxAssistant
 - IbmWatsonxCodeAssistant
+- IbmWatsonxCodeAssistantForEnterpriseJavaApplications
 - IbmWatsonxCodeAssistantForZ
 - IbmWatsonxCodeAssistantForZRefactor
 - IbmWatsonxCodeAssistantForZValidationAssistant
@@ -1459,6 +1468,7 @@
 - NotificationNew
 - NotificationOff
 - NotificationOffFilled
+- NullSign
 - NumberSmall_0
 - NumberSmall_1
 - NumberSmall_2
@@ -1589,6 +1599,7 @@
 - PillsSubtract
 - Pin
 - PinFilled
+- Pipelines
 - Plan
 - Plane
 - PlanePrivate
@@ -1613,6 +1624,8 @@
 - PortUsage
 - Portfolio
 - Power
+- PowerEnterprisePoolsMeteredCapacityIntegration
+- PowerVirtualServerDisasterRecoveryAutomation
 - Ppt
 - PresentationFile
 - Pressure
@@ -1922,6 +1935,7 @@
 - StayInside
 - StemLeafPlot
 - Stethoscope
+- Stickies
 - Stop
 - StopFilled
 - StopFilledAlt
