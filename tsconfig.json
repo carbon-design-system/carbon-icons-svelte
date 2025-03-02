@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
+    "erasableSyntaxOnly": true,
     "esModuleInterop": true,
     "lib": ["esnext", "DOM"],
     "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "resolveJsonModule": true,
     "strict": true,
     "paths": {
