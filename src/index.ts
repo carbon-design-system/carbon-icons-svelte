@@ -1,11 +1,11 @@
 import type { IconOutput, ModuleName } from "@carbon/icons";
-import metadata_11_31 from "@carbon/icons-11.31/metadata.json" assert { type: "json" };
-import metadata_latest from "@carbon/icons/metadata.json" assert { type: "json" };
+import metadata_11_31 from "@carbon/icons-11.31/metadata.json" with { type: "json" };
+import metadata_latest from "@carbon/icons/metadata.json" with { type: "json" };
 import { $ } from "bun";
-import { devDependencies, name } from "../package.json" assert { type: "json" };
-import { template, templateSvg } from "./template";
+import pkg from "../package.json" assert { type: "json" };
+import { template, templateSvg } from "./template.js";
 
-const VERSION = devDependencies["@carbon/icons"];
+const VERSION = pkg.devDependencies["@carbon/icons"];
 
 /**
  * This library is built using the `@carbon/icons` package.
@@ -124,11 +124,11 @@ export type CarbonIconProps = SvelteHTMLElements["svg"] & {
 
   const version = `[@carbon/icons@${VERSION}](https://unpkg.com/browse/@carbon/icons@${VERSION}/)`;
   const total = iconModuleNames.length;
-  const packageMetadata = `${total} icons from @carbon/icons@${devDependencies["@carbon/icons"]}`;
+  const packageMetadata = `${total} icons from @carbon/icons@${pkg.devDependencies["@carbon/icons"]}`;
 
   await Bun.write(
     "lib/index.d.ts",
-    `// Type definitions for ${name}
+    `// Type definitions for ${pkg.name}
 // ${packageMetadata}
 
 ${definitions}`
