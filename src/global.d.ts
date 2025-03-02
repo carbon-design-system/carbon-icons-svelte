@@ -1,5 +1,5 @@
 declare module "@carbon/icons" {
-  import type IconDescriptor from "@carbon/icon-helpers/lib/types";
+  import type { toString } from "@carbon/icon-helpers";
 
   export type ModuleName = string;
 
@@ -15,7 +15,7 @@ declare module "@carbon/icons" {
         width: number;
         height: number;
       };
-      content: IconDescriptor[];
+      content: Parameters<typeof toString>[0][];
       name: string;
       size: number;
     };
