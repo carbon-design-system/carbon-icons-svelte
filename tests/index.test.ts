@@ -1,7 +1,7 @@
 import type { IconOutput } from "@carbon/icons";
 import { expect, test } from "bun:test";
-import { buildIcons } from "../src";
-import { template } from "../src/template";
+import { buildIcons } from "../src/index.js";
+import { template } from "../src/template.js";
 
 test("imports", async () => {
   const icons = await buildIcons();
