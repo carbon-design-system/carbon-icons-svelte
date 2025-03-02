@@ -1,4 +1,4 @@
-import { toString, formatAttributes } from "@carbon/icon-helpers";
+import { formatAttributes, toString } from "@carbon/icon-helpers";
 import type { IconOutput } from "@carbon/icons";
 
 export const template = ({ descriptor }: IconOutput) => `<script>
@@ -24,7 +24,7 @@ export const template = ({ descriptor }: IconOutput) => `<script>
   {...attributes}
   {...$$restProps}>
   {#if title}<title>{title}</title>{/if}
-  ${(descriptor?.content ?? []).map((element) => toString(element)).join("")}
+  ${(descriptor?.content ?? []).map(toString).join("")}
 </svg>`;
 
 export const templateSvg = ({ moduleName, descriptor }: IconOutput) => {
@@ -46,6 +46,6 @@ export const templateSvg = ({ moduleName, descriptor }: IconOutput) => {
   ${attrs}
   fill="currentColor"
   preserveAspectRatio="xMidYMid meet">
-  ${content.map((element) => toString(element)).join("")}
+  ${content.map(toString).join("")}
 </svg>`;
 };
