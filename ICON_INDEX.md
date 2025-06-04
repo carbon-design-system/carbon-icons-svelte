@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2455 icons from [@carbon/icons@11.56.0](https://unpkg.com/browse/@carbon/icons@11.56.0/)
+> 2492 icons from [@carbon/icons@11.61.0](https://unpkg.com/browse/@carbon/icons@11.61.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -17,9 +17,11 @@
 - Activity
 - Add
 - AddAlt
+- AddChildNode
 - AddComment
 - AddFilled
 - AddLarge
+- AddParentNode
 - AgricultureAnalytics
 - Ai
 - AiBusinessImpactAssessment
@@ -111,10 +113,13 @@
 - AssetDigitalTwin
 - AssetMovement
 - AssetView
+- AssignmentActionUsage
 - Asterisk
 - Async
 - At
 - Attachment
+- AttributeDefinition
+- AttributeUsage
 - AudioConsole
 - AugmentedReality
 - Automatic
@@ -372,6 +377,7 @@
 - ChevronUp
 - ChevronUpGlyph
 - ChevronUpOutline
+- ChildNode
 - Chip
 - Choices
 - ChooseItem
@@ -443,6 +449,7 @@
 - ColumnDelete
 - ColumnDependency
 - ColumnInsert
+- Comments
 - Commit
 - CommunicationUnified
 - Compare
@@ -595,8 +602,10 @@
 - DeliveryTruck
 - Demo
 - Departure
+- Dependency
 - Deploy
 - DeployRules
+- DeploymentCanary
 - DeploymentPattern
 - DeploymentPolicy
 - DeploymentUnitData
@@ -693,8 +702,11 @@
 - DocumentView
 - DocumentWordProcessor
 - DocumentWordProcessorReference
+- Documentation
 - DogWalker
 - DotMark
+- DoubleAxisChartBar
+- DoubleAxisChartColumn
 - DoubleInteger
 - DownToBottom
 - Download
@@ -735,6 +747,7 @@
 - EditOff
 - EdtLoop
 - Education
+- ElementPicker
 - Email
 - EmailNew
 - EmissionsManagement
@@ -789,6 +802,7 @@
 - FavoriteHalf
 - FeatureMembership
 - FeatureMembershipFilled
+- FeaturePicker
 - FeatureTyping
 - FetchUpload
 - FetchUploadCloud
@@ -841,6 +855,7 @@
 - FolderParent
 - FolderShared
 - Folders
+- ForLoop
 - ForecastHail
 - ForecastHail_30
 - ForecastLightning
@@ -1118,6 +1133,7 @@
 - IdManagement
 - Idea
 - Identification
+- IfAction
 - Image
 - ImageCopy
 - ImageMedical
@@ -1131,6 +1147,7 @@
 - InProgress
 - InProgressError
 - InProgressWarning
+- IncidentReporter
 - Incomplete
 - IncompleteCancel
 - IncompleteError
@@ -1165,7 +1182,11 @@
 - IntentRequestUninstall
 - IntentRequestUpgrade
 - Interactions
+- InterfaceDefinition
+- InterfaceDefinitionAlt
 - InterfaceUsage
+- InterfaceUsageAlt
+- InterfaceUsage_1
 - Intersect
 - IntrusionPrevention
 - InventoryManagement
@@ -1175,6 +1196,8 @@
 - Iso
 - IsoFilled
 - IsoOutline
+- ItemDefinition
+- ItemUsage
 - JobDaemon
 - JobRun
 - JoinFull
@@ -1283,6 +1306,7 @@
 - LocationStar
 - LocationStarFilled
 - Locked
+- LockedAndBlocked
 - LogicalPartition
 - Login
 - LogoAngular
@@ -1331,6 +1355,7 @@
 - LogoYoutube
 - Logout
 - Loop
+- LoopAlt
 - LowSeverityGlyph
 - Mac
 - MacCommand
@@ -1468,6 +1493,7 @@
 - NotificationNew
 - NotificationOff
 - NotificationOffFilled
+- NotificationsPaused
 - NullSign
 - NumberSmall_0
 - NumberSmall_1
@@ -1529,6 +1555,7 @@
 - Paragraph
 - Parameter
 - ParentChild
+- ParentNode
 - PartDefinition
 - PartUsage
 - PartitionAuto
@@ -1572,6 +1599,7 @@
 - PentagonSolid
 - Percentage
 - PercentageFilled
+- PerformAction
 - Person
 - PersonFavorite
 - Pest
@@ -1708,6 +1736,7 @@
 - RecordingFilled
 - RecordingFilledAlt
 - Recycle
+- Redefinition
 - Redo
 - RefEvapotranspiration
 - ReferenceArchitecture
@@ -1916,6 +1945,10 @@
 - SortAscending
 - SortDescending
 - SortRemove
+- SortingAToZ
+- SortingHighestToLowestNumber
+- SortingLowestToHighestNumber
+- SortingZToA
 - SpellCheck
 - Split
 - SplitScreen
@@ -1958,11 +1991,13 @@
 - SubjectDefinition
 - SubjectUsage
 - SubnetAclRules
+- Subsetting
 - Subtract
 - SubtractAlt
 - SubtractFilled
 - SubtractLarge
 - Succession
+- SuccessionFlowConnection
 - SummaryKpi
 - SummaryKpiMirror
 - Sun
@@ -1972,6 +2007,7 @@
 - Sustainability
 - Svg
 - Swim
+- SwimlaneDVertical
 - SwitchLayer_2
 - SwitchLayer_3
 - Switcher
@@ -2409,6 +2445,7 @@
 - Webhook
 - Websheet
 - Wheat
+- WhileLoop
 - WhitePaper
 - Wifi
 - WifiBridge
