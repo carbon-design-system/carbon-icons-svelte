@@ -11,7 +11,7 @@
     "astro": "latest",
     "carbon-components-svelte": "latest",
     "fuzzy": "latest",
-    "svelte": "^5.33.14",
+    "svelte": "^5.34.9",
     "svelte-focus-key": "latest"
   }
 }
