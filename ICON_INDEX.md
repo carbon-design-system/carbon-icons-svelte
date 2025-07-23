@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2492 icons from [@carbon/icons@11.61.0](https://unpkg.com/browse/@carbon/icons@11.61.0/)
+> 2521 icons from [@carbon/icons@11.63.0](https://unpkg.com/browse/@carbon/icons@11.63.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -22,6 +22,8 @@
 - AddFilled
 - AddLarge
 - AddParentNode
+- AggregatorCountRows
+- AggregatorRecalculation
 - AgricultureAnalytics
 - Ai
 - AiBusinessImpactAssessment
@@ -133,6 +135,7 @@
 - BareMetalServer
 - BareMetalServer_01
 - BareMetalServer_02
+- BaseDocumentSet
 - Basketball
 - BastionHost
 - Bat
@@ -690,6 +693,7 @@
 - DocumentRequirements
 - DocumentSecurity
 - DocumentSentiment
+- DocumentSet
 - DocumentSigned
 - DocumentSketch
 - DocumentSubject
@@ -855,6 +859,7 @@
 - FolderParent
 - FolderShared
 - Folders
+- FollowUpWorkOrder
 - ForLoop
 - ForecastHail
 - ForecastHail_30
@@ -874,6 +879,8 @@
 - Function
 - FunctionMath
 - Function_2
+- FunnelSequence
+- FunnelSort
 - GameConsole
 - GameWireless
 - Gamification
@@ -920,6 +927,7 @@
 - Hd
 - HdFilled
 - Hdr
+- Heading
 - Headphones
 - Headset
 - HealthCross
@@ -1087,6 +1095,12 @@
 - IbmSecureInfrastructureOnVpcForRegulatedIndustries
 - IbmSecurity
 - IbmSecurityServices
+- IbmSoftwareWatsonxDataAnalyzeAndProcess
+- IbmSoftwareWatsonxDataStructuredEnrichment
+- IbmSoftwareWatsonxDataStructuredImport
+- IbmSoftwareWatsonxDataUnstructuredEnrichment
+- IbmSoftwareWatsonxDataUnstructuredImport
+- IbmSoftwareWatsonxDocumentLibrary
 - IbmStreamsets
 - IbmTelehealth
 - IbmTenet
@@ -1143,6 +1157,7 @@
 - ImageService
 - ImageStoreLocal
 - ImportExport
+- Important
 - ImproveRelevance
 - InProgress
 - InProgressError
@@ -1202,10 +1217,13 @@
 - JobRun
 - JoinFull
 - JoinInner
+- JoinInnerAlt
 - JoinLeft
+- JoinLeftOuter
 - JoinNode
 - JoinOuter
 - JoinRight
+- JoinRightOuter
 - Jpg
 - JsError
 - Json
@@ -1374,6 +1392,7 @@
 - MapBoundaryVegetation
 - MapCenter
 - MapIdentify
+- Marginal
 - MarineWarning
 - MathCurve
 - Maximize
@@ -1425,6 +1444,8 @@
 - ModelFoundation
 - ModelReference
 - ModelTuned
+- ModifiedNewest
+- ModifiedOldest
 - Money
 - Monster
 - Monument
@@ -1628,6 +1649,8 @@
 - Pin
 - PinFilled
 - Pipelines
+- PivotHorizontal
+- PivotVertical
 - Plan
 - Plane
 - PlanePrivate
@@ -1645,6 +1668,7 @@
 - PointOfPresence
 - Police
 - Policy
+- PopIn
 - Popup
 - PortDefinition
 - PortInput
@@ -1729,6 +1753,7 @@
 - RainScattered
 - RainScatteredNight
 - Raw
+- ReadMe
 - Receipt
 - RecentlyViewed
 - Recommend
@@ -1816,6 +1841,7 @@
 - SalesOps
 - SankeyDiagram
 - SankeyDiagramAlt
+- Sap
 - Satellite
 - SatelliteRadar
 - SatelliteWeather
@@ -2004,6 +2030,8 @@
 - Sunrise
 - Sunset
 - SupportVectorMachine
+- SurrogateKeyDatabase
+- SurrogateKeyFlatFile
 - Sustainability
 - Svg
 - Swim
@@ -2432,6 +2460,7 @@
 - WaveDirection
 - WaveHeight
 - WavePeriod
+- Waveform
 - WeatherFrontCold
 - WeatherFrontStationary
 - WeatherFrontWarm
