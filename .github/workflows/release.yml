@@ -29,4 +29,13 @@ jobs:
       - name: Publish package
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-        run: npm publish --provenance --access public
+        run: |
+          if [[ "${{ github.ref }}" == "refs/tags/v13*" ]]; then
+            npm publish --provenance --access public --tag latest
+          elif [[ "${{ github.ref }}" == "refs/tags/v12*" ]]; then
+            npm publish --provenance --access public --tag v12
+          else
+            echo "Error: Publishing from unexpected tag: ${{ github.ref }}"
+            echo "Only v13* and v12* tags are allowed for publishing"
+            exit 1
+          fi
