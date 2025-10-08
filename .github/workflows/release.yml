@@ -5,24 +5,37 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest-xlarge
     permissions:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: oven-sh/setup-bun@v2
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: "20.x"
+          node-version: 22
           registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build package
+        run: bun run prepack
+
+      - name: Prune package
+        run: bunx culls --preserve=svelte
+
       - name: Publish package
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-
-        # Currently, only npm supports publishing packages with provenance
-        # https://docs.npmjs.com/generating-provenance-statements
         run: |
-          bun install
-          bun prepack
-          npm publish --provenance --access public
+          if [[ "${{ github.ref }}" == refs/tags/v13* ]]; then
+            npm publish --provenance --access public --tag latest
+          elif [[ "${{ github.ref }}" == refs/tags/v12* ]]; then
+            npm publish --provenance --access public --tag v12
+          else
+            echo "Error: Publishing from unexpected tag: ${{ github.ref }}"
+            echo "Only v13* and v12* tags are allowed for publishing"
+            exit 1
+          fi
