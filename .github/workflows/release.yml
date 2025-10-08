@@ -30,9 +30,9 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
         run: |
-          if [[ "${{ github.ref }}" == "refs/tags/v13*" ]]; then
+          if [[ "${{ github.ref }}" == refs/tags/v13* ]]; then
             npm publish --provenance --access public --tag latest
-          elif [[ "${{ github.ref }}" == "refs/tags/v12*" ]]; then
+          elif [[ "${{ github.ref }}" == refs/tags/v12* ]]; then
             npm publish --provenance --access public --tag v12
           else
             echo "Error: Publishing from unexpected tag: ${{ github.ref }}"
