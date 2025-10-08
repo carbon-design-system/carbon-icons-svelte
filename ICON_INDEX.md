@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2521 icons from [@carbon/icons@11.63.0](https://unpkg.com/browse/@carbon/icons@11.63.0/)
+> 2548 icons from [@carbon/icons@11.69.0](https://unpkg.com/browse/@carbon/icons@11.69.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -198,6 +198,7 @@
 - BrightnessContrast
 - BringForward
 - BringToFront
+- BsamQsamZedc
 - BuildImage
 - BuildRun
 - BuildTool
@@ -406,6 +407,7 @@
 - CirclePacking
 - CircleSolid
 - CircleStrokeGlyph
+- ClassicBatch
 - Classification
 - ClassifierLanguage
 - Clean
@@ -502,6 +504,7 @@
 - Cost
 - CostTotal
 - Cough
+- CouplingFacilityEncryption
 - Course
 - Covariate
 - CreateLink
@@ -564,6 +567,7 @@
 - DataRefineryReference
 - DataRegular
 - DataSet
+- DataSetEncryption
 - DataShare
 - DataStructured
 - DataTable
@@ -625,11 +629,13 @@
 - DevicesApps
 - DewPoint
 - DewPointFilled
+- DfsortIbmZSort
 - Diagram
 - DiagramReference
 - DiamondFillGlyph
 - DiamondOutline
 - DiamondSolid
+- DigitalIdentity
 - DirectLink
 - DirectionBearRight_01
 - DirectionBearRight_01Filled
@@ -819,6 +825,7 @@
 - FinancialAssets
 - FingerprintRecognition
 - Fire
+- FireFill
 - Firewall
 - FirewallClassic
 - Fish
@@ -901,9 +908,11 @@
 - GeneratePdf
 - Gif
 - Gift
+- GlobalFilters
 - GlobalLoanAndTrial
 - Globe
 - Gradient
+- GraphAggregator
 - GraphicalDataFlow
 - Grid
 - Group
@@ -1063,9 +1072,11 @@
 - IbmEventEndpointMgmt
 - IbmEventProcessing
 - IbmEventStreams
+- IbmFederatedApiManagement
 - IbmGcm
 - IbmGlobalStorageArchitecture
 - IbmGranite
+- IbmHybridControlPlane
 - IbmIbv
 - IbmInstana
 - IbmJrs
@@ -1133,6 +1144,14 @@
 - IbmWatsonxCodeAssistantForZValidationAssistant
 - IbmWatsonxOrchestrate
 - IbmWaziDeploy
+- IbmWebmethodsApiGateway
+- IbmWebmethodsApiStudio
+- IbmWebmethodsB2bIntegration
+- IbmWebmethodsDeveloperPortal
+- IbmWebmethodsHybridIntegration
+- IbmWebmethodsIntegration
+- IbmWebmethodsIntegrationServer
+- IbmWebmethodsManagedFileTransfer
 - IbmZCloudModStack
 - IbmZCloudProvisioning
 - IbmZEnvironmentsDevSecOps
@@ -1329,6 +1348,7 @@
 - Login
 - LogoAngular
 - LogoAnsibleCommunity
+- LogoBluesky
 - LogoDigg
 - LogoDiscord
 - LogoFacebook
@@ -1655,6 +1675,7 @@
 - Plane
 - PlanePrivate
 - PlaneSea
+- PlatformAutomation
 - Platforms
 - Play
 - PlayFilled
@@ -1888,6 +1909,7 @@
 - ServerDns
 - ServerProxy
 - ServerTime
+- ServerlessFleet
 - ServiceDesk
 - ServiceId
 - ServiceLevels
@@ -2156,6 +2178,8 @@
 - ToolKit
 - Tools
 - ToolsAlt
+- TopDataSets
+- TopPrograms
 - Tornado
 - TornadoWarning
 - TouchInteraction
@@ -2228,6 +2252,7 @@
 - Unlocked
 - Unsaved
 - UpToTop
+- UpdateComplete
 - UpdateNow
 - Upgrade
 - Upload
@@ -2272,6 +2297,7 @@
 - UvIndexAlt
 - UvIndexFilled
 - ValueVariable
+- ValueVariableAlt
 - Van
 - VegetationAsset
 - VegetationEncroachment
@@ -2508,6 +2534,7 @@
 - Xml
 - YAxis
 - ZAxis
+- ZHyperLink
 - ZLpar
 - ZSystems
 - Zip
