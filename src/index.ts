@@ -36,6 +36,11 @@ metadata_11_31.icons.forEach((icon) => {
 export const buildIcons = async () => {
   console.time("buildIcons");
   const iconMap = new Map<ModuleName, IconOutput>();
+  const iconMetadataMap = new Map<string, typeof metadata.icons[0]>();
+  metadata.icons.forEach((icon) => {
+    iconMetadataMap.set(icon.name, icon);
+  });
+
   const iconModuleNames = metadata.icons
     .map((icon) =>
       icon.output.map((icon) => {
@@ -94,21 +99,33 @@ export type CarbonIconProps = SvelteHTMLElements["svg"] & {
   };
 
   let names = new Set();
+  let glyphNames = new Set<string>();
+  let iconNames = new Set<string>();
+  const displayNames: string[] = [];
 
   iconModuleNames.forEach((moduleName) => {
     let name = moduleName;
 
     const icon = iconMap.get(name)!;
+    const iconMetadata = iconMetadataMap.get(icon.descriptor.name);
+    const isGlyph = iconMetadata?.output.some((output) => output.moduleName.endsWith("Glyph")) ?? false;
 
-    if (/Glyph$/.test(name)) {
+    if (isGlyph && /Glyph$/.test(name)) {
       name = moduleName.replace(/Glyph$/, "");
+    }
+
+    // Add to category arrays only once per name.
+    if (isGlyph && !glyphNames.has(name)) {
       bySize.sizes.glyph.push(name);
-    } else {
+      glyphNames.add(name);
+    } else if (!isGlyph && !iconNames.has(name)) {
       bySize.sizes.icon.push(name);
+      iconNames.add(name);
     }
 
     if (names.has(name)) return;
     names.add(name);
+    displayNames.push(name);
 
     byModuleName[name] = templateSvg(icon);
     libExport += `export { default as ${name} } from "./${name}.svelte";\n`;
@@ -149,7 +166,7 @@ ${iconModuleNames
       total,
       bySize,
       byModuleName,
-      iconModuleNames,
+      iconModuleNames: displayNames,
     })
   );
 
