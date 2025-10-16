@@ -127,6 +127,11 @@ export type CarbonIconProps = SvelteHTMLElements["svg"] & {
     names.add(name);
     displayNames.push(name);
 
+    // For glyphs, also add name with "Glyph" suffix for searchability
+    if (isGlyph) {
+      displayNames.push(name + "Glyph");
+    }
+
     byModuleName[name] = templateSvg(icon);
     libExport += `export { default as ${name} } from "./${name}.svelte";\n`;
     definitions += `export declare const ${name}: Component<CarbonIconProps>;\n`;

@@ -29,9 +29,16 @@
   let ref = null;
   let value = "";
 
-  $: filteredModuleNames = data.iconModuleNames.filter((name) =>
-    match(value.trim().replace(/\s+/g, ""), name)
-  );
+  $: filteredModuleNames = data.iconModuleNames
+    .filter((name) => match(value.trim().replace(/\s+/g, ""), name))
+    .flatMap((name) => {
+      // If a glyph variant is matched (e.g., "CaretDownGlyph"),
+      // also include the base name (e.g., "CaretDown") for display filtering
+      if (name.endsWith("Glyph")) {
+        return [name, name.replace(/Glyph$/, "")];
+      }
+      return [name];
+    });
 
   /** @type {import("svelte").ComponentProps<Theme>["theme"]} */
   let theme = "white";
