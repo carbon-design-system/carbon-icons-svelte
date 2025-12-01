@@ -2,7 +2,7 @@ import type { IconOutput, ModuleName } from "@carbon/icons";
 import metadata_11_31 from "@carbon/icons-11.31/metadata.json" with { type: "json" };
 import metadata_latest from "@carbon/icons/metadata.json" with { type: "json" };
 import { $ } from "bun";
-import pkg from "../package.json" assert { type: "json" };
+import pkg from "../package.json" with { type: "json" };
 import { template, templateSvg } from "./template.js";
 
 const VERSION = pkg.devDependencies["@carbon/icons"];
