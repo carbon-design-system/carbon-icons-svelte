@@ -1,6 +1,6 @@
 import svelte from "@astrojs/svelte";
 import { defineConfig } from "astro/config";
-import { version } from "../package.json" assert { type: "json" };
+import { version } from "../package.json" with { type: "json" };
 
 export default defineConfig({
   integrations: [svelte()],

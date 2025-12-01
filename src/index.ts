@@ -1,8 +1,8 @@
 import type { IconOutput, ModuleName } from "@carbon/icons";
-import metadata_11_31 from "@carbon/icons-11.31/metadata.json" assert { type: "json" };
-import metadata_latest from "@carbon/icons/metadata.json" assert { type: "json" };
+import metadata_11_31 from "@carbon/icons-11.31/metadata.json" with { type: "json" };
+import metadata_latest from "@carbon/icons/metadata.json" with { type: "json" };
 import { $ } from "bun";
-import { devDependencies, name } from "../package.json" assert { type: "json" };
+import { devDependencies, name } from "../package.json" with { type: "json" };
 import { template, templateSvg } from "./template";
 
 const VERSION = devDependencies["@carbon/icons"];
