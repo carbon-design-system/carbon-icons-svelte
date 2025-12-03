@@ -5,7 +5,7 @@ import { template } from "../src/template";
 
 test("imports", async () => {
   const icons = await buildIcons();
-  expect(icons.length).toEqual(2548);
+  expect(icons.length).toEqual(2560);
   expect(icons).toMatchSnapshot();
 });
 
