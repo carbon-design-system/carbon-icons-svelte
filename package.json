@@ -20,8 +20,8 @@
     "prepack": "bun test"
   },
   "devDependencies": {
-    "@carbon/icon-helpers": "latest",
-    "@carbon/icons": "11.71.0",
+    "@carbon/icon-helpers": "^10.68.0",
+    "@carbon/icons": "11.72.0",
     "@carbon/icons-11.31": "npm:@carbon/icons@~11.31.0",
     "@types/bun": "latest",
     "svelte": "^5.39.11",
