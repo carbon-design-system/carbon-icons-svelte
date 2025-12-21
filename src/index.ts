@@ -116,6 +116,7 @@ export declare class CarbonIcon extends SvelteComponentTyped<
   let glyphNames = new Set<string>();
   let iconNames = new Set<string>();
   const displayNames: string[] = [];
+  const writePromises: Promise<number>[] = [];
 
   iconModuleNames.forEach((moduleName) => {
     let name = moduleName;
@@ -152,10 +153,11 @@ export declare class CarbonIcon extends SvelteComponentTyped<
 
     const fileName = `lib/${name}.svelte`;
 
-    Bun.write(fileName, template(icon));
-    Bun.write(fileName + ".d.ts", `export { ${name} as default } from "./";\n`);
+    writePromises.push(Bun.write(fileName, template(icon)));
+    writePromises.push(Bun.write(fileName + ".d.ts", `export { ${name} as default } from "./";\n`));
   });
 
+  await Promise.all(writePromises);
   await Bun.write("lib/index.js", libExport);
 
   const version = `[@carbon/icons@${VERSION}](https://unpkg.com/browse/@carbon/icons@${VERSION}/)`;
