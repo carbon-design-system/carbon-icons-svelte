@@ -20,6 +20,10 @@ const DEPRECATED_ICONS = new Set([
   "Infinity",
 ]);
 
+const SIZE_PATTERN = /(16|20|24|32)/;
+const GLYPH_SUFFIX_PATTERN = /Glyph$/;
+const LEADING_UNDERSCORE_PATTERN = /^\_/;
+
 const metadata = { ...metadata_latest };
 
 // Merge in deprecated icons
@@ -46,7 +50,7 @@ export const buildIcons = async () => {
       icon.output.map((icon) => {
         let moduleName = icon.moduleName;
 
-        if (/(16|20|24|32)/.test(moduleName.slice(-2))) {
+        if (SIZE_PATTERN.test(moduleName.slice(-2))) {
           moduleName = icon.moduleName.slice(0, -2);
         }
 
@@ -110,8 +114,8 @@ export type CarbonIconProps = SvelteHTMLElements["svg"] & {
     const iconMetadata = iconMetadataMap.get(icon.descriptor.name);
     const isGlyph = iconMetadata?.output.some((output) => output.moduleName.endsWith("Glyph")) ?? false;
 
-    if (isGlyph && /Glyph$/.test(name)) {
-      name = moduleName.replace(/Glyph$/, "");
+    if (isGlyph && GLYPH_SUFFIX_PATTERN.test(name)) {
+      name = moduleName.replace(GLYPH_SUFFIX_PATTERN, "");
     }
 
     // Add to category arrays only once per name.
@@ -164,7 +168,7 @@ ${definitions}`
 > ${total} icons from ${version}\n
 ${Object.keys(byModuleName)
       .sort()
-      .map((moduleName) => `- ${moduleName.replace(/^\_/, "\\_")}`)
+      .map((moduleName) => `- ${moduleName.replace(LEADING_UNDERSCORE_PATTERN, "\\_")}`)
       .join("\n")}\n`
   );
 
