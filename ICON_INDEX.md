@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2595 icons from [@carbon/icons@11.72.0](https://unpkg.com/browse/@carbon/icons@11.72.0/)
+> 2586 icons from [@carbon/icons@11.72.0](https://unpkg.com/browse/@carbon/icons@11.72.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -255,16 +255,12 @@
 - CarbonForSalesforce
 - CarbonUiBuilder
 - CaretDown
-- CaretDownGlyph
 - CaretLeft
-- CaretLeftGlyph
 - CaretRight
-- CaretRightGlyph
 - CaretSort
 - CaretSortDown
 - CaretSortUp
 - CaretUp
-- CaretUpGlyph
 - CarouselHorizontal
 - CarouselVertical
 - Catalog
@@ -275,8 +271,8 @@
 - CategoryAnd
 - CategoryNew
 - CategoryNewEach
-- CautionGlyph
-- CautionInvertedGlyph
+- Caution
+- CautionInverted
 - Cbl
 - Cda
 - CellTower
@@ -379,18 +375,14 @@
 - Chemistry
 - ChemistryReference
 - ChevronDown
-- ChevronDownGlyph
 - ChevronDownOutline
 - ChevronLeft
-- ChevronLeftGlyph
 - ChevronMini
 - ChevronRight
-- ChevronRightGlyph
 - ChevronSort
 - ChevronSortDown
 - ChevronSortUp
 - ChevronUp
-- ChevronUpGlyph
 - ChevronUpOutline
 - ChildNode
 - Chip
@@ -412,12 +404,12 @@
 - CicsWuiRegion
 - Cicsplex
 - CircleDash
-- CircleFillGlyph
+- CircleFill
 - CircleFilled
 - CircleOutline
 - CirclePacking
 - CircleSolid
-- CircleStrokeGlyph
+- CircleStroke
 - ClassicBatch
 - Classification
 - ClassifierLanguage
@@ -524,8 +516,8 @@
 - Covariate
 - CreateLink
 - Credentials
-- CriticalGlyph
-- CriticalSeverityGlyph
+- Critical
+- CriticalSeverity
 - Crop
 - CropGrowth
 - CropHealth
@@ -650,7 +642,7 @@
 - DfsortIbmZSort
 - Diagram
 - DiagramReference
-- DiamondFillGlyph
+- DiamondFill
 - DiamondOutline
 - DiamondSolid
 - DigitalIdentity
@@ -1208,7 +1200,6 @@
 - Incomplete
 - IncompleteCancel
 - IncompleteError
-- IncompleteGlyph
 - IncompleteWarning
 - IncreaseLevel
 - Industry
@@ -1420,7 +1411,7 @@
 - Logout
 - Loop
 - LoopAlt
-- LowSeverityGlyph
+- LowSeverity
 - Mac
 - MacCommand
 - MacOption
@@ -2043,7 +2034,7 @@
 - Sprout
 - SpyreAccelerator
 - Sql
-- SquareFillGlyph
+- SquareFill
 - SquareOutline
 - SquareSolid
 - StackLimitation
