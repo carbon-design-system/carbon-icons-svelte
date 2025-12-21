@@ -1,6 +1,8 @@
 import { formatAttributes, toString } from "@carbon/icon-helpers";
 import type { IconOutput } from "@carbon/icons";
 
+const GLYPH_SUFFIX_PATTERN = /Glyph$/;
+
 export const template = ({ descriptor }: IconOutput) => `<script>
   export let size = 16;
 
@@ -28,7 +30,7 @@ export const template = ({ descriptor }: IconOutput) => `<script>
 </svg>`;
 
 export const templateSvg = ({ moduleName, descriptor }: IconOutput) => {
-  const isGlyph = /Glyph$/.test(moduleName);
+  const isGlyph = GLYPH_SUFFIX_PATTERN.test(moduleName);
   const { width, height, ...rest } = descriptor?.attrs;
   const content = descriptor?.content ?? [];
 
