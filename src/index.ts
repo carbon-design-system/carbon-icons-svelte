@@ -145,7 +145,9 @@ export type CarbonIconProps = SvelteHTMLElements["svg"] & {
   await Bun.write("lib/index.js", libExport);
 
   const version = `[@carbon/icons@${VERSION}](https://unpkg.com/browse/@carbon/icons@${VERSION}/)`;
-  const total = iconModuleNames.length;
+  // Use byModuleName keys for total - these are the actual icon components that exist
+  // displayNames includes Glyph variants for searchability, but those aren't separate components
+  const total = Object.keys(byModuleName).length;
   const packageMetadata = `${total} icons from @carbon/icons@${pkg.devDependencies["@carbon/icons"]}`;
 
   await Bun.write(
@@ -160,7 +162,8 @@ ${definitions}`
     "ICON_INDEX.md",
     `# Icon Index\n
 > ${total} icons from ${version}\n
-${iconModuleNames
+${Object.keys(byModuleName)
+      .sort()
       .map((moduleName) => `- ${moduleName.replace(/^\_/, "\\_")}`)
       .join("\n")}\n`
   );
