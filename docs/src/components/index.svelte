@@ -25,20 +25,36 @@
     glyph: "Glyphs",
     icon: "Icons",
   };
+  const GLYPH_SUFFIX_REGEX = /Glyph$/;
+  const WHITESPACE_REGEX = /\s+/g;
+
+  const allIcons = Object.values(data.bySize.sizes).flat();
+  const allIconsSet = new Set(allIcons);
+  const validIconNamesSet = new Set(Object.keys(data.byModuleName));
 
   let ref = null;
   let value = "";
 
-  $: filteredModuleNames = data.iconModuleNames
-    .filter((name) => match(value.trim().replace(/\s+/g, ""), name))
-    .flatMap((name) => {
-      // If a glyph variant is matched (e.g., "CaretDownGlyph"),
-      // also include the base name (e.g., "CaretDown") for display filtering
-      if (name.endsWith("Glyph")) {
-        return [name, name.replace(/Glyph$/, "")];
-      }
-      return [name];
-    });
+  $: searchTerm = value.trim().replace(WHITESPACE_REGEX, "");
+  // Search against iconModuleNames (includes Glyph variants for searchability)
+  // but map all results to base names only, since those are what exist in bySize.sizes
+  $: filteredModuleNamesSet =
+    searchTerm === ""
+      ? allIconsSet
+      : new Set(
+          data.iconModuleNames
+            .filter((name) => match(searchTerm, name))
+            .map((name) => {
+              // Map Glyph variants to their base names
+              if (name.endsWith("Glyph")) {
+                return name.replace(GLYPH_SUFFIX_REGEX, "");
+              }
+              return name;
+            })
+            .filter((name) => validIconNamesSet.has(name))
+        );
+
+  $: filteredModuleNames = Array.from(filteredModuleNamesSet);
 
   /** @type {import("svelte").ComponentProps<Theme>["theme"]} */
   let theme = "white";
@@ -127,9 +143,12 @@
 
     <Row>
       <Column>
+        {@const displayedIcons = new Set(
+          allIcons.filter((name) => filteredModuleNamesSet.has(name))
+        )}
         <span class="text-02">
           Showing
-          {filteredModuleNames.length.toLocaleString()}
+          {displayedIcons.size.toLocaleString()}
           of
           {data.total.toLocaleString()}
           icons
@@ -144,7 +163,7 @@
           </div>
           <div class:list={true} class={iconSizeClass}>
             {#each data.bySize.sizes[size] as name (name)}
-              {@const isFiltered = filteredModuleNames.includes(name)}
+              {@const isFiltered = filteredModuleNamesSet.has(name)}
               <button
                 type="button"
                 title={name}
