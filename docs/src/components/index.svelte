@@ -181,6 +181,10 @@
 </Content>
 
 <style>
+  :global(html) {
+    scrollbar-gutter: stable;
+  }
+  
   :global(.bx--content) {
     padding: 0;
   }
