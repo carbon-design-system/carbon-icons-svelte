@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2586 icons from [@carbon/icons@11.72.0](https://unpkg.com/browse/@carbon/icons@11.72.0/)
+> 2615 icons from [@carbon/icons@11.76.0](https://unpkg.com/browse/@carbon/icons@11.76.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -29,6 +29,8 @@
 - Ai
 - AiAgentInvocation
 - AiBusinessImpactAssessment
+- AiEnabledEdt
+- AiEnabledPdlc
 - AiFinancialSustainabilityCheck
 - AiGenerate
 - AiGovernanceLifecycle
@@ -85,6 +87,8 @@
 - Archive
 - Area
 - AreaCustom
+- AreaRangeDashed
+- AreaRangeSolid
 - ArithmeticMean
 - ArithmeticMedian
 - Arrange
@@ -200,6 +204,16 @@
 - BoxMedium
 - BoxPlot
 - BoxSmall
+- BpmnCompensationFill
+- BpmnCompensationOutline
+- BpmnConditionalFill
+- BpmnConditionalOutline
+- BpmnErrorFill
+- BpmnErrorOutline
+- BpmnEscalationFill
+- BpmnEscalationOutline
+- BpmnLinkFill
+- BpmnLinkOutline
 - Branch
 - BreakingChange
 - BrightnessContrast
@@ -325,6 +339,7 @@
 - ChartLineData
 - ChartLineSmooth
 - ChartLogisticRegression
+- ChartLollipop
 - ChartMarimekko
 - ChartMaximum
 - ChartMedian
@@ -541,6 +556,8 @@
 - CurrencyYen
 - Cursor_1
 - Cursor_2
+- CurvedLineDashed
+- CurvedLineSolid
 - Customer
 - CustomerService
 - Cut
@@ -825,6 +842,7 @@
 - FeatureMembershipFilled
 - FeaturePicker
 - FeatureTyping
+- FeedbackDocumentation
 - FetchUpload
 - FetchUploadCloud
 - FileStorage
@@ -967,6 +985,8 @@
 - HexagonVerticalOutline
 - HexagonVerticalSolid
 - Home
+- HorizontalLineDashed
+- HorizontalLineSolid
 - HorizontalView
 - Hospital
 - HospitalBed
@@ -1106,6 +1126,7 @@
 - IbmMq
 - IbmOpenEnterpriseLanguages
 - IbmOpenshiftContainerPlatformOnVpcForRegulatedIndustries
+- IbmPartnerPlus
 - IbmPlanningAnalytics
 - IbmPowerVs
 - IbmPowerVsPrivateCloud
@@ -1322,6 +1343,8 @@
 - Light
 - LightFilled
 - Lightning
+- LineThick
+- LineThin
 - Link
 - Linux
 - LinuxAlt
@@ -1384,6 +1407,7 @@
 - LogoLivestream
 - LogoMastodon
 - LogoMedium
+- LogoModelContextProtocol
 - LogoNpm
 - LogoOpenshift
 - LogoPinterest
@@ -1431,6 +1455,7 @@
 - MapIdentify
 - Marginal
 - MarineWarning
+- MaterialRequest
 - MathCurve
 - Maximize
 - MediaCast
@@ -1877,6 +1902,7 @@
 - RuleDataQuality
 - RuleDraft
 - RuleFilled
+- RuleGroupingDataQuality
 - RuleLocked
 - RulePartial
 - RuleTest
@@ -1949,6 +1975,7 @@
 - SettingsEdit
 - SettingsServices
 - SettingsView
+- Shadow
 - ShapeExcept
 - ShapeExclude
 - ShapeIntersect
@@ -2369,11 +2396,13 @@
 - VirtualMachine
 - VirtualPrivateCloud
 - VirtualPrivateCloudAlt
+- VisualInspection
 - VisualRecognition
 - Vlan
 - VlanIbm
 - VmdkDisk
 - VoiceActivate
+- VoiceMode
 - Voicemail
 - VolumeBlockStorage
 - VolumeDown
