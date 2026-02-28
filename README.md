@@ -1,7 +1,6 @@
 # carbon-icons-svelte
 
 [![NPM][npm]][npm-url]
-![GitHub](https://img.shields.io/github/license/ibm/carbon-icons-svelte?color=262626&style=for-the-badge)
 ![npm downloads to date](https://img.shields.io/npm/dt/carbon-icons-svelte?color=262626&style=for-the-badge)
 
 > [Carbon Design System](https://github.com/carbon-design-system) SVG icons as Svelte components.
