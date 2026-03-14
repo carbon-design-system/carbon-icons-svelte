@@ -21,13 +21,12 @@
   import Header from "./Header.svelte";
 
   const { match } = fuzzy;
-  const sizes = {
-    glyph: "Glyphs",
-    icon: "Icons",
-  };
   const GLYPH_SUFFIX_REGEX = /Glyph$/;
   const WHITESPACE_REGEX = /\s+/g;
 
+  const allIconsOrdered = data.bySize.order
+    .flatMap((size) => data.bySize.sizes[size])
+    .sort((a, b) => a.localeCompare(b));
   const allIcons = Object.values(data.bySize.sizes).flat();
   const allIconsSet = new Set(allIcons);
   const validIconNamesSet = new Set(Object.keys(data.byModuleName));
@@ -95,8 +94,8 @@
 </Modal>
 
 <Content>
-  <Grid padding>
-    <Row>
+  <Grid>
+    <Row padding>
       <Column>
         <div class="options">
           {#if mounted}
@@ -140,8 +139,7 @@
         </div>
       </Column>
     </Row>
-
-    <Row>
+    <Row padding>
       <Column>
         {@const displayedIcons = new Set(
           allIcons.filter((name) => filteredModuleNamesSet.has(name))
@@ -157,24 +155,19 @@
     </Row>
     <Row>
       <Column>
-        {#each data.bySize.order as size (size)}
-          <div class="divider" role="separator">
-            <h4>{sizes[size]}</h4>
-          </div>
-          <div class:list={true} class={iconSizeClass}>
-            {#each data.bySize.sizes[size] as name (name)}
-              {@const isFiltered = filteredModuleNamesSet.has(name)}
-              <button
-                type="button"
-                title={name}
-                style:display={isFiltered ? "inline" : "none"}
-                on:click={() => (moduleName = name)}
-              >
-                {@html data.byModuleName[name]}
-              </button>
-            {/each}
-          </div>
-        {/each}
+        <div class:list={true} class={iconSizeClass}>
+          {#each allIconsOrdered as name (name)}
+            {@const isFiltered = filteredModuleNamesSet.has(name)}
+            <button
+              type="button"
+              title={name}
+              style:display={isFiltered ? "inline" : "none"}
+              on:click={() => (moduleName = name)}
+            >
+              {@html data.byModuleName[name]}
+            </button>
+          {/each}
+        </div>
       </Column>
     </Row>
   </Grid>
