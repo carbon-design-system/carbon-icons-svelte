@@ -78,7 +78,7 @@ export interface CarbonIconProps extends RestProps {
    * Specify the icon size.
    * @default 16
    */
-  size?: 16 | 20 | 24 | 32;
+  size?: 16 | 20 | 24 | 32 | (number & {});
 
   /**
    * Specify the icon title.
