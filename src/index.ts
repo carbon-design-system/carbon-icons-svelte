@@ -82,7 +82,7 @@ export type CarbonIconProps = SvelteHTMLElements["svg"] & {
    * Specify the icon size.
    * @default 16
    */
-  size?: 16 | 20 | 24 | 32;
+  size?: 16 | 20 | 24 | 32 | (number & {});
 }\n\n`;
 
   type Size = "glyph" | "icon";
