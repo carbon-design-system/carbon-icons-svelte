@@ -46,7 +46,7 @@ Import the icon from the `carbon-icons-svelte/lib` folder. See the [Icon Index](
 
 Use the `size` prop to specify the icon size.
 
-Supported icon sizes include `16`, `20`, `24`, and `32`.
+By design, the Carbon Design System uses a scale of 16, 20, 24, and 32 pixels for icons. However, you can still pass any number for `size` (pixels).
 
 The default size is `16`.
 
@@ -93,10 +93,10 @@ You can use `fill` to customize the color or pass any other valid `svg` attribut
 
 All props are optional.
 
-| Name  | Type                                          | Default value |
-| :---- | :-------------------------------------------- | :------------ |
-| size  | <code>16 &#124; 20 &#124; 24 &#124; 32</code> | `16`          |
-| title | `string`                                      | `undefined`   |
+| Name  | Type                                                        | Default value |
+| :---- | :---------------------------------------------------------- | :------------ |
+| size  | <code>16 &#124; 20 &#124; 24 &#124; 32 &#124; number</code> | `16`          |
+| title | `string`                                                    | `undefined`   |
 
 ## [Changelog](CHANGELOG.md)
 
