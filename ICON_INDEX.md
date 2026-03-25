@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2615 icons from [@carbon/icons@11.76.0](https://unpkg.com/browse/@carbon/icons@11.76.0/)
+> 2638 icons from [@carbon/icons@11.77.0](https://unpkg.com/browse/@carbon/icons@11.77.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -15,6 +15,7 @@
 - ActionDefinition
 - ActionUsage
 - Activity
+- AdapterNotification
 - Add
 - AddAlt
 - AddChildNode
@@ -96,12 +97,14 @@
 - ArrangeVertical
 - Array
 - ArrayBooleans
+- ArrayDateTime
 - ArrayDates
 - ArrayDecimal
 - ArrayFiles
 - ArrayNumbers
 - ArrayObjects
 - ArrayStrings
+- ArrayTime
 - ArrayUsers
 - Arrival
 - ArrowDown
@@ -279,6 +282,7 @@
 - CarouselVertical
 - Catalog
 - CatalogPublish
+- CategoricalPalette
 - Categories
 - Category
 - CategoryAdd
@@ -469,6 +473,7 @@
 - CollapseAll
 - CollapseCategories
 - ColorPalette
+- ColorPicker
 - ColorSwitch
 - Column
 - ColumnDelete
@@ -697,6 +702,7 @@
 - DirectionUTurn
 - DirectionUTurnFilled
 - DirectoryDomain
+- DisableStep
 - DistributeHorizontalCenter
 - DistributeHorizontalLeft
 - DistributeHorizontalRight
@@ -788,6 +794,7 @@
 - Email
 - EmailNew
 - EmissionsManagement
+- EnableStep
 - Encryption
 - EnergyRenewable
 - Enterprise
@@ -808,9 +815,12 @@
 - EventsAlt
 - ExamMode
 - ExecutableProgram
+- ExecutionHistory
 - Exit
 - ExpandAll
 - ExpandCategories
+- ExpandScreen
+- ExpandScreenFilled
 - Explore
 - Export
 - Extensions
@@ -1203,6 +1213,7 @@
 - Idea
 - Identification
 - IfAction
+- IfElse
 - Image
 - ImageCopy
 - ImageMedical
@@ -1453,6 +1464,9 @@
 - MapBoundaryVegetation
 - MapCenter
 - MapIdentify
+- MappingClear
+- MappingHide
+- MappingShow
 - Marginal
 - MarineWarning
 - MaterialRequest
@@ -1505,6 +1519,7 @@
 - ModelAlt
 - ModelBuilder
 - ModelBuilderReference
+- ModelContentDoc
 - ModelFoundation
 - ModelReference
 - ModelTuned
@@ -1748,6 +1763,7 @@
 - PowerEnterprisePoolsMeteredCapacityIntegration
 - PowerVirtualServerDisasterRecoveryAutomation
 - Ppt
+- PreProdEnvironment
 - PresentationFile
 - Pressure
 - PressureFilled
@@ -1763,6 +1779,8 @@
 - Process
 - ProcessAutomate
 - Product
+- ProductionEnvironment
+- ProductionService
 - ProgressBar
 - ProgressBarRound
 - Promote
@@ -1961,6 +1979,7 @@
 - SendBackward
 - SendFilled
 - SendToBack
+- SequentialPalette
 - ServerDns
 - ServerProxy
 - ServerTime
@@ -2115,6 +2134,7 @@
 - Svg
 - Swim
 - SwimlaneDVertical
+- Switch
 - SwitchLayer_2
 - SwitchLayer_3
 - Switcher
@@ -2270,6 +2290,7 @@
 - TransformCode
 - TransformInstructions
 - TransformLanguage
+- TransformPipeline
 - Transgender
 - Translate
 - TransmissionLte
@@ -2294,6 +2315,7 @@
 - TropicalStormModelTracks
 - TropicalStormTracks
 - TropicalWarning
+- TryCatch
 - Tsq
 - Tsunami
 - Tsv
@@ -2313,6 +2335,7 @@
 - UnknownFilled
 - Unlink
 - Unlocked
+- Unplug
 - Unsaved
 - UpToTop
 - UpdateComplete
