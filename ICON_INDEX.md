@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2638 icons from [@carbon/icons@11.77.0](https://unpkg.com/browse/@carbon/icons@11.77.0/)
+> 2672 icons from [@carbon/icons@11.80.0](https://unpkg.com/browse/@carbon/icons@11.80.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -23,6 +23,7 @@
 - AddFilled
 - AddLarge
 - AddParentNode
+- AddServer
 - AgentDetached
 - AggregatorCountRows
 - AggregatorRecalculation
@@ -144,6 +145,7 @@
 - Awake
 - Badge
 - BaggageClaim
+- BankVault
 - Bar
 - Barcode
 - BareMetalServer
@@ -217,6 +219,8 @@
 - BpmnEscalationOutline
 - BpmnLinkFill
 - BpmnLinkOutline
+- Brainstorm
+- BrainstormFilled
 - Branch
 - BreakingChange
 - BrightnessContrast
@@ -300,6 +304,7 @@
 - Certificate
 - CertificateCheck
 - ChangeCatalog
+- ChangeCircle
 - Channels
 - CharacterDecimal
 - CharacterFraction
@@ -472,6 +477,9 @@
 - Collaborate
 - CollapseAll
 - CollapseCategories
+- CollapseStripe
+- CollapseTitle
+- CollapseTitle_2
 - ColorPalette
 - ColorPicker
 - ColorSwitch
@@ -633,11 +641,13 @@
 - Debug
 - DecisionNode
 - DecisionTree
+- Decline
 - Delete
 - Delivery
 - DeliveryAdd
 - DeliveryParcel
 - DeliverySettings
+- DeliveryTime
 - DeliveryTruck
 - Demo
 - Departure
@@ -855,7 +865,10 @@
 - FeedbackDocumentation
 - FetchUpload
 - FetchUploadCloud
+- FileChange
+- FileDiff
 - FileStorage
+- FileX
 - Filter
 - FilterEdit
 - FilterRemove
@@ -949,9 +962,11 @@
 - GeneratePdf
 - Gif
 - Gift
+- GitRepo
 - GlobalFilters
 - GlobalLoanAndTrial
 - Globe
+- GlobePrivate
 - Gradient
 - GraphAggregator
 - GraphicalDataFlow
@@ -1087,7 +1102,7 @@
 - IbmConsultingAdvantageAgent
 - IbmConsultingAdvantageApplication
 - IbmConsultingAdvantageAssistant
-- IbmContentServices
+- IbmContentCortexRepository
 - IbmDataPower
 - IbmDataProductExchange
 - IbmDataReplication
@@ -1298,8 +1313,10 @@
 - JumpLink
 - KeepDry
 - Key
+- KeyValues
 - Keyboard
 - KeyboardOff
+- Keychain
 - KioskDevice
 - Kubelet
 - Kubernetes
@@ -1498,6 +1515,7 @@
 - MinimapOff
 - MinimapOn
 - Minimize
+- MinusPlus
 - Misuse
 - MisuseOutline
 - MixedRainHail
@@ -1631,10 +1649,14 @@
 - OpenPanelLeft
 - OpenPanelRight
 - OpenPanelTop
+- OpenStripe
 - OperationsField
 - OperationsRecord
 - Orchestrate
 - OrderDetails
+- OrderServer
+- OrderStorm
+- OrderStratus
 - Ordinal
 - Outage
 - OutlookSevere
@@ -1861,6 +1883,7 @@
 - ReminderMedical
 - RemoteConnection
 - Renew
+- RenewAlt
 - Repeat
 - RepeatOne
 - Replicate
@@ -1983,6 +2006,7 @@
 - ServerDns
 - ServerProxy
 - ServerTime
+- ServerTimeUsage
 - ServerlessFleet
 - ServiceDesk
 - ServiceId
@@ -2003,6 +2027,8 @@
 - Shapes
 - Share
 - ShareKnowledge
+- ShieldAlert
+- ShipmentDelivery
 - ShoppingBag
 - ShoppingCart
 - ShoppingCartArrowDown
@@ -2055,6 +2081,7 @@
 - SnowScatteredNight
 - Snowflake
 - Soccer
+- Socket
 - SoftwareResource
 - SoftwareResourceCluster
 - SoftwareResourceResource
@@ -2082,6 +2109,7 @@
 - Sql
 - SquareFill
 - SquareOutline
+- SquareSlash
 - SquareSolid
 - StackLimitation
 - Stamp
@@ -2103,8 +2131,10 @@
 - StoragePool
 - StorageRequest
 - Store
+- Storm
 - StormTracker
 - StrategyPlay
+- Stratus
 - Strawberry
 - StringInteger
 - StringText
@@ -2138,6 +2168,8 @@
 - SwitchLayer_2
 - SwitchLayer_3
 - Switcher
+- Swot
+- SwotFilled
 - SyncSettings
 - SysProvision
 - SysplexDistributor
@@ -2330,6 +2362,7 @@
 - Undefined
 - UndefinedFilled
 - Undo
+- UnfoldOpen
 - UngroupObjects
 - Unknown
 - UnknownFilled
@@ -2450,6 +2483,7 @@
 - WarningAltInverted
 - WarningAltInvertedFilled
 - WarningDiamond
+- WarningDiamondFill
 - WarningFilled
 - WarningHex
 - WarningHexFilled
