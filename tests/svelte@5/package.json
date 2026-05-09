@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "svelte": "^5.53.6",
-    "svelte-check": "^4.4.4",
+    "svelte-check": "^4.4.8",
     "typescript": "^6.0.3"
   }
 }
