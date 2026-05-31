@@ -1,6 +1,6 @@
 <script>
   // @ts-check
-  /** @type {{ iconModuleNames?: string[]; byModuleName: Record<string, string>; bySize?: { order: string[]; sizes: Record<string, string>; }; total?: number; }} */
+  /** @type {{ iconModuleNames?: string[]; byModuleName: Record<string, string>; bySize?: { order: string[]; sizes: Record<string, string>; }; total?: number; renamedIcons?: Record<string, string>; }} */
   import data from "../build-info.json";
   import {
     Search,
@@ -29,7 +29,12 @@
     .sort((a, b) => a.localeCompare(b));
   const allIcons = Object.values(data.bySize.sizes).flat();
   const allIconsSet = new Set(allIcons);
-  const validIconNamesSet = new Set(Object.keys(data.byModuleName));
+  const aliasToCanonical = data.renamedIcons ?? {};
+  /** @type {Record<string, string[]>} */
+  const canonicalToAliases = {};
+  for (const [oldName, canonicalName] of Object.entries(aliasToCanonical)) {
+    (canonicalToAliases[canonicalName] ??= []).push(oldName);
+  }
 
   let ref = null;
   let value = "";
@@ -44,13 +49,17 @@
           data.iconModuleNames
             .filter((name) => match(searchTerm, name))
             .map((name) => {
+              if (aliasToCanonical[name]) {
+                return aliasToCanonical[name];
+              }
+
               // Map Glyph variants to their base names
               if (name.endsWith("Glyph")) {
                 return name.replace(GLYPH_SUFFIX_REGEX, "");
               }
               return name;
             })
-            .filter((name) => validIconNamesSet.has(name))
+            .filter((name) => allIconsSet.has(name))
         );
 
   $: filteredModuleNames = Array.from(filteredModuleNamesSet);
@@ -160,7 +169,9 @@
             {@const isFiltered = filteredModuleNamesSet.has(name)}
             <button
               type="button"
-              title={name}
+              title={canonicalToAliases[name]
+                ? `${name} (aliases: ${canonicalToAliases[name].join(", ")})`
+                : name}
               style:display={isFiltered ? "inline" : "none"}
               on:click={() => (moduleName = name)}
             >
