@@ -7,6 +7,9 @@ import { template, templateSvg } from "./template.js";
 
 const VERSION = pkg.devDependencies["@carbon/icons"];
 
+type MetadataSource = typeof metadata_latest | typeof metadata_11_31;
+type IconEntry = (typeof metadata_latest.icons)[number];
+
 /**
  * This library is built using the `@carbon/icons` package.
  * However, `@carbon/icons` may remove icons between minor versions.
@@ -14,26 +17,59 @@ const VERSION = pkg.devDependencies["@carbon/icons"];
  * in minor versions. To ensure that icons are not removed, we
  * maintain a list of deprecated icons that are merged in.
  */
-const DEPRECATED_ICONS = new Set([
+const DEPRECATED_ICONS: Record<string, MetadataSource> = {
   // From 11.31.x
-  "FoundationModel",
-  "Infinity",
-]);
+  FoundationModel: metadata_11_31,
+  Infinity: metadata_11_31,
+};
+
+/**
+ * Similarly, `@carbon/icons` may rename icons between minor versions.
+ * Maintain a list of renamed icons that are merged in and a mapping of
+ * the old export name to the new export name.
+ */
+const RENAMED_ICONS: Record<string, string> = {};
 
 const SIZE_PATTERN = /(16|20|24|32)/;
 const GLYPH_SUFFIX_PATTERN = /Glyph$/;
 const LEADING_UNDERSCORE_PATTERN = /^\_/;
 
+const templateAlias = (moduleName: string) => `<script>
+  import ${moduleName} from "./${moduleName}.svelte";
+
+  export let size = 16;
+
+  export let title = undefined;
+</script>
+
+<${moduleName} {size} {title} {...$$restProps} />`;
+
+/** Old and new module names that differ only by case share one path on case-insensitive filesystems. */
+const collidesOnCaseInsensitiveFs = (a: string, b: string) => a.toLowerCase() === b.toLowerCase();
+
+const formatIconIndexLine = (moduleName: string) => {
+  const escaped = moduleName.replace(LEADING_UNDERSCORE_PATTERN, "\\_");
+  const aliasTarget = RENAMED_ICONS[moduleName];
+
+  if (aliasTarget) {
+    return `- ${escaped} (alias of ${aliasTarget})`;
+  }
+
+  return `- ${escaped}`;
+};
+
 const metadata = { ...metadata_latest };
 
 // Merge in deprecated icons
-metadata_11_31.icons.forEach((icon) => {
-  icon.output.forEach((output) => {
-    const iconName = output.moduleName.slice(0, -2);
+Object.entries(DEPRECATED_ICONS).forEach(([iconName, sourceMetadata]) => {
+  sourceMetadata.icons.forEach((icon) => {
+    icon.output.forEach((output) => {
+      const moduleName = output.moduleName.slice(0, -2);
 
-    if (DEPRECATED_ICONS.has(iconName)) {
-      metadata.icons.push(icon);
-    }
+      if (moduleName === iconName) {
+        metadata.icons.push(icon as IconEntry);
+      }
+    });
   });
 });
 
@@ -157,13 +193,34 @@ export declare class CarbonIcon extends SvelteComponentTyped<
     writePromises.push(Bun.write(fileName + ".d.ts", `export { ${name} as default } from "./";\n`));
   });
 
+  Object.entries(RENAMED_ICONS).forEach(([oldName, newName]) => {
+    if (!byModuleName[newName]) {
+      throw new Error(`Rename alias target missing: ${newName} for ${oldName}`);
+    }
+
+    displayNames.push(oldName);
+    byModuleName[oldName] = byModuleName[newName];
+    definitions += `export declare class ${oldName} extends CarbonIcon {}\n`;
+
+    if (collidesOnCaseInsensitiveFs(oldName, newName)) {
+      libExport += `export { default as ${oldName} } from "./${newName}.svelte";\n`;
+      return;
+    }
+
+    libExport += `export { default as ${oldName} } from "./${oldName}.svelte";\n`;
+
+    const fileName = `lib/${oldName}.svelte`;
+
+    writePromises.push(Bun.write(fileName, templateAlias(newName)));
+    writePromises.push(Bun.write(fileName + ".d.ts", `export { default } from "./${newName}.svelte";\n`));
+  });
+
   await Promise.all(writePromises);
   await Bun.write("lib/index.js", libExport);
 
   const version = `[@carbon/icons@${VERSION}](https://unpkg.com/browse/@carbon/icons@${VERSION}/)`;
-  // Use byModuleName keys for total - these are the actual icon components that exist
-  // displayNames includes Glyph variants for searchability, but those aren't separate components
-  const total = Object.keys(byModuleName).length;
+  // Canonical icons shown in the grid/docs; excludes rename aliases (listed separately).
+  const total = new Set(Object.values(bySize.sizes).flat()).size;
   const packageMetadata = `${total} icons from @carbon/icons@${pkg.devDependencies["@carbon/icons"]}`;
 
   await Bun.write(
@@ -180,7 +237,7 @@ ${definitions}`
 > ${total} icons from ${version}\n
 ${Object.keys(byModuleName)
       .sort()
-      .map((moduleName) => `- ${moduleName.replace(LEADING_UNDERSCORE_PATTERN, "\\_")}`)
+      .map(formatIconIndexLine)
       .join("\n")}\n`
   );
 
@@ -191,10 +248,13 @@ ${Object.keys(byModuleName)
       bySize,
       byModuleName,
       iconModuleNames: displayNames,
+      renamedIcons: RENAMED_ICONS,
     })
   );
 
   console.timeEnd("buildIcons");
 
-  return iconModuleNames;
+  const aliasNames = Object.keys(RENAMED_ICONS);
+
+  return [...iconModuleNames, ...aliasNames].sort();
 };
