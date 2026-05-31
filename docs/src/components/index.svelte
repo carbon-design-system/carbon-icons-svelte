@@ -1,7 +1,6 @@
 <script>
   // @ts-check
-  /** @type {{ iconModuleNames?: string[]; byModuleName: Record<string, string>; bySize?: { order: string[]; sizes: Record<string, string>; }; total?: number; renamedIcons?: Record<string, string>; }} */
-  import data from "../build-info.json";
+  import { onMount } from "svelte";
   import {
     Search,
     CodeSnippet,
@@ -20,30 +19,42 @@
   import FocusKey from "./FocusKey.svelte";
   import Header from "./Header.svelte";
 
+  /** @typedef {{ iconModuleNames?: string[]; byModuleName: Record<string, string>; bySize: { order: string[]; sizes: Record<string, string[]> }; total: number; renamedIcons?: Record<string, string> }} BuildInfo */
+
+  /** @type {BuildInfo | null} */
+  let data = null;
+
+  onMount(async () => {
+    const res = await fetch("/build-info.json");
+    data = await res.json();
+  });
+
   const { match } = fuzzy;
   const GLYPH_SUFFIX_REGEX = /Glyph$/;
   const WHITESPACE_REGEX = /\s+/g;
-
-  const allIconsOrdered = data.bySize.order
-    .flatMap((size) => data.bySize.sizes[size])
-    .sort((a, b) => a.localeCompare(b));
-  const allIcons = Object.values(data.bySize.sizes).flat();
-  const allIconsSet = new Set(allIcons);
-  const aliasToCanonical = data.renamedIcons ?? {};
-  /** @type {Record<string, string[]>} */
-  const canonicalToAliases = {};
-  for (const [oldName, canonicalName] of Object.entries(aliasToCanonical)) {
-    (canonicalToAliases[canonicalName] ??= []).push(oldName);
-  }
 
   let ref = null;
   let value = "";
 
   $: searchTerm = value.trim().replace(WHITESPACE_REGEX, "");
-  // Search against iconModuleNames (includes Glyph variants for searchability)
-  // but map all results to base names only, since those are what exist in bySize.sizes
+  $: allIconsOrdered = data
+    ? data.bySize.order
+        .flatMap((size) => data.bySize.sizes[size])
+        .sort((a, b) => a.localeCompare(b))
+    : [];
+  $: allIcons = data ? Object.values(data.bySize.sizes).flat() : [];
+  $: allIconsSet = new Set(allIcons);
+  $: aliasToCanonical = data?.renamedIcons ?? {};
+  $: canonicalToAliases = (() => {
+    /** @type {Record<string, string[]>} */
+    const result = {};
+    for (const [oldName, canonicalName] of Object.entries(aliasToCanonical)) {
+      (result[canonicalName] ??= []).push(oldName);
+    }
+    return result;
+  })();
   $: filteredModuleNamesSet =
-    searchTerm === ""
+    !data || searchTerm === ""
       ? allIconsSet
       : new Set(
           data.iconModuleNames
@@ -61,8 +72,6 @@
             })
             .filter((name) => allIconsSet.has(name))
         );
-
-  $: filteredModuleNames = Array.from(filteredModuleNamesSet);
 
   /** @type {import("svelte").ComponentProps<Theme>["theme"]} */
   let theme = "white";
@@ -88,26 +97,28 @@
 
 <Header />
 
-<Modal
-  passiveModal
-  open={moduleName != null}
-  modalHeading={moduleName}
-  on:transitionend={({ detail }) => {
-    if (!detail.open) moduleName = null;
-  }}
->
-  <div class:icon-preview={true} class={iconSizeClass}>
-    {@html data.byModuleName[moduleName]}
-  </div>
-  <CodeSnippet light type="multi" {code} />
-</Modal>
+{#if data}
+  <Modal
+    passiveModal
+    open={moduleName != null}
+    modalHeading={moduleName}
+    on:transitionend={({ detail }) => {
+      if (!detail.open) moduleName = null;
+    }}
+  >
+    <div class:icon-preview={true} class={iconSizeClass}>
+      {@html data.byModuleName[moduleName]}
+    </div>
+    <CodeSnippet light type="multi" {code} />
+  </Modal>
+{/if}
 
 <Content>
   <Grid>
     <Row padding>
       <Column>
         <div class="options">
-          {#if mounted}
+          {#if mounted && data}
             <Theme
               bind:theme
               persist
@@ -144,43 +155,46 @@
             placeholder={`Search icons (e.g. "Add")`}
             bind:ref
             bind:value
+            disabled={!data}
           />
         </div>
       </Column>
     </Row>
-    <Row padding>
-      <Column>
-        {@const displayedIcons = new Set(
-          allIcons.filter((name) => filteredModuleNamesSet.has(name))
-        )}
-        <span class="text-02">
-          Showing
-          {displayedIcons.size.toLocaleString()}
-          of
-          {data.total.toLocaleString()}
-          icons
-        </span>
-      </Column>
-    </Row>
-    <Row>
-      <Column>
-        <div class:list={true} class={iconSizeClass}>
-          {#each allIconsOrdered as name (name)}
-            {@const isFiltered = filteredModuleNamesSet.has(name)}
-            <button
-              type="button"
-              title={canonicalToAliases[name]
-                ? `${name} (aliases: ${canonicalToAliases[name].join(", ")})`
-                : name}
-              style:display={isFiltered ? "inline" : "none"}
-              on:click={() => (moduleName = name)}
-            >
-              {@html data.byModuleName[name]}
-            </button>
-          {/each}
-        </div>
-      </Column>
-    </Row>
+    {#if data}
+      <Row padding>
+        <Column>
+          {@const displayedIcons = new Set(
+            allIcons.filter((name) => filteredModuleNamesSet.has(name))
+          )}
+          <span class="text-02">
+            Showing
+            {displayedIcons.size.toLocaleString()}
+            of
+            {data.total.toLocaleString()}
+            icons
+          </span>
+        </Column>
+      </Row>
+      <Row>
+        <Column>
+          <div class:list={true} class={iconSizeClass}>
+            {#each allIconsOrdered as name (name)}
+              {@const isFiltered = filteredModuleNamesSet.has(name)}
+              <button
+                type="button"
+                title={canonicalToAliases[name]
+                  ? `${name} (aliases: ${canonicalToAliases[name].join(", ")})`
+                  : name}
+                style:display={isFiltered ? "inline" : "none"}
+                on:click={() => (moduleName = name)}
+              >
+                {@html data.byModuleName[name]}
+              </button>
+            {/each}
+          </div>
+        </Column>
+      </Row>
+    {/if}
   </Grid>
 </Content>
 
@@ -188,7 +202,7 @@
   :global(html) {
     scrollbar-gutter: stable;
   }
-  
+
   :global(.bx--content) {
     padding: 0;
   }
