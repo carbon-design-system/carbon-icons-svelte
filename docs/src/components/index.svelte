@@ -1,5 +1,4 @@
 <script>
-  // @ts-check
   import { onMount } from "svelte";
   import {
     Search,
@@ -32,6 +31,40 @@
   const { match } = fuzzy;
   const GLYPH_SUFFIX_REGEX = /Glyph$/;
   const WHITESPACE_REGEX = /\s+/g;
+  const THEME_KEY = "theme";
+  const VALID_THEMES = ["white", "g10", "g80", "g90", "g100"];
+  const ICON_SIZE_KEY = "icon-size";
+  const VALID_ICON_SIZES = [16, 20, 24, 32];
+
+  /** @returns {import("svelte").ComponentProps<Theme>["theme"]} */
+  function getStoredTheme() {
+    try {
+      const stored = localStorage.getItem(THEME_KEY);
+      return stored && VALID_THEMES.includes(stored) ? stored : "white";
+    } catch {
+      return "white";
+    }
+  }
+
+  /** @returns {(typeof VALID_ICON_SIZES)[number]} */
+  function getStoredIconSize() {
+    try {
+      const stored = localStorage.getItem(ICON_SIZE_KEY);
+      if (stored == null) return 16;
+
+      let parsed = stored;
+      try {
+        parsed = JSON.parse(stored);
+      } catch {
+        parsed = Number(stored);
+      }
+
+      const size = typeof parsed === "number" ? parsed : Number(parsed);
+      return VALID_ICON_SIZES.includes(size) ? size : 16;
+    } catch {
+      return 16;
+    }
+  }
 
   let ref = null;
   let value = "";
@@ -74,16 +107,10 @@
         );
 
   /** @type {import("svelte").ComponentProps<Theme>["theme"]} */
-  let theme = "white";
-  let iconSize = 16;
+  let theme = getStoredTheme();
+  let iconSize = getStoredIconSize();
 
   $: mounted = typeof document !== "undefined";
-  $: if (mounted) {
-    document.documentElement.style.setProperty(
-      "color-scheme",
-      ["white", "g10"].includes(theme) ? "light" : "dark"
-    );
-  }
 
   let moduleName = null;
 
@@ -118,27 +145,27 @@
     <Row padding>
       <Column>
         <div class="options">
-          {#if mounted && data}
+          {#if mounted}
             <Theme
               bind:theme
               persist
+              persistKey={THEME_KEY}
               render="select"
               select={{
                 id: "select-theme",
                 labelText: "Carbon theme",
-                themes: ["white", "g10", "g80", "g90", "g100"],
+                themes: VALID_THEMES,
               }}
             />
-            <LocalStorage key="icon-size" bind:value={iconSize} />
+            <LocalStorage key={ICON_SIZE_KEY} bind:value={iconSize} />
             <Select
               id="select-icon-size"
               labelText="Icon size"
               bind:selected={iconSize}
             >
-              <SelectItem value={16} />
-              <SelectItem value={20} />
-              <SelectItem value={24} />
-              <SelectItem value={32} />
+              {#each VALID_ICON_SIZES as size (size)}
+                <SelectItem value={size} />
+              {/each}
             </Select>
           {:else}
             <SelectSkeleton class="select-skeleton" />

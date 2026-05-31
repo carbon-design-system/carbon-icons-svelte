@@ -2,18 +2,18 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@astrojs/svelte": "^8.1.2",
-    "astro": "^6.4.2",
     "carbon-components-svelte": "^0.107.1",
     "fuzzy": "^0.1.3",
     "svelte": "^5.55.10"
   },
   "devDependencies": {
-    "carbon-preprocess-svelte": "^0.11.30"
+    "@sveltejs/vite-plugin-svelte": "^7.1.2",
+    "carbon-preprocess-svelte": "^0.11.30",
+    "vite": "^8.0.14"
   }
 }
