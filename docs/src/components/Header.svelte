@@ -15,7 +15,7 @@
 </script>
 
 <Header aria-label="Navigation" href="/">
-  <svelte:fragment slot="skip-to-content">
+  <svelte:fragment slot="skipToContent">
     <SkipToContent />
   </svelte:fragment>
 
@@ -72,6 +72,5 @@
     font-weight: var(--cds-code-01-font-weight);
     letter-spacing: var(--cds-code-01-letter-spacing);
     line-height: var(--cds-code-01-line-height);
-    color: #c6c6c6;
   }
 </style>
