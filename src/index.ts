@@ -1,5 +1,6 @@
 import type { IconOutput, ModuleName } from "@carbon/icons";
 import metadata_11_31 from "@carbon/icons-11.31/metadata.json" with { type: "json" };
+import metadata_11_80 from "@carbon/icons-11.80/metadata.json" with { type: "json" };
 import metadata_latest from "@carbon/icons/metadata.json" with { type: "json" };
 import { $ } from "bun";
 import pkg from "../package.json" with { type: "json" };
@@ -7,7 +8,7 @@ import { template, templateSvg } from "./template.js";
 
 const VERSION = pkg.devDependencies["@carbon/icons"];
 
-type MetadataSource = typeof metadata_latest | typeof metadata_11_31;
+type MetadataSource = typeof metadata_latest | typeof metadata_11_80 | typeof metadata_11_31;
 type IconEntry = (typeof metadata_latest.icons)[number];
 
 /**
@@ -21,6 +22,9 @@ const DEPRECATED_ICONS: Record<string, MetadataSource> = {
   // From 11.31.x
   FoundationModel: metadata_11_31,
   Infinity: metadata_11_31,
+  // From 11.80.x
+  IbmBluepay: metadata_11_80,
+  IbmTenet: metadata_11_80,
 };
 
 /**
@@ -28,7 +32,12 @@ const DEPRECATED_ICONS: Record<string, MetadataSource> = {
  * Maintain a list of renamed icons that are merged in and a mapping of
  * the old export name to the new export name.
  */
-const RENAMED_ICONS: Record<string, string> = {};
+const RENAMED_ICONS = {
+  // From 11.81.x
+  NavaidVordme: "NavaidVorDme", // NavaidVordme -> NavaidVorDme
+  NavaidVortac: "NavaidVorTac", // NavaidVortac -> NavaidVorTac
+  SoftwareResourceResource: "SoftwareResourceReference", // SoftwareResourceResource -> SoftwareResourceReference
+} as const;
 
 const SIZE_PATTERN = /(16|20|24|32)/;
 const GLYPH_SUFFIX_PATTERN = /Glyph$/;
@@ -49,7 +58,7 @@ const collidesOnCaseInsensitiveFs = (a: string, b: string) => a.toLowerCase() ==
 
 const formatIconIndexLine = (moduleName: string) => {
   const escaped = moduleName.replace(LEADING_UNDERSCORE_PATTERN, "\\_");
-  const aliasTarget = RENAMED_ICONS[moduleName];
+  const aliasTarget = RENAMED_ICONS[moduleName as keyof typeof RENAMED_ICONS];
 
   if (aliasTarget) {
     return `- ${escaped} (alias of ${aliasTarget})`;

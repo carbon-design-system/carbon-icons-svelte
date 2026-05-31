@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2672 icons from [@carbon/icons@11.80.0](https://unpkg.com/browse/@carbon/icons@11.80.0/)
+> 2675 icons from [@carbon/icons@11.81.0](https://unpkg.com/browse/@carbon/icons@11.81.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -573,6 +573,7 @@
 - CurvedLineSolid
 - Customer
 - CustomerService
+- CustomerServiceFilled
 - Cut
 - CutOut
 - Cyclist
@@ -1578,8 +1579,10 @@
 - NavaidTacan
 - NavaidVhfor
 - NavaidVor
-- NavaidVordme
-- NavaidVortac
+- NavaidVorDme
+- NavaidVorTac
+- NavaidVordme (alias of NavaidVorDme)
+- NavaidVortac (alias of NavaidVorTac)
 - Need
 - NetworkAdminControl
 - NetworkEnterprise
@@ -1700,6 +1703,7 @@
 - PauseOutline
 - PauseOutlineFilled
 - PausePast
+- PaymentMethods
 - PcnENode
 - PcnMilitary
 - PcnPNode
@@ -1781,6 +1785,7 @@
 - PortOutput
 - PortUsage
 - Portfolio
+- PortfolioManagement
 - Power
 - PowerEnterprisePoolsMeteredCapacityIntegration
 - PowerVirtualServerDisasterRecoveryAutomation
@@ -2084,7 +2089,8 @@
 - Socket
 - SoftwareResource
 - SoftwareResourceCluster
-- SoftwareResourceResource
+- SoftwareResourceReference
+- SoftwareResourceResource (alias of SoftwareResourceReference)
 - SoilMoisture
 - SoilMoistureField
 - SoilMoistureGlobal
