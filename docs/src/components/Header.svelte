@@ -1,5 +1,4 @@
 <script>
-  // @ts-check
   import {
     Header,
     HeaderUtilities,

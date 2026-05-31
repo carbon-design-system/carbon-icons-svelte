@@ -1,4 +1,4 @@
-/// <reference path="../.astro/types.d.ts" />
-/// <reference types="astro/client" />
+/// <reference types="svelte" />
+/// <reference types="vite/client" />
 
 declare const __VERSION: string;
