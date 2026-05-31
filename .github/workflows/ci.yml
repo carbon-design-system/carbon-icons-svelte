@@ -12,7 +12,7 @@ jobs:
 
       - name: Run unit tests
         run: |
-          bun install
+          bun ci
           bun prepack
 
       - name: Trigger deploy
