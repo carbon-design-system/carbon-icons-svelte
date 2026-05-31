@@ -241,7 +241,7 @@ ${Object.keys(byModuleName)
   );
 
   await Bun.write(
-    "docs/src/build-info.json",
+    "docs/public/build-info.json",
     JSON.stringify({
       total,
       bySize,
