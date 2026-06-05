@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2675 icons from [@carbon/icons@11.81.0](https://unpkg.com/browse/@carbon/icons@11.81.0/)
+> 2677 icons from [@carbon/icons@11.82.0](https://unpkg.com/browse/@carbon/icons@11.82.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -539,6 +539,7 @@
 - Cost
 - CostTotal
 - Cough
+- CouplingFacility
 - CouplingFacilityEncryption
 - Course
 - Covariate
@@ -2677,6 +2678,7 @@
 - ZoomOutArea
 - ZoomReset
 - Zos
+- ZosPartition
 - ZosSysplex
 - \_4K
 - \_4KFilled

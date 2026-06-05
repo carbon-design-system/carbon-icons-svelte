@@ -3,6 +3,6 @@ import { buildIcons } from "../src/index.js";
 
 test("imports", async () => {
   const icons = await buildIcons();
-  expect(icons.length).toEqual(2687);
+  expect(icons.length).toEqual(2689);
   expect(icons).toMatchSnapshot();
 });
