@@ -3,6 +3,15 @@ import type { IconOutput } from "@carbon/icons";
 
 const GLYPH_SUFFIX_PATTERN = /Glyph$/;
 
+const compactSvg = (svg: string) =>
+  svg.replace(/\s+/g, " ").replace(/> </g, "><").trim();
+
+const omitDuplicateSvgAttrs = ({
+  xmlns,
+  fill,
+  ...rest
+}: Record<string, string | number>) => rest;
+
 export const template = ({ descriptor }: IconOutput) => `<script>
   export let size = 16;
 
@@ -31,23 +40,16 @@ export const template = ({ descriptor }: IconOutput) => `<script>
 
 export const templateSvg = ({ moduleName, descriptor }: IconOutput) => {
   const isGlyph = GLYPH_SUFFIX_PATTERN.test(moduleName);
-  const { width, height, ...rest } = descriptor?.attrs;
+  const attrs = omitDuplicateSvgAttrs(descriptor?.attrs ?? {});
   const content = descriptor?.content ?? [];
 
-  if (!content) {
-    console.error(`No content found for ${moduleName}`, descriptor);
-  }
-
-  let attrs = formatAttributes(
-    isGlyph ? descriptor?.attrs : { ...rest, width: 16, height: 16 }
+  const { width, height, ...rest } = attrs;
+  const formatted = formatAttributes(
+    isGlyph ? attrs : { ...rest, width: 16, height: 16 }
   );
+  const inner = content.map(toString).join("");
 
-  return `<svg
-  data-svg-carbon-icon="${moduleName}"
-  xmlns="http://www.w3.org/2000/svg"
-  ${attrs}
-  fill="currentColor"
-  preserveAspectRatio="xMidYMid meet">
-  ${content.map((element) => toString(element)).join("")}
-</svg>`;
+  return compactSvg(
+    `<svg xmlns="http://www.w3.org/2000/svg" ${formatted} fill="currentColor" preserveAspectRatio="xMidYMid meet">${inner}</svg>`
+  );
 };

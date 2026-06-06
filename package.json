@@ -17,7 +17,9 @@
     }
   },
   "scripts": {
-    "prepack": "bun test"
+    "prepack": "bun test",
+    "build:docs-assets": "bun -e \"import { buildIcons } from './src/index.ts'; await buildIcons();\"",
+    "test:types": "bun tests/test-types.ts"
   },
   "devDependencies": {
     "@carbon/icon-helpers": "^10.73.0",

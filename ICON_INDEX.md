@@ -1582,8 +1582,6 @@
 - NavaidVor
 - NavaidVorDme
 - NavaidVorTac
-- NavaidVordme (alias of NavaidVorDme)
-- NavaidVortac (alias of NavaidVorTac)
 - Need
 - NetworkAdminControl
 - NetworkEnterprise
@@ -2091,7 +2089,6 @@
 - SoftwareResource
 - SoftwareResourceCluster
 - SoftwareResourceReference
-- SoftwareResourceResource (alias of SoftwareResourceReference)
 - SoilMoisture
 - SoilMoistureField
 - SoilMoistureGlobal
