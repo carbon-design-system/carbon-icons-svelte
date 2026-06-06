@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^7.1.2",
-    "carbon-preprocess-svelte": "^0.11.31",
-    "vite": "^8.0.14"
+    "carbon-preprocess-svelte": "^0.11.32",
+    "vite": "^8.0.16"
   }
 }
