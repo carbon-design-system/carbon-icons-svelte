@@ -17,14 +17,15 @@
   import fuzzy from "fuzzy";
   import FocusKey from "./FocusKey.svelte";
   import Header from "./Header.svelte";
+  import { BUILD_INFO_URL } from "../constants";
 
-  /** @typedef {{ iconModuleNames?: string[]; byModuleName: Record<string, string>; bySize: { order: string[]; sizes: Record<string, string[]> }; total: number; renamedIcons?: Record<string, string> }} BuildInfo */
+  /** @typedef {{ byModuleName: Record<string, string>; bySize: { order: string[]; sizes: Record<string, string[]> }; total: number; renamedIcons?: Record<string, string> }} BuildInfo */
 
   /** @type {BuildInfo | null} */
   let data = null;
 
   onMount(async () => {
-    const res = await fetch("/build-info.json");
+    const res = await fetch(BUILD_INFO_URL);
     data = await res.json();
   });
 
@@ -78,6 +79,15 @@
   $: allIcons = data ? Object.values(data.bySize.sizes).flat() : [];
   $: allIconsSet = new Set(allIcons);
   $: aliasToCanonical = data?.renamedIcons ?? {};
+  $: searchModuleNames = data
+    ? [
+        ...new Set([
+          ...Object.keys(data.byModuleName),
+          ...data.bySize.sizes.glyph.map((name) => `${name}Glyph`),
+          ...Object.keys(aliasToCanonical),
+        ]),
+      ]
+    : [];
   $: canonicalToAliases = (() => {
     /** @type {Record<string, string[]>} */
     const result = {};
@@ -90,7 +100,7 @@
     !data || searchTerm === ""
       ? allIconsSet
       : new Set(
-          data.iconModuleNames
+          searchModuleNames
             .filter((name) => match(searchTerm, name))
             .map((name) => {
               if (aliasToCanonical[name]) {

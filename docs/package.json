@@ -2,6 +2,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "predev": "bun run --cwd .. build:docs-assets",
+    "prebuild": "bun run --cwd .. build:docs-assets",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
