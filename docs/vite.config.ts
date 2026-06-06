@@ -6,7 +6,7 @@ import { version } from "../package.json" with { type: "json" };
 export default defineConfig({
   plugins: [
     svelte({ preprocess: [optimizeImports()] }),
-    optimizeCss(),
+    optimizeCss({ experimental: { strict: true } }),
   ],
   define: {
     __VERSION: JSON.stringify(version),
