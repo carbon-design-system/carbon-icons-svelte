@@ -2,6 +2,8 @@ import type { IconOutput, ModuleName } from "@carbon/icons";
 import metadata_11_31 from "@carbon/icons-11.31/metadata.json" with { type: "json" };
 import metadata_11_80 from "@carbon/icons-11.80/metadata.json" with { type: "json" };
 import metadata_latest from "@carbon/icons/metadata.json" with { type: "json" };
+import { createHash } from "node:crypto";
+import { readdir, unlink } from "node:fs/promises";
 import { $ } from "bun";
 import pkg from "../package.json" with { type: "json" };
 import { template, templateSvg } from "./template.js";
@@ -150,7 +152,6 @@ export type CarbonIconProps = SvelteHTMLElements["svg"] & {
   let names = new Set();
   let glyphNames = new Set<string>();
   let iconNames = new Set<string>();
-  const displayNames: string[] = [];
   const writePromises: Promise<number>[] = [];
 
   iconModuleNames.forEach((moduleName) => {
@@ -175,12 +176,6 @@ export type CarbonIconProps = SvelteHTMLElements["svg"] & {
 
     if (names.has(name)) return;
     names.add(name);
-    displayNames.push(name);
-
-    // For glyphs, also add name with "Glyph" suffix for searchability
-    if (isGlyph) {
-      displayNames.push(name + "Glyph");
-    }
 
     byModuleName[name] = templateSvg(icon);
     libExport += `export { default as ${name} } from "./${name}.svelte";\n`;
@@ -197,8 +192,6 @@ export type CarbonIconProps = SvelteHTMLElements["svg"] & {
       throw new Error(`Rename alias target missing: ${newName} for ${oldName}`);
     }
 
-    displayNames.push(oldName);
-    byModuleName[oldName] = byModuleName[newName];
     definitions += `export declare const ${oldName}: Component<CarbonIconProps>;\n`;
 
     if (collidesOnCaseInsensitiveFs(oldName, newName)) {
@@ -240,15 +233,41 @@ ${Object.keys(byModuleName)
       .join("\n")}\n`
   );
 
+  const buildInfoPayload: Record<string, unknown> = {
+    total,
+    bySize,
+    byModuleName,
+  };
+
+  if (Object.keys(RENAMED_ICONS).length > 0) {
+    buildInfoPayload.renamedIcons = RENAMED_ICONS;
+  }
+  const buildInfoContent = JSON.stringify(buildInfoPayload);
+  const buildInfoHash = createHash("sha256")
+    .update(buildInfoContent)
+    .digest("hex")
+    .slice(0, 12);
+  const buildInfoFileName = `build-info.${buildInfoHash}.json`;
+  const docsPublicDir = "docs/public";
+
+  for (const file of await readdir(docsPublicDir)) {
+    if (
+      file === "build-info.json" ||
+      (file.startsWith("build-info.") && file.endsWith(".json"))
+    ) {
+      await unlink(`${docsPublicDir}/${file}`);
+    }
+  }
+
+  await Bun.write(`${docsPublicDir}/${buildInfoFileName}`, buildInfoContent);
   await Bun.write(
-    "docs/public/build-info.json",
-    JSON.stringify({
-      total,
-      bySize,
-      byModuleName,
-      iconModuleNames: displayNames,
-      renamedIcons: RENAMED_ICONS,
-    })
+    "docs/src/generated/build-info-url.ts",
+    `// @generated
+// This file was automatically generated and should not be edited.
+// @see src/index.ts
+
+export const BUILD_INFO_URL = "/${buildInfoFileName}";
+`
   );
 
   console.timeEnd("buildIcons");

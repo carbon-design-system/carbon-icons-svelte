@@ -110,11 +110,13 @@ describe("templateSvg", () => {
     };
 
     const result = templateSvg(input);
-    expect(result).toContain('data-svg-carbon-icon="TestIcon"');
+    expect(result).toContain('xmlns="http://www.w3.org/2000/svg"');
     expect(result).toContain('width="16"');
     expect(result).toContain('height="16"');
     expect(result).toContain('fill="currentColor"');
     expect(result).toContain('path d="M0 0h32v32H0z"');
+    expect(result).not.toMatch(/xmlns="[^"]+"[^>]*xmlns="/);
+    expect(result).not.toMatch(/fill="currentColor"[^>]*fill="currentColor"/);
   });
 
   test("should generate correct SVG for glyph icon", () => {
@@ -140,7 +142,7 @@ describe("templateSvg", () => {
     };
 
     const result = templateSvg(input);
-    expect(result).toContain('data-svg-carbon-icon="TestIconGlyph"');
+    expect(result).toContain('xmlns="http://www.w3.org/2000/svg"');
     expect(result).toContain('width="16"');
     expect(result).toContain('height="16"');
   });
@@ -167,7 +169,6 @@ describe("templateSvg", () => {
 
     const result = templateSvg(input);
     expect(result).toContain("<svg");
-    expect(result).toContain('data-svg-carbon-icon="EmptyIcon"');
     expect(result).not.toContain("path");
   });
 }); 
