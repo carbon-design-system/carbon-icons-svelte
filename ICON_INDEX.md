@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2677 icons from [@carbon/icons@11.82.0](https://unpkg.com/browse/@carbon/icons@11.82.0/)
+> 2719 icons from [@carbon/icons@11.83.0](https://unpkg.com/browse/@carbon/icons@11.83.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -231,6 +231,7 @@
 - BuildRun
 - BuildTool
 - Building
+- BuildingElectrical
 - BuildingInsights_1
 - BuildingInsights_2
 - BuildingInsights_3
@@ -357,6 +358,7 @@
 - ChartMultitype
 - ChartNetwork
 - ChartParallel
+- ChartPerformance
 - ChartPie
 - ChartPlanningWaterfall
 - ChartPoint
@@ -501,10 +503,12 @@
 - ConnectReference
 - ConnectSource
 - ConnectTarget
+- Connection
 - ConnectionFlowUsage
 - ConnectionReceive
 - ConnectionSend
 - ConnectionSignal
+- ConnectionSignalAlt
 - ConnectionSignalOff
 - ConnectionTwoWay
 - ConnectionUsage
@@ -581,6 +585,8 @@
 - Dashboard
 - DashboardReference
 - DataAccessor
+- DataAdd
+- DataAlert
 - DataAnalytics
 - DataBackup
 - DataBase
@@ -644,6 +650,7 @@
 - DecisionNode
 - DecisionTree
 - Decline
+- Delay
 - Delete
 - Delivery
 - DeliveryAdd
@@ -762,6 +769,8 @@
 - DotMark
 - DoubleAxisChartBar
 - DoubleAxisChartColumn
+- DoubleChevronLeft
+- DoubleChevronRight
 - DoubleInteger
 - DownToBottom
 - Download
@@ -805,10 +814,14 @@
 - ElementPicker
 - Email
 - EmailNew
+- EmailUser
+- Emissions
 - EmissionsManagement
 - EnableStep
 - Encryption
 - EnergyRenewable
+- EnergyReport
+- EnergyWaste
 - Enterprise
 - EnumerationDefinition
 - EnumerationUsage
@@ -821,6 +834,7 @@
 - Event
 - EventChange
 - EventIncident
+- EventNumber
 - EventSchedule
 - EventWarning
 - Events
@@ -855,6 +869,8 @@
 - FaceSatisfiedFilled
 - FaceWink
 - FaceWinkFilled
+- FacilityGroup
+- FacilityGroupAlternate
 - Factor
 - Fade
 - Favorite
@@ -939,6 +955,7 @@
 - Fragments
 - Friendship
 - FruitBowl
+- FuelCan
 - Function
 - FunctionMath
 - Function_2
@@ -948,6 +965,8 @@
 - GameWireless
 - Gamification
 - GasStation
+- GasStationDiesel
+- GasStationEco
 - GasStationFilled
 - Gateway
 - GatewayApi
@@ -1004,6 +1023,7 @@
 - HeatMap_02
 - HeatMap_03
 - Helicopter
+- Helmet
 - Help
 - HelpDesk
 - HelpFilled
@@ -1011,6 +1031,7 @@
 - HexagonSolid
 - HexagonVerticalOutline
 - HexagonVerticalSolid
+- History
 - Home
 - HorizontalLineDashed
 - HorizontalLineSolid
@@ -1401,6 +1422,7 @@
 - LocationCompanyFilled
 - LocationCurrent
 - LocationFilled
+- LocationGroup
 - LocationHazard
 - LocationHazardFilled
 - LocationHeart
@@ -1412,6 +1434,7 @@
 - LocationSave
 - LocationStar
 - LocationStarFilled
+- LocationSupplier
 - Locked
 - LockedAndBlocked
 - LogicalPartition
@@ -1641,6 +1664,7 @@
 - ObjectStorageAlt
 - ObservedHail
 - ObservedLightning
+- OffsetEnvironmental
 - Omega
 - Opacity
 - OpenPanelBottom
@@ -1692,6 +1716,7 @@
 - PartlyCloudy
 - PartlyCloudyNight
 - Partnership
+- PartyPopper
 - PassengerDrinks
 - PassengerPlus
 - Password
@@ -1801,12 +1826,16 @@
 - PricingTailored
 - PricingTraditional
 - Printer
+- PriorityHigh
+- PriorityLow
 - PrivateNetwork
 - Process
 - ProcessAutomate
 - Product
 - ProductionEnvironment
 - ProductionService
+- Program
+- ProgramAction
 - ProgressBar
 - ProgressBarRound
 - Promote
@@ -1870,6 +1899,7 @@
 - ReadMe
 - ReadingGlasses
 - Receipt
+- ReceiptVerification
 - RecentlyViewed
 - Recommend
 - Recording
@@ -1883,6 +1913,7 @@
 - ReferenceArchitecture
 - ReflectHorizontal
 - ReflectVertical
+- Refrigerant
 - Reminder
 - ReminderMedical
 - RemoteConnection
@@ -1896,7 +1927,9 @@
 - RepoArtifact
 - RepoSourceCode
 - Report
+- ReportChart
 - ReportData
+- ReportGrowth
 - RequestQuote
 - RequirementDefinition
 - RequirementUsage
@@ -2006,6 +2039,7 @@
 - SendBackward
 - SendFilled
 - SendToBack
+- Sensor
 - SequentialPalette
 - ServerDns
 - ServerProxy
@@ -2193,12 +2227,17 @@
 - TagImport
 - TagNone
 - Tank
+- Target
 - Task
 - TaskAdd
 - TaskApproved
 - TaskAssetView
+- TaskBlank
 - TaskComplete
+- TaskEdit
+- TaskHold
 - TaskLocation
+- TaskProgress
 - TaskRemove
 - TaskSettings
 - TaskStar
@@ -2286,6 +2325,7 @@
 - Time
 - TimeFilled
 - TimePlot
+- Timeline
 - Timer
 - TimingBelt
 - ToggleOff
@@ -2404,6 +2444,7 @@
 - UserFollow
 - UserIdentification
 - UserMilitary
+- UserMinus
 - UserMultiple
 - UserOnline
 - UserProfile
@@ -2416,6 +2457,7 @@
 - UserSpeaker
 - UserSponsor
 - UserXRay
+- UtilityExpense
 - UvIndex
 - UvIndexAlt
 - UvIndexFilled
