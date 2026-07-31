@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2719 icons from [@carbon/icons@11.83.0](https://unpkg.com/browse/@carbon/icons@11.83.0/)
+> 2738 icons from [@carbon/icons@11.85.0](https://unpkg.com/browse/@carbon/icons@11.85.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -15,6 +15,7 @@
 - ActionDefinition
 - ActionUsage
 - Activity
+- ActivityTask
 - AdapterNotification
 - Add
 - AddAlt
@@ -438,6 +439,7 @@
 - CircleStroke
 - ClassicBatch
 - Classification
+- ClassificationGroups
 - ClassifierLanguage
 - Clean
 - Close
@@ -631,6 +633,7 @@
 - DataVolumeAlt
 - Data_1
 - Data_2
+- DatabaseBackups
 - DatabaseDatastax
 - DatabaseElastic
 - DatabaseEnterpriseDb2
@@ -819,6 +822,7 @@
 - EmissionsManagement
 - EnableStep
 - Encryption
+- EndToEndMonitoring
 - EnergyRenewable
 - EnergyReport
 - EnergyWaste
@@ -871,6 +875,7 @@
 - FaceWinkFilled
 - FacilityGroup
 - FacilityGroupAlternate
+- FacilityGroups
 - Factor
 - Fade
 - Favorite
@@ -970,7 +975,12 @@
 - GasStationFilled
 - Gateway
 - GatewayApi
+- GatewayExclusive
+- GatewayInclusive
+- GatewayInclusiveAlt
 - GatewayMail
+- GatewayParallel
+- GatewayParallelAlt
 - GatewayPublic
 - GatewaySecurity
 - GatewayUserAccess
@@ -1435,6 +1445,7 @@
 - LocationStar
 - LocationStarFilled
 - LocationSupplier
+- LocationSwitch
 - Locked
 - LockedAndBlocked
 - LogicalPartition
@@ -1541,6 +1552,7 @@
 - MinimapOn
 - Minimize
 - MinusPlus
+- MissingDataWarning
 - Misuse
 - MisuseOutline
 - MixedRainHail
@@ -1809,6 +1821,7 @@
 - PortOutput
 - PortUsage
 - Portfolio
+- PortfolioGroups
 - PortfolioManagement
 - Power
 - PowerEnterprisePoolsMeteredCapacityIntegration
@@ -1832,6 +1845,7 @@
 - Process
 - ProcessAutomate
 - Product
+- ProductCategories
 - ProductionEnvironment
 - ProductionService
 - Program
@@ -1845,6 +1859,7 @@
 - PullRequest
 - PunctuationCheck
 - Purchase
+- PurchasingOrganizations
 - QBarrier
 - QBlochSphere
 - QCU1
@@ -2183,6 +2198,7 @@
 - SubjectDefinition
 - SubjectUsage
 - SubnetAclRules
+- Subprocess
 - Subsetting
 - Subtract
 - SubtractAlt
@@ -2322,6 +2338,8 @@
 - Ticket
 - Tides
 - Tif
+- Tilde
+- TildeLarge
 - Time
 - TimeFilled
 - TimePlot
@@ -2403,6 +2421,7 @@
 - TypePattern
 - Types
 - Umbrella
+- UnassignedWorkOrder
 - Undefined
 - UndefinedFilled
 - Undo
