@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2738 icons from [@carbon/icons@11.85.0](https://unpkg.com/browse/@carbon/icons@11.85.0/)
+> 2766 icons from [@carbon/icons@11.87.0](https://unpkg.com/browse/@carbon/icons@11.87.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -25,12 +25,12 @@
 - AddLarge
 - AddParentNode
 - AddServer
-- AgentDetached
 - AggregatorCountRows
 - AggregatorRecalculation
 - AgricultureAnalytics
 - Ai
-- AiAgentInvocation
+- AiAgent
+- AiAgentDetached
 - AiBusinessImpactAssessment
 - AiEnabledEdt
 - AiEnabledPdlc
@@ -170,6 +170,7 @@
 - BeeBat
 - Beta
 - Bicycle
+- BindingConnector
 - Binding_01
 - Binding_02
 - Binoculars
@@ -393,6 +394,7 @@
 - CheckboxIndeterminate
 - CheckboxIndeterminateFilled
 - Checkmark
+- CheckmarkDouble
 - CheckmarkFilled
 - CheckmarkFilledError
 - CheckmarkFilledWarning
@@ -705,6 +707,10 @@
 - DirectionLoopRightFilled
 - DirectionMerge
 - DirectionMergeFilled
+- DirectionMergeLeft
+- DirectionMergeLeftFilled
+- DirectionMergeRight
+- DirectionMergeRightFilled
 - DirectionRight_01
 - DirectionRight_01Filled
 - DirectionRight_02
@@ -894,6 +900,7 @@
 - FileX
 - Filter
 - FilterEdit
+- FilterFilled
 - FilterRemove
 - FilterReset
 - Finance
@@ -923,9 +930,12 @@
 - FloodWarning
 - Floorplan
 - Flow
+- FlowBranch
+- FlowConditional
 - FlowConnection
 - FlowData
 - FlowLogsVpc
+- FlowMerge
 - FlowModeler
 - FlowModelerReference
 - FlowSequence
@@ -1152,6 +1162,7 @@
 - IbmEloEngineeringInsights
 - IbmEloMethodComposer
 - IbmEloPublishing
+- IbmEngineeringAiHub
 - IbmEngineeringLifecycleMgmt
 - IbmEngineeringRequirementsDoorsNext
 - IbmEngineeringSystemsDesignRhapsody
@@ -1169,6 +1180,7 @@
 - IbmGlobalStorageArchitecture
 - IbmGranite
 - IbmHybridControlPlane
+- IbmI
 - IbmIbv
 - IbmInstana
 - IbmJrs
@@ -1448,10 +1460,12 @@
 - LocationSwitch
 - Locked
 - LockedAndBlocked
+- LockedFilled
 - LogicalPartition
 - Login
 - LogoAngular
 - LogoAnsibleCommunity
+- LogoAstradb
 - LogoBluesky
 - LogoDigg
 - LogoDiscord
@@ -1471,8 +1485,10 @@
 - LogoLivestream
 - LogoMastodon
 - LogoMedium
+- LogoMilvus
 - LogoModelContextProtocol
 - LogoNpm
+- LogoOpensearch
 - LogoOpenshift
 - LogoPinterest
 - LogoPython
@@ -1535,6 +1551,9 @@
 - Merge
 - MergeNode
 - MessageQueue
+- MetadataDefinition
+- MetadataDefinitionSemantic
+- MetadataUsage
 - Meter
 - MeterAlt
 - Microphone
@@ -1702,6 +1721,7 @@
 - OverflowMenuVertical
 - Overlay
 - Package
+- PackageLibrary
 - PackageNode
 - PackageTextAnalysis
 - PageBreak
@@ -1716,6 +1736,7 @@
 - PanelExpansion
 - Paragraph
 - Parameter
+- ParameterAction
 - ParentChild
 - ParentNode
 - PartDefinition
@@ -1945,6 +1966,7 @@
 - ReportChart
 - ReportData
 - ReportGrowth
+- RepresentationTextual
 - RequestQuote
 - RequirementDefinition
 - RequirementUsage
@@ -2170,6 +2192,8 @@
 - StarFilled
 - StarHalf
 - StarReview
+- StateDefinition
+- StateExhibit
 - StayInside
 - StemLeafPlot
 - Stethoscope
@@ -2258,6 +2282,7 @@
 - TaskSettings
 - TaskStar
 - TaskTools
+- TaskUser
 - TaskView
 - Taste
 - Taxi
@@ -2431,6 +2456,7 @@
 - UnknownFilled
 - Unlink
 - Unlocked
+- UnlockedFilled
 - Unplug
 - Unsaved
 - UpToTop
@@ -2443,6 +2469,7 @@
 - UsageIncludedUseCase
 - Usb
 - UseCaseDefinition
+- UseCaseInclude
 - UseCaseUsage
 - User
 - UserAccess
@@ -2504,6 +2531,7 @@
 - VideoOffFilled
 - VideoPlayer
 - View
+- ViewDefinition
 - ViewFilled
 - ViewMode_1
 - ViewMode_2
