@@ -1,33 +1,14 @@
 import type { IconOutput, ModuleName } from "@carbon/icons";
-import metadata_11_31 from "@carbon/icons-11.31/metadata.json" with { type: "json" };
-import metadata_11_80 from "@carbon/icons-11.80/metadata.json" with { type: "json" };
 import metadata_latest from "@carbon/icons/metadata.json" with { type: "json" };
 import { createHash } from "node:crypto";
-import { readdir, unlink } from "node:fs/promises";
-import { $ } from "bun";
+import { mkdir, readdir, rm, unlink } from "node:fs/promises";
+import deprecatedIcons from "./deprecated-icons.json" with { type: "json" };
 import pkg from "../package.json" with { type: "json" };
-import { template, templateSvg } from "./template.js";
+import { renderContent, template, templateSvg } from "./template.js";
 
 const VERSION = pkg.devDependencies["@carbon/icons"];
 
-type MetadataSource = typeof metadata_latest | typeof metadata_11_80 | typeof metadata_11_31;
 type IconEntry = (typeof metadata_latest.icons)[number];
-
-/**
- * This library is built using the `@carbon/icons` package.
- * However, `@carbon/icons` may remove icons between minor versions.
- * This library has a different contract; icons are not removed
- * in minor versions. To ensure that icons are not removed, we
- * maintain a list of deprecated icons that are merged in.
- */
-const DEPRECATED_ICONS: Record<string, MetadataSource> = {
-  // From 11.31.x
-  FoundationModel: metadata_11_31,
-  Infinity: metadata_11_31,
-  // From 11.80.x
-  IbmBluepay: metadata_11_80,
-  IbmTenet: metadata_11_80,
-};
 
 /**
  * Similarly, `@carbon/icons` may rename icons between minor versions.
@@ -71,18 +52,20 @@ const formatIconIndexLine = (moduleName: string) => {
 
 const metadata = { ...metadata_latest };
 
-// Merge in deprecated icons
-Object.entries(DEPRECATED_ICONS).forEach(([iconName, sourceMetadata]) => {
-  sourceMetadata.icons.forEach((icon) => {
-    icon.output.forEach((output) => {
-      const moduleName = output.moduleName.slice(0, -2);
-
-      if (moduleName === iconName) {
-        metadata.icons.push(icon as IconEntry);
-      }
-    });
-  });
-});
+/**
+ * This library is built using the `@carbon/icons` package.
+ * However, `@carbon/icons` may remove icons between minor versions.
+ * This library has a different contract; icons are not removed
+ * in minor versions. To ensure that icons are not removed, we
+ * merge in a precomputed list of icons pulled from older
+ * `@carbon/icons` versions that no longer ship them.
+ *
+ * `deprecated-icons.json` is a small extract (not the full, multi-MB
+ * metadata.json of those older versions). Regenerate it with
+ * `bun scripts/generate-deprecated-icons.ts` after adding a new
+ * entry to DEPRECATED_ICONS in that script.
+ */
+metadata.icons.push(...(deprecatedIcons as IconEntry[]));
 
 export const buildIcons = async () => {
   console.time("buildIcons");
@@ -111,8 +94,8 @@ export const buildIcons = async () => {
     .filter(Boolean)
     .sort() as string[];
 
-  await $`rm -rf lib`;
-  await $`mkdir lib`;
+  await rm("lib", { recursive: true, force: true });
+  await mkdir("lib");
 
   let libExport = "";
   let definitions = `import type { Component } from "svelte";
@@ -177,13 +160,15 @@ export type CarbonIconProps = SvelteHTMLElements["svg"] & {
     if (names.has(name)) return;
     names.add(name);
 
-    byModuleName[name] = templateSvg(icon);
+    const inner = renderContent(icon.descriptor);
+
+    byModuleName[name] = templateSvg(icon, inner);
     libExport += `export { default as ${name} } from "./${name}.svelte";\n`;
     definitions += `export declare const ${name}: Component<CarbonIconProps>;\n`;
 
     const fileName = `lib/${name}.svelte`;
 
-    writePromises.push(Bun.write(fileName, template(icon)));
+    writePromises.push(Bun.write(fileName, template(icon, inner)));
     writePromises.push(Bun.write(fileName + ".d.ts", `export { ${name} as default } from "./";\n`));
   });
 
