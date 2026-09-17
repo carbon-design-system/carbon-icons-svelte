@@ -12,7 +12,10 @@ const omitDuplicateSvgAttrs = ({
   ...rest
 }: Record<string, string | number>) => rest;
 
-export const template = ({ descriptor }: IconOutput) => `<script>
+export const renderContent = (descriptor: IconOutput["descriptor"]) =>
+  (descriptor?.content ?? []).map(toString).join("");
+
+export const template = ({ descriptor }: IconOutput, inner = renderContent(descriptor)) => `<script>
   export let size = 16;
 
   export let title = undefined;
@@ -35,19 +38,17 @@ export const template = ({ descriptor }: IconOutput) => `<script>
   {...attributes}
   {...$$restProps}>
   {#if title}<title>{title}</title>{/if}
-  ${(descriptor?.content ?? []).map(toString).join("")}
+  ${inner}
 </svg>`;
 
-export const templateSvg = ({ moduleName, descriptor }: IconOutput) => {
+export const templateSvg = ({ moduleName, descriptor }: IconOutput, inner = renderContent(descriptor)) => {
   const isGlyph = GLYPH_SUFFIX_PATTERN.test(moduleName);
   const attrs = omitDuplicateSvgAttrs(descriptor?.attrs ?? {});
-  const content = descriptor?.content ?? [];
 
   const { width, height, ...rest } = attrs;
   const formatted = formatAttributes(
     isGlyph ? attrs : { ...rest, width: 16, height: 16 }
   );
-  const inner = content.map(toString).join("");
 
   return compactSvg(
     `<svg xmlns="http://www.w3.org/2000/svg" ${formatted} fill="currentColor" preserveAspectRatio="xMidYMid meet">${inner}</svg>`
