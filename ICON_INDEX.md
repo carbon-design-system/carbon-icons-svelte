@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2779 icons from [@carbon/icons@11.89.0](https://unpkg.com/browse/@carbon/icons@11.89.0/)
+> 2780 icons from [@carbon/icons@11.89.0](https://unpkg.com/browse/@carbon/icons@11.89.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -34,6 +34,7 @@
 - AiBusinessImpactAssessment
 - AiEnabledEdt
 - AiEnabledPdlc
+- AiFinancialSustainabilityCheck
 - AiGenerate
 - AiGovernanceLifecycle
 - AiGovernanceTracked

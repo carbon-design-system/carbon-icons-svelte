@@ -922,5 +922,281 @@
         }
       ]
     }
+  },
+  {
+    "name": "ai-financial-sustainability-check",
+    "friendlyName": "AI Financial Sustainability Check",
+    "aliases": [
+      "automation",
+      "artificial intelligence",
+      "finance",
+      "sustainability",
+      "check",
+      "AI",
+      "money"
+    ],
+    "sizes": [
+      32
+    ],
+    "namespace": [],
+    "assets": [
+      {
+        "size": 32,
+        "filepath": "32/ai-financial-sustainability-check.svg",
+        "source": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<svg id=\"icon\" xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 32 32\">\n  <defs>\n    <style>\n      .cls-1 {\n        fill: none;\n      }\n\n      .cls-1, .cls-2 {\n        stroke-width: 0px;\n      }\n    </style>\n  </defs>\n  <polygon class=\"cls-2\" points=\"16 23.4142 11.293 18.7072 12.707 17.2928 16 20.5858 27.293 9.2928 28.707 10.7072 16 23.4142\"/>\n  <path class=\"cls-2\" d=\"m12.707,8.7073l-1.4141-1.4141-4.2928,4.2928-2.5861-2.5863,4.293-4.2925-1.4141-1.4141-5,4.9995c-.1875.1875-.293.4419-.293.707s.1055.5195.293.707l7,7.0005,1.4141-1.4141-2.2929-2.293,4.2929-4.2929Z\"/>\n  <path class=\"cls-2\" d=\"m16,30c-7.7197,0-14-6.2804-14-14h2c0,6.6168,5.3833,12,12,12s12-5.3832,12-12h2c0,7.7196-6.2803,14-14,14Z\"/>\n  <path class=\"cls-2\" d=\"m24.3076,7.3407c-2.2446-2.1543-5.1948-3.3407-8.3076-3.3407-.9365,0-1.8682.108-2.77.321l-.46-1.9463c1.0522-.2487,2.1387-.3748,3.23-.3748,3.6313,0,7.0737,1.3843,9.6924,3.8978l-1.3848,1.4429Z\"/>\n  <rect id=\"_Transparent_Rectangle_\" data-name=\"&amp;lt;Transparent Rectangle&amp;gt;\" class=\"cls-1\" width=\"32\" height=\"32\"/>\n</svg>",
+        "optimized": {
+          "data": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 32 32\"><path stroke-width=\"0\" d=\"M16 23.4142 11.293 18.7072 12.707 17.2928 16 20.5858 27.293 9.2928 28.707 10.7072 16 23.4142z\"/><path stroke-width=\"0\" d=\"m12.707,8.7073l-1.4141-1.4141-4.2928,4.2928-2.5861-2.5863,4.293-4.2925-1.4141-1.4141-5,4.9995c-.1875.1875-.293.4419-.293.707s.1055.5195.293.707l7,7.0005,1.4141-1.4141-2.2929-2.293,4.2929-4.2929Z\"/><path stroke-width=\"0\" d=\"m16,30c-7.7197,0-14-6.2804-14-14h2c0,6.6168,5.3833,12,12,12s12-5.3832,12-12h2c0,7.7196-6.2803,14-14,14Z\"/><path stroke-width=\"0\" d=\"m24.3076,7.3407c-2.2446-2.1543-5.1948-3.3407-8.3076-3.3407-.9365,0-1.8682.108-2.77.321l-.46-1.9463c1.0522-.2487,2.1387-.3748,3.23-.3748,3.6313,0,7.0737,1.3843,9.6924,3.8978l-1.3848,1.4429Z\"/></svg>"
+        }
+      }
+    ],
+    "output": [
+      {
+        "moduleName": "AiFinancialSustainabilityCheck32",
+        "filepath": "ai-financial-sustainability-check/32.js",
+        "descriptor": {
+          "elem": "svg",
+          "attrs": {
+            "xmlns": "http://www.w3.org/2000/svg",
+            "viewBox": "0 0 32 32",
+            "fill": "currentColor",
+            "width": 32,
+            "height": 32
+          },
+          "content": [
+            {
+              "elem": "path",
+              "attrs": {
+                "stroke-width": "0",
+                "d": "M16 23.4142 11.293 18.7072 12.707 17.2928 16 20.5858 27.293 9.2928 28.707 10.7072 16 23.4142z"
+              }
+            },
+            {
+              "elem": "path",
+              "attrs": {
+                "stroke-width": "0",
+                "d": "m12.707,8.7073l-1.4141-1.4141-4.2928,4.2928-2.5861-2.5863,4.293-4.2925-1.4141-1.4141-5,4.9995c-.1875.1875-.293.4419-.293.707s.1055.5195.293.707l7,7.0005,1.4141-1.4141-2.2929-2.293,4.2929-4.2929Z"
+              }
+            },
+            {
+              "elem": "path",
+              "attrs": {
+                "stroke-width": "0",
+                "d": "m16,30c-7.7197,0-14-6.2804-14-14h2c0,6.6168,5.3833,12,12,12s12-5.3832,12-12h2c0,7.7196-6.2803,14-14,14Z"
+              }
+            },
+            {
+              "elem": "path",
+              "attrs": {
+                "stroke-width": "0",
+                "d": "m24.3076,7.3407c-2.2446-2.1543-5.1948-3.3407-8.3076-3.3407-.9365,0-1.8682.108-2.77.321l-.46-1.9463c1.0522-.2487,2.1387-.3748,3.23-.3748,3.6313,0,7.0737,1.3843,9.6924,3.8978l-1.3848,1.4429Z"
+              }
+            }
+          ],
+          "name": "ai-financial-sustainability-check",
+          "size": 32
+        },
+        "size": 32
+      },
+      {
+        "moduleName": "AiFinancialSustainabilityCheck24",
+        "filepath": "ai-financial-sustainability-check/24.js",
+        "descriptor": {
+          "elem": "svg",
+          "attrs": {
+            "xmlns": "http://www.w3.org/2000/svg",
+            "viewBox": "0 0 32 32",
+            "fill": "currentColor",
+            "width": 24,
+            "height": 24
+          },
+          "content": [
+            {
+              "elem": "path",
+              "attrs": {
+                "stroke-width": "0",
+                "d": "M16 23.4142 11.293 18.7072 12.707 17.2928 16 20.5858 27.293 9.2928 28.707 10.7072 16 23.4142z"
+              }
+            },
+            {
+              "elem": "path",
+              "attrs": {
+                "stroke-width": "0",
+                "d": "m12.707,8.7073l-1.4141-1.4141-4.2928,4.2928-2.5861-2.5863,4.293-4.2925-1.4141-1.4141-5,4.9995c-.1875.1875-.293.4419-.293.707s.1055.5195.293.707l7,7.0005,1.4141-1.4141-2.2929-2.293,4.2929-4.2929Z"
+              }
+            },
+            {
+              "elem": "path",
+              "attrs": {
+                "stroke-width": "0",
+                "d": "m16,30c-7.7197,0-14-6.2804-14-14h2c0,6.6168,5.3833,12,12,12s12-5.3832,12-12h2c0,7.7196-6.2803,14-14,14Z"
+              }
+            },
+            {
+              "elem": "path",
+              "attrs": {
+                "stroke-width": "0",
+                "d": "m24.3076,7.3407c-2.2446-2.1543-5.1948-3.3407-8.3076-3.3407-.9365,0-1.8682.108-2.77.321l-.46-1.9463c1.0522-.2487,2.1387-.3748,3.23-.3748,3.6313,0,7.0737,1.3843,9.6924,3.8978l-1.3848,1.4429Z"
+              }
+            }
+          ],
+          "name": "ai-financial-sustainability-check",
+          "size": 24
+        },
+        "size": 24
+      },
+      {
+        "moduleName": "AiFinancialSustainabilityCheck20",
+        "filepath": "ai-financial-sustainability-check/20.js",
+        "descriptor": {
+          "elem": "svg",
+          "attrs": {
+            "xmlns": "http://www.w3.org/2000/svg",
+            "viewBox": "0 0 32 32",
+            "fill": "currentColor",
+            "width": 20,
+            "height": 20
+          },
+          "content": [
+            {
+              "elem": "path",
+              "attrs": {
+                "stroke-width": "0",
+                "d": "M16 23.4142 11.293 18.7072 12.707 17.2928 16 20.5858 27.293 9.2928 28.707 10.7072 16 23.4142z"
+              }
+            },
+            {
+              "elem": "path",
+              "attrs": {
+                "stroke-width": "0",
+                "d": "m12.707,8.7073l-1.4141-1.4141-4.2928,4.2928-2.5861-2.5863,4.293-4.2925-1.4141-1.4141-5,4.9995c-.1875.1875-.293.4419-.293.707s.1055.5195.293.707l7,7.0005,1.4141-1.4141-2.2929-2.293,4.2929-4.2929Z"
+              }
+            },
+            {
+              "elem": "path",
+              "attrs": {
+                "stroke-width": "0",
+                "d": "m16,30c-7.7197,0-14-6.2804-14-14h2c0,6.6168,5.3833,12,12,12s12-5.3832,12-12h2c0,7.7196-6.2803,14-14,14Z"
+              }
+            },
+            {
+              "elem": "path",
+              "attrs": {
+                "stroke-width": "0",
+                "d": "m24.3076,7.3407c-2.2446-2.1543-5.1948-3.3407-8.3076-3.3407-.9365,0-1.8682.108-2.77.321l-.46-1.9463c1.0522-.2487,2.1387-.3748,3.23-.3748,3.6313,0,7.0737,1.3843,9.6924,3.8978l-1.3848,1.4429Z"
+              }
+            }
+          ],
+          "name": "ai-financial-sustainability-check",
+          "size": 20
+        },
+        "size": 20
+      },
+      {
+        "moduleName": "AiFinancialSustainabilityCheck16",
+        "filepath": "ai-financial-sustainability-check/16.js",
+        "descriptor": {
+          "elem": "svg",
+          "attrs": {
+            "xmlns": "http://www.w3.org/2000/svg",
+            "viewBox": "0 0 32 32",
+            "fill": "currentColor",
+            "width": 16,
+            "height": 16
+          },
+          "content": [
+            {
+              "elem": "path",
+              "attrs": {
+                "stroke-width": "0",
+                "d": "M16 23.4142 11.293 18.7072 12.707 17.2928 16 20.5858 27.293 9.2928 28.707 10.7072 16 23.4142z"
+              }
+            },
+            {
+              "elem": "path",
+              "attrs": {
+                "stroke-width": "0",
+                "d": "m12.707,8.7073l-1.4141-1.4141-4.2928,4.2928-2.5861-2.5863,4.293-4.2925-1.4141-1.4141-5,4.9995c-.1875.1875-.293.4419-.293.707s.1055.5195.293.707l7,7.0005,1.4141-1.4141-2.2929-2.293,4.2929-4.2929Z"
+              }
+            },
+            {
+              "elem": "path",
+              "attrs": {
+                "stroke-width": "0",
+                "d": "m16,30c-7.7197,0-14-6.2804-14-14h2c0,6.6168,5.3833,12,12,12s12-5.3832,12-12h2c0,7.7196-6.2803,14-14,14Z"
+              }
+            },
+            {
+              "elem": "path",
+              "attrs": {
+                "stroke-width": "0",
+                "d": "m24.3076,7.3407c-2.2446-2.1543-5.1948-3.3407-8.3076-3.3407-.9365,0-1.8682.108-2.77.321l-.46-1.9463c1.0522-.2487,2.1387-.3748,3.23-.3748,3.6313,0,7.0737,1.3843,9.6924,3.8978l-1.3848,1.4429Z"
+              }
+            }
+          ],
+          "name": "ai-financial-sustainability-check",
+          "size": 16
+        },
+        "size": 16
+      }
+    ],
+    "category": "Enterprise",
+    "subcategory": "App catalogue",
+    "moduleInfo": {
+      "local": "AiFinancialSustainabilityCheck",
+      "global": "AiFinancialSustainabilityCheck",
+      "filepath": "AiFinancialSustainabilityCheck.js",
+      "sizes": [
+        {
+          "size": 32,
+          "ast": {
+            "type": "element",
+            "tagName": "svg",
+            "attributes": {
+              "xmlns": "http://www.w3.org/2000/svg",
+              "viewBox": "0 0 32 32",
+              "fill": "currentColor"
+            },
+            "children": [
+              {
+                "type": "element",
+                "tagName": "path",
+                "attributes": {
+                  "stroke-width": "0",
+                  "d": "M16 23.4142 11.293 18.7072 12.707 17.2928 16 20.5858 27.293 9.2928 28.707 10.7072 16 23.4142z"
+                },
+                "children": []
+              },
+              {
+                "type": "element",
+                "tagName": "path",
+                "attributes": {
+                  "stroke-width": "0",
+                  "d": "m12.707,8.7073l-1.4141-1.4141-4.2928,4.2928-2.5861-2.5863,4.293-4.2925-1.4141-1.4141-5,4.9995c-.1875.1875-.293.4419-.293.707s.1055.5195.293.707l7,7.0005,1.4141-1.4141-2.2929-2.293,4.2929-4.2929Z"
+                },
+                "children": []
+              },
+              {
+                "type": "element",
+                "tagName": "path",
+                "attributes": {
+                  "stroke-width": "0",
+                  "d": "m16,30c-7.7197,0-14-6.2804-14-14h2c0,6.6168,5.3833,12,12,12s12-5.3832,12-12h2c0,7.7196-6.2803,14-14,14Z"
+                },
+                "children": []
+              },
+              {
+                "type": "element",
+                "tagName": "path",
+                "attributes": {
+                  "stroke-width": "0",
+                  "d": "m24.3076,7.3407c-2.2446-2.1543-5.1948-3.3407-8.3076-3.3407-.9365,0-1.8682.108-2.77.321l-.46-1.9463c1.0522-.2487,2.1387-.3748,3.23-.3748,3.6313,0,7.0737,1.3843,9.6924,3.8978l-1.3848,1.4429Z"
+                },
+                "children": []
+              }
+            ]
+          }
+        }
+      ]
+    }
   }
 ]
