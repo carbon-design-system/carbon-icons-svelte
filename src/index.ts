@@ -1,6 +1,7 @@
 import type { IconOutput, ModuleName } from "@carbon/icons";
 import metadata_11_31 from "@carbon/icons-11.31/metadata.json" with { type: "json" };
 import metadata_11_80 from "@carbon/icons-11.80/metadata.json" with { type: "json" };
+import metadata_11_87 from "@carbon/icons-11.87/metadata.json" with { type: "json" };
 import metadata_latest from "@carbon/icons/metadata.json" with { type: "json" };
 import { createHash } from "node:crypto";
 import { readdir, unlink } from "node:fs/promises";
@@ -10,7 +11,8 @@ import { template, templateSvg } from "./template.js";
 
 const VERSION = pkg.devDependencies["@carbon/icons"];
 
-type MetadataSource = typeof metadata_latest | typeof metadata_11_80 | typeof metadata_11_31;
+type MetadataSource =
+  typeof metadata_latest | typeof metadata_11_87 | typeof metadata_11_80 | typeof metadata_11_31;
 type IconEntry = (typeof metadata_latest.icons)[number];
 
 /**
@@ -27,6 +29,8 @@ const DEPRECATED_ICONS: Record<string, MetadataSource> = {
   // From 11.80.x
   IbmBluepay: metadata_11_80,
   IbmTenet: metadata_11_80,
+  // From 11.87.x
+  AiFinancialSustainabilityCheck: metadata_11_87,
 };
 
 /**
