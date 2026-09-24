@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2766 icons from [@carbon/icons@11.87.0](https://unpkg.com/browse/@carbon/icons@11.87.0/)
+> 2780 icons from [@carbon/icons@11.89.0](https://unpkg.com/browse/@carbon/icons@11.89.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -129,6 +129,7 @@
 - Asset
 - AssetConfirm
 - AssetDigitalTwin
+- AssetEdit
 - AssetMovement
 - AssetView
 - AssignmentActionUsage
@@ -166,6 +167,7 @@
 - BatteryLow
 - BatteryQuarter
 - BatteryWarning
+- Beacon
 - Bee
 - BeeBat
 - Beta
@@ -529,6 +531,12 @@
 - ContainerServices
 - ContainerSoftware
 - ContentDeliveryNetwork
+- ContentNavigatorEditServiceDownload
+- ContentNavigatorEditServiceUpload
+- ContentNavigatorSyncError
+- ContentNavigatorSyncLoading
+- ContentNavigatorSyncPaused
+- ContentNavigatorSyncWarning
 - ContentView
 - Continue
 - ContinueFilled
@@ -1068,6 +1076,7 @@
 - Hurricane
 - HybridNetworking
 - HybridNetworkingAlt
+- IbmAiFinancialInstrumentSustainabilityCheck
 - IbmAiOnZ
 - IbmAiopsInsights
 - IbmApiConnect
@@ -1538,6 +1547,7 @@
 - MappingShow
 - Marginal
 - MarineWarning
+- Markdown
 - MaterialRequest
 - MathCurve
 - Maximize
@@ -1942,6 +1952,7 @@
 - RecordingFilled
 - RecordingFilledAlt
 - Recycle
+- RedHatAiInferenceOnIbmCloud
 - RedHatAiInstructlabOnIbmCloud
 - Redefinition
 - Redo
@@ -2196,6 +2207,7 @@
 - StateExhibit
 - StayInside
 - StemLeafPlot
+- StepzenGraphServer
 - Stethoscope
 - Stickies
 - Stop
@@ -2533,11 +2545,13 @@
 - View
 - ViewDefinition
 - ViewFilled
+- ViewMatrix
 - ViewMode_1
 - ViewMode_2
 - ViewNext
 - ViewOff
 - ViewOffFilled
+- ViewTable
 - VintageMac
 - VirtualColumn
 - VirtualColumnKey
