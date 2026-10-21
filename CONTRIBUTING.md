@@ -64,11 +64,29 @@ When iterating locally, scope test runs to what you changed. The full suite rege
 
 ## Backwards compatibility
 
-`@carbon/icons` sometimes removes or renames icons between minor versions. We don't remove icons in minor releases of this library. [`src/index.ts`](src/index.ts) enforces that with two tables.
+`@carbon/icons` sometimes removes or renames icons between minor versions. We don't remove icons in minor releases of this library, so every upstream removal must be handled with one of the two tables below.
+
+### Removal or rename?
+
+Carbon doesn't always call out renames. A rename looks like a removal plus an unrelated addition in the [`ICON_INDEX.md`](ICON_INDEX.md) diff (e.g. `IbmQuantumSafeAdvisor` gone, `IbmQuantumSafeCryptographyManager` new). For each removed name, compare its SVG content in the previous version against the added icons. Pin the previous version temporarily as an alias and run:
+
+```sh
+bun add -d "@carbon/icons-prev@npm:@carbon/icons@11.89.0"
+bun -e '
+const o = (await import("@carbon/icons-prev/metadata.json", { with: { type: "json" } })).default;
+const n = (await import("@carbon/icons/metadata.json", { with: { type: "json" } })).default;
+const find = (m, name) => m.icons.find((i) => i.output.some((x) => x.moduleName.slice(0, -2) === name));
+const same = (a, b) => JSON.stringify(find(o, a).output[0].descriptor.content) === JSON.stringify(find(n, b).output[0].descriptor.content);
+console.log(same("IbmQuantumSafeAdvisor", "IbmQuantumSafeCryptographyManager"));
+'
+bun remove @carbon/icons-prev
+```
+
+Identical content means a rename: use [`RENAMED_ICONS`](#renamed-icons-upstream-rename). No match means a removal: use [`DEPRECATED_ICONS`](#deprecated-icons-upstream-removal).
 
 ### Deprecated icons (upstream removal)
 
-When Carbon drops an icon, add it to `DEPRECATED_ICONS` with the `@carbon/icons` version that still has it:
+When Carbon drops an icon, add it to `DEPRECATED_ICONS` in [`scripts/generate-deprecated-icons.ts`](scripts/generate-deprecated-icons.ts) with the `@carbon/icons` version that still has it:
 
 ```ts
 const DEPRECATED_ICONS: Record<string, MetadataSource> = {
@@ -77,20 +95,21 @@ const DEPRECATED_ICONS: Record<string, MetadataSource> = {
 };
 ```
 
-Pin the source version as a separate devDependency alias (e.g. `"@carbon/icons-11.31": "npm:@carbon/icons@~11.31.0"`), import its `metadata.json`, and add a matching `declare module` in [`src/global.d.ts`](src/global.d.ts) if TypeScript complains. The build pulls matching icons from the older metadata so existing imports keep working.
+Pin the source version as a separate devDependency alias (e.g. `"@carbon/icons-11.87": "npm:@carbon/icons@11.87.0"`), import its `metadata.json` in the script, and add a matching `declare module` in [`src/global.d.ts`](src/global.d.ts) if TypeScript complains. Then run `bun scripts/generate-deprecated-icons.ts` to regenerate [`src/deprecated-icons.json`](src/deprecated-icons.json), a small extract the build merges into the latest metadata so existing imports keep working. See [#234](https://github.com/carbon-design-system/carbon-icons-svelte/pull/234).
 
 ### Renamed icons (upstream rename)
 
-When Carbon renames an icon, map the old export name to the new one in `RENAMED_ICONS`:
+When Carbon renames an icon, map the old export name to the new one in `RENAMED_ICONS` in [`src/index.ts`](src/index.ts), under a comment naming the `@carbon/icons` version:
 
 ```ts
 const RENAMED_ICONS = {
-  NavaidVordme: "NavaidVorDme",
+  // From 11.91.x
+  IbmQuantumSafeAdvisor: "IbmQuantumSafeCryptographyManager", // IbmQuantumSafeAdvisor -> IbmQuantumSafeCryptographyManager
   // ...
 } as const;
 ```
 
-The build then exports the old name from the barrel, writes an alias `.svelte` that forwards props to the new component (or re-exports directly when old and new names collide on case-insensitive filesystems; see `collidesOnCaseInsensitiveFs`), lists the alias in `ICON_INDEX.md` as `(alias of <newName>)`, and puts `renamedIcons` in the docs `build-info` payload.
+No older package pin is needed. The build exports the old name from the barrel, writes an alias `.svelte` that forwards props to the new component (or re-exports directly when old and new names collide on case-insensitive filesystems; see `collidesOnCaseInsensitiveFs`), and puts `renamedIcons` in the docs `build-info` payload. Aliases are not listed in [`ICON_INDEX.md`](ICON_INDEX.md), which only lists canonical icons. They do stay in the test snapshot, so a correctly handled rename shows up there as an addition only. See [#236](https://github.com/carbon-design-system/carbon-icons-svelte/pull/236).
 
 Don't remove a `DEPRECATED_ICONS` or `RENAMED_ICONS` entry in a minor release. That's a breaking change. Save it for a major bump and note it in the changelog.
 
@@ -148,12 +167,14 @@ Run `bun run prepack` first so `lib/` exists, then `bun run test:types`. CI runs
 
 Most releases are just a dependency bump for new Carbon icons.
 
-1. Bump `devDependencies["@carbon/icons"]` in `package.json`.
-2. `bun install`
-3. Check what Carbon added, removed, or renamed. Grep the new `metadata.json` if you need to.
-4. Handle removals and renames before building ([Backwards compatibility](#backwards-compatibility)).
-5. `bun run prepack`
-6. Update the icon count in [`tests/index.test.ts`](tests/index.test.ts) if the total changed.
+Carbon's monorepo release tags (e.g. `v11.118.0`) don't match the `@carbon/icons` version (that tag shipped `@carbon/icons@11.90.0`), and the per-package release notes don't reliably say whether icons changed. Go by npm and the build output instead: `npm view @carbon/icons version` gives the latest, and the [`ICON_INDEX.md`](ICON_INDEX.md) diff shows what actually changed. If the bump adds no icons (the diff only touches the header version), there's nothing worth shipping; discard it and wait for the next release.
+
+1. `bun add -d -E @carbon/icons@<version>` (exact pin, updates `package.json` and `bun.lock`).
+2. `bun test`. It fails on the icon count if anything was added or removed. That's expected.
+3. Read the [`ICON_INDEX.md`](ICON_INDEX.md) diff. Apart from the header, every `-` line is an upstream removal or rename.
+4. Handle removals and renames before going further ([Backwards compatibility](#backwards-compatibility)).
+5. Update the icon count in [`tests/index.test.ts`](tests/index.test.ts) if the total changed.
+6. `bun run prepack` (`bun test --update-snapshots` once the snapshot diff looks right).
 7. Review [`ICON_INDEX.md`](ICON_INDEX.md), the snapshot, and any new alias files in `lib/` locally (`lib/` is not committed).
 8. Commit with a conventional message (below).
 
@@ -212,17 +233,11 @@ git push -u origin upgrade-11.82
 feat(deps-dev): upgrade `@carbon/icons` 11.81 -> 11.82
 ```
 
-**Body.** One bullet under **Features** is enough for a clean bump. Use the canonical count from the [`ICON_INDEX.md`](ICON_INDEX.md) header for the net delta:
+**Body.** Say what the title doesn't: list the new icons, and call out any renames or removals with the old -> new names.
 
-```markdown
-**Features**
+**Net icon count.** Changelog and release notes report `net +N icons`, where N is the change in exported names: the new `expect(icons.length)` in [`tests/index.test.ts`](tests/index.test.ts) minus the old one. That equals the number of `+` lines in the snapshot diff. Without renames it matches the [`ICON_INDEX.md`](ICON_INDEX.md) header delta (2677 − 2675 = +2 in [#229](https://github.com/carbon-design-system/carbon-icons-svelte/pull/229)). With renames the header undercounts, because the new names replace the old ones in the index while the old names live on as aliases. 11.91 added 7 icons and 2 renames: header +7, exports +9, shipped as `net +9 icons`.
 
-- upgrade `@carbon/icons` to v11.82.0 (net +2 icons)
-```
-
-Compute net icons as new header count minus old (e.g. 2677 − 2675 = +2 in [#229](https://github.com/carbon-design-system/carbon-icons-svelte/pull/229)). If Carbon only changed existing SVGs and the count is unchanged, say so: `(no new icons)`.
-
-**When it's not a clean upgrade.** If Carbon removed or renamed icons, don't ship only the version bump. Update `DEPRECATED_ICONS` or `RENAMED_ICONS` in [`src/index.ts`](src/index.ts) first ([Backwards compatibility](#backwards-compatibility)), then run the workflow above. Renames may also touch [`src/global.d.ts`](src/global.d.ts) or docs preview code. Those changes can live in the same PR as the bump or in a preceding PR (see [#227](https://github.com/carbon-design-system/carbon-icons-svelte/pull/227) for renames without a version bump).
+**When it's not a clean upgrade.** If Carbon removed or renamed icons, don't ship only the version bump. Update `DEPRECATED_ICONS` or `RENAMED_ICONS` first ([Backwards compatibility](#backwards-compatibility)), then run the workflow above. Renames may also touch [`src/global.d.ts`](src/global.d.ts) or docs preview code. Those changes can live in the same PR as the bump or in a preceding PR (see [#227](https://github.com/carbon-design-system/carbon-icons-svelte/pull/227) for renames without a version bump).
 
 **Changelog.** Contributors don't need to edit [`CHANGELOG.md`](CHANGELOG.md). Maintainers add the entry at release time.
 
@@ -230,7 +245,7 @@ Compute net icons as new header count minus old (e.g. 2677 − 2675 = +2 in [#22
 
 1. `bun run prepack` passes (build, icon count, snapshot).
 2. `bun run test:types` passes (Svelte 4 and 5).
-3. The snapshot diff lists only the icons you expect from Carbon's release notes or metadata diff.
+3. The snapshot diff has only `+` lines. A `-` line means an upstream removal or rename slipped through.
 4. [`ICON_INDEX.md`](ICON_INDEX.md) header version matches `package.json`.
 
 ## Docs site
@@ -312,23 +327,81 @@ Maintainers only from here.
 
 ### Release
 
-[`release.yml`](.github/workflows/release.yml) publishes to NPM with [provenance](https://docs.npmjs.com/generating-provenance-statements) when a `v*` tag is pushed. It installs, runs `bun run prepack`, prunes with `bunx culls --preserve=svelte`, and runs `npm publish --provenance --access public`.
+[`release.yml`](.github/workflows/release.yml) publishes to NPM with [provenance](https://docs.npmjs.com/generating-provenance-statements) when a `v*` tag is pushed. It installs, runs `bun run prepack`, prunes with `bunx culls --preserve=svelte`, and runs `npm publish`.
 
-Bump the version in `package.json`, update [`CHANGELOG.md`](CHANGELOG.md), then:
+Two release lines are maintained:
+
+| Branch | Version | npm dist-tag | GitHub release |
+| :--- | :--- | :--- | :--- |
+| `master` | `13.x` | `latest` | Marked latest |
+| `v12` | `12.x` | `stable-12` | Not latest |
+
+Each branch carries its own `release.yml`. The one on `v12` publishes with `--tag stable-12`, so a `v12.*` tag must point at a `v12` commit. Otherwise it'd publish under `latest`.
+
+Every `@carbon/icons` upgrade ships on both lines as a minor bump, with the same changelog text. Release `v12` first and `master` second, so the 13.x GitHub release ends up as latest.
+
+Commits and tags are GPG-signed (`git commit -S`, `git tag -s`). Release commits are pushed straight to the branch; no PR.
+
+Use a detached HEAD (`git switch --detach origin/<branch>`) when working from a worktree, so the release doesn't collide with `master` or `v12` being checked out elsewhere.
+
+#### 1. Release `v12`
 
 ```sh
+git fetch origin --tags
+git switch --detach origin/v12
+git cherry-pick <merged-upgrade-sha>   # no -x
 bun install
-bun run prepack
-git commit -am "v13.12.0"
-git tag v13.12.0
-git push origin v13.12.0
+bun test                               # must pass before tagging
 ```
 
-If the workflow succeeds, the new version is on NPM.
+The cherry-pick usually applies cleanly. If `bun.lock` conflicts (devDependencies have drifted between branches), keep `v12`'s lockfile with `git checkout HEAD -- bun.lock`, run `bun install`, `git add bun.lock`, and `git cherry-pick --continue`.
 
-### Post-release checklist
+Bump `version` in `package.json` and prepend to [`CHANGELOG.md`](CHANGELOG.md):
 
-After the package is on NPM:
+```markdown
+## [12.30.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v12.30.0) - 2026-10-21
 
-1. Create a [new release](https://github.com/carbon-design-system/carbon-icons-svelte/releases/new) on GitHub. Click "Generate release notes", then drop CI-only noise.
-2. Mark it as the latest release.
+**Features**
+
+- upgrade `@carbon/icons` to v11.91.0 (net +9 icons)
+```
+
+Then commit, tag, and push:
+
+```sh
+git commit -am "v12.30.0"
+git tag -s v12.30.0 -m v12.30.0
+git push origin HEAD:v12
+git push origin v12.30.0
+```
+
+Create the GitHub release, not marked latest. Leave the title empty (GitHub shows the tag). The body repeats the changelog entry, with the icon count linking to the `ICON_INDEX.md` diff of the cherry-picked commit (`c427de3…` is the SHA-256 of `ICON_INDEX.md`, GitHub's per-file diff anchor):
+
+```sh
+gh release create v12.30.0 --latest=false --title "" --notes '**Features**
+
+- upgrade `@carbon/icons` to v11.91.0 (net [+9 icons](https://github.com/carbon-design-system/carbon-icons-svelte/commit/<v12-cherry-pick-sha>#diff-c427de3de91e4fe60090e8b99e457a280a2387bf3b0e4b7918c8d6f043819919))'
+```
+
+#### 2. Release `master`
+
+```sh
+git switch --detach origin/master
+# bump package.json version, prepend the CHANGELOG.md entry (same text, 13.x version)
+git commit -am "v13.17.0"
+git tag -s v13.17.0 -m v13.17.0
+git push origin HEAD:master
+git push origin v13.17.0
+
+gh release create v13.17.0 --latest --title "" --notes '…'  # link to the master upgrade commit
+```
+
+#### 3. Verify
+
+```sh
+gh run list --workflow release.yml -L 2       # both publish runs succeed
+npm view carbon-icons-svelte dist-tags        # latest: 13.x, stable-12: 12.x
+gh release list -L 3                          # 13.x is Latest, 12.x isn't
+```
+
+npm can lag a minute or two behind a successful publish. If the workflow log shows `+ carbon-icons-svelte@<version>` but `npm view` 404s or still shows the old dist-tags, wait and re-check before assuming something broke.
