@@ -43,6 +43,9 @@ const RENAMED_ICONS = {
   NavaidVordme: "NavaidVorDme", // NavaidVordme -> NavaidVorDme
   NavaidVortac: "NavaidVorTac", // NavaidVortac -> NavaidVorTac
   SoftwareResourceResource: "SoftwareResourceReference", // SoftwareResourceResource -> SoftwareResourceReference
+  // From 11.91.x
+  IbmQuantumSafeAdvisor: "IbmQuantumSafeCryptographyManager", // IbmQuantumSafeAdvisor -> IbmQuantumSafeCryptographyManager
+  IbmQuantumSafeRemediator: "IbmQuantumSafeProxy", // IbmQuantumSafeRemediator -> IbmQuantumSafeProxy
 } as const;
 
 const SIZE_PATTERN = /(16|20|24|32)/;

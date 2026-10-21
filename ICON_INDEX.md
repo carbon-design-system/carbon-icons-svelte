@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2780 icons from [@carbon/icons@11.89.0](https://unpkg.com/browse/@carbon/icons@11.89.0/)
+> 2787 icons from [@carbon/icons@11.91.0](https://unpkg.com/browse/@carbon/icons@11.91.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -1212,9 +1212,9 @@
 - IbmPowerWithVpc
 - IbmPrivatePathServices
 - IbmProcessMining
-- IbmQuantumSafeAdvisor
+- IbmQuantumSafeCryptographyManager
 - IbmQuantumSafeExplorer
-- IbmQuantumSafeRemediator
+- IbmQuantumSafeProxy
 - IbmSaasConsole
 - IbmSapOnPower
 - IbmSecureInfrastructureOnVpcForRegulatedIndustries
@@ -1226,6 +1226,8 @@
 - IbmSoftwareWatsonxDataUnstructuredEnrichment
 - IbmSoftwareWatsonxDataUnstructuredImport
 - IbmSoftwareWatsonxDocumentLibrary
+- IbmSovereignCore
+- IbmSterlingB2bIntegrationSaas
 - IbmStreamsets
 - IbmTelehealth
 - IbmTenet
@@ -1745,6 +1747,8 @@
 - PanVertical
 - PanelExpansion
 - Paragraph
+- ParallelogramOutline
+- ParallelogramSolid
 - Parameter
 - ParameterAction
 - ParentChild
@@ -1921,6 +1925,8 @@
 - QqPlot
 - QrCode
 - QuadrantPlot
+- QuantumComputer
+- QuantumQpu
 - Query
 - QueryQueue
 - QuestionAnswering
@@ -2225,6 +2231,7 @@
 - StrategyPlay
 - Stratus
 - Strawberry
+- StreamingEmbedded
 - StringInteger
 - StringText
 - Subclassification
