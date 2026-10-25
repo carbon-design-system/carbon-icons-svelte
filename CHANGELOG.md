@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Features**
 
-- upgrade `@carbon/icons` to v11.91.0 (net +9 icons)
+- upgrade `@carbon/icons` to v11.91.0 (net +7 icons)
+- rename `IbmQuantumSafeAdvisor` -> `IbmQuantumSafeCryptographyManager`, `IbmQuantumSafeRemediator` -> `IbmQuantumSafeProxy` (old names kept as aliases)
 
 ## [13.16.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v13.16.0) - 2026-09-24
 

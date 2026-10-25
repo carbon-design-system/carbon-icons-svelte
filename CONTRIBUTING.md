@@ -68,7 +68,7 @@ When iterating locally, scope test runs to what you changed. The full suite rege
 
 ### Removal or rename?
 
-Carbon doesn't always call out renames. A rename looks like a removal plus an unrelated addition in the [`ICON_INDEX.md`](ICON_INDEX.md) diff (e.g. `IbmQuantumSafeAdvisor` gone, `IbmQuantumSafeCryptographyManager` new). For each removed name, compare its SVG content in the previous version against the added icons. Pin the previous version temporarily as an alias and run:
+Carbon doesn't always call out renames. A rename looks like a removal plus an unrelated addition in the [`ICON_INDEX.md`](ICON_INDEX.md) diff (e.g. `IbmQuantumSafeAdvisor` gone, `IbmQuantumSafeCryptographyManager` new in 11.91). For each removed name, look for a matching addition. Pin the previous version temporarily as an alias and compare the two side by side:
 
 ```sh
 bun add -d "@carbon/icons-prev@npm:@carbon/icons@11.89.0"
@@ -76,13 +76,17 @@ bun -e '
 const o = (await import("@carbon/icons-prev/metadata.json", { with: { type: "json" } })).default;
 const n = (await import("@carbon/icons/metadata.json", { with: { type: "json" } })).default;
 const find = (m, name) => m.icons.find((i) => i.output.some((x) => x.moduleName.slice(0, -2) === name));
-const same = (a, b) => JSON.stringify(find(o, a).output[0].descriptor.content) === JSON.stringify(find(n, b).output[0].descriptor.content);
-console.log(same("IbmQuantumSafeAdvisor", "IbmQuantumSafeCryptographyManager"));
+const [a, b] = [find(o, "IbmQuantumSafeAdvisor"), find(n, "IbmQuantumSafeCryptographyManager")];
+console.log(a.category, "|", a.friendlyName);
+console.log(b.category, "|", b.friendlyName);
+console.log("same SVG:", JSON.stringify(a.output[0].descriptor.content) === JSON.stringify(b.output[0].descriptor.content));
 '
 bun remove @carbon/icons-prev
 ```
 
-Identical content means a rename: use [`RENAMED_ICONS`](#renamed-icons-upstream-rename). No match means a removal: use [`DEPRECATED_ICONS`](#deprecated-icons-upstream-removal).
+Identical SVG content settles it: it's a rename. A mismatch doesn't rule one out, because Carbon sometimes redraws on rename (the 12.83 pictogram rename `ExpandHorz` -> `ExpandHorizontal` changed every path). In that case judge by `category`, `friendlyName`, and `aliases`, and look at both in the docs preview.
+
+Same concept: it's a rename, use [`RENAMED_ICONS`](#renamed-icons-upstream-rename). The old name then renders the new drawing. Nothing equivalent: it's a removal, use [`DEPRECATED_ICONS`](#deprecated-icons-upstream-removal), which keeps the old drawing.
 
 ### Deprecated icons (upstream removal)
 
@@ -235,7 +239,18 @@ feat(deps-dev): upgrade `@carbon/icons` 11.81 -> 11.82
 
 **Body.** Say what the title doesn't: list the new icons, and call out any renames or removals with the old -> new names.
 
-**Net icon count.** Changelog and release notes report `net +N icons`, where N is the change in exported names: the new `expect(icons.length)` in [`tests/index.test.ts`](tests/index.test.ts) minus the old one. That equals the number of `+` lines in the snapshot diff. Without renames it matches the [`ICON_INDEX.md`](ICON_INDEX.md) header delta (2677 − 2675 = +2 in [#229](https://github.com/carbon-design-system/carbon-icons-svelte/pull/229)). With renames the header undercounts, because the new names replace the old ones in the index while the old names live on as aliases. 11.91 added 7 icons and 2 renames: header +7, exports +9, shipped as `net +9 icons`.
+**Net icon count.** Changelog and release notes report `net +N icons`, where N is the [`ICON_INDEX.md`](ICON_INDEX.md) header count minus the previous one (2677 − 2675 = +2 in [#229](https://github.com/carbon-design-system/carbon-icons-svelte/pull/229)). That's the added lines minus the removed lines in the `ICON_INDEX.md` diff the release notes link to. Use the singular for one: `(net +1 icon)`. If Carbon only changed existing SVGs and the count is unchanged, say so: `(no new icons)`.
+
+Rename aliases don't count. They aren't new icons, just old names kept working, and the index lists canonical names only. The test count and snapshot still go up by one per alias, so don't read N off `tests/index.test.ts`. 11.91 added 7 icons and renamed 2: header +7, test count +9, so `net +7 icons`.
+
+**Renames in the changelog.** List renames as their own bullet so users know the old name is now an alias:
+
+```markdown
+**Features**
+
+- upgrade `@carbon/icons` to v11.91.0 (net +7 icons)
+- rename `IbmQuantumSafeAdvisor` -> `IbmQuantumSafeCryptographyManager`, `IbmQuantumSafeRemediator` -> `IbmQuantumSafeProxy` (old names kept as aliases)
+```
 
 **When it's not a clean upgrade.** If Carbon removed or renamed icons, don't ship only the version bump. Update `DEPRECATED_ICONS` or `RENAMED_ICONS` first ([Backwards compatibility](#backwards-compatibility)), then run the workflow above. Renames may also touch [`src/global.d.ts`](src/global.d.ts) or docs preview code. Those changes can live in the same PR as the bump or in a preceding PR (see [#227](https://github.com/carbon-design-system/carbon-icons-svelte/pull/227) for renames without a version bump).
 
@@ -363,7 +378,8 @@ Bump `version` in `package.json` and prepend to [`CHANGELOG.md`](CHANGELOG.md):
 
 **Features**
 
-- upgrade `@carbon/icons` to v11.91.0 (net +9 icons)
+- upgrade `@carbon/icons` to v11.91.0 (net +7 icons)
+- rename `IbmQuantumSafeAdvisor` -> `IbmQuantumSafeCryptographyManager`, `IbmQuantumSafeRemediator` -> `IbmQuantumSafeProxy` (old names kept as aliases)
 ```
 
 Then commit, tag, and push:
@@ -380,7 +396,8 @@ Create the GitHub release, not marked latest. Leave the title empty (GitHub show
 ```sh
 gh release create v12.30.0 --latest=false --title "" --notes '**Features**
 
-- upgrade `@carbon/icons` to v11.91.0 (net [+9 icons](https://github.com/carbon-design-system/carbon-icons-svelte/commit/<v12-cherry-pick-sha>#diff-c427de3de91e4fe60090e8b99e457a280a2387bf3b0e4b7918c8d6f043819919))'
+- upgrade `@carbon/icons` to v11.91.0 (net [+7 icons](https://github.com/carbon-design-system/carbon-icons-svelte/commit/<v12-cherry-pick-sha>#diff-c427de3de91e4fe60090e8b99e457a280a2387bf3b0e4b7918c8d6f043819919))
+- rename `IbmQuantumSafeAdvisor` -> `IbmQuantumSafeCryptographyManager`, `IbmQuantumSafeRemediator` -> `IbmQuantumSafeProxy` (old names kept as aliases)'
 ```
 
 #### 2. Release `master`
