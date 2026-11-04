@@ -1,6 +1,6 @@
 # Icon Index
 
-> 2787 icons from [@carbon/icons@11.91.0](https://unpkg.com/browse/@carbon/icons@11.91.0/)
+> 2793 icons from [@carbon/icons@11.92.0](https://unpkg.com/browse/@carbon/icons@11.92.0/)
 
 - AcceptActionUsage
 - Accessibility
@@ -183,6 +183,8 @@
 - Blog
 - Bluetooth
 - BluetoothOff
+- Bobcoin
+- BobcoinConsumption
 - Book
 - Bookmark
 - BookmarkAdd
@@ -253,6 +255,7 @@
 - CabinCareAlt
 - Cad
 - Cafe
+- CafeAlt
 - Calculation
 - CalculationAlt
 - Calculator
@@ -1190,6 +1193,7 @@
 - IbmGranite
 - IbmHybridControlPlane
 - IbmI
+- IbmIAlt
 - IbmIbv
 - IbmInstana
 - IbmJrs
@@ -1269,6 +1273,7 @@
 - IbmWebmethodsIntegration
 - IbmWebmethodsIntegrationServer
 - IbmWebmethodsManagedFileTransfer
+- IbmZ17
 - IbmZCloudModStack
 - IbmZCloudProvisioning
 - IbmZEnvironmentsDevSecOps
@@ -2120,6 +2125,7 @@
 - Share
 - ShareKnowledge
 - ShieldAlert
+- ShieldInfinity
 - ShipmentDelivery
 - ShoppingBag
 - ShoppingCart
