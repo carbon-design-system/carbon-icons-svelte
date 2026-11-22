@@ -33,6 +33,9 @@ describe("template", () => {
     expect(result).toContain('xmlns="http://www.w3.org/2000/svg"');
     expect(result).toContain('viewBox="0 0 32 32"');
     expect(result).toContain("path d=\"M0 0h16v16H0z\"");
+    // `xMidYMid meet` is the SVG default, and only IE11 reads `focusable`.
+    expect(result).not.toContain("preserveAspectRatio");
+    expect(result).not.toContain("focusable");
   });
 
   test("should handle empty descriptor content", () => {
