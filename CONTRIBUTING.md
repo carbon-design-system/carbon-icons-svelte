@@ -42,7 +42,7 @@ bun install
 | `bun test` | Run all tests. [`prepack`](package.json) calls this, so it's also the full build. |
 | `bun run prepack` | Same as `bun test`. Builds `lib/`, regenerates [`ICON_INDEX.md`](ICON_INDEX.md) and docs assets, runs snapshot and unit tests. |
 | `bun run build:docs-assets` | Run `buildIcons()` only, no tests. Used by the docs site's `predev` / `prebuild` hooks. |
-| `bun run test:types` | Link the local package and run `svelte-check` in [`tests/svelte@4/`](tests/svelte@4/) [`tests/svelte@5/`](tests/svelte@5/), and [`tests/svelte@5-nodenext/`](tests/svelte@5-nodenext/), plus [`tests/svelte@3/`](tests/svelte@3/). |
+| `bun run test:types` | Pack the local package and run `svelte-check` in [`tests/svelte@3/`](tests/svelte@3/), [`tests/svelte@4/`](tests/svelte@4/), [`tests/svelte@5/`](tests/svelte@5/), and [`tests/svelte@5-nodenext/`](tests/svelte@5-nodenext/). |
 
 When iterating locally, scope test runs to what you changed. The full suite regenerates thousands of icon files and takes a while.
 
