@@ -23,8 +23,7 @@ export const template = ({ descriptor }: IconOutput, inner = renderContent(descr
   $: labelled = $$props["aria-label"] || $$props["aria-labelledby"] || title;
   $: attributes = {
     "aria-hidden": labelled ? undefined : true,
-    role: labelled ? "img" : undefined,
-    focusable: Number($$props["tabindex"]) === 0 ? true : undefined
+    role: labelled ? "img" : undefined
   };
 </script>
 
@@ -32,7 +31,6 @@ export const template = ({ descriptor }: IconOutput, inner = renderContent(descr
   xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 32 32"
   fill="currentColor"
-  preserveAspectRatio="xMidYMid meet"
   width={size}
   height={size}
   {...attributes}
