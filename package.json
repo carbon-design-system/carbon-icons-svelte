@@ -12,8 +12,13 @@
       "svelte": "./lib/index.js"
     },
     "./lib/*.svelte": {
-      "types": "./lib/*.svelte.d.ts",
+      "types": "./lib/icon.d.ts",
       "import": "./lib/*.svelte"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "lib/*.svelte": ["./lib/icon.d.ts"]
     }
   },
   "sideEffects": false,
