@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [12.31.1](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v12.31.1) - 2026-11-22
+
+**Fixes**
+
+- mark package as side-effect free so bundlers can drop unused icons from barrel imports
+- type deep imports under `moduleResolution: "nodenext"` by sharing one `lib/icon.d.ts` instead of a stub per icon
+
 ## [12.31.0](https://github.com/carbon-design-system/carbon-icons-svelte/releases/tag/v12.31.0) - 2026-11-04
 
 **Features**
