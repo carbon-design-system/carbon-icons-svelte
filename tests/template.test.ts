@@ -1,6 +1,6 @@
 import type { IconOutput } from "@carbon/icons";
 import { describe, expect, test } from "bun:test";
-import { template, templateSvg } from "../src/template.js";
+import { roundPathData, template, templateSvg } from "../src/template.js";
 
 describe("template", () => {
   test("should generate correct Svelte component template with minimal input", () => {
@@ -171,4 +171,28 @@ describe("templateSvg", () => {
     expect(result).toContain("<svg");
     expect(result).not.toContain("path");
   });
-}); 
+});
+describe("roundPathData", () => {
+  test.each([
+    ["M17 15 17 8", "M17 15 17 8"],
+    ["M15.8159,3.0059", "M15.816,3.006"],
+    ["l-.0323,6.9985", "l-.032,6.998"],
+    ["M0.12345 1", "M.123 1"],
+    ["l-0.00004 1", "l0 1"],
+    ["l1.23456e-5 1", "l1.23456e-5 1"],
+  ])("rounds %s to %s", (input, expected) => {
+    expect(roundPathData(input)).toBe(expected);
+  });
+
+  test("keeps numbers that would merge after rounding apart", () => {
+    // `1.99996.5` is `1.99996 .5`; rounded to `2`, it needs a separator.
+    expect(roundPathData("l1.99996.5")).toBe("l2 .5");
+    expect(roundPathData("l1.5.00004")).toBe("l1.5 0");
+    expect(roundPathData("l3.12345.6")).toBe("l3.123.6");
+  });
+
+  test("leaves paths with arcs alone", () => {
+    const d = "M18.7061,27.585a5.2615,5.2615,0,0,1-3.7227-8.9834";
+    expect(roundPathData(d)).toBe(d);
+  });
+});
