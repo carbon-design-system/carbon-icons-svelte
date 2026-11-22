@@ -42,7 +42,7 @@ bun install
 | `bun test` | Run all tests. [`prepack`](package.json) calls this, so it's also the full build. |
 | `bun run prepack` | Same as `bun test`. Builds `lib/`, regenerates [`ICON_INDEX.md`](ICON_INDEX.md) and docs assets, runs snapshot and unit tests. |
 | `bun run build:docs-assets` | Run `buildIcons()` only, no tests. Used by the docs site's `predev` / `prebuild` hooks. |
-| `bun run test:types` | Link the local package and run `svelte-check` in [`tests/svelte@4/`](tests/svelte@4/) and [`tests/svelte@5/`](tests/svelte@5/). |
+| `bun run test:types` | Link the local package and run `svelte-check` in [`tests/svelte@4/`](tests/svelte@4/) [`tests/svelte@5/`](tests/svelte@5/), and [`tests/svelte@5-nodenext/`](tests/svelte@5-nodenext/). |
 
 When iterating locally, scope test runs to what you changed. The full suite regenerates thousands of icon files and takes a while.
 
@@ -53,7 +53,7 @@ When iterating locally, scope test runs to what you changed. The full suite rege
 3. [`template.ts`](src/template.ts) turns an `IconOutput` descriptor into a Svelte component string: props, accessibility attributes, SVG markup. [`templateSvg`](src/template.ts) produces the compact inline SVG for the docs preview grid.
 4. `buildIcons()` writes:
    - `lib/<IconName>.svelte`, one component per icon
-   - `lib/<IconName>.svelte.d.ts`, per-icon type stub re-exporting from the barrel
+   - `lib/icon.d.ts`, one declaration shared by every icon; the `./lib/*.svelte` export (and `typesVersions`, for `moduleResolution: "node"`) points deep imports at it
    - `lib/index.js` and `lib/index.d.ts`, barrel export and `CarbonIconProps` type
    - [`ICON_INDEX.md`](ICON_INDEX.md), committed icon list
    - `docs/public/build-info.<hash>.json` and [`docs/src/generated/build-info-url.ts`](docs/src/generated/build-info-url.ts), hashed preview data for the docs site (gitignored, regenerated each build)
@@ -119,7 +119,7 @@ Don't remove a `DEPRECATED_ICONS` or `RENAMED_ICONS` entry in a minor release. T
 
 ### Svelte version compatibility
 
-Svelte 4 and 5 are supported in `13.x`. Type-check coverage lives in `tests/svelte@4/` and `tests/svelte@5/`.
+Svelte 4 and 5 are supported in `13.x`. Type-check coverage lives in `tests/svelte@4/` and `tests/svelte@5/`. `tests/svelte@5-nodenext/` checks that deep imports stay typed under `"moduleResolution": "NodeNext"`.
 
 For Svelte 3, pin [`carbon-icons-svelte@12.13.0`](https://github.com/carbon-design-system/carbon-icons-svelte/tree/v12.13.0). Template changes shouldn't break Svelte 4 barrel imports or `CarbonIconProps`.
 
