@@ -184,7 +184,6 @@ type CarbonIcon = typeof import("svelte") extends { mount: any }
     const fileName = `lib/${name}.svelte`;
 
     writePromises.push(Bun.write(fileName, template(icon, inner)));
-    writePromises.push(Bun.write(fileName + ".d.ts", `export { ${name} as default } from "./";\n`));
   });
 
   Object.entries(RENAMED_ICONS).forEach(([oldName, newName]) => {
@@ -204,11 +203,22 @@ type CarbonIcon = typeof import("svelte") extends { mount: any }
     const fileName = `lib/${oldName}.svelte`;
 
     writePromises.push(Bun.write(fileName, templateAlias(newName)));
-    writePromises.push(Bun.write(fileName + ".d.ts", `export { default } from "./${newName}.svelte";\n`));
   });
 
   await Promise.all(writePromises);
   await Bun.write("lib/index.js", libExport);
+
+  // Every icon has the same type, so the \`./lib/*.svelte\` export points at
+  // one declaration instead of a \`.svelte.d.ts\` stub per icon.
+  await Bun.write(
+    "lib/icon.d.ts",
+    `import type { Component } from "svelte";
+import type { CarbonIconProps } from "./index.js";
+
+declare const Icon: Component<CarbonIconProps>;
+export default Icon;
+`
+  );
 
   const version = `[@carbon/icons@${VERSION}](https://unpkg.com/browse/@carbon/icons@${VERSION}/)`;
   // Canonical icons shown in the grid/docs; excludes rename aliases (listed separately).
