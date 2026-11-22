@@ -53,6 +53,27 @@ const formatIconIndexLine = (moduleName: string) => {
   return `- ${escaped}`;
 };
 
+/**
+ * Writes `files` to `dir`, removing any existing entries not in `files`.
+ * Overwriting in place is much faster than wiping and recreating the
+ * directory's thousands of files. Stale entries are removed before
+ * writing so that a case-only rename is not clobbered on
+ * case-insensitive filesystems.
+ */
+const syncDir = async (dir: string, files: Map<string, string>) => {
+  await mkdir(dir, { recursive: true });
+
+  await Promise.all(
+    (await readdir(dir))
+      .filter((file) => !files.has(file))
+      .map((file) => rm(`${dir}/${file}`, { recursive: true, force: true }))
+  );
+
+  await Promise.all(
+    Array.from(files, ([file, content]) => Bun.write(`${dir}/${file}`, content))
+  );
+};
+
 const metadata = { ...metadata_latest };
 
 /**
@@ -96,9 +117,6 @@ export const buildIcons = async () => {
     .flat()
     .filter(Boolean)
     .sort() as string[];
-
-  await rm("lib", { recursive: true, force: true });
-  await mkdir("lib");
 
   let libExport = "";
   let definitions = `import type { ComponentConstructorOptions, SvelteComponent } from "svelte";
@@ -156,7 +174,7 @@ type CarbonIcon = typeof import("svelte") extends { mount: any }
   let names = new Set();
   let glyphNames = new Set<string>();
   let iconNames = new Set<string>();
-  const writePromises: Promise<number>[] = [];
+  const libFiles = new Map<string, string>();
 
   iconModuleNames.forEach((moduleName) => {
     let name = moduleName;
@@ -187,9 +205,7 @@ type CarbonIcon = typeof import("svelte") extends { mount: any }
     libExport += `export { default as ${name} } from "./${name}.svelte";\n`;
     definitions += `export declare const ${name}: CarbonIcon;\n`;
 
-    const fileName = `lib/${name}.svelte`;
-
-    writePromises.push(Bun.write(fileName, template(icon, inner)));
+    libFiles.set(`${name}.svelte`, template(icon, inner));
   });
 
   Object.entries(RENAMED_ICONS).forEach(([oldName, newName]) => {
@@ -206,19 +222,16 @@ type CarbonIcon = typeof import("svelte") extends { mount: any }
 
     libExport += `export { default as ${oldName} } from "./${oldName}.svelte";\n`;
 
-    const fileName = `lib/${oldName}.svelte`;
-
-    writePromises.push(Bun.write(fileName, templateAlias(newName)));
+    libFiles.set(`${oldName}.svelte`, templateAlias(newName));
   });
 
-  await Promise.all(writePromises);
-  await Bun.write("lib/index.js", libExport);
+  libFiles.set("index.js", libExport);
 
   // Every icon has the same type, so the \`./lib/*.svelte\` export points at
   // one declaration instead of a \`.svelte.d.ts\` stub per icon. It borrows
   // the type of one barrel export so the two can't drift apart.
-  await Bun.write(
-    "lib/icon.d.ts",
+  libFiles.set(
+    "icon.d.ts",
     `import type { Add } from "./index.js";
 
 declare const Icon: typeof Add;
@@ -231,13 +244,15 @@ export default Icon;
   const total = new Set(Object.values(bySize.sizes).flat()).size;
   const packageMetadata = `${total} icons from @carbon/icons@${pkg.devDependencies["@carbon/icons"]}`;
 
-  await Bun.write(
-    "lib/index.d.ts",
+  libFiles.set(
+    "index.d.ts",
     `// Type definitions for ${pkg.name}
 // ${packageMetadata}
 
 ${definitions}`
   );
+
+  await syncDir("lib", libFiles);
 
   await Bun.write(
     "ICON_INDEX.md",
