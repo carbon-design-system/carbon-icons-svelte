@@ -115,6 +115,45 @@ You can use `fill` to customize the color or pass any other valid `svg` attribut
 <Add aria-label="Add" tabindex={0} />
 ```
 
+## Animated icons
+
+A few icons have animated versions: `Checkmark`, `Download`, `Notification` and `Renew`. They take the same props as the static icons, plus `play` and `trigger`.
+
+```svelte
+<script>
+  import { Notification } from "carbon-icons-svelte/animated";
+  // Or, import directly:
+  // import Notification from "carbon-icons-svelte/lib/animated/Notification.svelte";
+</script>
+
+<button>
+  <Notification /> Notifications
+</button>
+```
+
+By default, an icon plays when the pointer enters it or the link, button, label or summary around it, or when that gets keyboard focus. Once started, the animation always runs to the end.
+
+Use `play` to run it yourself. It plays each time `play` changes to a truthy value, so increment a number to replay it. Set `trigger="none"` to turn off hover and focus.
+
+```svelte
+<script>
+  import { Checkmark } from "carbon-icons-svelte/animated";
+
+  let saved = 0;
+</script>
+
+<button on:click={() => saved++}>
+  <Checkmark play={saved} trigger="none" /> Save
+</button>
+```
+
+Animations don't run when the user has turned on reduced motion (`prefers-reduced-motion: reduce`).
+
+| Name    | Type                               | Default value |
+| :------ | :--------------------------------- | :------------ |
+| play    | <code>boolean &#124; number</code> | `false`       |
+| trigger | <code>"hover" &#124; "none"</code> | `"hover"`     |
+
 ## TypeScript
 
 This library offers TypeScript support for Svelte 4 and Svelte 5.
@@ -137,6 +176,8 @@ For convenience, a `CarbonIconProps` type is exported from the library.
 
 <Add {...props} />
 ```
+
+Animated icons export `CarbonAnimatedIconProps` from `carbon-icons-svelte/animated`.
 
 ## [Changelog](CHANGELOG.md)
 

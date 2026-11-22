@@ -55,6 +55,7 @@ When iterating locally, scope test runs to what you changed. The full suite rege
    - `lib/<IconName>.svelte`, one component per icon
    - `lib/icon.d.ts`, one declaration shared by every icon; the `./lib/*.svelte` export (and `typesVersions`, for `moduleResolution: "node"`) points deep imports at it
    - `lib/index.js` and `lib/index.d.ts`, barrel export and `CarbonIconProps` type
+   - `lib/animated/`, the animated icons (see [Animated icons](#animated-icons))
    - [`ICON_INDEX.md`](ICON_INDEX.md), committed icon list
    - `docs/public/build-info.<hash>.json` and [`docs/src/generated/build-info-url.ts`](docs/src/generated/build-info-url.ts), hashed preview data for the docs site (gitignored, regenerated each build)
 
@@ -122,6 +123,27 @@ Don't remove a `DEPRECATED_ICONS` or `RENAMED_ICONS` entry in a minor release. T
 Svelte 4 and 5 are supported in `13.x`. Type-check coverage lives in `tests/svelte@4/` and `tests/svelte@5/`. `tests/svelte@5-nodenext/` checks that deep imports stay typed under `"moduleResolution": "NodeNext"`. `13.x` doesn't support Svelte 3, but carbon-components-svelte type-checks against it, so `tests/svelte@3/` keeps the types from breaking there. For example, Svelte 3's `svelte/elements` has no `data-*` index signature, so `CarbonIconProps` declares one.
 
 For Svelte 3, pin [`carbon-icons-svelte@12.13.0`](https://github.com/carbon-design-system/carbon-icons-svelte/tree/v12.13.0). Template changes shouldn't break Svelte 4 barrel imports or `CarbonIconProps`.
+
+## Animated icons
+
+`carbon-icons-svelte/animated` ships hand-built animated versions of a few icons. They're defined in [`src/animated/index.ts`](src/animated/index.ts) and built into `lib/animated/` by `buildIcons()`.
+
+Carbon's icons are filled outlines, often a single merged path, so per-part motion can't be generated from the descriptors. Each entry in `ANIMATED_ICONS` has:
+
+- `source`: the `d` of each path in the static icon's 32px descriptor, copied as-is.
+- `content`: the SVG markup, split into parts by hand where the motion needs it. `{id}` is a unique id for a `<mask>` or `<clipPath>`.
+- `css`: component CSS. Put every rule that plays the animation under `@media (prefers-reduced-motion: no-preference)` and select the playing state with `${PLAYING}`.
+
+[`src/animated/animate.js`](src/animated/animate.js) is the shared runtime, copied to `lib/animated/`. It's a Svelte action that sets `data-playing` on the `<svg>` to start the animation, from hover or keyboard focus of the icon or its interactive ancestor, or from the `play` prop. It's JavaScript, not CSS `:hover`, so the animation always runs to the end instead of snapping back when the pointer leaves.
+
+Guidelines that keep the motion consistent at 16px:
+
+- Size motion for the 32-unit grid. 1 unit is 0.5px at 16px, so move at least 3 units.
+- Keep everything inside the 32×32 viewBox, or clip it on purpose (Download).
+- End where you started. A one-shot animation can't keep state, so anything left mid-way snaps back.
+- Set `transform-box: view-box` and an explicit `transform-origin` in user units.
+
+[`tests/animated.test.ts`](tests/animated.test.ts) fails if Carbon redraws an animated icon (`source` no longer matches), and checks that each component compiles without warnings. When Carbon redraws one, redo its parts from the new paths and update `source`.
 
 ## Conventions
 

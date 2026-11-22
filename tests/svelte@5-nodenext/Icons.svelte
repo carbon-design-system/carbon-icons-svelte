@@ -2,6 +2,8 @@
   import { Add } from "carbon-icons-svelte";
   import Icon from "carbon-icons-svelte/lib/Accessibility.svelte";
   import Alias from "carbon-icons-svelte/lib/IbmQuantumSafeAdvisor.svelte";
+  import { Renew } from "carbon-icons-svelte/animated";
+  import Animated from "carbon-icons-svelte/lib/animated/Renew.svelte";
   import { mount } from "svelte";
 
   // Deep imports must stay typed under `"moduleResolution": "NodeNext"`,
@@ -12,8 +14,14 @@
   mount(Alias, { target: document.body, props: { size: "big" } });
   // @ts-expect-error (`size` must be a number)
   mount(Add, { target: document.body, props: { size: "big" } });
+  // @ts-expect-error (`trigger` is "hover" or "none")
+  mount(Renew, { target: document.body, props: { trigger: "click" } });
+  // @ts-expect-error (`trigger` is "hover" or "none")
+  mount(Animated, { target: document.body, props: { trigger: "click" } });
 </script>
 
 <Add size={20} />
 <Icon size={20} fill="red" data-test="id" />
 <Alias size={20} />
+<Renew size={20} play={true} />
+<Animated size={20} trigger="none" />
