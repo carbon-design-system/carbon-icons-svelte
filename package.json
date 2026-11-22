@@ -16,6 +16,7 @@
       "import": "./lib/*.svelte"
     }
   },
+  "sideEffects": false,
   "scripts": {
     "prepack": "bun test",
     "build:docs-assets": "bun -e \"import { buildIcons } from './src/index.ts'; await buildIcons();\"",
