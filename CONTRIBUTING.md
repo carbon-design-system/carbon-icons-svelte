@@ -42,7 +42,7 @@ bun install
 | `bun test` | Run all tests. [`prepack`](package.json) calls this, so it's also the full build. |
 | `bun run prepack` | Same as `bun test`. Builds `lib/`, regenerates [`ICON_INDEX.md`](ICON_INDEX.md) and docs assets, runs snapshot and unit tests. |
 | `bun run build:docs-assets` | Run `buildIcons()` only, no tests. Used by the docs site's `predev` / `prebuild` hooks. |
-| `bun run test:types` | Link the local package and run `svelte-check` in [`tests/svelte@4/`](tests/svelte@4/) [`tests/svelte@5/`](tests/svelte@5/), and [`tests/svelte@5-nodenext/`](tests/svelte@5-nodenext/). |
+| `bun run test:types` | Link the local package and run `svelte-check` in [`tests/svelte@4/`](tests/svelte@4/) [`tests/svelte@5/`](tests/svelte@5/), and [`tests/svelte@5-nodenext/`](tests/svelte@5-nodenext/), plus [`tests/svelte@3/`](tests/svelte@3/). |
 
 When iterating locally, scope test runs to what you changed. The full suite regenerates thousands of icon files and takes a while.
 
@@ -119,7 +119,7 @@ Don't remove a `DEPRECATED_ICONS` or `RENAMED_ICONS` entry in a minor release. T
 
 ### Svelte version compatibility
 
-Svelte 4 and 5 are supported in `13.x`. Type-check coverage lives in `tests/svelte@4/` and `tests/svelte@5/`. `tests/svelte@5-nodenext/` checks that deep imports stay typed under `"moduleResolution": "NodeNext"`.
+Svelte 4 and 5 are supported in `13.x`. Type-check coverage lives in `tests/svelte@4/` and `tests/svelte@5/`. `tests/svelte@5-nodenext/` checks that deep imports stay typed under `"moduleResolution": "NodeNext"`. `13.x` doesn't support Svelte 3, but carbon-components-svelte type-checks against it, so `tests/svelte@3/` keeps the types from breaking there. For example, Svelte 3's `svelte/elements` has no `data-*` index signature, so `CarbonIconProps` declares one.
 
 For Svelte 3, pin [`carbon-icons-svelte@12.13.0`](https://github.com/carbon-design-system/carbon-icons-svelte/tree/v12.13.0). Template changes shouldn't break Svelte 4 barrel imports or `CarbonIconProps`.
 

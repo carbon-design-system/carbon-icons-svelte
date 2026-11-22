@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:types": "svelte-check"
+  },
+  "devDependencies": {
+    "svelte": "^3.59.2",
+    "svelte-check": "^3.8.6",
+    "typescript": "^5.9.3"
+  }
+}
