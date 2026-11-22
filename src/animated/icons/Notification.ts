@@ -1,10 +1,15 @@
-import { PLAYING, type AnimatedIcon } from "../shared.js";
+import { DURATION, EASING, EXPRESSIVE, PRODUCTIVE, type AnimatedIcon } from "../shared.js";
+
+const { standard } = EASING;
 
 /**
  * Rings. Carbon draws the bell as one path; the clapper is split out so it
  * can swing on its own, and the bell's bottom edge is closed where it joined.
- * Both swing from the top of the stem. The clapper starts later and swings
- * further, so it lags behind the bell.
+ * Both swing from the top of the stem.
+ *
+ * Productive: one short swing each way; the clapper moves with the bell.
+ * Expressive: swings three times and dies out. The clapper starts later and
+ * swings further, so it lags behind the bell.
  */
 export default {
   name: "Notification",
@@ -18,47 +23,66 @@ export default {
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    ${PLAYING} .bell {
-      animation: ring 900ms ease-in-out;
+    ${PRODUCTIVE} .bell,
+    ${PRODUCTIVE} .clapper {
+      animation: swing ${DURATION.slow01} ${standard.productive};
     }
 
-    ${PLAYING} .clapper {
-      animation: ring-clapper 900ms ease-in-out 40ms backwards;
+    ${EXPRESSIVE} .bell {
+      animation: ring ${DURATION.slow02} ${standard.expressive};
+    }
+
+    ${EXPRESSIVE} .clapper {
+      animation: ring-clapper ${DURATION.slow02} ${standard.expressive};
+    }
+  }
+
+  @keyframes swing {
+    35% {
+      transform: rotate(8deg);
+    }
+    70% {
+      transform: rotate(-5deg);
     }
   }
 
   @keyframes ring {
-    12% {
+    14% {
       transform: rotate(14deg);
     }
-    28% {
+    32% {
       transform: rotate(-11deg);
     }
-    44% {
+    50% {
       transform: rotate(7deg);
     }
-    60% {
+    68% {
       transform: rotate(-4deg);
     }
-    76% {
+    84% {
       transform: rotate(1.5deg);
     }
   }
 
+  /* The same swing, starting later and going further. */
   @keyframes ring-clapper {
-    13% {
+    0%,
+    5% {
+      transform: rotate(0);
+    }
+    19% {
       transform: rotate(20deg);
     }
-    30% {
+    37% {
       transform: rotate(-15deg);
     }
-    46% {
+    55% {
       transform: rotate(10deg);
     }
-    62% {
+    72% {
       transform: rotate(-5deg);
     }
-    78% {
+    88% {
       transform: rotate(2deg);
     }
   }`,

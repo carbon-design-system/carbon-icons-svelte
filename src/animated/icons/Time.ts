@@ -1,9 +1,13 @@
-import { PLAYING, type AnimatedIcon } from "../shared.js";
+import { DURATION, EASING, EXPRESSIVE, PRODUCTIVE, type AnimatedIcon } from "../shared.js";
+
+const { standard } = EASING;
 
 /**
- * Carbon draws both hands as one path; they're split in two. The long hand
- * makes two turns while the short hand makes one, so both end where they
- * started. (A 30° hour step would snap back when the animation ends.)
+ * Carbon draws both hands as one path; they're split in two. Every hand
+ * makes whole turns, so it ends where it started. (A 30° hour step would
+ * snap back when the animation ends.)
+ * Productive: the long hand makes one turn.
+ * Expressive: the long hand makes two turns while the short hand makes one.
  */
 export default {
   name: "Time",
@@ -18,24 +22,28 @@ export default {
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    ${PLAYING} .long {
-      animation: sweep 1200ms cubic-bezier(0.65, 0, 0.35, 1);
+    ${PRODUCTIVE} .long {
+      animation: turn ${DURATION.slow01} ${standard.productive};
     }
 
-    ${PLAYING} .short {
-      animation: hour 1200ms cubic-bezier(0.65, 0, 0.35, 1);
+    ${EXPRESSIVE} .long {
+      animation: turn-twice ${DURATION.slow02} ${standard.expressive};
     }
-  }
 
-  @keyframes sweep {
-    to {
-      transform: rotate(720deg);
+    ${EXPRESSIVE} .short {
+      animation: turn ${DURATION.slow02} ${standard.expressive};
     }
   }
 
-  @keyframes hour {
+  @keyframes turn {
     to {
       transform: rotate(360deg);
+    }
+  }
+
+  @keyframes turn-twice {
+    to {
+      transform: rotate(720deg);
     }
   }`,
 } satisfies AnimatedIcon;

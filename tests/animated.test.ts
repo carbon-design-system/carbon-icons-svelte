@@ -3,13 +3,19 @@ import type { IconOutput } from "@carbon/icons";
 import { describe, expect, test } from "bun:test";
 import { compile } from "svelte/compiler";
 import { ANIMATED_ICONS, buildAnimated, templateAnimated } from "../src/animated/index.js";
-import { hashSource } from "../src/animated/shared.js";
+import { DURATION, EASING, EXPRESSIVE, hashSource } from "../src/animated/shared.js";
 
 /** Matches each `d` attribute in an icon's content. */
 const D_PATTERN = / d="([^"]+)"/g;
 
 /** Matches each command letter or number in a path. */
 const PATH_TOKEN_PATTERN = /[a-zA-Z]|-?\d*\.?\d+(?:e-?\d+)?/g;
+
+/** Matches each duration or delay in CSS. */
+const DURATION_PATTERN = /\b\d+(?:\.\d+)?m?s\b/g;
+
+/** Matches each cubic Bézier easing in CSS. */
+const CUBIC_BEZIER_PATTERN = /cubic-bezier\([^)]*\)/g;
 
 /** The 32px descriptor that the static component is built from. */
 const staticDescriptor = (name: string) =>
@@ -52,6 +58,16 @@ describe("animated icons", () => {
       // Every rule that plays the animation is gated by reduced motion.
       expect(css?.code).toContain("@media (prefers-reduced-motion: no-preference)");
     }
+  });
+
+  // Icons with a productive and an expressive mode use Carbon's motion
+  // tokens only. Percentages in keyframes aren't durations, so they're fine.
+  test.each(cases.filter(([, icon]) => icon.css.includes(EXPRESSIVE)))("%s uses Carbon motion tokens", (_, icon) => {
+    const durations = new Set<string>(Object.values(DURATION));
+    const easings = new Set<string>(Object.values(EASING).flatMap((modes) => Object.values(modes)));
+
+    for (const [duration] of icon.css.matchAll(DURATION_PATTERN)) expect(durations).toContain(duration);
+    for (const [easing] of icon.css.matchAll(CUBIC_BEZIER_PATTERN)) expect(easings).toContain(easing);
   });
 
   test("gives masks and clip paths a unique id prefix per instance", () => {

@@ -1,8 +1,12 @@
-import { PLAYING, type AnimatedIcon } from "../shared.js";
+import { DURATION, EASING, EXPRESSIVE, PRODUCTIVE, type AnimatedIcon } from "../shared.js";
+
+const { entrance, standard } = EASING;
 
 /**
- * A heartbeat: a strong beat, a slight under-scale, a smaller second beat,
- * then rest. It scales from the heart's visual centre, not the canvas centre.
+ * Scales from the heart's visual centre, not the canvas centre.
+ * Productive: one gentle beat.
+ * Expressive: a heartbeat; a strong beat, a slight under-scale, a smaller
+ * second beat, then rest.
  */
 export default {
   name: "Favorite",
@@ -14,22 +18,46 @@ export default {
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    ${PLAYING} .heart {
-      animation: beat 750ms cubic-bezier(0.3, 0, 0.3, 1);
+    ${PRODUCTIVE} .heart {
+      animation: beat ${DURATION.slow01};
+    }
+
+    ${EXPRESSIVE} .heart {
+      animation: heartbeat ${DURATION.slow02};
     }
   }
 
   @keyframes beat {
-    14% {
+    0% {
+      transform: scale(1);
+      animation-timing-function: ${entrance.productive};
+    }
+    40% {
+      transform: scale(1.1);
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes heartbeat {
+    0% {
+      transform: scale(1);
+      animation-timing-function: ${entrance.expressive};
+    }
+    18% {
       transform: scale(1.16);
+      animation-timing-function: ${standard.expressive};
     }
-    30% {
+    38% {
       transform: scale(0.96);
+      animation-timing-function: ${standard.expressive};
     }
-    46% {
+    58% {
       transform: scale(1.08);
+      animation-timing-function: ${standard.expressive};
     }
-    70%,
     100% {
       transform: scale(1);
     }

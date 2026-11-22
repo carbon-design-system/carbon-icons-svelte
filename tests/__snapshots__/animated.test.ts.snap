@@ -12,6 +12,8 @@ exports[`animated icons template 1`] = `
 
   export let trigger = "hover";
 
+  export let motion = "productive";
+
   $: labelled = $$props["aria-label"] || $$props["aria-labelledby"] || title;
   $: attributes = {
     "aria-hidden": labelled ? undefined : true,
@@ -27,6 +29,7 @@ exports[`animated icons template 1`] = `
   preserveAspectRatio="xMidYMid meet"
   width={size}
   height={size}
+  data-motion={motion}
   use:animate={{ play, trigger }}
   {...attributes}
   {...$$restProps}>
@@ -43,47 +46,66 @@ exports[`animated icons template 1`] = `
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    :global(svg[data-playing]) .bell {
-      animation: ring 900ms ease-in-out;
+    :global(svg[data-playing][data-motion="productive"]) .bell,
+    :global(svg[data-playing][data-motion="productive"]) .clapper {
+      animation: swing 400ms cubic-bezier(0.2, 0, 0.38, 0.9);
     }
 
-    :global(svg[data-playing]) .clapper {
-      animation: ring-clapper 900ms ease-in-out 40ms backwards;
+    :global(svg[data-playing][data-motion="expressive"]) .bell {
+      animation: ring 700ms cubic-bezier(0.4, 0.14, 0.3, 1);
+    }
+
+    :global(svg[data-playing][data-motion="expressive"]) .clapper {
+      animation: ring-clapper 700ms cubic-bezier(0.4, 0.14, 0.3, 1);
+    }
+  }
+
+  @keyframes swing {
+    35% {
+      transform: rotate(8deg);
+    }
+    70% {
+      transform: rotate(-5deg);
     }
   }
 
   @keyframes ring {
-    12% {
+    14% {
       transform: rotate(14deg);
     }
-    28% {
+    32% {
       transform: rotate(-11deg);
     }
-    44% {
+    50% {
       transform: rotate(7deg);
     }
-    60% {
+    68% {
       transform: rotate(-4deg);
     }
-    76% {
+    84% {
       transform: rotate(1.5deg);
     }
   }
 
+  /* The same swing, starting later and going further. */
   @keyframes ring-clapper {
-    13% {
+    0%,
+    5% {
+      transform: rotate(0);
+    }
+    19% {
       transform: rotate(20deg);
     }
-    30% {
+    37% {
       transform: rotate(-15deg);
     }
-    46% {
+    55% {
       transform: rotate(10deg);
     }
-    62% {
+    72% {
       transform: rotate(-5deg);
     }
-    78% {
+    88% {
       transform: rotate(2deg);
     }
   }
@@ -110,6 +132,13 @@ export type CarbonAnimatedIconProps = CarbonIconProps & {
    * @default "hover"
    */
   trigger?: "hover" | "none";
+
+  /**
+   * Carbon's motion style. \`"productive"\` is short and subtle, for routine UI.
+   * \`"expressive"\` is larger and livelier, for moments that matter.
+   * @default "productive"
+   */
+  motion?: "productive" | "expressive";
 };
 
 /** See \`CarbonIcon\` in \`../index.d.ts\`. */

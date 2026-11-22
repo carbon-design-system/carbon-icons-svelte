@@ -1,8 +1,12 @@
-import { PLAYING, type AnimatedIcon } from "../shared.js";
+import { DURATION, EASING, EXPRESSIVE, PRODUCTIVE, type AnimatedIcon } from "../shared.js";
+
+const { entrance, exit, standard } = EASING;
 
 /**
- * Hops: rises 2 units (all the room above it), drops, squashes on its tip,
- * and rebounds. The squash pivots on the tip so the pin stays planted.
+ * Rises 2 units, all the room above it, and lands.
+ * Productive: a small hop.
+ * Expressive: hops, squashes on its tip, and rebounds. The squash pivots on
+ * the tip so the pin stays planted.
  */
 export default {
   name: "Location",
@@ -17,27 +21,45 @@ export default {
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    ${PLAYING} .pin {
-      animation: hop 650ms;
+    ${PRODUCTIVE} .pin {
+      animation: hop ${DURATION.slow01};
+    }
+
+    ${EXPRESSIVE} .pin {
+      animation: hop-squash ${DURATION.slow02};
     }
   }
 
   @keyframes hop {
     0% {
       transform: translateY(0);
-      animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1);
+      animation-timing-function: ${entrance.productive};
     }
-    30% {
+    45% {
       transform: translateY(-2px);
-      animation-timing-function: cubic-bezier(0.6, 0, 0.9, 0.5);
+      animation-timing-function: ${exit.productive};
     }
-    52% {
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes hop-squash {
+    0% {
+      transform: translateY(0);
+      animation-timing-function: ${entrance.expressive};
+    }
+    28% {
+      transform: translateY(-2px);
+      animation-timing-function: ${exit.expressive};
+    }
+    48% {
       transform: translateY(0) scale(1.08, 0.9);
-      animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1);
+      animation-timing-function: ${standard.expressive};
     }
-    72% {
+    70% {
       transform: scale(0.97, 1.03);
-      animation-timing-function: ease-in-out;
+      animation-timing-function: ${standard.expressive};
     }
     100% {
       transform: none;

@@ -1,5 +1,14 @@
 import { toString } from "@carbon/icon-helpers";
 import type { IconOutput } from "@carbon/icons";
+import {
+  durationFast01,
+  durationFast02,
+  durationModerate01,
+  durationModerate02,
+  durationSlow01,
+  durationSlow02,
+  easings,
+} from "@carbon/motion";
 import { createHash } from "node:crypto";
 
 export interface AnimatedIcon {
@@ -19,6 +28,27 @@ export interface AnimatedIcon {
 
 /** Matches the icon while it plays. See `animate.js`. */
 export const PLAYING = ":global(svg[data-playing])";
+
+/**
+ * Match the icon while it plays in each `motion` mode. Carbon uses
+ * productive motion for routine UI, and expressive motion for moments
+ * that matter. The `<svg>` carries `data-motion` from the prop.
+ */
+export const PRODUCTIVE = ':global(svg[data-playing][data-motion="productive"])';
+export const EXPRESSIVE = ':global(svg[data-playing][data-motion="expressive"])';
+
+/** Carbon's motion durations, from `@carbon/motion`. */
+export const DURATION = {
+  fast01: durationFast01,
+  fast02: durationFast02,
+  moderate01: durationModerate01,
+  moderate02: durationModerate02,
+  slow01: durationSlow01,
+  slow02: durationSlow02,
+};
+
+/** Carbon's motion easings, from `@carbon/motion`. */
+export const EASING = easings;
 
 export const hashSource = (descriptor: IconOutput["descriptor"]) =>
   createHash("sha256")

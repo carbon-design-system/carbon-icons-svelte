@@ -76,6 +76,8 @@ export const templateAnimated = ({ content, css }: AnimatedIcon) => {
   export let play = false;
 
   export let trigger = "hover";
+
+  export let motion = "productive";
 ${usesId ? "\n  const id = uid();\n" : ""}
   $: labelled = $$props["aria-label"] || $$props["aria-labelledby"] || title;
   $: attributes = {
@@ -92,6 +94,7 @@ ${usesId ? "\n  const id = uid();\n" : ""}
   preserveAspectRatio="xMidYMid meet"
   width={size}
   height={size}
+  data-motion={motion}
   use:animate={{ play, trigger }}
   {...attributes}
   {...$$restProps}>
@@ -123,6 +126,13 @@ export type CarbonAnimatedIconProps = CarbonIconProps & {
    * @default "hover"
    */
   trigger?: "hover" | "none";
+
+  /**
+   * Carbon's motion style. \`"productive"\` is short and subtle, for routine UI.
+   * \`"expressive"\` is larger and livelier, for moments that matter.
+   * @default "productive"
+   */
+  motion?: "productive" | "expressive";
 };
 
 /** See \`CarbonIcon\` in \`../index.d.ts\`. */

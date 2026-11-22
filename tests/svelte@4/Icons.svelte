@@ -37,10 +37,13 @@
     size: 20,
     play: 1,
     trigger: "none",
+    motion: "expressive",
   } satisfies CarbonAnimatedIconProps;
 
   // @ts-expect-error (`trigger` is "hover" or "none")
   new Notification({ target: document.body, props: { trigger: "click" } });
+  // @ts-expect-error (`motion` is "productive" or "expressive")
+  new Notification({ target: document.body, props: { motion: "playful" } });
   // @ts-expect-error (`play` is a boolean or number)
   new AnimatedIcon({ target: document.body, props: { play: "yes" } });
 
