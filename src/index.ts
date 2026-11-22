@@ -116,6 +116,12 @@ export type CarbonIconProps = SvelteHTMLElements["svg"] & {
    * @default 16
    */
   size?: 16 | 20 | 24 | 32 | (number & {});
+
+  /**
+   * Svelte 3's \`svelte/elements\` doesn't allow \`data-*\` attributes;
+   * Svelte 4 and 5 already do.
+   */
+  [key: \`data-\${string}\`]: any;
 }
 
 /**
