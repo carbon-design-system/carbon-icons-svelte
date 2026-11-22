@@ -101,7 +101,7 @@ export const buildIcons = async () => {
   await mkdir("lib");
 
   let libExport = "";
-  let definitions = `import type { Component } from "svelte";
+  let definitions = `import type { ComponentConstructorOptions, SvelteComponent } from "svelte";
 import type { SvelteHTMLElements } from "svelte/elements";
 
 export type CarbonIconProps = SvelteHTMLElements["svg"] & {
@@ -116,7 +116,19 @@ export type CarbonIconProps = SvelteHTMLElements["svg"] & {
    * @default 16
    */
   size?: 16 | 20 | 24 | 32 | (number & {});
-}\n\n`;
+}
+
+/**
+ * Svelte 5 components are functions and Svelte 4 components are classes.
+ * Svelte 4 doesn't export the \`Component\` type, so detect Svelte 5 by
+ * \`mount\` (a Svelte 5 export) and spell out each shape with types that
+ * both versions export.
+ */
+type CarbonIcon = typeof import("svelte") extends { mount: any }
+  ? (this: void, internals: unknown, props: CarbonIconProps) => {}
+  : new (
+      options: ComponentConstructorOptions<CarbonIconProps>
+    ) => SvelteComponent<CarbonIconProps, Record<string, any>, {}>;\n\n`;
 
   type Size = "glyph" | "icon";
 
@@ -167,7 +179,7 @@ export type CarbonIconProps = SvelteHTMLElements["svg"] & {
 
     byModuleName[name] = templateSvg(icon, inner);
     libExport += `export { default as ${name} } from "./${name}.svelte";\n`;
-    definitions += `export declare const ${name}: Component<CarbonIconProps>;\n`;
+    definitions += `export declare const ${name}: CarbonIcon;\n`;
 
     const fileName = `lib/${name}.svelte`;
 
@@ -180,7 +192,7 @@ export type CarbonIconProps = SvelteHTMLElements["svg"] & {
       throw new Error(`Rename alias target missing: ${newName} for ${oldName}`);
     }
 
-    definitions += `export declare const ${oldName}: Component<CarbonIconProps>;\n`;
+    definitions += `export declare const ${oldName}: CarbonIcon;\n`;
 
     if (collidesOnCaseInsensitiveFs(oldName, newName)) {
       libExport += `export { default as ${oldName} } from "./${newName}.svelte";\n`;
