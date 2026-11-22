@@ -36,7 +36,6 @@ exports[`animated icons template 1`] = `
 </svg>
 
 <style>
-  /* Both swing from the top of the stem. */
   .bell,
   .clapper {
     transform-box: view-box;
@@ -48,7 +47,6 @@ exports[`animated icons template 1`] = `
       animation: ring 900ms ease-in-out;
     }
 
-    /* Starts later and swings further, so it lags behind the bell. */
     :global(svg[data-playing]) .clapper {
       animation: ring-clapper 900ms ease-in-out 40ms backwards;
     }
@@ -121,9 +119,28 @@ type CarbonAnimatedIcon = typeof import("svelte") extends { mount: any }
       options: ComponentConstructorOptions<CarbonAnimatedIconProps>
     ) => SvelteComponent<CarbonAnimatedIconProps, Record<string, any>, {}>;
 
+export declare const Add: CarbonAnimatedIcon;
 export declare const Checkmark: CarbonAnimatedIcon;
+export declare const ChevronRight: CarbonAnimatedIcon;
+export declare const Copy: CarbonAnimatedIcon;
 export declare const Download: CarbonAnimatedIcon;
+export declare const Edit: CarbonAnimatedIcon;
+export declare const Favorite: CarbonAnimatedIcon;
+export declare const Light: CarbonAnimatedIcon;
+export declare const Location: CarbonAnimatedIcon;
+export declare const Locked: CarbonAnimatedIcon;
 export declare const Notification: CarbonAnimatedIcon;
 export declare const Renew: CarbonAnimatedIcon;
+export declare const Search: CarbonAnimatedIcon;
+export declare const Send: CarbonAnimatedIcon;
+export declare const Settings: CarbonAnimatedIcon;
+export declare const Star: CarbonAnimatedIcon;
+export declare const Time: CarbonAnimatedIcon;
+export declare const TrashCan: CarbonAnimatedIcon;
+export declare const Upload: CarbonAnimatedIcon;
+export declare const View: CarbonAnimatedIcon;
+export declare const VolumeUp: CarbonAnimatedIcon;
+export declare const WarningAlt: CarbonAnimatedIcon;
+export declare const Wifi: CarbonAnimatedIcon;
 "
 `;

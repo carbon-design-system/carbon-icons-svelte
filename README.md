@@ -117,7 +117,7 @@ You can use `fill` to customize the color or pass any other valid `svg` attribut
 
 ## Animated icons
 
-A few icons have animated versions: `Checkmark`, `Download`, `Notification` and `Renew`. They take the same props as the static icons, plus `play` and `trigger`.
+Some icons have animated versions: `Add`, `Checkmark`, `ChevronRight`, `Copy`, `Download`, `Edit`, `Favorite`, `Light`, `Location`, `Locked`, `Notification`, `Renew`, `Search`, `Send`, `Settings`, `Star`, `Time`, `TrashCan`, `Upload`, `View`, `VolumeUp`, `WarningAlt` and `Wifi`. They take the same props as the static icons, plus `play` and `trigger`.
 
 ```svelte
 <script>

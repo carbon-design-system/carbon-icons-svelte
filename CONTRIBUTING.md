@@ -126,24 +126,40 @@ For Svelte 3, pin [`carbon-icons-svelte@12.13.0`](https://github.com/carbon-desi
 
 ## Animated icons
 
-`carbon-icons-svelte/animated` ships hand-built animated versions of a few icons. They're defined in [`src/animated/index.ts`](src/animated/index.ts) and built into `lib/animated/` by `buildIcons()`.
+`carbon-icons-svelte/animated` ships hand-built animated versions of some icons. Each one is a file in [`src/animated/icons/`](src/animated/icons/), listed in [`src/animated/index.ts`](src/animated/index.ts), and built into `lib/animated/` by `buildIcons()`.
 
-Carbon's icons are filled outlines, often a single merged path, so per-part motion can't be generated from the descriptors. Each entry in `ANIMATED_ICONS` has:
+Carbon's icons are filled outlines, often a single merged path, so per-part motion can't be generated from the descriptors. Each icon file exports:
 
-- `source`: the `d` of each path in the static icon's 32px descriptor, copied as-is.
-- `content`: the SVG markup, split into parts by hand where the motion needs it. `{id}` is a unique id for a `<mask>` or `<clipPath>`.
-- `css`: component CSS. Put every rule that plays the animation under `@media (prefers-reduced-motion: no-preference)` and select the playing state with `${PLAYING}`.
+- `name`: the static icon it animates.
+- `sourceHash`: a hash of the static icon's 32px content. [`tests/animated.test.ts`](tests/animated.test.ts) fails if Carbon redraws the icon; redo its parts from the new paths, then update the hash.
+- `content`: the SVG markup. `{id}` is a unique prefix for `<mask>` and `<clipPath>` ids.
+- `css`: component CSS. Svelte scopes it, keyframe names included.
+
+Start the file with a doc comment that says what the motion is and why, in a sentence or two.
 
 [`src/animated/animate.js`](src/animated/animate.js) is the shared runtime, copied to `lib/animated/`. It's a Svelte action that sets `data-playing` on the `<svg>` to start the animation, from hover or keyboard focus of the icon or its interactive ancestor, or from the `play` prop. It's JavaScript, not CSS `:hover`, so the animation always runs to the end instead of snapping back when the pointer leaves.
 
-Guidelines that keep the motion consistent at 16px:
+### Motion
 
-- Size motion for the 32-unit grid. 1 unit is 0.5px at 16px, so move at least 3 units.
-- Keep everything inside the 32×32 viewBox, or clip it on purpose (Download).
-- End where you started. A one-shot animation can't keep state, so anything left mid-way snaps back.
-- Set `transform-box: view-box` and an explicit `transform-origin` in user units.
+- **Start and end at rest.** A one-shot animation can't keep state, so anything left part-way snaps back when it ends. Use the icon's symmetry to keep turns short: `Renew` turns 180°, `Settings` 60° (six teeth), `Add` 90°, `Star` 72°. A clock hand makes whole turns instead (`Time`).
+- **Pivot on the physical hinge.** The bell swings from its stem, the lid from its end, the pencil on its tip, the pin on its point, the warning sign on its base. Set `transform-box: view-box` and a `transform-origin` in user units.
+- **Size motion for 16px.** One unit of the 32-unit grid is 0.5px at 16px. Move at least 3 units, or 2 for a hop or shake near an edge.
+- **Stay inside the 32×32 viewBox.** An icon that touches an edge can't move toward it: `Locked`, `TrashCan` and `Location` get 2 units of travel at most, and `Star` shrinks mid-turn so its points stay in. Rotating about the base (`WarningAlt`) keeps corners in where a sideways shake wouldn't. Leave the canvas only on purpose: through the viewBox edge (`Send`), or through a `<clipPath>` on a wrapper `<g>` so the clip stays put while the part moves (`Download`, `Upload`).
+- **Keep stroke weight.** Scaling one axis thins the strokes along the other, and they vanish at 16px. Fold, clip or move parts instead (`View`).
 
-[`tests/animated.test.ts`](tests/animated.test.ts) fails if Carbon redraws an animated icon (`source` no longer matches), and checks that each component compiles without warnings. When Carbon redraws one, redo its parts from the new paths and update `source`.
+### Timing
+
+- **300–900ms**, up to 1200ms for a big move (`Time`). Open slowly and close fast, as a latch or a lid does.
+- **Overshoot with the easing curve**, a `cubic-bezier()` with a y value above 1, rather than extra keyframes. For a move in phases, set `animation-timing-function` per keyframe.
+- **Stagger parts 40–110ms** with `calc(var(--i) * …)` and `backwards` fill, so later parts wait in their start state (`Wifi`, `VolumeUp`, `Light`).
+- **Give related icons the same motion.** `Download` and `Upload` mirror each other; `Wifi` and `VolumeUp` share one.
+
+### Construction
+
+- **Copy Carbon's paths verbatim.** Only split a path where its parts move separately. A test fails if an unsplit path differs from Carbon's character for character.
+- **Don't put a CSS `transform` on an element with a `transform` attribute.** CSS replaces the attribute. Wrap the element in a `<g>` and animate that (`Light`).
+- **Layer motions with `rotate`, `scale` and `translate`** when they need their own easing; each is a separate property (`Star`).
+- **Gate every rule that plays motion** with `@media (prefers-reduced-motion: no-preference)`, and select the playing state with `${PLAYING}`. A test checks the media query is there.
 
 ## Conventions
 

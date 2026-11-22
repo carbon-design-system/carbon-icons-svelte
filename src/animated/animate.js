@@ -61,5 +61,5 @@ export function animate(node, { play = false, trigger = "hover" } = {}) {
 
 let count = 0;
 
-/** Returns an `id` for a `<mask>` or `<clipPath>` that is unique on the page. */
+/** Returns a prefix for `<mask>` and `<clipPath>` ids that is unique on the page. */
 export const uid = () => `ccs-animated-${++count}`;
