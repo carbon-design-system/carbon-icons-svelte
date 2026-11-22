@@ -209,13 +209,13 @@ type CarbonIcon = typeof import("svelte") extends { mount: any }
   await Bun.write("lib/index.js", libExport);
 
   // Every icon has the same type, so the \`./lib/*.svelte\` export points at
-  // one declaration instead of a \`.svelte.d.ts\` stub per icon.
+  // one declaration instead of a \`.svelte.d.ts\` stub per icon. It borrows
+  // the type of one barrel export so the two can't drift apart.
   await Bun.write(
     "lib/icon.d.ts",
-    `import type { Component } from "svelte";
-import type { CarbonIconProps } from "./index.js";
+    `import type { Add } from "./index.js";
 
-declare const Icon: Component<CarbonIconProps>;
+declare const Icon: typeof Add;
 export default Icon;
 `
   );
