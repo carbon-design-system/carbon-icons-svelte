@@ -1,10 +1,14 @@
-import { PLAYING, type AnimatedIcon } from "../shared.js";
+import { DURATION, EASING, EXPRESSIVE, PRODUCTIVE, type AnimatedIcon } from "../shared.js";
+
+const { entrance, exit } = EASING;
 
 /**
  * Blinks. Two clips split the eye at its centre line; the top half and the
  * pupil fold down to it, leaving Carbon's lower arc as the closed eye.
  * Squashing the whole eye instead thins every horizontal stroke, and the
  * closed frame fades to nothing at 16px.
+ * Productive: one blink.
+ * Expressive: two blinks.
  */
 export default {
   name: "View",
@@ -31,20 +35,48 @@ export default {
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    ${PLAYING} .fold {
-      animation: blink 380ms;
+    ${PRODUCTIVE} .fold {
+      animation: blink ${DURATION.slow01};
+    }
+
+    ${EXPRESSIVE} .fold {
+      animation: blink-twice ${DURATION.slow02};
     }
   }
 
   @keyframes blink {
     0% {
       transform: scaleY(1);
-      animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5);
+      animation-timing-function: ${exit.productive};
     }
-    32%,
-    48% {
+    35%,
+    45% {
       transform: scaleY(0);
-      animation-timing-function: cubic-bezier(0.1, 0.5, 0.3, 1);
+      animation-timing-function: ${entrance.productive};
+    }
+    100% {
+      transform: scaleY(1);
+    }
+  }
+
+  @keyframes blink-twice {
+    0% {
+      transform: scaleY(1);
+      animation-timing-function: ${exit.expressive};
+    }
+    18%,
+    24% {
+      transform: scaleY(0);
+      animation-timing-function: ${entrance.expressive};
+    }
+    46% {
+      transform: scaleY(1);
+      animation-timing-function: ${exit.expressive};
+    }
+    62%,
+    68% {
+      transform: scaleY(0);
+      animation-timing-function: ${entrance.expressive};
     }
     100% {
       transform: scaleY(1);

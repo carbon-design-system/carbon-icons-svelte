@@ -1,9 +1,13 @@
-import { PLAYING, type AnimatedIcon } from "../shared.js";
+import { DURATION, EASING, EXPRESSIVE, PRODUCTIVE, type AnimatedIcon } from "../shared.js";
+
+const { entrance, standard } = EASING;
 
 /**
  * Turns one point (72°; the star has five), so it ends where it started.
  * It shrinks slightly mid-turn so its points stay inside the canvas.
  * `rotate` and `scale` are separate properties, so each has its own easing.
+ * Productive: a plain turn.
+ * Expressive: overshoots by 8° and settles back.
  */
 export default {
   name: "Star",
@@ -15,15 +19,33 @@ export default {
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    ${PLAYING} .star {
-      animation:
-        turn 700ms cubic-bezier(0.3, 1.25, 0.5, 1),
-        shrink 700ms ease-in-out;
+    ${PRODUCTIVE} .star {
+      animation: turn ${DURATION.slow01} ${standard.productive},
+        shrink ${DURATION.slow01} ${standard.productive};
+    }
+
+    ${EXPRESSIVE} .star {
+      animation: turn-overshoot ${DURATION.slow02},
+        shrink ${DURATION.slow02} ${standard.expressive};
     }
   }
 
   @keyframes turn {
     to {
+      rotate: 72deg;
+    }
+  }
+
+  @keyframes turn-overshoot {
+    0% {
+      rotate: 0deg;
+      animation-timing-function: ${entrance.expressive};
+    }
+    75% {
+      rotate: 80deg;
+      animation-timing-function: ${standard.expressive};
+    }
+    100% {
       rotate: 72deg;
     }
   }

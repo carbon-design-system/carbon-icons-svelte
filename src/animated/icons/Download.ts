@@ -1,9 +1,12 @@
-import { PLAYING, type AnimatedIcon } from "../shared.js";
+import { DURATION, EASING, EXPRESSIVE, PRODUCTIVE, type AnimatedIcon } from "../shared.js";
+
+const { entrance, exit, standard } = EASING;
 
 /**
- * The arrow falls into the tray, which dips as it lands, then a new arrow
- * drops in from the top. The clip is on a wrapper so it stays put while the
- * arrow moves. Mirrors `Upload`.
+ * The clip is on a wrapper so it stays put while the arrow moves. Mirrors `Upload`.
+ * Productive: the arrow dips 3 units into the tray and back.
+ * Expressive: the arrow falls into the tray, which dips as it lands, then a
+ * new arrow drops in from the top.
  */
 export default {
   name: "Download",
@@ -16,27 +19,49 @@ export default {
   </g>
   <path class="tray" d="M26,24v4H6V24H4v4H4a2,2,0,0,0,2,2H26a2,2,0,0,0,2-2h0V24Z" />`,
   css: `  @media (prefers-reduced-motion: no-preference) {
-    ${PLAYING} .arrow {
-      animation: drop 850ms;
+    ${PRODUCTIVE} .arrow {
+      animation: nudge ${DURATION.slow01};
     }
 
-    ${PLAYING} .tray {
-      animation: catch 850ms;
+    ${EXPRESSIVE} .arrow {
+      animation: pass ${DURATION.slow02};
+    }
+
+    ${EXPRESSIVE} .tray {
+      animation: catch ${DURATION.slow02};
     }
   }
 
-  @keyframes drop {
+  @keyframes nudge {
     0% {
       transform: translateY(0);
-      animation-timing-function: cubic-bezier(0.55, 0, 0.9, 0.45);
+      animation-timing-function: ${entrance.productive};
     }
-    38% {
+    40% {
+      transform: translateY(3px);
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pass {
+    0% {
+      transform: translateY(0);
+      animation-timing-function: ${exit.expressive};
+    }
+    40% {
       transform: translateY(24px);
       animation-timing-function: step-end;
     }
-    38.1% {
+    40.1% {
       transform: translateY(-24px);
-      animation-timing-function: cubic-bezier(0.2, 0.75, 0.3, 1.08);
+      animation-timing-function: ${entrance.expressive};
+    }
+    85% {
+      transform: translateY(1px);
+      animation-timing-function: ${standard.expressive};
     }
     100% {
       transform: translateY(0);
@@ -45,15 +70,15 @@ export default {
 
   @keyframes catch {
     0%,
-    30% {
+    36% {
       transform: translateY(0);
-      animation-timing-function: cubic-bezier(0.2, 0, 0.3, 1);
+      animation-timing-function: ${entrance.expressive};
     }
-    40% {
+    46% {
       transform: translateY(1.5px);
-      animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation-timing-function: ${standard.expressive};
     }
-    66%,
+    70%,
     100% {
       transform: translateY(0);
     }

@@ -133,9 +133,9 @@ Carbon's icons are filled outlines, often a single merged path, so per-part moti
 - `name`: the static icon it animates.
 - `sourceHash`: a hash of the static icon's 32px content. [`tests/animated.test.ts`](tests/animated.test.ts) fails if Carbon redraws the icon; redo its parts from the new paths, then update the hash.
 - `content`: the SVG markup. `{id}` is a unique prefix for `<mask>` and `<clipPath>` ids.
-- `css`: component CSS. Svelte scopes it, keyframe names included.
+- `css`: component CSS. Svelte scopes it, keyframe names included. It defines both `motion` modes (see [Timing](#timing)).
 
-Start the file with a doc comment that says what the motion is and why, in a sentence or two.
+Start the file with a doc comment that says what the motion is and why, in a sentence or two, then one line each for `Productive:` and `Expressive:`.
 
 [`src/animated/animate.js`](src/animated/animate.js) is the shared runtime, copied to `lib/animated/`. It's a Svelte action that sets `data-playing` on the `<svg>` to start the animation, from hover or keyboard focus of the icon or its interactive ancestor, or from the `play` prop. It's JavaScript, not CSS `:hover`, so the animation always runs to the end instead of snapping back when the pointer leaves.
 
@@ -149,9 +149,15 @@ Start the file with a doc comment that says what the motion is and why, in a sen
 
 ### Timing
 
-- **300–900ms**, up to 1200ms for a big move (`Time`). Open slowly and close fast, as a latch or a lid does.
-- **Overshoot with the easing curve**, a `cubic-bezier()` with a y value above 1, rather than extra keyframes. For a move in phases, set `animation-timing-function` per keyframe.
-- **Stagger parts 40–110ms** with `calc(var(--i) * …)` and `backwards` fill, so later parts wait in their start state (`Wifi`, `VolumeUp`, `Light`).
+Every icon has two modes, matching Carbon's [motion styles](https://carbondesignsystem.com/elements/motion/overview/). The `<svg>` carries the `motion` prop as `data-motion`; select each mode with `${PRODUCTIVE}` or `${EXPRESSIVE}` from [`src/animated/shared.ts`](src/animated/shared.ts).
+
+- **Productive** (the default) is for routine UI, which people hover all day. One simple move, about half the travel of expressive, with no secondary motion: no lagging part, no second beat. `DURATION.slow01` (400ms) or less, with productive easings.
+- **Expressive** is for moments that matter, usually played through `play`. Secondary motion, overshoot and multiple beats belong here. `DURATION.slow02` (700ms) or less, with expressive easings.
+- **Use Carbon's tokens only.** Durations, delays and staggers come from `DURATION`, and easings from `EASING`, both read from `@carbon/motion`. A test fails on any other duration or `cubic-bezier()`.
+- **Pick the easing by direction.** `entrance` for moving out to an extreme (it decelerates into it), `exit` for leaving the canvas or dropping into place (it accelerates), and `standard` for a move that goes and comes back, or a swing between extremes.
+- **Overshoot with a keyframe, not a curve.** Carbon has no overshooting curve, so add a keyframe past the rest point and settle back (`Renew` turns to -195° before -180°). For a move in phases, set `animation-timing-function` per keyframe.
+- **Stagger with `DURATION.fast01` or `fast02`** and `calc(var(--i) * …)`, with `backwards` fill so later parts wait in their start state (`Wifi`, `VolumeUp`, `Light`). Keep the total within the mode's limit.
+- **Symmetry angles don't scale.** A turn has to end on a symmetry angle (`Star` 72°), so productive turns the same amount as expressive, only quicker and without the overshoot.
 - **Give related icons the same motion.** `Download` and `Upload` mirror each other; `Wifi` and `VolumeUp` share one.
 
 ### Construction
@@ -159,7 +165,7 @@ Start the file with a doc comment that says what the motion is and why, in a sen
 - **Copy Carbon's paths verbatim.** Only split a path where its parts move separately. A test fails if an unsplit path differs from Carbon's character for character.
 - **Don't put a CSS `transform` on an element with a `transform` attribute.** CSS replaces the attribute. Wrap the element in a `<g>` and animate that (`Light`).
 - **Layer motions with `rotate`, `scale` and `translate`** when they need their own easing; each is a separate property (`Star`).
-- **Gate every rule that plays motion** with `@media (prefers-reduced-motion: no-preference)`, and select the playing state with `${PLAYING}`. A test checks the media query is there.
+- **Gate every rule that plays motion** with `@media (prefers-reduced-motion: no-preference)`. A test checks the media query is there.
 
 ## Conventions
 

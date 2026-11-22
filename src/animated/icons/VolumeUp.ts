@@ -1,8 +1,11 @@
-import { PLAYING, type AnimatedIcon } from "../shared.js";
+import { DURATION, EASING, EXPRESSIVE, PRODUCTIVE, type AnimatedIcon } from "../shared.js";
+
+const { entrance, standard } = EASING;
 
 /**
- * The sound waves fade in and grow from the speaker, the small wave first.
  * Same motion as `Wifi`.
+ * Productive: the sound waves pulse outward together.
+ * Expressive: the waves fade in and grow from the speaker, the small wave first.
  */
 export default {
   name: "VolumeUp",
@@ -16,8 +19,26 @@ export default {
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    ${PLAYING} .wave {
-      animation: emit 300ms cubic-bezier(0.2, 0.7, 0.3, 1) calc(var(--i) * 110ms) backwards;
+    ${PRODUCTIVE} .wave {
+      animation: pulse ${DURATION.slow01};
+    }
+
+    ${EXPRESSIVE} .wave {
+      animation: emit ${DURATION.slow01} ${entrance.expressive} calc(var(--i) * ${DURATION.fast02}) backwards;
+    }
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      animation-timing-function: ${entrance.productive};
+    }
+    40% {
+      transform: scale(1.08);
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: scale(1);
     }
   }
 

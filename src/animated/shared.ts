@@ -26,11 +26,8 @@ export interface AnimatedIcon {
   css: string;
 }
 
-/** Matches the icon while it plays. See `animate.js`. */
-export const PLAYING = ":global(svg[data-playing])";
-
 /**
- * Match the icon while it plays in each `motion` mode. Carbon uses
+ * Match the icon while it plays (see `animate.js`) in each `motion` mode. Carbon uses
  * productive motion for routine UI, and expressive motion for moments
  * that matter. The `<svg>` carries `data-motion` from the prop.
  */

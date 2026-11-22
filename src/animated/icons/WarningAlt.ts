@@ -1,9 +1,13 @@
-import { PLAYING, type AnimatedIcon } from "../shared.js";
+import { DURATION, EASING, EXPRESSIVE, PRODUCTIVE, type AnimatedIcon } from "../shared.js";
+
+const { standard } = EASING;
 
 /**
- * Wobbles side to side on its base, like something that just got knocked,
- * and settles. Rotating about the base keeps the corners inside the canvas,
- * where a sideways shake would hit the edges.
+ * Wobbles on its base, like something that just got knocked. Rotating about
+ * the base keeps the corners inside the canvas, where a sideways shake
+ * would hit the edges.
+ * Productive: one wobble each way.
+ * Expressive: four wobbles that die out.
  */
 export default {
   name: "WarningAlt",
@@ -19,8 +23,21 @@ export default {
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    ${PLAYING} .sign {
-      animation: wobble 550ms ease-in-out;
+    ${PRODUCTIVE} .sign {
+      animation: rock ${DURATION.slow01} ${standard.productive};
+    }
+
+    ${EXPRESSIVE} .sign {
+      animation: wobble ${DURATION.slow02} ${standard.expressive};
+    }
+  }
+
+  @keyframes rock {
+    35% {
+      transform: rotate(-5deg);
+    }
+    70% {
+      transform: rotate(3deg);
     }
   }
 

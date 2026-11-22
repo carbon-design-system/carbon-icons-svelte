@@ -1,6 +1,12 @@
-import { PLAYING, type AnimatedIcon } from "../shared.js";
+import { DURATION, EASING, EXPRESSIVE, PRODUCTIVE, type AnimatedIcon } from "../shared.js";
 
-/** Turns one tooth (60°; the gear has six), so it ends where it started, and settles with a slight overshoot. */
+const { entrance, standard } = EASING;
+
+/**
+ * Turns one tooth (60°; the gear has six), so it ends where it started.
+ * Productive: a plain turn.
+ * Expressive: overshoots by 8° and settles back.
+ */
 export default {
   name: "Settings",
   sourceHash: "84ce9a329fa7",
@@ -14,13 +20,31 @@ export default {
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    ${PLAYING} .gear {
-      animation: turn 800ms cubic-bezier(0.45, 0, 0.2, 1.3);
+    ${PRODUCTIVE} .gear {
+      animation: turn ${DURATION.slow01} ${standard.productive};
+    }
+
+    ${EXPRESSIVE} .gear {
+      animation: turn-overshoot ${DURATION.slow02};
     }
   }
 
   @keyframes turn {
     to {
+      transform: rotate(60deg);
+    }
+  }
+
+  @keyframes turn-overshoot {
+    0% {
+      transform: rotate(0);
+      animation-timing-function: ${entrance.expressive};
+    }
+    75% {
+      transform: rotate(68deg);
+      animation-timing-function: ${standard.expressive};
+    }
+    100% {
       transform: rotate(60deg);
     }
   }`,

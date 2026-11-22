@@ -1,8 +1,12 @@
-import { PLAYING, type AnimatedIcon } from "../shared.js";
+import { DURATION, EASING, EXPRESSIVE, PRODUCTIVE, type AnimatedIcon } from "../shared.js";
+
+const { entrance, standard } = EASING;
 
 /**
- * The signal builds outward: the dot, then each arc, 100ms apart. Each one
- * fades in and grows from the dot. Same motion as `VolumeUp`.
+ * Same motion as `VolumeUp`.
+ * Productive: the arcs pulse outward together.
+ * Expressive: the signal builds outward; the dot, then each arc. Each one
+ * fades in and grows from the dot.
  */
 export default {
   name: "Wifi",
@@ -17,8 +21,26 @@ export default {
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    ${PLAYING} .signal {
-      animation: emit 260ms cubic-bezier(0.2, 0.7, 0.3, 1) calc(var(--i) * 100ms) backwards;
+    ${PRODUCTIVE} .signal {
+      animation: pulse ${DURATION.slow01};
+    }
+
+    ${EXPRESSIVE} .signal {
+      animation: emit ${DURATION.moderate02} ${entrance.expressive} calc(var(--i) * ${DURATION.fast02}) backwards;
+    }
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      animation-timing-function: ${entrance.productive};
+    }
+    40% {
+      transform: scale(1.08);
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: scale(1);
     }
   }
 

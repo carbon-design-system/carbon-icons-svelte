@@ -3,7 +3,7 @@ import type { IconOutput } from "@carbon/icons";
 import { describe, expect, test } from "bun:test";
 import { compile } from "svelte/compiler";
 import { ANIMATED_ICONS, buildAnimated, templateAnimated } from "../src/animated/index.js";
-import { DURATION, EASING, EXPRESSIVE, hashSource } from "../src/animated/shared.js";
+import { DURATION, EASING, EXPRESSIVE, PRODUCTIVE, hashSource } from "../src/animated/shared.js";
 
 /** Matches each `d` attribute in an icon's content. */
 const D_PATTERN = / d="([^"]+)"/g;
@@ -60,9 +60,12 @@ describe("animated icons", () => {
     }
   });
 
-  // Icons with a productive and an expressive mode use Carbon's motion
-  // tokens only. Percentages in keyframes aren't durations, so they're fine.
-  test.each(cases.filter(([, icon]) => icon.css.includes(EXPRESSIVE)))("%s uses Carbon motion tokens", (_, icon) => {
+  // Each icon has a productive and an expressive mode, built from Carbon's
+  // motion tokens only. Percentages in keyframes aren't durations.
+  test.each(cases)("%s has both motion modes, using Carbon motion tokens", (_, icon) => {
+    expect(icon.css).toContain(PRODUCTIVE);
+    expect(icon.css).toContain(EXPRESSIVE);
+
     const durations = new Set<string>(Object.values(DURATION));
     const easings = new Set<string>(Object.values(EASING).flatMap((modes) => Object.values(modes)));
 

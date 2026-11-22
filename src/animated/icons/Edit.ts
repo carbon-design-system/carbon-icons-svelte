@@ -1,6 +1,12 @@
-import { PLAYING, type AnimatedIcon } from "../shared.js";
+import { DURATION, EASING, EXPRESSIVE, PRODUCTIVE, type AnimatedIcon } from "../shared.js";
 
-/** The pencil scribbles three strokes to the right, pivoting on its tip, then returns. The line stays put. */
+const { entrance, standard } = EASING;
+
+/**
+ * The pencil pivots on its tip; the line stays put.
+ * Productive: tilts back once.
+ * Expressive: scribbles three strokes to the right, then returns.
+ */
 export default {
   name: "Edit",
   sourceHash: "c97a4ed911a1",
@@ -12,8 +18,26 @@ export default {
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    ${PLAYING} .pencil {
-      animation: scribble 650ms ease-in-out;
+    ${PRODUCTIVE} .pencil {
+      animation: tilt ${DURATION.slow01};
+    }
+
+    ${EXPRESSIVE} .pencil {
+      animation: scribble ${DURATION.slow02} ${standard.expressive};
+    }
+  }
+
+  @keyframes tilt {
+    0% {
+      transform: rotate(0);
+      animation-timing-function: ${entrance.productive};
+    }
+    40% {
+      transform: rotate(-6deg);
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: rotate(0);
     }
   }
 

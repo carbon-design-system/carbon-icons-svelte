@@ -1,8 +1,12 @@
-import { PLAYING, type AnimatedIcon } from "../shared.js";
+import { DURATION, EASING, EXPRESSIVE, PRODUCTIVE, type AnimatedIcon } from "../shared.js";
+
+const { entrance, standard } = EASING;
 
 /**
- * Turns half a revolution the way the arrows point, with a slight overshoot.
- * The icon looks the same after 180°, so it ends where it started.
+ * Turns half a revolution the way the arrows point. The icon looks the same
+ * after 180°, so it ends where it started.
+ * Productive: a plain half turn.
+ * Expressive: overshoots by 15° and settles back.
  */
 export default {
   name: "Renew",
@@ -17,13 +21,31 @@ export default {
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    ${PLAYING} .arrows {
-      animation: spin 700ms cubic-bezier(0.3, 1.25, 0.5, 1);
+    ${PRODUCTIVE} .arrows {
+      animation: spin ${DURATION.slow01} ${standard.productive};
+    }
+
+    ${EXPRESSIVE} .arrows {
+      animation: spin-overshoot ${DURATION.slow02};
     }
   }
 
   @keyframes spin {
     to {
+      transform: rotate(-180deg);
+    }
+  }
+
+  @keyframes spin-overshoot {
+    0% {
+      transform: rotate(0);
+      animation-timing-function: ${entrance.expressive};
+    }
+    75% {
+      transform: rotate(-195deg);
+      animation-timing-function: ${standard.expressive};
+    }
+    100% {
       transform: rotate(-180deg);
     }
   }`,

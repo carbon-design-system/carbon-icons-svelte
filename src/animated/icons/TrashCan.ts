@@ -1,8 +1,12 @@
-import { PLAYING, type AnimatedIcon } from "../shared.js";
+import { DURATION, EASING, EXPRESSIVE, PRODUCTIVE, type AnimatedIcon } from "../shared.js";
+
+const { entrance, exit, standard } = EASING;
 
 /**
- * The lid and handle tilt up from the lid's left end, then drop shut with a
- * small bounce. 7° is the most before the handle leaves the canvas.
+ * The lid and handle tilt up from the lid's left end. 7° is the most before
+ * the handle leaves the canvas.
+ * Productive: tilts and closes.
+ * Expressive: tilts, holds, drops shut, and rebounds slightly.
  */
 export default {
   name: "TrashCan",
@@ -20,22 +24,47 @@ export default {
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    ${PLAYING} .lid {
-      animation: tip 800ms;
+    ${PRODUCTIVE} .lid {
+      animation: tip ${DURATION.slow01};
+    }
+
+    ${EXPRESSIVE} .lid {
+      animation: tip-shut ${DURATION.slow02};
     }
   }
 
   @keyframes tip {
     0% {
       transform: rotate(0);
-      animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1);
+      animation-timing-function: ${entrance.productive};
+    }
+    45% {
+      transform: rotate(-7deg);
+      animation-timing-function: ${exit.productive};
+    }
+    100% {
+      transform: rotate(0);
+    }
+  }
+
+  @keyframes tip-shut {
+    0% {
+      transform: rotate(0);
+      animation-timing-function: ${entrance.expressive};
     }
     30%,
-    52% {
+    50% {
       transform: rotate(-7deg);
-      animation-timing-function: cubic-bezier(0.5, 0, 0.5, 1.6);
+      animation-timing-function: ${exit.expressive};
     }
-    78%,
+    70% {
+      transform: rotate(0);
+      animation-timing-function: ${entrance.expressive};
+    }
+    82% {
+      transform: rotate(-1.5deg);
+      animation-timing-function: ${standard.expressive};
+    }
     100% {
       transform: rotate(0);
     }

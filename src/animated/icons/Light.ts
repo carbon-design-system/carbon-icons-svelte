@@ -1,9 +1,13 @@
-import { PLAYING, type AnimatedIcon } from "../shared.js";
+import { DURATION, EASING, EXPRESSIVE, PRODUCTIVE, type AnimatedIcon } from "../shared.js";
+
+const { entrance, standard } = EASING;
 
 /**
- * The rays dim, then light up one by one clockwise from the top, growing out
- * from the centre. Four rays carry a `transform` attribute, which a CSS
- * `transform` would replace, so each ray is wrapped in a `<g>` that animates.
+ * The rays grow out from the centre. Four rays carry a `transform`
+ * attribute, which a CSS `transform` would replace, so each ray is wrapped
+ * in a `<g>` that animates.
+ * Productive: all rays pulse out together.
+ * Expressive: the rays dim, then light up one by one clockwise from the top.
  */
 export default {
   name: "Light",
@@ -23,8 +27,26 @@ export default {
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    ${PLAYING} .ray {
-      animation: radiate 300ms cubic-bezier(0.2, 0.7, 0.3, 1) calc(var(--i) * 45ms) backwards;
+    ${PRODUCTIVE} .ray {
+      animation: pulse ${DURATION.slow01};
+    }
+
+    ${EXPRESSIVE} .ray {
+      animation: radiate ${DURATION.moderate01} ${entrance.expressive} calc(var(--i) * ${DURATION.fast01}) backwards;
+    }
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      animation-timing-function: ${entrance.productive};
+    }
+    40% {
+      transform: scale(1.12);
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: scale(1);
     }
   }
 

@@ -1,6 +1,12 @@
-import { PLAYING, type AnimatedIcon } from "../shared.js";
+import { DURATION, EASING, EXPRESSIVE, PRODUCTIVE, type AnimatedIcon } from "../shared.js";
 
-/** Turns a quarter. The plus looks the same every 90°, so it ends where it started. */
+const { entrance, standard } = EASING;
+
+/**
+ * Turns a quarter. The plus looks the same every 90°, so it ends where it started.
+ * Productive: a plain quarter turn.
+ * Expressive: overshoots by 10° and settles back.
+ */
 export default {
   name: "Add",
   sourceHash: "cb9b320a5f82",
@@ -11,13 +17,31 @@ export default {
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    ${PLAYING} .plus {
-      animation: turn 500ms cubic-bezier(0.3, 1.4, 0.5, 1);
+    ${PRODUCTIVE} .plus {
+      animation: turn ${DURATION.slow01} ${standard.productive};
+    }
+
+    ${EXPRESSIVE} .plus {
+      animation: turn-overshoot ${DURATION.slow02};
     }
   }
 
   @keyframes turn {
     to {
+      transform: rotate(90deg);
+    }
+  }
+
+  @keyframes turn-overshoot {
+    0% {
+      transform: rotate(0);
+      animation-timing-function: ${entrance.expressive};
+    }
+    70% {
+      transform: rotate(100deg);
+      animation-timing-function: ${standard.expressive};
+    }
+    100% {
       transform: rotate(90deg);
     }
   }`,

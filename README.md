@@ -117,7 +117,7 @@ You can use `fill` to customize the color or pass any other valid `svg` attribut
 
 ## Animated icons
 
-Some icons have animated versions: `Add`, `Checkmark`, `ChevronRight`, `Copy`, `Download`, `Edit`, `Favorite`, `Light`, `Location`, `Locked`, `Notification`, `Renew`, `Search`, `Send`, `Settings`, `Star`, `Time`, `TrashCan`, `Upload`, `View`, `VolumeUp`, `WarningAlt` and `Wifi`. They take the same props as the static icons, plus `play` and `trigger`.
+Some icons have animated versions: `Add`, `Checkmark`, `ChevronRight`, `Copy`, `Download`, `Edit`, `Favorite`, `Light`, `Location`, `Locked`, `Notification`, `Renew`, `Search`, `Send`, `Settings`, `Star`, `Time`, `TrashCan`, `Upload`, `View`, `VolumeUp`, `WarningAlt` and `Wifi`. They take the same props as the static icons, plus `play`, `trigger` and `motion`.
 
 ```svelte
 <script>
@@ -147,12 +147,25 @@ Use `play` to run it yourself. It plays each time `play` changes to a truthy val
 </button>
 ```
 
+`motion` picks one of Carbon's two motion styles. `"productive"` (the default) is short and subtle, for routine UI like toolbar buttons. `"expressive"` is larger and livelier, for moments that matter, like a new notification or a saved state. Both use Carbon's motion durations and easings.
+
+```svelte
+<script>
+  import { Notification } from "carbon-icons-svelte/animated";
+
+  export let unread = 0;
+</script>
+
+<Notification motion="expressive" play={unread} trigger="none" />
+```
+
 Animations don't run when the user has turned on reduced motion (`prefers-reduced-motion: reduce`).
 
-| Name    | Type                               | Default value |
-| :------ | :--------------------------------- | :------------ |
-| play    | <code>boolean &#124; number</code> | `false`       |
-| trigger | <code>"hover" &#124; "none"</code> | `"hover"`     |
+| Name    | Type                                              | Default value  |
+| :------ | :------------------------------------------------ | :------------- |
+| play    | <code>boolean &#124; number</code>                | `false`        |
+| trigger | <code>"hover" &#124; "none"</code>                | `"hover"`      |
+| motion  | <code>"productive" &#124; "expressive"</code>     | `"productive"` |
 
 ## TypeScript
 
