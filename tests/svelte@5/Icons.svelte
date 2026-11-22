@@ -36,6 +36,12 @@
   // Instead, use the `mount` function to manually instantiate the component.
   mount(Icon, { target: document.body, props: component_props });
 
+  // Props are type-checked for barrel and direct imports.
+  // @ts-expect-error (`size` must be a number)
+  mount(Add, { target: document.body, props: { size: "big" } });
+  // @ts-expect-error (`size` must be a number)
+  mount(Icon, { target: document.body, props: { size: "big" } });
+
   $: console.log(typeof Assembly);
 </script>
 

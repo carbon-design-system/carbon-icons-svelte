@@ -163,7 +163,9 @@ Run `bun test`. If the name list changed, read the snapshot diff before regenera
 
 ### Type checks
 
-[`tests/test-types.ts`](tests/test-types.ts) (`bun run test:types`) runs `bun link` at the repo root, then installs and runs `svelte-check` in each `tests/svelte@*` project. Those projects import from the barrel, import `carbon-icons-svelte/lib/<Icon>.svelte` directly, use `CarbonIconProps`, and check `ComponentProps` on Svelte 5 vs `satisfies CarbonIconProps` on Svelte 4.
+[`tests/test-types.ts`](tests/test-types.ts) (`bun run test:types`) packs the repo with `bun pm pack`, extracts the tarball into each `tests/svelte@*` project's `node_modules`, and runs `svelte-check` there. Don't switch back to `bun link`: through a symlink, `lib/index.d.ts` resolves `svelte` from the repo root (Svelte 5), so the Svelte 4 project never sees Svelte 4's types. Those projects import from the barrel, import `carbon-icons-svelte/lib/<Icon>.svelte` directly, use `CarbonIconProps`, and use `@ts-expect-error` on a bad `size` to prove icons aren't silently untyped. `tests/svelte@4` sets `skipLibCheck: false` so it also type-checks `lib/index.d.ts` against Svelte 4.
+
+`lib/index.d.ts` can only import types that both Svelte 4 and 5 export. `Component` is Svelte 5 only, so the icon type picks a function or class shape based on whether `svelte` exports `mount`.
 
 Run `bun run prepack` first so `lib/` exists, then `bun run test:types`. CI runs both.
 

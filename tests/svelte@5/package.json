@@ -4,9 +4,6 @@
   "scripts": {
     "test:types": "svelte-check"
   },
-  "dependencies": {
-    "carbon-icons-svelte": "link:carbon-icons-svelte"
-  },
   "devDependencies": {
     "svelte": "^5.53.6",
     "svelte-check": "^4.4.8",

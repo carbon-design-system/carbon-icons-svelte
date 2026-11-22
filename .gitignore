@@ -5,3 +5,4 @@ node_modules
 dist
 docs/public/build-info*.json
 docs/src/generated/
+tests/*.tgz
