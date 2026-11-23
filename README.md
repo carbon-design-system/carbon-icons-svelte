@@ -180,7 +180,7 @@ Use `play` to run the animation yourself. It plays when the icon mounts with a t
 
 ### Loop
 
-Progress, refresh and waiting icons can loop while something is in progress. When `loop` turns `false`, the current cycle finishes and the icon stops at rest instead of snapping. Hover and `play` don't interrupt a loop.
+Progress, refresh and waiting icons can loop while something is in progress. When `loop` turns `false`, the current cycle finishes and the icon stops at rest instead of snapping. Hover and `play` don't interrupt a loop, and a loop pauses while its icon is scrolled out of view.
 
 ```svelte
 <script>

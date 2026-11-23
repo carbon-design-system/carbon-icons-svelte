@@ -194,7 +194,7 @@ Every icon has two modes, matching Carbon's [motion styles](https://carbondesign
 A resting icon costs nothing beyond a few event listeners: no timers, observers or animation frames. Keep it that way.
 
 - **Use a mask only for a hole.** A masked icon also carries Carbon's markup for rest, so it mounts at about twice the cost of a static icon (1,000 `CheckmarkFilled` take 36ms against 20ms in Chrome). Move a plain part directly.
-- **Loops cost main-thread time, even off-screen.** Chrome animates SVG on the main thread: 20 looping icons take about 2% of it, 200 about 20%. Loop only while something is in progress.
+- **Loops cost main-thread time.** Chrome animates SVG on the main thread: 20 looping icons in view take about 2% of it, 200 about 20%. Browsers keep animating an SVG out of view, so `animate.js` pauses a loop with an `IntersectionObserver` while its icon can't be seen (200 off-screen loops drop from about 15% to 1%), and stops it at once if `loop` turns off meanwhile. Loop only while something is in progress.
 - **Don't force a style flush in the runtime unless the animation needs it.** `animate.js` flushes only to replay an icon that's already playing; a flush per icon adds up when a list plays at once.
 - **Keep the CSS small.** Each icon adds about 0.6KB gzipped, mostly CSS, where a static icon adds 0.1KB. Reuse a builder's keyframes rather than writing near-copies.
 

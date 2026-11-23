@@ -511,7 +511,7 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
         <p>
           Progress, refresh and waiting icons can loop with <code>loop</code>. While it's <code>true</code>, the icon repeats a
           cycle that starts and ends at rest; when it turns <code>false</code>, the current cycle finishes and the icon
-          stops at rest instead of snapping. Hover and <code>play</code> don't interrupt a loop. Loop only while
+          stops at rest instead of snapping. Hover and <code>play</code> don't interrupt a loop, and a loop pauses while the icon is scrolled out of view. Loop only while
           something is in progress.
         </p>
         <div class="demo">

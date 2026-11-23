@@ -47,6 +47,9 @@ export function animate(node, options) {
   let play, loop, loops, trigger, reducedMotion, hoverDelay;
   let timer;
   let fading;
+  let observer;
+  let hidden = false;
+  let paused = [];
 
   const resolve = ({ defaults = {}, ...props }) => {
     loops = props.loops;
@@ -68,23 +71,65 @@ export function animate(node, options) {
     else if (reducedMotion === "fade") fading = fade(node);
   };
 
+  // Browsers keep animating an SVG that's scrolled out of view, on the main
+  // thread in Chrome, so a loop pauses while the icon can't be seen.
+  const watch = () => {
+    if (observer || typeof IntersectionObserver === "undefined") return;
+    observer = new IntersectionObserver(([entry]) => {
+      hidden = !entry.isIntersecting;
+      if (hidden && !loop) {
+        stopHidden();
+      } else if (hidden) {
+        paused = node.getAnimations({ subtree: true }).filter((a) => a.playState === "running");
+        paused.forEach((a) => a.pause());
+      } else {
+        paused.forEach((a) => a.play());
+        paused = [];
+      }
+    });
+    observer.observe(node);
+  };
+
+  const unwatch = () => {
+    observer?.disconnect();
+    observer = undefined;
+    hidden = false;
+    paused = [];
+  };
+
   const startLoop = () => {
     cancel();
     if (moves()) node.setAttribute(PLAYING, "loop");
     else if (reducedMotion === "fade") fading = fade(node, Infinity);
+    watch();
+  };
+
+  // Out of view, nobody sees a loop snap to rest, and a paused cycle would
+  // never finish.
+  const stopHidden = () => {
+    node.removeAttribute(PLAYING);
+    fading?.cancel();
+    unwatch();
   };
 
   // Finish the current cycle, then stop at rest, so a loop never snaps.
   const stopLoop = () => {
+    if (hidden) return stopHidden();
     if (node.getAttribute(PLAYING) === "loop") {
       const stop = () => {
         node.removeEventListener("animationiteration", stop);
-        if (!loop) node.removeAttribute(PLAYING);
+        if (!loop) {
+          node.removeAttribute(PLAYING);
+          unwatch();
+        }
       };
       node.addEventListener("animationiteration", stop);
     }
     if (fading?.effect.getTiming().iterations === Infinity) {
       fading.effect.updateTiming({ iterations: fading.effect.getComputedTiming().currentIteration + 1 });
+      const finishing = fading;
+      const done = () => fading === finishing && unwatch();
+      fading.finished.then(done, done);
     }
   };
 
@@ -142,6 +187,7 @@ export function animate(node, options) {
     },
     destroy() {
       cancel();
+      unwatch();
       target.removeEventListener("pointerenter", onEnter);
       target.removeEventListener("pointerleave", cancel);
       if (listensForFocus) target.removeEventListener("focusin", onFocusIn);
