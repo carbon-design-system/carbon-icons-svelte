@@ -26,12 +26,6 @@ exports[`animated icons template 1`] = `
     role: labelled ? "img" : undefined,
     focusable: Number($$props["tabindex"]) === 0 ? true : undefined
   };
-  $: options = {
-    play,
-    trigger: trigger ?? defaults.trigger ?? "hover",
-    reducedMotion: reducedMotion ?? defaults.reducedMotion ?? "static",
-    hoverDelay: hoverDelay ?? defaults.hoverDelay ?? 150
-  };
 </script>
 
 <svg
@@ -42,7 +36,7 @@ exports[`animated icons template 1`] = `
   width={size}
   height={size}
   data-motion={motion ?? defaults.motion ?? "productive"}
-  use:animate={options}
+  use:animate={{ play, trigger, reducedMotion, hoverDelay, defaults }}
   {...attributes}
   {...$$restProps}>
   {#if title}<title>{title}</title>{/if}
@@ -117,20 +111,6 @@ exports[`animated icons template 1`] = `
     }
     88% {
       transform: rotate(1.5deg);
-    }
-  }
-
-  svg[data-playing="fade"] {
-    animation: reduced-fade 400ms cubic-bezier(0.2, 0, 0.38, 0.9);
-  }
-
-  svg[data-playing="fade"][data-motion="expressive"] {
-    animation: reduced-fade 700ms cubic-bezier(0.4, 0.14, 0.3, 1);
-  }
-
-  @keyframes reduced-fade {
-    50% {
-      opacity: 0.4;
     }
   }
 </style>

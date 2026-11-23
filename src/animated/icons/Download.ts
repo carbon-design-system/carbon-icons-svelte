@@ -3,7 +3,9 @@ import { DURATION, EASING, EXPRESSIVE, PRODUCTIVE, type AnimatedIcon } from "../
 const { entrance, exit, standard } = EASING;
 
 /**
- * The clip is on a wrapper so it stays put while the arrow moves. Mirrors `Upload`.
+ * The clip is on a wrapper so it stays put while the arrow moves. It ends at
+ * the tray's floor, not its rim, so the arrowhead can dip into the tray
+ * without being cut off. Mirrors `Upload`.
  * Productive: the arrow dips 3 units into the tray and back.
  * Expressive: the arrow falls into the tray, which dips as it lands, then a
  * new arrow drops in from the top.
@@ -12,7 +14,7 @@ export default {
   name: "Download",
   sourceHash: "9a31c81c721f",
   content: `<clipPath id="{id}-clip">
-    <rect width="32" height="24" />
+    <rect width="32" height="28" />
   </clipPath>
   <g clip-path="url(#{id}-clip)">
     <path class="arrow" d="M26 14 24.59 12.59 17 20.17 17 2 15 2 15 20.17 7.41 12.59 6 14 16 24 26 14z" />

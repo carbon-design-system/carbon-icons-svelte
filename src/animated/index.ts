@@ -84,23 +84,14 @@ const ID_PATTERN = /\{id\}/;
 /** How long a mouse rests on the trigger before the icon plays: Carbon's moderate-01. */
 export const HOVER_DELAY = parseInt(DURATION.moderate01);
 
-/**
- * What plays for users who prefer reduced motion with `reducedMotion="fade"`:
- * the icon dims and comes back, without moving.
- */
-const FADE_CSS = `  svg[data-playing="fade"] {
-    animation: reduced-fade ${DURATION.slow01} ${EASING.standard.productive};
-  }
-
-  svg[data-playing="fade"][data-motion="expressive"] {
-    animation: reduced-fade ${DURATION.slow02} ${EASING.standard.expressive};
-  }
-
-  @keyframes reduced-fade {
-    50% {
-      opacity: 0.4;
-    }
-  }`;
+/** Fills in the Carbon tokens that `animate.js` uses. */
+export const fillTokens = (source: string) =>
+  source
+    .replace("__DURATION_MODERATE_01__", String(HOVER_DELAY))
+    .replace("__DURATION_SLOW_01__", String(parseInt(DURATION.slow01)))
+    .replace("__DURATION_SLOW_02__", String(parseInt(DURATION.slow02)))
+    .replace("__EASING_STANDARD_PRODUCTIVE__", JSON.stringify(EASING.standard.productive))
+    .replace("__EASING_STANDARD_EXPRESSIVE__", JSON.stringify(EASING.standard.expressive));
 
 export const templateAnimated = ({ content, css }: AnimatedIcon) => {
   const usesId = ID_PATTERN.test(content);
@@ -130,12 +121,6 @@ ${usesId ? "\n  const id = uid();\n" : ""}
     role: labelled ? "img" : undefined,
     focusable: Number($$props["tabindex"]) === 0 ? true : undefined
   };
-  $: options = {
-    play,
-    trigger: trigger ?? defaults.trigger ?? "hover",
-    reducedMotion: reducedMotion ?? defaults.reducedMotion ?? "static",
-    hoverDelay: hoverDelay ?? defaults.hoverDelay ?? ${HOVER_DELAY}
-  };
 </script>
 
 <svg
@@ -146,7 +131,7 @@ ${usesId ? "\n  const id = uid();\n" : ""}
   width={size}
   height={size}
   data-motion={motion ?? defaults.motion ?? "productive"}
-  use:animate={options}
+  use:animate={{ play, trigger, reducedMotion, hoverDelay, defaults }}
   {...attributes}
   {...$$restProps}>
   {#if title}<title>{title}</title>{/if}
@@ -155,8 +140,6 @@ ${usesId ? "\n  const id = uid();\n" : ""}
 
 <style>
 ${css}
-
-${FADE_CSS}
 </style>
 `;
 };
@@ -253,7 +236,7 @@ export const buildAnimated = async (lookup: IconLookup) => {
     files.set(`${icon.name}.svelte`, templateAnimated(icon));
   }
 
-  files.set("animate.js", await Bun.file(new URL("./animate.js", import.meta.url)).text());
+  files.set("animate.js", fillTokens(await Bun.file(new URL("./animate.js", import.meta.url)).text()));
   files.set(
     "index.js",
     'export { setAnimatedIconDefaults } from "./animate.js";\n' +

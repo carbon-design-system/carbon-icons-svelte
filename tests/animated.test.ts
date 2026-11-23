@@ -59,8 +59,7 @@ describe("animated icons", () => {
     for (const generate of ["client", "server"] as const) {
       const { warnings, css } = compile(templateAnimated(icon), { filename: `${name}.svelte`, generate });
       expect(warnings).toEqual([]);
-      // Reduced-motion users get a fade, if anything.
-      expect(css?.code).toContain('svg[data-playing="fade"]');
+      expect(css?.code).toBeTruthy();
     }
   });
 
@@ -120,6 +119,14 @@ describe("animated icons", () => {
       [...names.map((name) => `${name}.svelte`), "animate.js", "icon.d.ts", "index.d.ts", "index.js"].sort()
     );
     expect(files.get("index.d.ts")).toMatchSnapshot();
+  });
+
+  test("fills in every Carbon token in the runtime", async () => {
+    const files = await buildAnimated(lookup);
+    const runtime = files.get("animate.js")!;
+    expect(runtime).not.toMatch(/__[A-Z_0-9]+__/);
+    expect(runtime).toContain(`const HOVER_DELAY = ${parseInt(DURATION.moderate01)};`);
+    expect(runtime).toContain(EASING.standard.expressive);
   });
 
   test("requires a static icon of the same name", async () => {
