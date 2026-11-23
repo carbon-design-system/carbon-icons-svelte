@@ -1,14 +1,5 @@
 import { toString } from "@carbon/icon-helpers";
 import type { IconOutput } from "@carbon/icons";
-import {
-  durationFast01,
-  durationFast02,
-  durationModerate01,
-  durationModerate02,
-  durationSlow01,
-  durationSlow02,
-  easings,
-} from "@carbon/motion";
 import { createHash } from "node:crypto";
 
 export interface AnimatedIcon {
@@ -38,18 +29,35 @@ export interface AnimatedIcon {
 export const PRODUCTIVE = ':global(svg[data-playing="motion"][data-motion="productive"])';
 export const EXPRESSIVE = ':global(svg[data-playing="motion"][data-motion="expressive"])';
 
-/** Carbon's motion durations, from `@carbon/motion`. */
+// Carbon's motion tokens, copied from `@carbon/motion` 11.57.0
+// (https://carbondesignsystem.com/elements/motion/overview/). They've been
+// stable since Carbon v10; if Carbon changes them, update them here.
+
+/** Carbon's motion durations. */
 export const DURATION = {
-  fast01: durationFast01,
-  fast02: durationFast02,
-  moderate01: durationModerate01,
-  moderate02: durationModerate02,
-  slow01: durationSlow01,
-  slow02: durationSlow02,
+  fast01: "70ms",
+  fast02: "110ms",
+  moderate01: "150ms",
+  moderate02: "240ms",
+  slow01: "400ms",
+  slow02: "700ms",
 };
 
-/** Carbon's motion easings, from `@carbon/motion`. */
-export const EASING = easings;
+/** Carbon's motion easings: productive for routine UI, expressive for moments that matter. */
+export const EASING = {
+  standard: {
+    productive: "cubic-bezier(0.2, 0, 0.38, 0.9)",
+    expressive: "cubic-bezier(0.4, 0.14, 0.3, 1)",
+  },
+  entrance: {
+    productive: "cubic-bezier(0, 0, 0.38, 0.9)",
+    expressive: "cubic-bezier(0, 0, 0.3, 1)",
+  },
+  exit: {
+    productive: "cubic-bezier(0.2, 0, 1, 0.9)",
+    expressive: "cubic-bezier(0.4, 0.14, 1, 1)",
+  },
+};
 
 export const hashSource = (descriptor: IconOutput["descriptor"]) =>
   createHash("sha256")

@@ -11,7 +11,7 @@ const PLAYING = "data-playing";
 /**
  * What plays for users who prefer reduced motion with `reducedMotion="fade"`:
  * the icon dims and comes back, without moving. The build fills in Carbon's
- * durations and easings from `@carbon/motion`.
+ * durations and easings from `src/animated/shared.ts`.
  */
 const FADE = {
   productive: { duration: __DURATION_SLOW_01__, easing: __EASING_STANDARD_PRODUCTIVE__ },
