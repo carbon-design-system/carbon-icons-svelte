@@ -1,6 +1,6 @@
-import { toString } from "@carbon/icon-helpers";
 import type { IconOutput } from "@carbon/icons";
 import { createHash } from "node:crypto";
+import { renderContent } from "../template.js";
 
 export interface AnimatedIcon {
   name: string;
@@ -50,6 +50,6 @@ export const EASING = {
 
 export const hashSource = (descriptor: IconOutput["descriptor"]) =>
   createHash("sha256")
-    .update((descriptor.content ?? []).map(toString).join(""))
+    .update(renderContent(descriptor))
     .digest("hex")
     .slice(0, 12);

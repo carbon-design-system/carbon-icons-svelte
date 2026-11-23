@@ -13,8 +13,8 @@
  * - `Rotate*`: the square turns on its own, so they're hand-built.
  */
 
-import { toString } from "@carbon/icon-helpers";
 import type { IconOutput } from "@carbon/icons";
+import { renderContent } from "../template.js";
 import { DURATION, EASING, EXPRESSIVE, PRODUCTIVE, hashSource, type AnimatedIcon } from "./shared.js";
 
 const { entrance, standard } = EASING;
@@ -191,7 +191,7 @@ export const ruleIcons = (lookup: (name: string) => IconOutput | undefined): Ani
     return {
       name,
       sourceHash: hashSource(descriptor),
-      content: `<g class="icon">${(descriptor.content ?? []).map(toString).join("")}</g>`,
+      content: `<g class="icon">${renderContent(descriptor)}</g>`,
       css: rule.kind === "nudge" ? nudgeCss(rule) : turnCss(rule),
     };
   });

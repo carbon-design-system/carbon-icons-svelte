@@ -18,11 +18,19 @@ const DURATION_PATTERN = /\b\d+(?:\.\d+)?m?s\b/g;
 /** Matches each cubic Bézier easing in CSS. */
 const CUBIC_BEZIER_PATTERN = /cubic-bezier\([^)]*\)/g;
 
-/** The 32px output that the static component is built from. */
-const lookup = (name: string) =>
-  metadata.icons.flatMap((icon) => icon.output).find((output) => output.moduleName === `${name}32`) as
-    | IconOutput
-    | undefined;
+/** Matches the size suffix of an output's module name. */
+const SIZE_SUFFIX_PATTERN = /(16|20|24|32)$/;
+
+// Keyed like `buildIcons`: the first output of each icon, by name without its size.
+const outputs = new Map<string, IconOutput>();
+for (const icon of metadata.icons) {
+  for (const output of icon.output) {
+    const name = output.moduleName.replace(SIZE_SUFFIX_PATTERN, "");
+    if (!outputs.has(name)) outputs.set(name, output as IconOutput);
+  }
+}
+
+const lookup = (name: string) => outputs.get(name);
 
 const staticDescriptor = (name: string) => lookup(name)?.descriptor;
 
