@@ -173,7 +173,7 @@ export type CarbonAnimatedIconProps = CarbonIconProps &
      * \`InProgress\`, \`Incomplete\`, \`Pending\`, \`PendingFilled\`) and the
      * refresh and processing icons (\`Renew\`, \`RenewAlt\`, \`Restart\`,
      * \`Reset\`, \`Repeat\`, \`Recycle\`, \`Settings\`, \`Terminal\`, \`Time\`,
-     * \`TimeFilled\`).
+     * \`TimeFilled\`, \`Timer\`).
      * @default false
      */
     loop?: boolean;
@@ -193,9 +193,11 @@ type CarbonAnimatedIcon = typeof import("svelte") extends { mount: any }
  */
 export declare function setAnimatedIconDefaults(defaults: CarbonAnimatedIconDefaults): void;
 
+export declare const Activity: CarbonAnimatedIcon;
 export declare const Add: CarbonAnimatedIcon;
 export declare const AddAlt: CarbonAnimatedIcon;
 export declare const AddFilled: CarbonAnimatedIcon;
+export declare const Alarm: CarbonAnimatedIcon;
 export declare const Analytics: CarbonAnimatedIcon;
 export declare const ArrowDown: CarbonAnimatedIcon;
 export declare const ArrowDownLeft: CarbonAnimatedIcon;
@@ -211,9 +213,12 @@ export declare const ArrowsVertical: CarbonAnimatedIcon;
 export declare const Asleep: CarbonAnimatedIcon;
 export declare const AsleepFilled: CarbonAnimatedIcon;
 export declare const Attachment: CarbonAnimatedIcon;
+export declare const BatteryCharging: CarbonAnimatedIcon;
 export declare const BluetoothOff: CarbonAnimatedIcon;
 export declare const Bookmark: CarbonAnimatedIcon;
 export declare const BookmarkFilled: CarbonAnimatedIcon;
+export declare const Bot: CarbonAnimatedIcon;
+export declare const Bullhorn: CarbonAnimatedIcon;
 export declare const Calendar: CarbonAnimatedIcon;
 export declare const Camera: CarbonAnimatedIcon;
 export declare const CaretDown: CarbonAnimatedIcon;
@@ -238,12 +243,15 @@ export declare const CloseFilled: CarbonAnimatedIcon;
 export declare const CloseLarge: CarbonAnimatedIcon;
 export declare const CloseOutline: CarbonAnimatedIcon;
 export declare const CloudDownload: CarbonAnimatedIcon;
+export declare const CloudOffline: CarbonAnimatedIcon;
 export declare const CloudUpload: CarbonAnimatedIcon;
 export declare const Code: CarbonAnimatedIcon;
 export declare const Copy: CarbonAnimatedIcon;
 export declare const CopyFile: CarbonAnimatedIcon;
 export declare const CopyLink: CarbonAnimatedIcon;
+export declare const Cursor_1: CarbonAnimatedIcon;
 export declare const Cut: CarbonAnimatedIcon;
+export declare const Dashboard: CarbonAnimatedIcon;
 export declare const DocumentAdd: CarbonAnimatedIcon;
 export declare const DocumentDownload: CarbonAnimatedIcon;
 export declare const DocumentExport: CarbonAnimatedIcon;
@@ -274,6 +282,7 @@ export declare const Help: CarbonAnimatedIcon;
 export declare const HelpFilled: CarbonAnimatedIcon;
 export declare const Hourglass: CarbonAnimatedIcon;
 export declare const Idea: CarbonAnimatedIcon;
+export declare const Image: CarbonAnimatedIcon;
 export declare const InProgress: CarbonAnimatedIcon;
 export declare const Incomplete: CarbonAnimatedIcon;
 export declare const Information: CarbonAnimatedIcon;
@@ -281,6 +290,7 @@ export declare const InformationFilled: CarbonAnimatedIcon;
 export declare const InformationSquare: CarbonAnimatedIcon;
 export declare const InformationSquareFilled: CarbonAnimatedIcon;
 export declare const JumpLink: CarbonAnimatedIcon;
+export declare const Keyboard: CarbonAnimatedIcon;
 export declare const Launch: CarbonAnimatedIcon;
 export declare const Light: CarbonAnimatedIcon;
 export declare const LightFilled: CarbonAnimatedIcon;
@@ -298,6 +308,7 @@ export declare const MicrophoneOffFilled: CarbonAnimatedIcon;
 export declare const Minimize: CarbonAnimatedIcon;
 export declare const Misuse: CarbonAnimatedIcon;
 export declare const MisuseOutline: CarbonAnimatedIcon;
+export declare const Moon: CarbonAnimatedIcon;
 export declare const Notification: CarbonAnimatedIcon;
 export declare const NotificationFilled: CarbonAnimatedIcon;
 export declare const NotificationNew: CarbonAnimatedIcon;
@@ -323,6 +334,8 @@ export declare const Play: CarbonAnimatedIcon;
 export declare const PlayFilled: CarbonAnimatedIcon;
 export declare const PlayOutline: CarbonAnimatedIcon;
 export declare const PlayOutlineFilled: CarbonAnimatedIcon;
+export declare const Plug: CarbonAnimatedIcon;
+export declare const Power: CarbonAnimatedIcon;
 export declare const Printer: CarbonAnimatedIcon;
 export declare const RadioButtonChecked: CarbonAnimatedIcon;
 export declare const Recycle: CarbonAnimatedIcon;
@@ -341,6 +354,7 @@ export declare const RotateCounterclockwise: CarbonAnimatedIcon;
 export declare const RotateCounterclockwiseAlt: CarbonAnimatedIcon;
 export declare const RotateCounterclockwiseAltFilled: CarbonAnimatedIcon;
 export declare const RotateCounterclockwiseFilled: CarbonAnimatedIcon;
+export declare const Rss: CarbonAnimatedIcon;
 export declare const Save: CarbonAnimatedIcon;
 export declare const Search: CarbonAnimatedIcon;
 export declare const Send: CarbonAnimatedIcon;
@@ -375,6 +389,7 @@ export declare const ThumbsUp: CarbonAnimatedIcon;
 export declare const ThumbsUpFilled: CarbonAnimatedIcon;
 export declare const Time: CarbonAnimatedIcon;
 export declare const TimeFilled: CarbonAnimatedIcon;
+export declare const Timer: CarbonAnimatedIcon;
 export declare const TrashCan: CarbonAnimatedIcon;
 export declare const Undo: CarbonAnimatedIcon;
 export declare const Unlink: CarbonAnimatedIcon;

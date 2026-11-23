@@ -159,6 +159,8 @@ describe("animated icons", () => {
   });
 
   test("requires a static icon of the same name", async () => {
-    await expect(buildAnimated(() => undefined)).rejects.toThrow("Animated icon has no static icon: Add");
+    await expect(buildAnimated(() => undefined)).rejects.toThrow(
+      `Animated icon has no static icon: ${ANIMATED_ICONS[0]!.name}`
+    );
   });
 });

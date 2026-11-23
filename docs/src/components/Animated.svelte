@@ -48,7 +48,7 @@
     .sort();
 
   const groups = [
-    { id: "animated-actions", title: "Actions", names: ["Add", "AddAlt", "AddFilled", "Close", "CloseOutline", "CloseFilled", "CloseLarge", "Subtract", "SubtractAlt", "SubtractLarge", "SubtractFilled", "Edit", "EditOff", "Save", "Copy", "CopyFile", "CopyLink", "TrashCan", "Download", "Upload", "DownToBottom", "UpToTop", "DocumentAdd", "DocumentDownload", "DocumentExport", "FolderAdd", "Printer", "CloudDownload", "CloudUpload", "Launch", "Send", "SendFilled", "SendAlt", "SendAltFilled", "Search", "SortAscending", "SortDescending", "ZoomIn", "ZoomOut", "ZoomReset", "Maximize", "Minimize", "Link", "Unlink", "Attachment", "Share", "Email", "EmailNew", "Chat", "ChatOff", "Code", "Cut", "Terminal", "Login", "Logout", "Calendar", "Phone", "PhoneFilled", "PhoneOff", "PhoneOffFilled", "Camera", "Tag", "ShoppingCart", "UserFollow", "Draggable", "Rocket", "Settings"] },
+    { id: "animated-actions", title: "Actions", names: ["Add", "AddAlt", "AddFilled", "Close", "CloseOutline", "CloseFilled", "CloseLarge", "Subtract", "SubtractAlt", "SubtractLarge", "SubtractFilled", "Edit", "EditOff", "Save", "Copy", "CopyFile", "CopyLink", "TrashCan", "Download", "Upload", "DownToBottom", "UpToTop", "DocumentAdd", "DocumentDownload", "DocumentExport", "FolderAdd", "Printer", "CloudDownload", "CloudUpload", "Launch", "Send", "SendFilled", "SendAlt", "SendAltFilled", "Search", "SortAscending", "SortDescending", "ZoomIn", "ZoomOut", "ZoomReset", "Maximize", "Minimize", "Link", "Unlink", "Attachment", "Share", "Email", "EmailNew", "Chat", "ChatOff", "Code", "Cut", "Terminal", "Login", "Logout", "Calendar", "Phone", "PhoneFilled", "Alarm", "Power", "Plug", "Keyboard", "Cursor_1", "Bullhorn", "PhoneOff", "PhoneOffFilled", "Camera", "Tag", "ShoppingCart", "UserFollow", "Draggable", "Rocket", "Settings"] },
     {
       id: "animated-status",
       title: "Status",
@@ -112,6 +112,10 @@
         "UserAvatarFilledAlt",
         "Analytics",
         "ChartBar",
+        "Dashboard",
+        "Activity",
+        "Image",
+        "Bot",
         "Gift",
         "Locked",
         "LockedFilled",
@@ -123,6 +127,7 @@
         "Light",
         "LightFilled",
         "Sun",
+        "Moon",
         "Asleep",
         "AsleepFilled",
         "Flash",
@@ -138,6 +143,9 @@
         "Wifi",
         "WifiOff",
         "BluetoothOff",
+        "CloudOffline",
+        "BatteryCharging",
+        "Rss",
         "VolumeUp",
         "VolumeUpFilled",
         "VolumeUpAlt",
@@ -175,7 +183,7 @@
     {
       id: "animated-progress",
       title: "Progress",
-      names: ["CircleDash", "InProgress", "Incomplete", "Pending", "PendingFilled", "Hourglass"],
+      names: ["CircleDash", "InProgress", "Incomplete", "Pending", "PendingFilled", "Hourglass", "Timer"],
     },
     {
       id: "animated-media",

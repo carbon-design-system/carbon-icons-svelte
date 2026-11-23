@@ -1,0 +1,9 @@
+import { flicker } from "../families.js";
+
+export default flicker({
+  name: "BatteryCharging",
+  sourceHash: "2d933b2316ba",
+  content: `<path d="M27,11H26V10a2,2,0,0,0-2-2H20v2h4v3h3v6H24v3H19v2h5a2,2,0,0,0,2-2V21h1a2,2,0,0,0,2-2V13A2,2,0,0,0,27,11Z" />
+  <path d="M11,22H6V10h6V8H6a2,2,0,0,0-2,2V22a2,2,0,0,0,2,2h5Z" />
+  <path class="glow" d="M14.81 23.58 13.19 22.42 17.06 17 9.37 17 16.22 8.38 17.78 9.62 13.51 15 20.94 15 14.81 23.58z" />`,
+});
