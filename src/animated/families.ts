@@ -261,16 +261,17 @@ export const drawIn = (icon: Family & { accent: keyof typeof ACCENTS }): Animate
 /**
  * Glyphs that look the same every 90°, like `Add` and `Close`, turn a
  * quarter and end where they started. In a filled circle the glyph is a
- * hole, so it turns inside a mask.
+ * hole, so it turns inside a mask. A badge plus, like `DocumentAdd`'s,
+ * turns about its own centre (`pivot`).
  *
  * Productive: a plain quarter turn.
  * Expressive: overshoots by 10° and settles back.
  */
-export const quarterTurn = (icon: Family): AnimatedIcon => ({
+export const quarterTurn = (icon: Family & { pivot?: [number, number] }): AnimatedIcon => ({
   name: icon.name,
   sourceHash: icon.sourceHash,
   content: withRest(icon),
-  css: `${origin(".glyph", [16, 16])}${restCss(icon)}
+  css: `${origin(".glyph", icon.pivot ?? [16, 16])}${restCss(icon)}
 
   ${PRODUCTIVE} .glyph {
     animation: turn ${DURATION.slow01} ${standard.productive};
@@ -895,12 +896,39 @@ export const latch = (icon: Family): AnimatedIcon => ({
  * Productive: the arrow dips `dip` units (3 by default) toward its target and
  * back, staying inside its clip.
  * Expressive: the arrow passes through, the `base` reacts as it goes,
- * and a new arrow comes in from the other side.
+ * and a new arrow comes in from the other side. Without a `base`, like
+ * `DocumentDownload`'s arrow beside its page, nothing else moves.
  */
 export const passThrough = (
-  icon: Family & { base: string; sign: 1 | -1; out: number; back: number; dip?: number; axis?: "x" | "y" }
+  icon: Family & { base?: string; sign: 1 | -1; out: number; back: number; dip?: number; axis?: "x" | "y" }
 ): AnimatedIcon => {
   const move = `translate${(icon.axis ?? "y").toUpperCase()}`;
+  const baseRule = icon.base
+    ? `
+
+  ${EXPRESSIVE} .${icon.base} {
+    animation: catch ${DURATION.slow02};
+  }`
+    : "";
+  const baseKeyframes = icon.base
+    ? `
+
+  @keyframes catch {
+    0%,
+    36% {
+      transform: ${move}(0);
+      animation-timing-function: ${entrance.expressive};
+    }
+    46% {
+      transform: ${move}(${icon.sign * 1.5}px);
+      animation-timing-function: ${standard.expressive};
+    }
+    70%,
+    100% {
+      transform: ${move}(0);
+    }
+  }`
+    : "";
 
   return {
     name: icon.name,
@@ -912,11 +940,7 @@ export const passThrough = (
 
   ${EXPRESSIVE} .arrow {
     animation: pass ${DURATION.slow02};
-  }
-
-  ${EXPRESSIVE} .${icon.base} {
-    animation: catch ${DURATION.slow02};
-  }
+  }${baseRule}
 
   @keyframes nudge {
     0% {
@@ -952,23 +976,7 @@ export const passThrough = (
     100% {
       transform: ${move}(0);
     }
-  }
-
-  @keyframes catch {
-    0%,
-    36% {
-      transform: ${move}(0);
-      animation-timing-function: ${entrance.expressive};
-    }
-    46% {
-      transform: ${move}(${icon.sign * 1.5}px);
-      animation-timing-function: ${standard.expressive};
-    }
-    70%,
-    100% {
-      transform: ${move}(0);
-    }
-  }`,
+  }${baseKeyframes}`,
   };
 };
 
@@ -1598,8 +1606,9 @@ export const ring = (icon: Family & { badge?: [number, number] }): AnimatedIcon 
 });
 
 /**
- * A "new" badge (`.badge`) pops on an icon that has no motion of its own,
- * like `EmailNew`. In expressive mode the rest (`.body`) hops as it lands.
+ * A "new" badge or a selected dot (`.badge`) pops on an icon that has no
+ * motion of its own, like `EmailNew` or `RadioButtonChecked`. In
+ * expressive mode the rest (`.body`), if any, hops as it lands.
  */
 export const badgePop = (icon: Family & { badge: [number, number] }): AnimatedIcon => ({
   name: icon.name,
@@ -2041,6 +2050,127 @@ export const flicker = (icon: Family): AnimatedIcon => ({
     }
     64% {
       opacity: 0.7;
+    }
+  }`,
+});
+
+/**
+ * A person's head (`.head`) nods.
+ *
+ * Productive: one nod.
+ * Expressive: a nod and a smaller second one.
+ */
+export const nod = (icon: Family): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: icon.content,
+  css: `  ${PRODUCTIVE} .head {
+    animation: nod ${DURATION.slow01};
+  }
+
+  ${EXPRESSIVE} .head {
+    animation: nod-twice ${DURATION.slow02};
+  }
+
+  @keyframes nod {
+    0% {
+      transform: translateY(0);
+      animation-timing-function: ${entrance.productive};
+    }
+    40% {
+      transform: translateY(2px);
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes nod-twice {
+    0% {
+      transform: translateY(0);
+      animation-timing-function: ${entrance.expressive};
+    }
+    25% {
+      transform: translateY(2px);
+      animation-timing-function: ${standard.expressive};
+    }
+    50% {
+      transform: translateY(0);
+      animation-timing-function: ${entrance.expressive};
+    }
+    72% {
+      transform: translateY(1px);
+      animation-timing-function: ${standard.expressive};
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }`,
+});
+
+/**
+ * Sort icons: the arrow (`.arrow`) pushes down, and in expressive mode the
+ * bars (`.bar`) line up in turn (`--i`), growing out from their right
+ * ends. The bars are solid, so scaling them along their length keeps their
+ * weight.
+ *
+ * Productive: the arrow dips.
+ * Expressive: the arrow dips past rest and settles while the bars grow in.
+ */
+export const sort = (icon: Family): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: icon.content,
+  css: `${origin(".bar", [16, 16])}
+
+  ${PRODUCTIVE} .arrow {
+    animation: dip ${DURATION.slow01};
+  }
+
+  ${EXPRESSIVE} .arrow {
+    animation: dip-spring ${DURATION.slow02};
+  }
+
+  ${EXPRESSIVE} .bar {
+    animation: line-up ${DURATION.slow01} ${entrance.expressive} calc(var(--i) * ${DURATION.fast02}) backwards;
+  }
+
+  @keyframes dip {
+    0% {
+      transform: translateY(0);
+      animation-timing-function: ${entrance.productive};
+    }
+    40% {
+      transform: translateY(3px);
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes dip-spring {
+    0% {
+      transform: translateY(0);
+      animation-timing-function: ${entrance.expressive};
+    }
+    35% {
+      transform: translateY(3px);
+      animation-timing-function: ${standard.expressive};
+    }
+    65% {
+      transform: translateY(-0.75px);
+      animation-timing-function: ${standard.expressive};
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes line-up {
+    from {
+      transform: scaleX(0.4);
     }
   }`,
 });

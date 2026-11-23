@@ -48,7 +48,7 @@
     .sort();
 
   const groups = [
-    { id: "animated-actions", title: "Actions", names: ["Add", "AddAlt", "AddFilled", "Close", "CloseOutline", "CloseFilled", "Subtract", "SubtractAlt", "Edit", "EditOff", "Copy", "TrashCan", "Download", "Upload", "DownToBottom", "UpToTop", "CloudDownload", "CloudUpload", "Launch", "Send", "SendFilled", "SendAlt", "SendAltFilled", "Search", "ZoomIn", "ZoomOut", "Maximize", "Minimize", "Link", "Unlink", "Attachment", "Share", "Email", "EmailNew", "Chat", "Code", "Cut", "Terminal", "Login", "Logout", "Calendar", "Phone", "PhoneFilled", "Draggable", "Rocket", "Settings"] },
+    { id: "animated-actions", title: "Actions", names: ["Add", "AddAlt", "AddFilled", "Close", "CloseOutline", "CloseFilled", "Subtract", "SubtractAlt", "Edit", "EditOff", "Save", "Copy", "TrashCan", "Download", "Upload", "DownToBottom", "UpToTop", "DocumentAdd", "DocumentDownload", "DocumentExport", "FolderAdd", "Printer", "CloudDownload", "CloudUpload", "Launch", "Send", "SendFilled", "SendAlt", "SendAltFilled", "Search", "SortAscending", "SortDescending", "ZoomIn", "ZoomOut", "Maximize", "Minimize", "Link", "Unlink", "Attachment", "Share", "Email", "EmailNew", "Chat", "Code", "Cut", "Terminal", "Login", "Logout", "Calendar", "Phone", "PhoneFilled", "Camera", "Tag", "ShoppingCart", "UserFollow", "Draggable", "Rocket", "Settings"] },
     {
       id: "animated-status",
       title: "Status",
@@ -56,6 +56,9 @@
         "Checkmark",
         "CheckmarkOutline",
         "CheckmarkFilled",
+        "CheckboxChecked",
+        "CheckboxCheckedFilled",
+        "RadioButtonChecked",
         "Warning",
         "WarningFilled",
         "WarningSquareFilled",
@@ -98,6 +101,10 @@
         "FlagFilled",
         "Idea",
         "Fire",
+        "User",
+        "UserAvatar",
+        "Analytics",
+        "ChartBar",
         "Gift",
         "Locked",
         "Unlocked",

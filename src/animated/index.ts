@@ -6,6 +6,7 @@ import { DURATION, EASING, withLoop, type AnimatedIcon } from "./shared.js";
 import AddIcon from "./icons/Add.js";
 import AddAltIcon from "./icons/AddAlt.js";
 import AddFilledIcon from "./icons/AddFilled.js";
+import AnalyticsIcon from "./icons/Analytics.js";
 import ArrowsHorizontalIcon from "./icons/ArrowsHorizontal.js";
 import ArrowsVerticalIcon from "./icons/ArrowsVertical.js";
 import AsleepIcon from "./icons/Asleep.js";
@@ -15,7 +16,11 @@ import BluetoothOffIcon from "./icons/BluetoothOff.js";
 import BookmarkIcon from "./icons/Bookmark.js";
 import BookmarkFilledIcon from "./icons/BookmarkFilled.js";
 import CalendarIcon from "./icons/Calendar.js";
+import CameraIcon from "./icons/Camera.js";
+import ChartBarIcon from "./icons/ChartBar.js";
 import ChatIcon from "./icons/Chat.js";
+import CheckboxCheckedIcon from "./icons/CheckboxChecked.js";
+import CheckboxCheckedFilledIcon from "./icons/CheckboxCheckedFilled.js";
 import CheckmarkIcon from "./icons/Checkmark.js";
 import CheckmarkFilledIcon from "./icons/CheckmarkFilled.js";
 import CheckmarkOutlineIcon from "./icons/CheckmarkOutline.js";
@@ -29,6 +34,9 @@ import CloudUploadIcon from "./icons/CloudUpload.js";
 import CodeIcon from "./icons/Code.js";
 import CopyIcon from "./icons/Copy.js";
 import CutIcon from "./icons/Cut.js";
+import DocumentAddIcon from "./icons/DocumentAdd.js";
+import DocumentDownloadIcon from "./icons/DocumentDownload.js";
+import DocumentExportIcon from "./icons/DocumentExport.js";
 import DownToBottomIcon from "./icons/DownToBottom.js";
 import DownloadIcon from "./icons/Download.js";
 import DraggableIcon from "./icons/Draggable.js";
@@ -45,6 +53,7 @@ import FlagIcon from "./icons/Flag.js";
 import FlagFilledIcon from "./icons/FlagFilled.js";
 import FlashIcon from "./icons/Flash.js";
 import FlashFilledIcon from "./icons/FlashFilled.js";
+import FolderAddIcon from "./icons/FolderAdd.js";
 import GiftIcon from "./icons/Gift.js";
 import HelpIcon from "./icons/Help.js";
 import HelpFilledIcon from "./icons/HelpFilled.js";
@@ -87,6 +96,8 @@ import PinIcon from "./icons/Pin.js";
 import PinFilledIcon from "./icons/PinFilled.js";
 import PlayIcon from "./icons/Play.js";
 import PlayFilledIcon from "./icons/PlayFilled.js";
+import PrinterIcon from "./icons/Printer.js";
+import RadioButtonCheckedIcon from "./icons/RadioButtonChecked.js";
 import RenewIcon from "./icons/Renew.js";
 import RocketIcon from "./icons/Rocket.js";
 import RotateClockwiseIcon from "./icons/RotateClockwise.js";
@@ -97,6 +108,7 @@ import RotateCounterclockwiseIcon from "./icons/RotateCounterclockwise.js";
 import RotateCounterclockwiseAltIcon from "./icons/RotateCounterclockwiseAlt.js";
 import RotateCounterclockwiseAltFilledIcon from "./icons/RotateCounterclockwiseAltFilled.js";
 import RotateCounterclockwiseFilledIcon from "./icons/RotateCounterclockwiseFilled.js";
+import SaveIcon from "./icons/Save.js";
 import SearchIcon from "./icons/Search.js";
 import SendIcon from "./icons/Send.js";
 import SendAltIcon from "./icons/SendAlt.js";
@@ -104,6 +116,9 @@ import SendAltFilledIcon from "./icons/SendAltFilled.js";
 import SendFilledIcon from "./icons/SendFilled.js";
 import SettingsIcon from "./icons/Settings.js";
 import ShareIcon from "./icons/Share.js";
+import ShoppingCartIcon from "./icons/ShoppingCart.js";
+import SortAscendingIcon from "./icons/SortAscending.js";
+import SortDescendingIcon from "./icons/SortDescending.js";
 import StarIcon from "./icons/Star.js";
 import StarFilledIcon from "./icons/StarFilled.js";
 import StopIcon from "./icons/Stop.js";
@@ -111,6 +126,7 @@ import StopFilledIcon from "./icons/StopFilled.js";
 import SubtractIcon from "./icons/Subtract.js";
 import SubtractAltIcon from "./icons/SubtractAlt.js";
 import SunIcon from "./icons/Sun.js";
+import TagIcon from "./icons/Tag.js";
 import TerminalIcon from "./icons/Terminal.js";
 import ThumbsDownIcon from "./icons/ThumbsDown.js";
 import ThumbsDownFilledIcon from "./icons/ThumbsDownFilled.js";
@@ -123,6 +139,9 @@ import UnlinkIcon from "./icons/Unlink.js";
 import UnlockedIcon from "./icons/Unlocked.js";
 import UpToTopIcon from "./icons/UpToTop.js";
 import UploadIcon from "./icons/Upload.js";
+import UserIcon from "./icons/User.js";
+import UserAvatarIcon from "./icons/UserAvatar.js";
+import UserFollowIcon from "./icons/UserFollow.js";
 import VideoOffIcon from "./icons/VideoOff.js";
 import ViewIcon from "./icons/View.js";
 import ViewOffIcon from "./icons/ViewOff.js";
@@ -151,6 +170,7 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   AddIcon,
   AddAltIcon,
   AddFilledIcon,
+  AnalyticsIcon,
   ArrowsHorizontalIcon,
   ArrowsVerticalIcon,
   AsleepIcon,
@@ -160,7 +180,11 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   BookmarkIcon,
   BookmarkFilledIcon,
   CalendarIcon,
+  CameraIcon,
+  ChartBarIcon,
   ChatIcon,
+  CheckboxCheckedIcon,
+  CheckboxCheckedFilledIcon,
   CheckmarkIcon,
   CheckmarkFilledIcon,
   CheckmarkOutlineIcon,
@@ -174,6 +198,9 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   CodeIcon,
   CopyIcon,
   CutIcon,
+  DocumentAddIcon,
+  DocumentDownloadIcon,
+  DocumentExportIcon,
   DownToBottomIcon,
   DownloadIcon,
   DraggableIcon,
@@ -190,6 +217,7 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   FlagFilledIcon,
   FlashIcon,
   FlashFilledIcon,
+  FolderAddIcon,
   GiftIcon,
   HelpIcon,
   HelpFilledIcon,
@@ -232,6 +260,8 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   PinFilledIcon,
   PlayIcon,
   PlayFilledIcon,
+  PrinterIcon,
+  RadioButtonCheckedIcon,
   RenewIcon,
   RocketIcon,
   RotateClockwiseIcon,
@@ -242,6 +272,7 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   RotateCounterclockwiseAltIcon,
   RotateCounterclockwiseAltFilledIcon,
   RotateCounterclockwiseFilledIcon,
+  SaveIcon,
   SearchIcon,
   SendIcon,
   SendAltIcon,
@@ -249,6 +280,9 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   SendFilledIcon,
   SettingsIcon,
   ShareIcon,
+  ShoppingCartIcon,
+  SortAscendingIcon,
+  SortDescendingIcon,
   StarIcon,
   StarFilledIcon,
   StopIcon,
@@ -256,6 +290,7 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   SubtractIcon,
   SubtractAltIcon,
   SunIcon,
+  TagIcon,
   TerminalIcon,
   ThumbsDownIcon,
   ThumbsDownFilledIcon,
@@ -268,6 +303,9 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   UnlockedIcon,
   UpToTopIcon,
   UploadIcon,
+  UserIcon,
+  UserAvatarIcon,
+  UserFollowIcon,
   VideoOffIcon,
   ViewIcon,
   ViewOffIcon,
