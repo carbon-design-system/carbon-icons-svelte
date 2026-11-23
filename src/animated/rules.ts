@@ -71,10 +71,9 @@ export const RULES: Record<string, Rule> = {
   Undo: LEFT,
 };
 
-/** Rounds to 2 decimals so diagonal distances stay readable in the CSS. */
 const round = (n: number) => Math.round(n * 100) / 100;
 
-/** `translate()` by `distance` units the way the rule points. Diagonals cover the same distance. */
+/** Diagonals cover the same distance as straight nudges. */
 const toward = ({ x, y }: { x: number; y: number }, distance: number) => {
   const scale = distance / Math.hypot(x, y);
   return `translate(${round(x * scale)}px, ${round(y * scale)}px)`;
@@ -92,7 +91,6 @@ const nudgeCss = (rule: { x: number; y: number; room?: number }) => {
     animation: nudge-spring ${DURATION.slow02};
   }
 
-  /* ${near} units out and back. */
   @keyframes nudge {
     0% {
       transform: translate(0, 0);
@@ -107,7 +105,6 @@ const nudgeCss = (rule: { x: number; y: number; room?: number }) => {
     }
   }
 
-  /* ${far} units out, springs back past rest, and settles. */
   @keyframes nudge-spring {
     0% {
       transform: translate(0, 0);
@@ -152,7 +149,6 @@ const turnCss = ({ direction }: { direction: 1 | -1 }) => `  .icon {
     }
   }
 
-  /* Overshoots by 15° and settles back. */
   @keyframes turn-overshoot {
     0% {
       rotate: 0deg;
@@ -173,7 +169,6 @@ const turnCss = ({ direction }: { direction: 1 | -1 }) => `  .icon {
     }
   }
 
-  /* Stays small through the overshoot. */
   @keyframes shrink-hold {
     12%,
     88% {
@@ -181,7 +176,6 @@ const turnCss = ({ direction }: { direction: 1 | -1 }) => `  .icon {
     }
   }`;
 
-/** Builds the rule-based icons from their static descriptors. */
 export const ruleIcons = (lookup: (name: string) => IconOutput | undefined): AnimatedIcon[] =>
   Object.entries(RULES).map(([name, rule]) => {
     const descriptor = lookup(name)?.descriptor;

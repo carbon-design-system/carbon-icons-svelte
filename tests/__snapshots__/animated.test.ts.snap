@@ -91,7 +91,6 @@ exports[`animated icons template 1`] = `
     }
   }
 
-  /* The same swing, starting later and going further. */
   @keyframes ring-clapper {
     0%,
     5% {

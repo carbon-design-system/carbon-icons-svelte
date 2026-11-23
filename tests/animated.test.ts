@@ -104,7 +104,6 @@ describe("animated icons", () => {
   test("rule-based icons move as a whole", () => {
     const arrow = cases.find(([name]) => name === "ArrowUpRight")![1];
     expect(arrow.content.startsWith('<g class="icon">')).toBe(true);
-    // Diagonals cover the same distance as straight nudges.
     expect(arrow.css).toContain("translate(2.12px, -2.12px)");
 
     const reset = cases.find(([name]) => name === "Reset")![1];

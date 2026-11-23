@@ -1,11 +1,4 @@
-/**
- * `carbon-icons-svelte/animated`: hand-built animated versions of some icons.
- *
- * Carbon's icons are filled outlines, and many are a single merged path, so
- * per-part motion can't be generated from the descriptors. Each icon in
- * `./icons/` is drawn from its `@carbon/icons` paths, split into parts by
- * hand where the motion needs it. See "Animated icons" in CONTRIBUTING.md.
- */
+// See "Animated icons" in CONTRIBUTING.md.
 
 import type { IconOutput } from "@carbon/icons";
 import { RULES, ruleIcons } from "./rules.js";
@@ -81,10 +74,8 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
 /** Content that references `{id}` gets a unique id prefix per instance. */
 const ID_PATTERN = /\{id\}/;
 
-/** How long a mouse rests on the trigger before the icon plays: Carbon's moderate-01. */
 export const HOVER_DELAY = parseInt(DURATION.moderate01);
 
-/** Fills in the Carbon tokens that `animate.js` uses. */
 export const fillTokens = (source: string) =>
   source
     .replace("__DURATION_MODERATE_01__", String(HOVER_DELAY))
@@ -208,10 +199,8 @@ export declare function setAnimatedIconDefaults(defaults: CarbonAnimatedIconDefa
 ${names.map((name) => `export declare const ${name}: CarbonAnimatedIcon;`).join("\n")}
 `;
 
-/** Looks up a static icon's 32px output by name. */
 export type IconLookup = (name: string) => IconOutput | undefined;
 
-/** Hand-built and rule-based icons together, sorted by name. */
 export const allAnimatedIcons = (lookup: IconLookup) => {
   const handBuilt = new Set(ANIMATED_ICONS.map(({ name }) => name));
 
@@ -226,7 +215,6 @@ export const allAnimatedIcons = (lookup: IconLookup) => {
   return [...ANIMATED_ICONS, ...ruleIcons(lookup)].sort((a, b) => (a.name < b.name ? -1 : 1));
 };
 
-/** Returns the files for `lib/animated/`. */
 export const buildAnimated = async (lookup: IconLookup) => {
   const files = new Map<string, string>();
   const icons = allAnimatedIcons(lookup);

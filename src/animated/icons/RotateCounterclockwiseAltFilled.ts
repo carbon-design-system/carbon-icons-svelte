@@ -62,7 +62,6 @@ export default {
     }
   }
 
-  /* Waits for the push, then turns. */
   @keyframes turn-overshoot {
     0%,
     20% {

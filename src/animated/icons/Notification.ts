@@ -63,7 +63,6 @@ export default {
     }
   }
 
-  /* The same swing, starting later and going further. */
   @keyframes ring-clapper {
     0%,
     5% {

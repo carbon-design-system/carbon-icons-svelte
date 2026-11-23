@@ -3,7 +3,6 @@ import type { IconOutput } from "@carbon/icons";
 import { createHash } from "node:crypto";
 
 export interface AnimatedIcon {
-  /** Name of the static icon this animates. */
   name: string;
   /**
    * Hash of the static icon's 32px content (see `hashSource`). Each icon is
@@ -17,15 +16,7 @@ export interface AnimatedIcon {
   css: string;
 }
 
-/**
- * Match the icon while it plays its motion (see `animate.js`) in each
- * `motion` mode. Carbon uses productive motion for routine UI, and
- * expressive motion for moments that matter. The `<svg>` carries
- * `data-motion` from the prop.
- *
- * `animate.js` only plays motion if the user hasn't asked for reduced
- * motion, or `reducedMotion="full"`, so icon CSS needs no media query.
- */
+// `animate.js` handles reduced motion, so icon CSS needs no media query.
 export const PRODUCTIVE = ':global(svg[data-playing="motion"][data-motion="productive"])';
 export const EXPRESSIVE = ':global(svg[data-playing="motion"][data-motion="expressive"])';
 
@@ -33,7 +24,6 @@ export const EXPRESSIVE = ':global(svg[data-playing="motion"][data-motion="expre
 // (https://carbondesignsystem.com/elements/motion/overview/). They've been
 // stable since Carbon v10; if Carbon changes them, update them here.
 
-/** Carbon's motion durations. */
 export const DURATION = {
   fast01: "70ms",
   fast02: "110ms",
@@ -43,7 +33,6 @@ export const DURATION = {
   slow02: "700ms",
 };
 
-/** Carbon's motion easings: productive for routine UI, expressive for moments that matter. */
 export const EASING = {
   standard: {
     productive: "cubic-bezier(0.2, 0, 0.38, 0.9)",
