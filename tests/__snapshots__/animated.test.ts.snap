@@ -172,7 +172,7 @@ export type CarbonAnimatedIconProps = CarbonIconProps &
      * icons with a loop respond: the progress icons (\`CircleDash\`, \`Hourglass\`,
      * \`InProgress\`, \`Incomplete\`, \`Pending\`, \`PendingFilled\`) and the
      * refresh and processing icons (\`Renew\`, \`RenewAlt\`, \`Restart\`,
-     * \`Reset\`, \`Repeat\`, \`Recycle\`, \`Settings\`, \`Time\`).
+     * \`Reset\`, \`Repeat\`, \`Recycle\`, \`Settings\`, \`Time\`, \`TimeFilled\`).
      * @default false
      */
     loop?: boolean;
@@ -236,18 +236,23 @@ export declare const InProgress: CarbonAnimatedIcon;
 export declare const Incomplete: CarbonAnimatedIcon;
 export declare const Information: CarbonAnimatedIcon;
 export declare const InformationFilled: CarbonAnimatedIcon;
+export declare const InformationSquare: CarbonAnimatedIcon;
 export declare const InformationSquareFilled: CarbonAnimatedIcon;
 export declare const JumpLink: CarbonAnimatedIcon;
 export declare const Launch: CarbonAnimatedIcon;
 export declare const Light: CarbonAnimatedIcon;
 export declare const Link: CarbonAnimatedIcon;
 export declare const Location: CarbonAnimatedIcon;
+export declare const LocationFilled: CarbonAnimatedIcon;
 export declare const Locked: CarbonAnimatedIcon;
 export declare const Maximize: CarbonAnimatedIcon;
 export declare const Menu: CarbonAnimatedIcon;
 export declare const MicrophoneOff: CarbonAnimatedIcon;
 export declare const Minimize: CarbonAnimatedIcon;
 export declare const Notification: CarbonAnimatedIcon;
+export declare const NotificationFilled: CarbonAnimatedIcon;
+export declare const NotificationOff: CarbonAnimatedIcon;
+export declare const NotificationOffFilled: CarbonAnimatedIcon;
 export declare const OverflowMenuHorizontal: CarbonAnimatedIcon;
 export declare const OverflowMenuVertical: CarbonAnimatedIcon;
 export declare const PageFirst: CarbonAnimatedIcon;
@@ -277,6 +282,9 @@ export declare const RotateCounterclockwiseAltFilled: CarbonAnimatedIcon;
 export declare const RotateCounterclockwiseFilled: CarbonAnimatedIcon;
 export declare const Search: CarbonAnimatedIcon;
 export declare const Send: CarbonAnimatedIcon;
+export declare const SendAlt: CarbonAnimatedIcon;
+export declare const SendAltFilled: CarbonAnimatedIcon;
+export declare const SendFilled: CarbonAnimatedIcon;
 export declare const Settings: CarbonAnimatedIcon;
 export declare const SkipBack: CarbonAnimatedIcon;
 export declare const SkipBackFilled: CarbonAnimatedIcon;
@@ -288,6 +296,7 @@ export declare const Stop: CarbonAnimatedIcon;
 export declare const StopFilled: CarbonAnimatedIcon;
 export declare const Subtract: CarbonAnimatedIcon;
 export declare const Time: CarbonAnimatedIcon;
+export declare const TimeFilled: CarbonAnimatedIcon;
 export declare const TrashCan: CarbonAnimatedIcon;
 export declare const Undo: CarbonAnimatedIcon;
 export declare const Unlink: CarbonAnimatedIcon;
@@ -296,12 +305,17 @@ export declare const Upload: CarbonAnimatedIcon;
 export declare const View: CarbonAnimatedIcon;
 export declare const ViewOff: CarbonAnimatedIcon;
 export declare const VolumeDown: CarbonAnimatedIcon;
+export declare const VolumeDownFilled: CarbonAnimatedIcon;
+export declare const VolumeMute: CarbonAnimatedIcon;
+export declare const VolumeMuteFilled: CarbonAnimatedIcon;
 export declare const VolumeUp: CarbonAnimatedIcon;
+export declare const VolumeUpFilled: CarbonAnimatedIcon;
 export declare const Warning: CarbonAnimatedIcon;
 export declare const WarningAlt: CarbonAnimatedIcon;
 export declare const WarningAltFilled: CarbonAnimatedIcon;
 export declare const WarningAltInvertedFilled: CarbonAnimatedIcon;
 export declare const WarningFilled: CarbonAnimatedIcon;
+export declare const WarningSquare: CarbonAnimatedIcon;
 export declare const WarningSquareFilled: CarbonAnimatedIcon;
 export declare const Wifi: CarbonAnimatedIcon;
 export declare const WifiOff: CarbonAnimatedIcon;

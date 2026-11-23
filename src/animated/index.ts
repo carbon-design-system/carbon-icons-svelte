@@ -29,17 +29,22 @@ import InProgressIcon from "./icons/InProgress.js";
 import IncompleteIcon from "./icons/Incomplete.js";
 import InformationIcon from "./icons/Information.js";
 import InformationFilledIcon from "./icons/InformationFilled.js";
+import InformationSquareIcon from "./icons/InformationSquare.js";
 import InformationSquareFilledIcon from "./icons/InformationSquareFilled.js";
 import LaunchIcon from "./icons/Launch.js";
 import LightIcon from "./icons/Light.js";
 import LinkIcon from "./icons/Link.js";
 import LocationIcon from "./icons/Location.js";
+import LocationFilledIcon from "./icons/LocationFilled.js";
 import LockedIcon from "./icons/Locked.js";
 import MaximizeIcon from "./icons/Maximize.js";
 import MenuIcon from "./icons/Menu.js";
 import MicrophoneOffIcon from "./icons/MicrophoneOff.js";
 import MinimizeIcon from "./icons/Minimize.js";
 import NotificationIcon from "./icons/Notification.js";
+import NotificationFilledIcon from "./icons/NotificationFilled.js";
+import NotificationOffIcon from "./icons/NotificationOff.js";
+import NotificationOffFilledIcon from "./icons/NotificationOffFilled.js";
 import OverflowMenuHorizontalIcon from "./icons/OverflowMenuHorizontal.js";
 import OverflowMenuVerticalIcon from "./icons/OverflowMenuVertical.js";
 import PauseIcon from "./icons/Pause.js";
@@ -61,6 +66,9 @@ import RotateCounterclockwiseAltFilledIcon from "./icons/RotateCounterclockwiseA
 import RotateCounterclockwiseFilledIcon from "./icons/RotateCounterclockwiseFilled.js";
 import SearchIcon from "./icons/Search.js";
 import SendIcon from "./icons/Send.js";
+import SendAltIcon from "./icons/SendAlt.js";
+import SendAltFilledIcon from "./icons/SendAltFilled.js";
+import SendFilledIcon from "./icons/SendFilled.js";
 import SettingsIcon from "./icons/Settings.js";
 import StarIcon from "./icons/Star.js";
 import StarFilledIcon from "./icons/StarFilled.js";
@@ -68,6 +76,7 @@ import StopIcon from "./icons/Stop.js";
 import StopFilledIcon from "./icons/StopFilled.js";
 import SubtractIcon from "./icons/Subtract.js";
 import TimeIcon from "./icons/Time.js";
+import TimeFilledIcon from "./icons/TimeFilled.js";
 import TrashCanIcon from "./icons/TrashCan.js";
 import UnlinkIcon from "./icons/Unlink.js";
 import UnlockedIcon from "./icons/Unlocked.js";
@@ -75,12 +84,17 @@ import UploadIcon from "./icons/Upload.js";
 import ViewIcon from "./icons/View.js";
 import ViewOffIcon from "./icons/ViewOff.js";
 import VolumeDownIcon from "./icons/VolumeDown.js";
+import VolumeDownFilledIcon from "./icons/VolumeDownFilled.js";
+import VolumeMuteIcon from "./icons/VolumeMute.js";
+import VolumeMuteFilledIcon from "./icons/VolumeMuteFilled.js";
 import VolumeUpIcon from "./icons/VolumeUp.js";
+import VolumeUpFilledIcon from "./icons/VolumeUpFilled.js";
 import WarningIcon from "./icons/Warning.js";
 import WarningAltIcon from "./icons/WarningAlt.js";
 import WarningAltFilledIcon from "./icons/WarningAltFilled.js";
 import WarningAltInvertedFilledIcon from "./icons/WarningAltInvertedFilled.js";
 import WarningFilledIcon from "./icons/WarningFilled.js";
+import WarningSquareIcon from "./icons/WarningSquare.js";
 import WarningSquareFilledIcon from "./icons/WarningSquareFilled.js";
 import WifiIcon from "./icons/Wifi.js";
 import WifiOffIcon from "./icons/WifiOff.js";
@@ -117,17 +131,22 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   IncompleteIcon,
   InformationIcon,
   InformationFilledIcon,
+  InformationSquareIcon,
   InformationSquareFilledIcon,
   LaunchIcon,
   LightIcon,
   LinkIcon,
   LocationIcon,
+  LocationFilledIcon,
   LockedIcon,
   MaximizeIcon,
   MenuIcon,
   MicrophoneOffIcon,
   MinimizeIcon,
   NotificationIcon,
+  NotificationFilledIcon,
+  NotificationOffIcon,
+  NotificationOffFilledIcon,
   OverflowMenuHorizontalIcon,
   OverflowMenuVerticalIcon,
   PauseIcon,
@@ -149,6 +168,9 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   RotateCounterclockwiseFilledIcon,
   SearchIcon,
   SendIcon,
+  SendAltIcon,
+  SendAltFilledIcon,
+  SendFilledIcon,
   SettingsIcon,
   StarIcon,
   StarFilledIcon,
@@ -156,6 +178,7 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   StopFilledIcon,
   SubtractIcon,
   TimeIcon,
+  TimeFilledIcon,
   TrashCanIcon,
   UnlinkIcon,
   UnlockedIcon,
@@ -163,12 +186,17 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   ViewIcon,
   ViewOffIcon,
   VolumeDownIcon,
+  VolumeDownFilledIcon,
+  VolumeMuteIcon,
+  VolumeMuteFilledIcon,
   VolumeUpIcon,
+  VolumeUpFilledIcon,
   WarningIcon,
   WarningAltIcon,
   WarningAltFilledIcon,
   WarningAltInvertedFilledIcon,
   WarningFilledIcon,
+  WarningSquareIcon,
   WarningSquareFilledIcon,
   WifiIcon,
   WifiOffIcon,
@@ -295,7 +323,7 @@ export type CarbonAnimatedIconProps = CarbonIconProps &
      * icons with a loop respond: the progress icons (\`CircleDash\`, \`Hourglass\`,
      * \`InProgress\`, \`Incomplete\`, \`Pending\`, \`PendingFilled\`) and the
      * refresh and processing icons (\`Renew\`, \`RenewAlt\`, \`Restart\`,
-     * \`Reset\`, \`Repeat\`, \`Recycle\`, \`Settings\`, \`Time\`).
+     * \`Reset\`, \`Repeat\`, \`Recycle\`, \`Settings\`, \`Time\`, \`TimeFilled\`).
      * @default false
      */
     loop?: boolean;

@@ -23,7 +23,7 @@ import { render } from "svelte/server";
 import { DURATION } from "../src/animated/shared.js";
 
 /** Icons whose motion leaves the canvas on purpose, through the viewBox edge. */
-const EXITS = new Set(["Send/expressive"]);
+const EXITS = new Set(["Send", "SendFilled", "SendAlt", "SendAltFilled"].map((name) => `${name}/expressive`));
 
 /** How far a part may stray past the canvas, in user units, before it counts. */
 const TOLERANCE = 0.5;
@@ -72,6 +72,9 @@ for (const name of names) {
 const browser = await launch();
 const page = await browser.newPage();
 await page.setContent(`<!doctype html><html><head>${[...heads].join("")}</head><body>${body}</body></html>`);
+
+// Let every engine create the animations before reading them.
+await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
 
 const results = await page.evaluate(
   ({ limits, step }) => {

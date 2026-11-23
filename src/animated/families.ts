@@ -1276,3 +1276,255 @@ export const flap = (icon: Family & { hinge: [number, number] }): AnimatedIcon =
     }
   }`,
 });
+
+/**
+ * Paper planes nudge forward, or fly out through the canvas edge and come
+ * back in from the opposite one. `direction` is a unit vector; `distance`
+ * is how far, in units, the plane travels to clear the canvas.
+ *
+ * Productive: nudges 4 units forward and back.
+ * Expressive: pulls back, flies out, and returns from the other side.
+ */
+export const flyOut = (icon: Family & { direction: [number, number]; distance: number }): AnimatedIcon => {
+  const [dx, dy] = icon.direction;
+  const round = (n: number) => Math.round(n * 100) / 100;
+  const move = (units: number) =>
+    dy === 0
+      ? units === 0 ? "translateX(0)" : `translateX(${round(dx * units)}px)`
+      : units === 0 ? "translate(0, 0)" : `translate(${round(dx * units)}px, ${round(dy * units)}px)`;
+
+  return {
+    name: icon.name,
+    sourceHash: icon.sourceHash,
+    content: icon.content,
+    css: `  ${PRODUCTIVE} .plane {
+    animation: nudge ${DURATION.slow01};
+  }
+
+  ${EXPRESSIVE} .plane {
+    animation: fly ${DURATION.slow02};
+  }
+
+  @keyframes nudge {
+    0% {
+      transform: ${move(0)};
+      animation-timing-function: ${entrance.productive};
+    }
+    40% {
+      transform: ${move(4)};
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: ${move(0)};
+    }
+  }
+
+  @keyframes fly {
+    0% {
+      transform: ${move(0)};
+      animation-timing-function: ${entrance.expressive};
+    }
+    15% {
+      transform: ${move(-2)};
+      animation-timing-function: ${exit.expressive};
+    }
+    45% {
+      transform: ${move(icon.distance)};
+      animation-timing-function: step-end;
+    }
+    45.1% {
+      transform: ${move(-icon.distance)};
+      animation-timing-function: ${entrance.expressive};
+    }
+    100% {
+      transform: ${move(0)};
+    }
+  }`,
+  };
+};
+
+/**
+ * Rings. Carbon draws the bell as one path; the clapper is split out so it
+ * can swing on its own, and the bell's bottom edge is closed where it joined.
+ * Both swing from the top of the stem.
+ *
+ * Productive: one short swing each way; the clapper moves with the bell.
+ * Expressive: swings three times and dies out. The clapper starts later and
+ * swings further, so it lags behind the bell. Past about 8°, the rim leaves
+ * the canvas.
+ */
+export const ring = (icon: Family): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: icon.content,
+  css: `  .bell,
+  .clapper {
+    transform-box: view-box;
+    transform-origin: 16px 1px;
+  }
+
+  ${PRODUCTIVE} .bell,
+  ${PRODUCTIVE} .clapper {
+    animation: swing ${DURATION.slow01} ${standard.productive};
+  }
+
+  ${EXPRESSIVE} .bell {
+    animation: ring ${DURATION.slow02} ${standard.expressive};
+  }
+
+  ${EXPRESSIVE} .clapper {
+    animation: ring-clapper ${DURATION.slow02} ${standard.expressive};
+  }
+
+  @keyframes swing {
+    35% {
+      transform: rotate(6deg);
+    }
+    70% {
+      transform: rotate(-4deg);
+    }
+  }
+
+  @keyframes ring {
+    14% {
+      transform: rotate(8deg);
+    }
+    32% {
+      transform: rotate(-7deg);
+    }
+    50% {
+      transform: rotate(5deg);
+    }
+    68% {
+      transform: rotate(-3deg);
+    }
+    84% {
+      transform: rotate(1deg);
+    }
+  }
+
+  @keyframes ring-clapper {
+    0%,
+    5% {
+      transform: rotate(0);
+    }
+    19% {
+      transform: rotate(12deg);
+    }
+    37% {
+      transform: rotate(-10deg);
+    }
+    55% {
+      transform: rotate(7deg);
+    }
+    72% {
+      transform: rotate(-4deg);
+    }
+    88% {
+      transform: rotate(1.5deg);
+    }
+  }`,
+});
+
+/**
+ * Rises 2 units, all the room above it, and lands.
+ * Productive: a small hop.
+ * Expressive: hops, squashes on its tip, and rebounds. The squash pivots on
+ * the tip so the pin stays planted.
+ */
+export const hop = (icon: Family): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: icon.content,
+  css: `  .pin {
+    transform-box: view-box;
+    transform-origin: 16px 30px;
+  }
+
+  ${PRODUCTIVE} .pin {
+    animation: hop ${DURATION.slow01};
+  }
+
+  ${EXPRESSIVE} .pin {
+    animation: hop-squash ${DURATION.slow02};
+  }
+
+  @keyframes hop {
+    0% {
+      transform: translateY(0);
+      animation-timing-function: ${entrance.productive};
+    }
+    45% {
+      transform: translateY(-2px);
+      animation-timing-function: ${exit.productive};
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes hop-squash {
+    0% {
+      transform: translateY(0);
+      animation-timing-function: ${entrance.expressive};
+    }
+    28% {
+      transform: translateY(-2px);
+      animation-timing-function: ${exit.expressive};
+    }
+    48% {
+      transform: translateY(0) scale(1.08, 0.9);
+      animation-timing-function: ${standard.expressive};
+    }
+    70% {
+      transform: scale(0.97, 1.03);
+      animation-timing-function: ${standard.expressive};
+    }
+    100% {
+      transform: none;
+    }
+  }`,
+});
+
+/**
+ * Carbon draws both hands as one path; they're split in two. Every hand
+ * makes whole turns, so it ends where it started. (A 30° hour step would
+ * snap back when the animation ends.)
+ * Productive: the long hand makes one turn.
+ * Expressive: the long hand makes two turns while the short hand makes one.
+ */
+export const clockHands = (icon: Family): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: withRest(icon),
+  loop: true,
+  css: `  .short,
+  .long {
+    transform-box: view-box;
+    transform-origin: 16px 16px;
+  }${restCss(icon)}
+
+  ${PRODUCTIVE} .long {
+    animation: turn ${DURATION.slow01} ${standard.productive};
+  }
+
+  ${EXPRESSIVE} .long {
+    animation: turn-twice ${DURATION.slow02} ${standard.expressive};
+  }
+
+  ${EXPRESSIVE} .short {
+    animation: turn ${DURATION.slow02} ${standard.expressive};
+  }
+
+  @keyframes turn {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes turn-twice {
+    to {
+      transform: rotate(720deg);
+    }
+  }`,
+});
