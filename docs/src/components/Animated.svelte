@@ -140,12 +140,12 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
           <Button kind="ghost" icon={Favorite} iconDescription="Favorite" />
           <Button kind="ghost" icon={Copy} iconDescription="Copy" />
           <Button kind="ghost" icon={Settings} iconDescription="Settings" />
-          <span class="divider" />
+          <span class="divider"></span>
           <Button kind="ghost" size="small" icon={PageFirst} iconDescription="First page" />
           <Button kind="ghost" size="small" icon={ChevronLeft} iconDescription="Previous page" />
           <Button kind="ghost" size="small" icon={ChevronRight} iconDescription="Next page" />
           <Button kind="ghost" size="small" icon={PageLast} iconDescription="Last page" />
-          <span class="divider" />
+          <span class="divider"></span>
           <Link href="#animated" icon={ArrowRight}>Learn more</Link>
           <OverflowMenu icon={Settings}>
             <OverflowMenuItem text="Rename" />
