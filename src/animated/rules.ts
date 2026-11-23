@@ -10,7 +10,7 @@
  * - Icons with a number or badge (`Forward_10`, `RepeatOne`, `UpdateNow`):
  *   turning would turn the text.
  * - Icons drawn inside a circle (`SkipForwardOutline`): the circle would move too.
- * - `Rotate*`: the square should turn on its own, which needs hand-built parts.
+ * - `Rotate*`: the square turns on its own, so they're hand-built.
  */
 
 import { toString } from "@carbon/icon-helpers";
@@ -84,14 +84,12 @@ const nudgeCss = (rule: { x: number; y: number; room?: number }) => {
   const near = Math.min(3, rule.room ?? 3);
   const far = Math.min(4, rule.room ?? 4);
 
-  return `  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .icon {
-      animation: nudge ${DURATION.slow01};
-    }
+  return `  ${PRODUCTIVE} .icon {
+    animation: nudge ${DURATION.slow01};
+  }
 
-    ${EXPRESSIVE} .icon {
-      animation: nudge-spring ${DURATION.slow02};
-    }
+  ${EXPRESSIVE} .icon {
+    animation: nudge-spring ${DURATION.slow02};
   }
 
   /* ${near} units out and back. */
@@ -136,18 +134,16 @@ const turnCss = ({ direction }: { direction: 1 | -1 }) => `  .icon {
     transform-origin: 16px 16px;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .icon {
-      animation:
-        turn ${DURATION.slow01} ${standard.productive},
-        shrink ${DURATION.slow01} ${standard.productive};
-    }
+  ${PRODUCTIVE} .icon {
+    animation:
+      turn ${DURATION.slow01} ${standard.productive},
+      shrink ${DURATION.slow01} ${standard.productive};
+  }
 
-    ${EXPRESSIVE} .icon {
-      animation:
-        turn-overshoot ${DURATION.slow02},
-        shrink-hold ${DURATION.slow02} ${standard.expressive};
-    }
+  ${EXPRESSIVE} .icon {
+    animation:
+      turn-overshoot ${DURATION.slow02},
+      shrink-hold ${DURATION.slow02} ${standard.expressive};
   }
 
   @keyframes turn {

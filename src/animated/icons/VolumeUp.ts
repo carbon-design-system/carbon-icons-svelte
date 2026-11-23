@@ -18,14 +18,12 @@ export default {
     transform-origin: 17px 16px;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .wave {
-      animation: pulse ${DURATION.slow01};
-    }
+  ${PRODUCTIVE} .wave {
+    animation: pulse ${DURATION.slow01};
+  }
 
-    ${EXPRESSIVE} .wave {
-      animation: emit ${DURATION.slow01} ${entrance.expressive} calc(var(--i) * ${DURATION.fast02}) backwards;
-    }
+  ${EXPRESSIVE} .wave {
+    animation: emit ${DURATION.slow01} ${entrance.expressive} calc(var(--i) * ${DURATION.fast02}) backwards;
   }
 
   @keyframes pulse {

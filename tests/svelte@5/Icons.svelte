@@ -12,8 +12,8 @@
   } from "carbon-icons-svelte";
   import type { CarbonIconProps } from "carbon-icons-svelte";
   import Icon from "carbon-icons-svelte/lib/Accessibility.svelte";
-  import { Notification } from "carbon-icons-svelte/animated";
-  import type { CarbonAnimatedIconProps } from "carbon-icons-svelte/animated";
+  import { Notification, setAnimatedIconDefaults } from "carbon-icons-svelte/animated";
+  import type { CarbonAnimatedIconDefaults, CarbonAnimatedIconProps } from "carbon-icons-svelte/animated";
   import AnimatedIcon from "carbon-icons-svelte/lib/animated/Checkmark.svelte";
   import { mount } from "svelte";
   import type { ComponentProps } from "svelte";
@@ -51,12 +51,22 @@
     play: 1,
     trigger: "none",
     motion: "expressive",
+    reducedMotion: "fade",
+    hoverDelay: 0,
   } satisfies CarbonAnimatedIconProps;
+
+  // Defaults for icons below this component, like ones passed to an `icon` prop.
+  const defaults = { motion: "expressive", hoverDelay: 200 } satisfies CarbonAnimatedIconDefaults;
+  setAnimatedIconDefaults(defaults);
+  // @ts-expect-error (`play` can't be a default)
+  setAnimatedIconDefaults({ play: true });
 
   // @ts-expect-error (`trigger` is "hover" or "none")
   mount(Notification, { target: document.body, props: { trigger: "click" } });
   // @ts-expect-error (`motion` is "productive" or "expressive")
   mount(Notification, { target: document.body, props: { motion: "playful" } });
+  // @ts-expect-error (`reducedMotion` is "static", "fade" or "full")
+  mount(Notification, { target: document.body, props: { reducedMotion: "always" } });
   // @ts-expect-error (`play` is a boolean or number)
   mount(AnimatedIcon, { target: document.body, props: { play: "yes" } });
 

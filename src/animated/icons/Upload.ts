@@ -18,18 +18,16 @@ export default {
     <path class="arrow" d="M6 18 7.41 19.41 15 11.83 15 30 17 30 17 11.83 24.59 19.41 26 18 16 8 6 18z" />
   </g>
   <path class="bracket" d="M6,8V4H26V8h2V4a2,2,0,0,0-2-2H6A2,2,0,0,0,4,4V8Z" />`,
-  css: `  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .arrow {
-      animation: nudge ${DURATION.slow01};
-    }
+  css: `  ${PRODUCTIVE} .arrow {
+    animation: nudge ${DURATION.slow01};
+  }
 
-    ${EXPRESSIVE} .arrow {
-      animation: pass ${DURATION.slow02};
-    }
+  ${EXPRESSIVE} .arrow {
+    animation: pass ${DURATION.slow02};
+  }
 
-    ${EXPRESSIVE} .bracket {
-      animation: catch ${DURATION.slow02};
-    }
+  ${EXPRESSIVE} .bracket {
+    animation: catch ${DURATION.slow02};
   }
 
   @keyframes nudge {

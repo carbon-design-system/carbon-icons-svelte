@@ -11,14 +11,12 @@ export default {
   name: "Send",
   sourceHash: "34721e83f8e4",
   content: `<path class="plane" d="M27.45,15.11l-22-11a1,1,0,0,0-1.08.12,1,1,0,0,0-.33,1L7,16,4,26.74A1,1,0,0,0,5,28a1,1,0,0,0,.45-.11l22-11a1,1,0,0,0,0-1.78Zm-20.9,10L8.76,17H18V15H8.76L6.55,6.89,24.76,16Z" />`,
-  css: `  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .plane {
-      animation: nudge ${DURATION.slow01};
-    }
+  css: `  ${PRODUCTIVE} .plane {
+    animation: nudge ${DURATION.slow01};
+  }
 
-    ${EXPRESSIVE} .plane {
-      animation: fly ${DURATION.slow02};
-    }
+  ${EXPRESSIVE} .plane {
+    animation: fly ${DURATION.slow02};
   }
 
   @keyframes nudge {

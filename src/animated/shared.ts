@@ -27,12 +27,16 @@ export interface AnimatedIcon {
 }
 
 /**
- * Match the icon while it plays (see `animate.js`) in each `motion` mode. Carbon uses
- * productive motion for routine UI, and expressive motion for moments
- * that matter. The `<svg>` carries `data-motion` from the prop.
+ * Match the icon while it plays its motion (see `animate.js`) in each
+ * `motion` mode. Carbon uses productive motion for routine UI, and
+ * expressive motion for moments that matter. The `<svg>` carries
+ * `data-motion` from the prop.
+ *
+ * `animate.js` only plays motion if the user hasn't asked for reduced
+ * motion, or `reducedMotion="full"`, so icon CSS needs no media query.
  */
-export const PRODUCTIVE = ':global(svg[data-playing][data-motion="productive"])';
-export const EXPRESSIVE = ':global(svg[data-playing][data-motion="expressive"])';
+export const PRODUCTIVE = ':global(svg[data-playing="motion"][data-motion="productive"])';
+export const EXPRESSIVE = ':global(svg[data-playing="motion"][data-motion="expressive"])';
 
 /** Carbon's motion durations, from `@carbon/motion`. */
 export const DURATION = {

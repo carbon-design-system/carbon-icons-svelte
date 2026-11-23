@@ -18,18 +18,16 @@ export default {
     <path class="arrow" d="M26 14 24.59 12.59 17 20.17 17 2 15 2 15 20.17 7.41 12.59 6 14 16 24 26 14z" />
   </g>
   <path class="tray" d="M26,24v4H6V24H4v4H4a2,2,0,0,0,2,2H26a2,2,0,0,0,2-2h0V24Z" />`,
-  css: `  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .arrow {
-      animation: nudge ${DURATION.slow01};
-    }
+  css: `  ${PRODUCTIVE} .arrow {
+    animation: nudge ${DURATION.slow01};
+  }
 
-    ${EXPRESSIVE} .arrow {
-      animation: pass ${DURATION.slow02};
-    }
+  ${EXPRESSIVE} .arrow {
+    animation: pass ${DURATION.slow02};
+  }
 
-    ${EXPRESSIVE} .tray {
-      animation: catch ${DURATION.slow02};
-    }
+  ${EXPRESSIVE} .tray {
+    animation: catch ${DURATION.slow02};
   }
 
   @keyframes nudge {

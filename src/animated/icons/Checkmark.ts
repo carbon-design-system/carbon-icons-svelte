@@ -22,18 +22,16 @@ export default {
     transform-origin: 16px 16px;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .ink {
-      animation: draw ${DURATION.slow01} ${entrance.productive} both;
-    }
+  ${PRODUCTIVE} .ink {
+    animation: draw ${DURATION.slow01} ${entrance.productive} both;
+  }
 
-    ${EXPRESSIVE} .ink {
-      animation: draw-hold ${DURATION.slow02} both;
-    }
+  ${EXPRESSIVE} .ink {
+    animation: draw-hold ${DURATION.slow02} both;
+  }
 
-    ${EXPRESSIVE} .check {
-      animation: pop ${DURATION.slow02};
-    }
+  ${EXPRESSIVE} .check {
+    animation: pop ${DURATION.slow02};
   }
 
   @keyframes draw {

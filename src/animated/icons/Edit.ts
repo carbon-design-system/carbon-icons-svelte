@@ -17,14 +17,12 @@ export default {
     transform-origin: 5px 23px;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .pencil {
-      animation: tilt ${DURATION.slow01};
-    }
+  ${PRODUCTIVE} .pencil {
+    animation: tilt ${DURATION.slow01};
+  }
 
-    ${EXPRESSIVE} .pencil {
-      animation: scribble ${DURATION.slow02} ${standard.expressive};
-    }
+  ${EXPRESSIVE} .pencil {
+    animation: scribble ${DURATION.slow02} ${standard.expressive};
   }
 
   @keyframes tilt {

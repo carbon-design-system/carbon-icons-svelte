@@ -22,6 +22,10 @@ jobs:
       - name: Test types
         run: bun run test:types
 
+      # Plays every animated icon in the runner's Chrome.
+      - name: Test motion
+        run: bun run test:motion
+
       - name: Trigger deploy
         if: github.ref == 'refs/heads/master'
         env:

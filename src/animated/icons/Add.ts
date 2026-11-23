@@ -16,14 +16,12 @@ export default {
     transform-origin: 16px 16px;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .plus {
-      animation: turn ${DURATION.slow01} ${standard.productive};
-    }
+  ${PRODUCTIVE} .plus {
+    animation: turn ${DURATION.slow01} ${standard.productive};
+  }
 
-    ${EXPRESSIVE} .plus {
-      animation: turn-overshoot ${DURATION.slow02};
-    }
+  ${EXPRESSIVE} .plus {
+    animation: turn-overshoot ${DURATION.slow02};
   }
 
   @keyframes turn {

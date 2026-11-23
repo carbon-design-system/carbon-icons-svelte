@@ -59,13 +59,20 @@ describe("animated icons", () => {
     for (const generate of ["client", "server"] as const) {
       const { warnings, css } = compile(templateAnimated(icon), { filename: `${name}.svelte`, generate });
       expect(warnings).toEqual([]);
-      // Every rule that plays the animation is gated by reduced motion.
-      expect(css?.code).toContain("@media (prefers-reduced-motion: no-preference)");
+      // Reduced-motion users get a fade, if anything.
+      expect(css?.code).toContain('svg[data-playing="fade"]');
     }
   });
 
   // Each icon has a productive and an expressive mode, built from Carbon's
   // motion tokens only. Percentages in keyframes aren't durations.
+  // `animate.js` decides whether to play for users who prefer reduced
+  // motion, so `reducedMotion="full"` can override it. A media query in the
+  // icon's CSS would block that.
+  test.each(cases)("%s leaves reduced motion to animate.js", (_, icon) => {
+    expect(icon.css).not.toContain("prefers-reduced-motion");
+  });
+
   test.each(cases)("%s has both motion modes, using Carbon motion tokens", (_, icon) => {
     expect(icon.css).toContain(PRODUCTIVE);
     expect(icon.css).toContain(EXPRESSIVE);
@@ -79,11 +86,11 @@ describe("animated icons", () => {
 
   test("gives masks and clip paths a unique id prefix per instance", () => {
     const checkmark = templateAnimated(ANIMATED_ICONS.find(({ name }) => name === "Checkmark")!);
-    expect(checkmark).toContain('import { animate, uid } from "./animate.js";');
+    expect(checkmark).toContain('import { animate, getAnimatedIconDefaults, uid } from "./animate.js";');
     expect(checkmark).toContain("const id = uid();");
 
     const renew = templateAnimated(ANIMATED_ICONS.find(({ name }) => name === "Renew")!);
-    expect(renew).toContain('import { animate } from "./animate.js";');
+    expect(renew).toContain('import { animate, getAnimatedIconDefaults } from "./animate.js";');
     expect(renew).not.toContain("uid");
   });
 

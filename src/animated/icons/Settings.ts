@@ -19,14 +19,12 @@ export default {
     transform-origin: 16px 16px;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .gear {
-      animation: turn ${DURATION.slow01} ${standard.productive};
-    }
+  ${PRODUCTIVE} .gear {
+    animation: turn ${DURATION.slow01} ${standard.productive};
+  }
 
-    ${EXPRESSIVE} .gear {
-      animation: turn-overshoot ${DURATION.slow02};
-    }
+  ${EXPRESSIVE} .gear {
+    animation: turn-overshoot ${DURATION.slow02};
   }
 
   @keyframes turn {

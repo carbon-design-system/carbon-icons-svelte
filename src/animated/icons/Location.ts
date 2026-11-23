@@ -20,14 +20,12 @@ export default {
     transform-origin: 16px 30px;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .pin {
-      animation: hop ${DURATION.slow01};
-    }
+  ${PRODUCTIVE} .pin {
+    animation: hop ${DURATION.slow01};
+  }
 
-    ${EXPRESSIVE} .pin {
-      animation: hop-squash ${DURATION.slow02};
-    }
+  ${EXPRESSIVE} .pin {
+    animation: hop-squash ${DURATION.slow02};
   }
 
   @keyframes hop {

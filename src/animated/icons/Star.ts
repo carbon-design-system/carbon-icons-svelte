@@ -18,16 +18,14 @@ export default {
     transform-origin: 16px 17.48px;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .star {
-      animation: turn ${DURATION.slow01} ${standard.productive},
-        shrink ${DURATION.slow01} ${standard.productive};
-    }
+  ${PRODUCTIVE} .star {
+    animation: turn ${DURATION.slow01} ${standard.productive},
+      shrink ${DURATION.slow01} ${standard.productive};
+  }
 
-    ${EXPRESSIVE} .star {
-      animation: turn-overshoot ${DURATION.slow02},
-        shrink ${DURATION.slow02} ${standard.expressive};
-    }
+  ${EXPRESSIVE} .star {
+    animation: turn-overshoot ${DURATION.slow02},
+      shrink ${DURATION.slow02} ${standard.expressive};
   }
 
   @keyframes turn {

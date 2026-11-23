@@ -11,14 +11,12 @@ export default {
   name: "ChevronRight",
   sourceHash: "de3ce9bcd5df",
   content: `<path class="chevron" d="M22 16 12 26 10.6 24.6 19.2 16 10.6 7.4 12 6z" />`,
-  css: `  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .chevron {
-      animation: nudge ${DURATION.slow01};
-    }
+  css: `  ${PRODUCTIVE} .chevron {
+    animation: nudge ${DURATION.slow01};
+  }
 
-    ${EXPRESSIVE} .chevron {
-      animation: nudge-spring ${DURATION.slow02};
-    }
+  ${EXPRESSIVE} .chevron {
+    animation: nudge-spring ${DURATION.slow02};
   }
 
   @keyframes nudge {

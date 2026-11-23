@@ -9,7 +9,7 @@
 
 import type { IconOutput } from "@carbon/icons";
 import { RULES, ruleIcons } from "./rules.js";
-import type { AnimatedIcon } from "./shared.js";
+import { DURATION, EASING, type AnimatedIcon } from "./shared.js";
 import Add from "./icons/Add.js";
 import Checkmark from "./icons/Checkmark.js";
 import ChevronRight from "./icons/ChevronRight.js";
@@ -22,6 +22,14 @@ import Location from "./icons/Location.js";
 import Locked from "./icons/Locked.js";
 import Notification from "./icons/Notification.js";
 import Renew from "./icons/Renew.js";
+import RotateClockwise from "./icons/RotateClockwise.js";
+import RotateClockwiseAlt from "./icons/RotateClockwiseAlt.js";
+import RotateClockwiseAltFilled from "./icons/RotateClockwiseAltFilled.js";
+import RotateClockwiseFilled from "./icons/RotateClockwiseFilled.js";
+import RotateCounterclockwise from "./icons/RotateCounterclockwise.js";
+import RotateCounterclockwiseAlt from "./icons/RotateCounterclockwiseAlt.js";
+import RotateCounterclockwiseAltFilled from "./icons/RotateCounterclockwiseAltFilled.js";
+import RotateCounterclockwiseFilled from "./icons/RotateCounterclockwiseFilled.js";
 import Search from "./icons/Search.js";
 import Send from "./icons/Send.js";
 import Settings from "./icons/Settings.js";
@@ -49,6 +57,14 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   Locked,
   Notification,
   Renew,
+  RotateClockwise,
+  RotateClockwiseAlt,
+  RotateClockwiseAltFilled,
+  RotateClockwiseFilled,
+  RotateCounterclockwise,
+  RotateCounterclockwiseAlt,
+  RotateCounterclockwiseAltFilled,
+  RotateCounterclockwiseFilled,
   Search,
   Send,
   Settings,
@@ -65,11 +81,32 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
 /** Content that references `{id}` gets a unique id prefix per instance. */
 const ID_PATTERN = /\{id\}/;
 
+/** How long a mouse rests on the trigger before the icon plays: Carbon's moderate-01. */
+export const HOVER_DELAY = parseInt(DURATION.moderate01);
+
+/**
+ * What plays for users who prefer reduced motion with `reducedMotion="fade"`:
+ * the icon dims and comes back, without moving.
+ */
+const FADE_CSS = `  svg[data-playing="fade"] {
+    animation: reduced-fade ${DURATION.slow01} ${EASING.standard.productive};
+  }
+
+  svg[data-playing="fade"][data-motion="expressive"] {
+    animation: reduced-fade ${DURATION.slow02} ${EASING.standard.expressive};
+  }
+
+  @keyframes reduced-fade {
+    50% {
+      opacity: 0.4;
+    }
+  }`;
+
 export const templateAnimated = ({ content, css }: AnimatedIcon) => {
   const usesId = ID_PATTERN.test(content);
 
   return `<script>
-  import { animate${usesId ? ", uid" : ""} } from "./animate.js";
+  import { animate, getAnimatedIconDefaults${usesId ? ", uid" : ""} } from "./animate.js";
 
   export let size = 16;
 
@@ -77,15 +114,27 @@ export const templateAnimated = ({ content, css }: AnimatedIcon) => {
 
   export let play = false;
 
-  export let trigger = "hover";
+  export let trigger = undefined;
 
-  export let motion = "productive";
+  export let motion = undefined;
+
+  export let reducedMotion = undefined;
+
+  export let hoverDelay = undefined;
+
+  const defaults = getAnimatedIconDefaults();
 ${usesId ? "\n  const id = uid();\n" : ""}
   $: labelled = $$props["aria-label"] || $$props["aria-labelledby"] || title;
   $: attributes = {
     "aria-hidden": labelled ? undefined : true,
     role: labelled ? "img" : undefined,
     focusable: Number($$props["tabindex"]) === 0 ? true : undefined
+  };
+  $: options = {
+    play,
+    trigger: trigger ?? defaults.trigger ?? "hover",
+    reducedMotion: reducedMotion ?? defaults.reducedMotion ?? "static",
+    hoverDelay: hoverDelay ?? defaults.hoverDelay ?? ${HOVER_DELAY}
   };
 </script>
 
@@ -96,8 +145,8 @@ ${usesId ? "\n  const id = uid();\n" : ""}
   preserveAspectRatio="xMidYMid meet"
   width={size}
   height={size}
-  data-motion={motion}
-  use:animate={{ play, trigger }}
+  data-motion={motion ?? defaults.motion ?? "productive"}
+  use:animate={options}
   {...attributes}
   {...$$restProps}>
   {#if title}<title>{title}</title>{/if}
@@ -106,6 +155,8 @@ ${usesId ? "\n  const id = uid();\n" : ""}
 
 <style>
 ${css}
+
+${FADE_CSS}
 </style>
 `;
 };
@@ -113,18 +164,12 @@ ${css}
 const definitions = (names: string[]) => `import type { ComponentConstructorOptions, SvelteComponent } from "svelte";
 import type { CarbonIconProps } from "../index.js";
 
-export type CarbonAnimatedIconProps = CarbonIconProps & {
+/** Props that \`setAnimatedIconDefaults\` can set for every icon below a component. */
+export type CarbonAnimatedIconDefaults = {
   /**
-   * Plays the animation each time this changes to a truthy value.
-   * Increment a number to replay it on demand.
-   * @default false
-   */
-  play?: boolean | number;
-
-  /**
-   * \`"hover"\` plays the animation when the pointer enters the icon or the
-   * link, button, label or summary around it, or when that gets keyboard focus.
-   * \`"none"\` plays it only through \`play\`.
+   * \`"hover"\` plays the animation when a mouse rests on the icon, or on the
+   * link, button, label or summary around it, for \`hoverDelay\` ms, or when
+   * that gets keyboard focus. \`"none"\` plays it only through \`play\`.
    * @default "hover"
    */
   trigger?: "hover" | "none";
@@ -135,7 +180,33 @@ export type CarbonAnimatedIconProps = CarbonIconProps & {
    * @default "productive"
    */
   motion?: "productive" | "expressive";
+
+  /**
+   * What plays when the user prefers reduced motion. \`"static"\` plays
+   * nothing. \`"fade"\` dims the icon and brings it back, without moving it.
+   * \`"full"\` plays the full motion anyway; use it only when the motion is
+   * essential to understanding the change.
+   * @default "static"
+   */
+  reducedMotion?: "static" | "fade" | "full";
+
+  /**
+   * How long, in ms, a mouse must rest on the trigger before the icon plays,
+   * so sweeping across a toolbar plays nothing.
+   * @default ${HOVER_DELAY}
+   */
+  hoverDelay?: number;
 };
+
+export type CarbonAnimatedIconProps = CarbonIconProps &
+  CarbonAnimatedIconDefaults & {
+    /**
+     * Plays the animation each time this changes to a truthy value.
+     * Increment a number to replay it on demand.
+     * @default false
+     */
+    play?: boolean | number;
+  };
 
 /** See \`CarbonIcon\` in \`../index.d.ts\`. */
 type CarbonAnimatedIcon = typeof import("svelte") extends { mount: any }
@@ -143,6 +214,13 @@ type CarbonAnimatedIcon = typeof import("svelte") extends { mount: any }
   : new (
       options: ComponentConstructorOptions<CarbonAnimatedIconProps>
     ) => SvelteComponent<CarbonAnimatedIconProps, Record<string, any>, {}>;
+
+/**
+ * Sets defaults for every animated icon in this component and its children,
+ * such as icons passed to a component's \`icon\` prop, which can't take
+ * extra props. Call it while the component initializes. Props on an icon win.
+ */
+export declare function setAnimatedIconDefaults(defaults: CarbonAnimatedIconDefaults): void;
 
 ${names.map((name) => `export declare const ${name}: CarbonAnimatedIcon;`).join("\n")}
 `;
@@ -176,7 +254,11 @@ export const buildAnimated = async (lookup: IconLookup) => {
   }
 
   files.set("animate.js", await Bun.file(new URL("./animate.js", import.meta.url)).text());
-  files.set("index.js", names.map((name) => `export { default as ${name} } from "./${name}.svelte";\n`).join(""));
+  files.set(
+    "index.js",
+    'export { setAnimatedIconDefaults } from "./animate.js";\n' +
+      names.map((name) => `export { default as ${name} } from "./${name}.svelte";\n`).join("")
+  );
   files.set("index.d.ts", definitions(names));
   files.set(
     "icon.d.ts",

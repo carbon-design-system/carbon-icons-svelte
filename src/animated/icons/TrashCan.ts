@@ -23,14 +23,12 @@ export default {
     transform-origin: 4px 8px;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .lid {
-      animation: tip ${DURATION.slow01};
-    }
+  ${PRODUCTIVE} .lid {
+    animation: tip ${DURATION.slow01};
+  }
 
-    ${EXPRESSIVE} .lid {
-      animation: tip-shut ${DURATION.slow02};
-    }
+  ${EXPRESSIVE} .lid {
+    animation: tip-shut ${DURATION.slow02};
   }
 
   @keyframes tip {

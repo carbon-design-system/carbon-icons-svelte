@@ -20,14 +20,12 @@ export default {
     transform-origin: 16px 25px;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .signal {
-      animation: pulse ${DURATION.slow01};
-    }
+  ${PRODUCTIVE} .signal {
+    animation: pulse ${DURATION.slow01};
+  }
 
-    ${EXPRESSIVE} .signal {
-      animation: emit ${DURATION.moderate02} ${entrance.expressive} calc(var(--i) * ${DURATION.fast02}) backwards;
-    }
+  ${EXPRESSIVE} .signal {
+    animation: emit ${DURATION.moderate02} ${entrance.expressive} calc(var(--i) * ${DURATION.fast02}) backwards;
   }
 
   @keyframes pulse {

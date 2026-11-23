@@ -22,14 +22,12 @@ export default {
     transform-origin: 16px 30px;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .sign {
-      animation: rock ${DURATION.slow01} ${standard.productive};
-    }
+  ${PRODUCTIVE} .sign {
+    animation: rock ${DURATION.slow01} ${standard.productive};
+  }
 
-    ${EXPRESSIVE} .sign {
-      animation: wobble ${DURATION.slow02} ${standard.expressive};
-    }
+  ${EXPRESSIVE} .sign {
+    animation: wobble ${DURATION.slow02} ${standard.expressive};
   }
 
   @keyframes rock {

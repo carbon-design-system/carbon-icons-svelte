@@ -26,14 +26,12 @@ export default {
     transform-origin: 16px 16px;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .ray {
-      animation: pulse ${DURATION.slow01};
-    }
+  ${PRODUCTIVE} .ray {
+    animation: pulse ${DURATION.slow01};
+  }
 
-    ${EXPRESSIVE} .ray {
-      animation: radiate ${DURATION.moderate01} ${entrance.expressive} calc(var(--i) * ${DURATION.fast01}) backwards;
-    }
+  ${EXPRESSIVE} .ray {
+    animation: radiate ${DURATION.moderate01} ${entrance.expressive} calc(var(--i) * ${DURATION.fast01}) backwards;
   }
 
   @keyframes pulse {

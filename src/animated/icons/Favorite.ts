@@ -17,14 +17,12 @@ export default {
     transform-origin: 16px 16.5px;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .heart {
-      animation: beat ${DURATION.slow01};
-    }
+  ${PRODUCTIVE} .heart {
+    animation: beat ${DURATION.slow01};
+  }
 
-    ${EXPRESSIVE} .heart {
-      animation: heartbeat ${DURATION.slow02};
-    }
+  ${EXPRESSIVE} .heart {
+    animation: heartbeat ${DURATION.slow02};
   }
 
   @keyframes beat {

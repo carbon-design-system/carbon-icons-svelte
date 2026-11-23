@@ -21,18 +21,16 @@ export default {
     transform-origin: 16px 16px;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .long {
-      animation: turn ${DURATION.slow01} ${standard.productive};
-    }
+  ${PRODUCTIVE} .long {
+    animation: turn ${DURATION.slow01} ${standard.productive};
+  }
 
-    ${EXPRESSIVE} .long {
-      animation: turn-twice ${DURATION.slow02} ${standard.expressive};
-    }
+  ${EXPRESSIVE} .long {
+    animation: turn-twice ${DURATION.slow02} ${standard.expressive};
+  }
 
-    ${EXPRESSIVE} .short {
-      animation: turn ${DURATION.slow02} ${standard.expressive};
-    }
+  ${EXPRESSIVE} .short {
+    animation: turn ${DURATION.slow02} ${standard.expressive};
   }
 
   @keyframes turn {

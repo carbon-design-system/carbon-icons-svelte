@@ -1,0 +1,124 @@
+/**
+ * Plays every animated icon in a real browser, frame by frame, and checks
+ * what unit tests can't:
+ *
+ * - Nothing leaves the 32×32 canvas, except deliberate exits. Points are
+ *   sampled along every path, since bounding boxes overstate rotations.
+ *   Parts inside a `<clipPath>` wrapper are clipped on purpose.
+ * - Productive motion ends within 400ms, expressive within 700ms.
+ *
+ * Run `bun run prepack` first so `lib/animated/` exists. Uses an installed
+ * Chrome by default; pass `--browser firefox` or `--browser webkit` to use
+ * Playwright's builds (`bunx playwright-core install firefox webkit`).
+ */
+
+import { mkdir, readdir, rm } from "node:fs/promises";
+import { chromium, firefox, webkit } from "playwright-core";
+import { compile } from "svelte/compiler";
+import { render } from "svelte/server";
+import { DURATION } from "../src/animated/shared.js";
+
+/** Icons whose motion leaves the canvas on purpose, through the viewBox edge. */
+const EXITS = new Set(["Send/expressive"]);
+
+/** How far a part may stray past the canvas, in user units, before it counts. */
+const TOLERANCE = 0.5;
+
+const LIMITS = { productive: parseInt(DURATION.slow01), expressive: parseInt(DURATION.slow02) };
+
+const flag = process.argv.indexOf("--browser");
+const browserName = flag === -1 ? "chrome" : process.argv[flag + 1];
+const launch = {
+  chrome: () => chromium.launch({ channel: "chrome" }),
+  firefox: () => firefox.launch(),
+  webkit: () => webkit.launch(),
+}[browserName ?? ""];
+
+if (!launch) throw new Error(`Unknown browser: ${browserName}`);
+
+// Compile each component for the server next to a copy of its runtime, so
+// its `./animate.js` import resolves, then render both modes as if playing.
+const lib = "lib/animated";
+const out = "node_modules/.cache/check-animated-motion";
+await rm(out, { recursive: true, force: true });
+await mkdir(out, { recursive: true });
+await Bun.write(`${out}/animate.js`, Bun.file(`${lib}/animate.js`));
+
+const names = (await readdir(lib)).filter((file) => file.endsWith(".svelte")).map((file) => file.slice(0, -7));
+const heads = new Set<string>();
+let body = "";
+
+for (const name of names) {
+  const source = await Bun.file(`${lib}/${name}.svelte`).text();
+  const { js } = compile(source, { filename: `${name}.svelte`, generate: "server", css: "injected" });
+  await Bun.write(`${out}/${name}.js`, js.code);
+  const { default: Icon } = await import(`${process.cwd()}/${out}/${name}.js`);
+
+  for (const motion of ["productive", "expressive"]) {
+    const result = render(Icon, { props: { size: 32, motion, "data-playing": "motion", "data-key": `${name}/${motion}` } });
+    heads.add(result.head);
+    body += result.body;
+  }
+}
+
+const browser = await launch();
+const page = await browser.newPage();
+await page.setContent(`<!doctype html><html><head>${[...heads].join("")}</head><body>${body}</body></html>`);
+
+const results = await page.evaluate(
+  ({ limits, step }) => {
+    const svgs = [...document.querySelectorAll<SVGSVGElement>("svg[data-key]")];
+    const animations = svgs.flatMap((svg) => svg.getAnimations({ subtree: true }));
+    animations.forEach((animation) => animation.pause());
+
+    const report: Record<string, { overflow: number; end: number }> = {};
+    for (const svg of svgs) {
+      const end = Math.max(0, ...svg.getAnimations({ subtree: true }).map((a) => Number(a.effect?.getComputedTiming().endTime)));
+      report[svg.dataset.key!] = { overflow: 0, end };
+    }
+
+    for (let time = 0; time <= limits.expressive; time += step) {
+      animations.forEach((animation) => (animation.currentTime = time));
+
+      for (const svg of svgs) {
+        const toUser = svg.getScreenCTM()!.inverse();
+        const entry = report[svg.dataset.key!]!;
+
+        for (const shape of svg.querySelectorAll<SVGGeometryElement>("path, circle")) {
+          if (shape.closest("clipPath, mask, [clip-path]")) continue;
+          const matrix = toUser.multiply(shape.getScreenCTM()!);
+          const length = shape.getTotalLength();
+
+          for (let at = 0; at <= length; at += 1) {
+            const { x, y } = shape.getPointAtLength(at).matrixTransform(matrix);
+            entry.overflow = Math.max(entry.overflow, -x, x - 32, -y, y - 32);
+          }
+        }
+      }
+    }
+
+    return report;
+  },
+  { limits: LIMITS, step: 20 }
+);
+
+await browser.close();
+
+const failures: string[] = [];
+
+for (const [key, { overflow, end }] of Object.entries(results)) {
+  const motion = key.split("/")[1] as keyof typeof LIMITS;
+
+  if (end === 0) failures.push(`${key}: doesn't animate`);
+  if (end > LIMITS[motion]) failures.push(`${key}: runs ${end}ms, over ${LIMITS[motion]}ms`);
+  if (overflow > TOLERANCE && !EXITS.has(key)) {
+    failures.push(`${key}: leaves the canvas by ${overflow.toFixed(2)} units`);
+  }
+}
+
+console.log(`Checked ${names.length} animated icons in both modes in ${browserName}.`);
+
+if (failures.length > 0) {
+  console.error(failures.join("\n"));
+  process.exit(1);
+}

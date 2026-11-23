@@ -23,19 +23,17 @@ export default {
     transform-origin: 16px 1px;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .bell,
-    ${PRODUCTIVE} .clapper {
-      animation: swing ${DURATION.slow01} ${standard.productive};
-    }
+  ${PRODUCTIVE} .bell,
+  ${PRODUCTIVE} .clapper {
+    animation: swing ${DURATION.slow01} ${standard.productive};
+  }
 
-    ${EXPRESSIVE} .bell {
-      animation: ring ${DURATION.slow02} ${standard.expressive};
-    }
+  ${EXPRESSIVE} .bell {
+    animation: ring ${DURATION.slow02} ${standard.expressive};
+  }
 
-    ${EXPRESSIVE} .clapper {
-      animation: ring-clapper ${DURATION.slow02} ${standard.expressive};
-    }
+  ${EXPRESSIVE} .clapper {
+    animation: ring-clapper ${DURATION.slow02} ${standard.expressive};
   }
 
   @keyframes swing {

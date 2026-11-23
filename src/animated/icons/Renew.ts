@@ -21,18 +21,16 @@ export default {
     transform-origin: 16px 16px;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .arrows {
-      animation:
-        spin ${DURATION.slow01} ${standard.productive},
-        shrink ${DURATION.slow01} ${standard.productive};
-    }
+  ${PRODUCTIVE} .arrows {
+    animation:
+      spin ${DURATION.slow01} ${standard.productive},
+      shrink ${DURATION.slow01} ${standard.productive};
+  }
 
-    ${EXPRESSIVE} .arrows {
-      animation:
-        spin-overshoot ${DURATION.slow02},
-        shrink-hold ${DURATION.slow02} ${standard.expressive};
-    }
+  ${EXPRESSIVE} .arrows {
+    animation:
+      spin-overshoot ${DURATION.slow02},
+      shrink-hold ${DURATION.slow02} ${standard.expressive};
   }
 
   @keyframes spin {

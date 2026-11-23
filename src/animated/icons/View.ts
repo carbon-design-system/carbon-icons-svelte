@@ -34,14 +34,12 @@ export default {
     transform-origin: 16px 16px;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    ${PRODUCTIVE} .fold {
-      animation: blink ${DURATION.slow01};
-    }
+  ${PRODUCTIVE} .fold {
+    animation: blink ${DURATION.slow01};
+  }
 
-    ${EXPRESSIVE} .fold {
-      animation: blink-twice ${DURATION.slow02};
-    }
+  ${EXPRESSIVE} .fold {
+    animation: blink-twice ${DURATION.slow02};
   }
 
   @keyframes blink {
