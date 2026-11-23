@@ -71,7 +71,10 @@ for (const name of names) {
 
 const browser = await launch();
 const page = await browser.newPage();
-await page.setContent(`<!doctype html><html><head>${[...heads].join("")}</head><body>${body}</body></html>`);
+// Start every animation paused: on a slow machine, one-shots would finish,
+// and drop out of `getAnimations()`, before they're read.
+const paused = "<style>* { animation-play-state: paused !important; }</style>";
+await page.setContent(`<!doctype html><html><head>${[...heads].join("")}${paused}</head><body>${body}</body></html>`);
 
 // Let every engine create the animations before reading them.
 await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
