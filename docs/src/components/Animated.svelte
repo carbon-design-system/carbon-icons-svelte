@@ -250,7 +250,7 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
 
 <Button on:click={() => saved++}>
   Save
-  <Checkmark slot="icon" class="bx--btn__icon" aria-hidden="true"
+  <Checkmark slot="icon" class="bx--btn__icon"
     play={saved} trigger="none" motion="expressive" />
 </Button>`;
 
@@ -274,8 +274,8 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
 <\/script>
 
 <Button kind="tertiary" disabled={refreshing} on:click={refresh}>
-  {refreshing ? "Refreshing" : "Refresh"}
-  <Renew slot="icon" class="bx--btn__icon" aria-hidden="true" loop={refreshing} />
+  Refresh
+  <Renew slot="icon" class="bx--btn__icon" loop={refreshing} />
 </Button>`;
 
   const statesCode = `<script>
@@ -293,14 +293,14 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
 <\/script>
 
 <Button kind="secondary" disabled={status === "active"} on:click={download}>
-  {status === "active" ? "Downloading" : status === "done" ? "Downloaded" : "Download"}
+  Download
   <svelte:fragment slot="icon">
     {#if status === "active"}
-      <InProgress class="bx--btn__icon" aria-hidden="true" loop />
+      <InProgress class="bx--btn__icon" loop />
     {:else if status === "done"}
-      <CheckmarkFilled class="bx--btn__icon" aria-hidden="true" play motion="expressive" />
+      <CheckmarkFilled class="bx--btn__icon" play motion="expressive" />
     {:else}
-      <Download class="bx--btn__icon" aria-hidden="true" />
+      <Download class="bx--btn__icon" />
     {/if}
   </svelte:fragment>
 </Button>`;
@@ -422,16 +422,17 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
         <p>
           For a moment that matters, like a save or a new notification, play the icon from your own state with
           <code>play</code>. It plays each time <code>play</code> changes to a truthy value, so increment a number to
-          replay it. <code>Button</code> passes props to an icon in its <code>icon</code> slot.
+          replay it. To pass props to an icon in a <code>Button</code>, put it in the <code>icon</code> slot with the
+          <code>bx--btn__icon</code> class that <code>Button</code> gives its own icons.
         </p>
         <div class="demo">
           <div class="demo-row">
             <Button on:click={() => saved++}>
               Save
-              <Checkmark slot="icon" class="bx--btn__icon" aria-hidden="true" play={saved} trigger="none" motion="expressive" />
+              <Checkmark slot="icon" class="bx--btn__icon" play={saved} trigger="none" motion="expressive" />
             </Button>
             <Button kind="ghost" iconDescription="Notifications ({unread} unread)">
-              <Notification slot="icon" class="bx--btn__icon" aria-hidden="true" play={unread} trigger="none" motion="expressive" />
+              <Notification slot="icon" class="bx--btn__icon" play={unread} trigger="none" motion="expressive" />
             </Button>
             <Button kind="tertiary" size="small" on:click={() => unread++}>Simulate a notification</Button>
           </div>
@@ -450,8 +451,8 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
         <div class="demo">
           <div class="demo-row">
             <Button kind="tertiary" disabled={refreshing} on:click={refresh}>
-              {refreshing ? "Refreshing" : "Refresh"}
-              <Renew slot="icon" class="bx--btn__icon" aria-hidden="true" loop={refreshing} />
+              Refresh
+              <Renew slot="icon" class="bx--btn__icon" loop={refreshing} />
             </Button>
           </div>
           <div class="demo-row">
@@ -471,29 +472,29 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
           <code>&lt;svelte:fragment slot="icon"&gt;</code>, since a slot can't be set inside a block. Each icon plays
           the way that state needs: <code>Download</code> on hover while idle, <code>InProgress</code> on a
           <code>loop</code> while working, and <code>CheckmarkFilled</code> once with <code>play</code> as it appears,
-          since an icon that mounts with a truthy <code>play</code> plays right away. Change the label too, so the
-          state isn't only shown by the icon.
+          since an icon that mounts with a truthy <code>play</code> plays right away. The icon has the
+          <code>bx--btn__icon</code> class that <code>Button</code> gives its own icons, for its spacing and color.
         </p>
         <div class="demo">
           <div class="demo-row">
             <Button kind="secondary" disabled={status === "active"} on:click={download}>
-              {status === "active" ? "Downloading" : status === "done" ? "Downloaded" : "Download"}
+              Download
               <svelte:fragment slot="icon">
                 {#if status === "active"}
-                  <InProgress class="bx--btn__icon" aria-hidden="true" loop />
+                  <InProgress class="bx--btn__icon" loop />
                 {:else if status === "done"}
-                  <CheckmarkFilled class="bx--btn__icon" aria-hidden="true" play motion="expressive" />
+                  <CheckmarkFilled class="bx--btn__icon" play motion="expressive" />
                 {:else}
-                  <Download class="bx--btn__icon" aria-hidden="true" />
+                  <Download class="bx--btn__icon" />
                 {/if}
               </svelte:fragment>
             </Button>
             <Button kind="ghost" iconDescription={copied ? "Copied" : "Copy"} on:click={copy}>
               <svelte:fragment slot="icon">
                 {#if copied}
-                  <Checkmark class="bx--btn__icon" aria-hidden="true" play style="margin-left: 0" />
+                  <Checkmark class="bx--btn__icon" play style="margin-left: 0" />
                 {:else}
-                  <Copy class="bx--btn__icon" aria-hidden="true" style="margin-left: 0" />
+                  <Copy class="bx--btn__icon" style="margin-left: 0" />
                 {/if}
               </svelte:fragment>
             </Button>
@@ -585,7 +586,7 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
                   this={Animated[name]}
                   slot="icon"
                   class="bx--btn__icon"
-                  aria-hidden="true"
+                 
                   {motion}
                   {trigger}
                   {reducedMotion}

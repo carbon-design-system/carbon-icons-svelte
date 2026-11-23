@@ -174,8 +174,7 @@ Use `play` to run the animation yourself. It plays when the icon mounts with a t
 
 <Button on:click={() => saved++}>
   Save
-  <Checkmark slot="icon" class="bx--btn__icon" aria-hidden="true"
-    play={saved} trigger="none" motion="expressive" />
+  <Checkmark slot="icon" class="bx--btn__icon" play={saved} trigger="none" motion="expressive" />
 </Button>
 ```
 
@@ -199,7 +198,7 @@ Progress and refresh icons can loop while something is in progress. When `loop` 
 
 <Button disabled={refreshing} on:click={refresh}>
   Refresh
-  <Renew slot="icon" class="bx--btn__icon" aria-hidden="true" loop={refreshing} />
+  <Renew slot="icon" class="bx--btn__icon" loop={refreshing} />
 </Button>
 ```
 
