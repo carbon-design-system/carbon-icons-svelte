@@ -4,10 +4,13 @@ import type { IconOutput } from "@carbon/icons";
 import { RULES, ruleIcons } from "./rules.js";
 import { DURATION, EASING, type AnimatedIcon } from "./shared.js";
 import AddIcon from "./icons/Add.js";
+import ArrowsHorizontalIcon from "./icons/ArrowsHorizontal.js";
+import ArrowsVerticalIcon from "./icons/ArrowsVertical.js";
 import CheckmarkIcon from "./icons/Checkmark.js";
 import CheckmarkFilledIcon from "./icons/CheckmarkFilled.js";
 import CheckmarkOutlineIcon from "./icons/CheckmarkOutline.js";
 import ChevronRightIcon from "./icons/ChevronRight.js";
+import CloseIcon from "./icons/Close.js";
 import CopyIcon from "./icons/Copy.js";
 import DownloadIcon from "./icons/Download.js";
 import EditIcon from "./icons/Edit.js";
@@ -15,10 +18,18 @@ import EditOffIcon from "./icons/EditOff.js";
 import ErrorIcon from "./icons/Error.js";
 import ErrorFilledIcon from "./icons/ErrorFilled.js";
 import FavoriteIcon from "./icons/Favorite.js";
+import FavoriteFilledIcon from "./icons/FavoriteFilled.js";
+import InformationIcon from "./icons/Information.js";
+import InformationFilledIcon from "./icons/InformationFilled.js";
+import InformationSquareFilledIcon from "./icons/InformationSquareFilled.js";
+import LaunchIcon from "./icons/Launch.js";
 import LightIcon from "./icons/Light.js";
 import LocationIcon from "./icons/Location.js";
 import LockedIcon from "./icons/Locked.js";
+import MenuIcon from "./icons/Menu.js";
 import NotificationIcon from "./icons/Notification.js";
+import OverflowMenuHorizontalIcon from "./icons/OverflowMenuHorizontal.js";
+import OverflowMenuVerticalIcon from "./icons/OverflowMenuVertical.js";
 import RenewIcon from "./icons/Renew.js";
 import RotateClockwiseIcon from "./icons/RotateClockwise.js";
 import RotateClockwiseAltIcon from "./icons/RotateClockwiseAlt.js";
@@ -32,6 +43,8 @@ import SearchIcon from "./icons/Search.js";
 import SendIcon from "./icons/Send.js";
 import SettingsIcon from "./icons/Settings.js";
 import StarIcon from "./icons/Star.js";
+import StarFilledIcon from "./icons/StarFilled.js";
+import SubtractIcon from "./icons/Subtract.js";
 import TimeIcon from "./icons/Time.js";
 import TrashCanIcon from "./icons/TrashCan.js";
 import UploadIcon from "./icons/Upload.js";
@@ -51,10 +64,13 @@ export type { AnimatedIcon } from "./shared.js";
 // Suffixed so icon names like `Error` don't shadow globals.
 export const ANIMATED_ICONS: AnimatedIcon[] = [
   AddIcon,
+  ArrowsHorizontalIcon,
+  ArrowsVerticalIcon,
   CheckmarkIcon,
   CheckmarkFilledIcon,
   CheckmarkOutlineIcon,
   ChevronRightIcon,
+  CloseIcon,
   CopyIcon,
   DownloadIcon,
   EditIcon,
@@ -62,10 +78,18 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   ErrorIcon,
   ErrorFilledIcon,
   FavoriteIcon,
+  FavoriteFilledIcon,
+  InformationIcon,
+  InformationFilledIcon,
+  InformationSquareFilledIcon,
+  LaunchIcon,
   LightIcon,
   LocationIcon,
   LockedIcon,
+  MenuIcon,
   NotificationIcon,
+  OverflowMenuHorizontalIcon,
+  OverflowMenuVerticalIcon,
   RenewIcon,
   RotateClockwiseIcon,
   RotateClockwiseAltIcon,
@@ -79,6 +103,8 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   SendIcon,
   SettingsIcon,
   StarIcon,
+  StarFilledIcon,
+  SubtractIcon,
   TimeIcon,
   TrashCanIcon,
   UploadIcon,
