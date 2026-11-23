@@ -169,7 +169,7 @@ export type CarbonAnimatedIconProps = CarbonIconProps &
     /**
      * Repeats the animation while \`true\`, for progress. When it turns
      * \`false\`, the current cycle finishes and the icon stops at rest. Only
-     * icons with a loop respond: the progress icons (\`CircleDash\`,
+     * icons with a loop respond: the progress icons (\`CircleDash\`, \`Hourglass\`,
      * \`InProgress\`, \`Incomplete\`, \`Pending\`, \`PendingFilled\`) and the
      * refresh and processing icons (\`Renew\`, \`RenewAlt\`, \`Restart\`,
      * \`Reset\`, \`Repeat\`, \`Recycle\`, \`Settings\`, \`Time\`).
@@ -208,6 +208,7 @@ export declare const CaretDown: CarbonAnimatedIcon;
 export declare const CaretLeft: CarbonAnimatedIcon;
 export declare const CaretRight: CarbonAnimatedIcon;
 export declare const CaretUp: CarbonAnimatedIcon;
+export declare const Chat: CarbonAnimatedIcon;
 export declare const Checkmark: CarbonAnimatedIcon;
 export declare const CheckmarkFilled: CarbonAnimatedIcon;
 export declare const CheckmarkOutline: CarbonAnimatedIcon;
@@ -225,10 +226,12 @@ export declare const DoubleChevronRight: CarbonAnimatedIcon;
 export declare const Download: CarbonAnimatedIcon;
 export declare const Edit: CarbonAnimatedIcon;
 export declare const EditOff: CarbonAnimatedIcon;
+export declare const Email: CarbonAnimatedIcon;
 export declare const Error: CarbonAnimatedIcon;
 export declare const ErrorFilled: CarbonAnimatedIcon;
 export declare const Favorite: CarbonAnimatedIcon;
 export declare const FavoriteFilled: CarbonAnimatedIcon;
+export declare const Hourglass: CarbonAnimatedIcon;
 export declare const InProgress: CarbonAnimatedIcon;
 export declare const Incomplete: CarbonAnimatedIcon;
 export declare const Information: CarbonAnimatedIcon;
@@ -237,19 +240,26 @@ export declare const InformationSquareFilled: CarbonAnimatedIcon;
 export declare const JumpLink: CarbonAnimatedIcon;
 export declare const Launch: CarbonAnimatedIcon;
 export declare const Light: CarbonAnimatedIcon;
+export declare const Link: CarbonAnimatedIcon;
 export declare const Location: CarbonAnimatedIcon;
 export declare const Locked: CarbonAnimatedIcon;
+export declare const Maximize: CarbonAnimatedIcon;
 export declare const Menu: CarbonAnimatedIcon;
 export declare const MicrophoneOff: CarbonAnimatedIcon;
+export declare const Minimize: CarbonAnimatedIcon;
 export declare const Notification: CarbonAnimatedIcon;
 export declare const OverflowMenuHorizontal: CarbonAnimatedIcon;
 export declare const OverflowMenuVertical: CarbonAnimatedIcon;
 export declare const PageFirst: CarbonAnimatedIcon;
 export declare const PageLast: CarbonAnimatedIcon;
+export declare const Pause: CarbonAnimatedIcon;
+export declare const PauseFilled: CarbonAnimatedIcon;
 export declare const Pending: CarbonAnimatedIcon;
 export declare const PendingFilled: CarbonAnimatedIcon;
 export declare const Pin: CarbonAnimatedIcon;
 export declare const PinFilled: CarbonAnimatedIcon;
+export declare const Play: CarbonAnimatedIcon;
+export declare const PlayFilled: CarbonAnimatedIcon;
 export declare const Recycle: CarbonAnimatedIcon;
 export declare const Redo: CarbonAnimatedIcon;
 export declare const Renew: CarbonAnimatedIcon;
@@ -274,10 +284,13 @@ export declare const SkipForward: CarbonAnimatedIcon;
 export declare const SkipForwardFilled: CarbonAnimatedIcon;
 export declare const Star: CarbonAnimatedIcon;
 export declare const StarFilled: CarbonAnimatedIcon;
+export declare const Stop: CarbonAnimatedIcon;
+export declare const StopFilled: CarbonAnimatedIcon;
 export declare const Subtract: CarbonAnimatedIcon;
 export declare const Time: CarbonAnimatedIcon;
 export declare const TrashCan: CarbonAnimatedIcon;
 export declare const Undo: CarbonAnimatedIcon;
+export declare const Unlink: CarbonAnimatedIcon;
 export declare const Unlocked: CarbonAnimatedIcon;
 export declare const Upload: CarbonAnimatedIcon;
 export declare const View: CarbonAnimatedIcon;
@@ -292,5 +305,7 @@ export declare const WarningFilled: CarbonAnimatedIcon;
 export declare const WarningSquareFilled: CarbonAnimatedIcon;
 export declare const Wifi: CarbonAnimatedIcon;
 export declare const WifiOff: CarbonAnimatedIcon;
+export declare const ZoomIn: CarbonAnimatedIcon;
+export declare const ZoomOut: CarbonAnimatedIcon;
 "
 `;

@@ -119,7 +119,7 @@ You can use `fill` to customize the color or pass any other valid `svg` attribut
 
 Some icons have animated versions, in `carbon-icons-svelte/animated`. They take the same props as the static icons, plus the ones [below](#animated-icon-props). See them all, in Carbon components, on the [preview site](https://carbon-icons-svelte.onrender.com/#animated).
 
-- **Hand-built**, with parts that move on their own: `Add`, `ArrowsHorizontal`, `ArrowsVertical`, `Checkmark`, `CheckmarkFilled`, `CheckmarkOutline`, `ChevronRight`, `CircleDash`, `Close`, `CloudDownload`, `CloudUpload`, `Copy`, `Download`, `Edit`, `EditOff`, `Error`, `ErrorFilled`, `Favorite`, `FavoriteFilled`, `InProgress`, `Incomplete`, `Information`, `InformationFilled`, `InformationSquareFilled`, `Launch`, `Light`, `Location`, `Locked`, `Menu`, `MicrophoneOff`, `Notification`, `OverflowMenuHorizontal`, `OverflowMenuVertical`, `Pending`, `PendingFilled`, `Pin`, `PinFilled`, `Renew`, `RotateClockwise*`, `RotateCounterclockwise*`, `Search`, `Send`, `Settings`, `Star`, `StarFilled`, `Subtract`, `Time`, `TrashCan`, `Unlocked`, `Upload`, `View`, `ViewOff`, `VolumeDown`, `VolumeUp`, `Warning`, `WarningAlt`, `WarningAltFilled`, `WarningAltInvertedFilled`, `WarningFilled`, `WarningSquareFilled`, `Wifi` and `WifiOff`.
+- **Hand-built**, with parts that move on their own: `Add`, `ArrowsHorizontal`, `ArrowsVertical`, `Chat`, `Checkmark`, `CheckmarkFilled`, `CheckmarkOutline`, `ChevronRight`, `CircleDash`, `Close`, `CloudDownload`, `CloudUpload`, `Copy`, `Download`, `Edit`, `EditOff`, `Email`, `Error`, `ErrorFilled`, `Favorite`, `FavoriteFilled`, `Hourglass`, `InProgress`, `Incomplete`, `Information`, `InformationFilled`, `InformationSquareFilled`, `Launch`, `Light`, `Link`, `Location`, `Locked`, `Maximize`, `Menu`, `MicrophoneOff`, `Minimize`, `Notification`, `OverflowMenuHorizontal`, `OverflowMenuVertical`, `Pause`, `PauseFilled`, `Pending`, `PendingFilled`, `Pin`, `PinFilled`, `Play`, `PlayFilled`, `Renew`, `RotateClockwise*`, `RotateCounterclockwise*`, `Search`, `Send`, `Settings`, `Star`, `StarFilled`, `Stop`, `StopFilled`, `Subtract`, `Time`, `TrashCan`, `Unlink`, `Unlocked`, `Upload`, `View`, `ViewOff`, `VolumeDown`, `VolumeUp`, `Warning`, `WarningAlt`, `WarningAltFilled`, `WarningAltInvertedFilled`, `WarningFilled`, `WarningSquareFilled`, `Wifi`, `WifiOff`, `ZoomIn` and `ZoomOut`.
 - **Whole-icon motion**: arrows, carets, chevrons, paging, skip, undo and redo icons nudge the way they point, and `Recycle`, `RenewAlt`, `Repeat`, `Reset` and `Restart` turn. See [`src/animated/rules.ts`](src/animated/rules.ts) for the full list.
 
 ```svelte
@@ -202,7 +202,7 @@ Progress and refresh icons can loop while something is in progress. When `loop` 
 </Button>
 ```
 
-These icons loop: `CircleDash`, `InProgress`, `Incomplete`, `Pending`, `PendingFilled`, `Renew`, `RenewAlt`, `Restart`, `Reset`, `Repeat`, `Recycle`, `Settings` and `Time`. Others ignore `loop`.
+These icons loop: `CircleDash`, `Hourglass`, `InProgress`, `Incomplete`, `Pending`, `PendingFilled`, `Renew`, `RenewAlt`, `Restart`, `Reset`, `Repeat`, `Recycle`, `Settings` and `Time`. Others ignore `loop`.
 
 ### Motion
 

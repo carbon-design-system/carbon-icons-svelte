@@ -956,3 +956,323 @@ export const hopAlong = (icon: Family & { direction: [number, number] }): Animat
   }`,
   };
 };
+
+/**
+ * Media controls press in like a button and spring back, from the centre.
+ *
+ * Productive: a small press.
+ * Expressive: a deeper press that springs back past rest.
+ */
+export const press = (icon: Family): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: icon.content,
+  css: `${origin(".press", [16, 16])}
+
+  ${PRODUCTIVE} .press {
+    animation: press ${DURATION.slow01};
+  }
+
+  ${EXPRESSIVE} .press {
+    animation: press-spring ${DURATION.slow02};
+  }
+
+  @keyframes press {
+    0% {
+      transform: scale(1);
+      animation-timing-function: ${entrance.productive};
+    }
+    40% {
+      transform: scale(0.9);
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes press-spring {
+    0% {
+      transform: scale(1);
+      animation-timing-function: ${entrance.expressive};
+    }
+    30% {
+      transform: scale(0.86);
+      animation-timing-function: ${standard.expressive};
+    }
+    60% {
+      transform: scale(1.04);
+      animation-timing-function: ${standard.expressive};
+    }
+    100% {
+      transform: scale(1);
+    }
+  }`,
+});
+
+const diagonal = (dx: number, dy: number, units: number) =>
+  `translate(${Math.round(dx * units * 100) / 100}px, ${Math.round(dy * units * 100) / 100}px)`;
+
+/**
+ * Corner arrows (`.ne` top right, `.sw` bottom left) pull in toward the
+ * centre and spring back. They already reach the canvas corners, so they
+ * can't move out; for `Maximize` the pull reads as a wind-up.
+ *
+ * Productive: in 2 units and back.
+ * Expressive: in 3 units, back, a smaller bounce in, and rest.
+ */
+export const cornersIn = (icon: Family): AnimatedIcon => {
+  const frames = (name: string, dx: number, dy: number) => `  @keyframes ${name} {
+    0% {
+      transform: ${diagonal(dx, dy, 0)};
+      animation-timing-function: ${entrance.productive};
+    }
+    40% {
+      transform: ${diagonal(dx, dy, 2)};
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: ${diagonal(dx, dy, 0)};
+    }
+  }
+
+  @keyframes ${name}-bounce {
+    0% {
+      transform: ${diagonal(dx, dy, 0)};
+      animation-timing-function: ${entrance.expressive};
+    }
+    30% {
+      transform: ${diagonal(dx, dy, 3)};
+      animation-timing-function: ${exit.expressive};
+    }
+    55% {
+      transform: ${diagonal(dx, dy, 0)};
+      animation-timing-function: ${entrance.expressive};
+    }
+    72% {
+      transform: ${diagonal(dx, dy, 1)};
+      animation-timing-function: ${exit.expressive};
+    }
+    90%,
+    100% {
+      transform: ${diagonal(dx, dy, 0)};
+    }
+  }`;
+
+  return {
+    name: icon.name,
+    sourceHash: icon.sourceHash,
+    content: icon.content,
+    css: `  ${PRODUCTIVE} .ne {
+    animation: in-sw ${DURATION.slow01};
+  }
+
+  ${PRODUCTIVE} .sw {
+    animation: in-ne ${DURATION.slow01};
+  }
+
+  ${EXPRESSIVE} .ne {
+    animation: in-sw-bounce ${DURATION.slow02};
+  }
+
+  ${EXPRESSIVE} .sw {
+    animation: in-ne-bounce ${DURATION.slow02};
+  }
+
+${frames("in-sw", -0.7071, 0.7071)}
+
+${frames("in-ne", 0.7071, -0.7071)}`,
+  };
+};
+
+/**
+ * Magnifiers zoom: the lens grows (`scale` above 1) or shrinks around its
+ * centre, keeping the handle inside the canvas.
+ *
+ * Productive: grows or shrinks and comes back.
+ * Expressive: further, then past rest, and settles.
+ */
+export const zoom = (icon: Family & { scale: number }): AnimatedIcon => {
+  const further = Math.round((1 + (icon.scale - 1) * 1.4) * 100) / 100;
+  const past = Math.round((1 - (icon.scale - 1) * 0.3) * 100) / 100;
+
+  return {
+    name: icon.name,
+    sourceHash: icon.sourceHash,
+    content: icon.content,
+    css: `${origin(".lens", [13, 13])}
+
+  ${PRODUCTIVE} .lens {
+    animation: zoom ${DURATION.slow01};
+  }
+
+  ${EXPRESSIVE} .lens {
+    animation: zoom-spring ${DURATION.slow02};
+  }
+
+  @keyframes zoom {
+    0% {
+      transform: scale(1);
+      animation-timing-function: ${entrance.productive};
+    }
+    40% {
+      transform: scale(${icon.scale});
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes zoom-spring {
+    0% {
+      transform: scale(1);
+      animation-timing-function: ${entrance.expressive};
+    }
+    35% {
+      transform: scale(${further});
+      animation-timing-function: ${standard.expressive};
+    }
+    65% {
+      transform: scale(${past});
+      animation-timing-function: ${standard.expressive};
+    }
+    100% {
+      transform: scale(1);
+    }
+  }`,
+  };
+};
+
+/**
+ * Chain links (`.top` and `.bottom`) pull apart along their diagonal and
+ * come back together, as far as the canvas allows. Any `.spark` lines fade
+ * as they part.
+ *
+ * Productive: apart and back.
+ * Expressive: apart, back past rest into each other, and settle.
+ */
+export const pullApart = (icon: Family & { distance: number }): AnimatedIcon => {
+  const frames = (name: string, dx: number, dy: number) => `  @keyframes ${name} {
+    0% {
+      transform: ${diagonal(dx, dy, 0)};
+      animation-timing-function: ${entrance.productive};
+    }
+    40% {
+      transform: ${diagonal(dx, dy, icon.distance)};
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: ${diagonal(dx, dy, 0)};
+    }
+  }
+
+  @keyframes ${name}-snap {
+    0% {
+      transform: ${diagonal(dx, dy, 0)};
+      animation-timing-function: ${entrance.expressive};
+    }
+    35% {
+      transform: ${diagonal(dx, dy, icon.distance)};
+      animation-timing-function: ${exit.expressive};
+    }
+    60% {
+      transform: ${diagonal(dx, dy, -0.5)};
+      animation-timing-function: ${standard.expressive};
+    }
+    100% {
+      transform: ${diagonal(dx, dy, 0)};
+    }
+  }`;
+
+  return {
+    name: icon.name,
+    sourceHash: icon.sourceHash,
+    content: icon.content,
+    css: `  ${PRODUCTIVE} .top {
+    animation: apart-ne ${DURATION.slow01};
+  }
+
+  ${PRODUCTIVE} .bottom {
+    animation: apart-sw ${DURATION.slow01};
+  }
+
+  ${EXPRESSIVE} .top {
+    animation: apart-ne-snap ${DURATION.slow02};
+  }
+
+  ${EXPRESSIVE} .bottom {
+    animation: apart-sw-snap ${DURATION.slow02};
+  }
+
+  ${PRODUCTIVE} .spark {
+    animation: spark ${DURATION.slow01} ${standard.productive};
+  }
+
+  ${EXPRESSIVE} .spark {
+    animation: spark ${DURATION.slow02} ${standard.expressive};
+  }
+
+${frames("apart-ne", 0.7071, -0.7071)}
+
+${frames("apart-sw", -0.7071, 0.7071)}
+
+  @keyframes spark {
+    40% {
+      opacity: 0.2;
+    }
+  }`,
+  };
+};
+
+/**
+ * An envelope's flap (`.flap`) flips open about the envelope's top edge and
+ * closes. Passing through flat is how a real flap looks edge on. It opens
+ * to 85-90% so its tip stays inside the canvas.
+ *
+ * Productive: opens and closes.
+ * Expressive: opens a little further, holds, and closes.
+ */
+export const flap = (icon: Family & { hinge: [number, number] }): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: withRest(icon),
+  css: `${origin(".flap", icon.hinge)}${restCss(icon)}
+
+  ${PRODUCTIVE} .flap {
+    animation: open ${DURATION.slow01};
+  }
+
+  ${EXPRESSIVE} .flap {
+    animation: open-hold ${DURATION.slow02};
+  }
+
+  @keyframes open {
+    0% {
+      transform: scaleY(1);
+      animation-timing-function: ${entrance.productive};
+    }
+    45% {
+      transform: scaleY(-0.85);
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: scaleY(1);
+    }
+  }
+
+  @keyframes open-hold {
+    0% {
+      transform: scaleY(1);
+      animation-timing-function: ${entrance.expressive};
+    }
+    35%,
+    55% {
+      transform: scaleY(-0.9);
+      animation-timing-function: ${standard.expressive};
+    }
+    100% {
+      transform: scaleY(1);
+    }
+  }`,
+});
