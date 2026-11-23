@@ -4,7 +4,10 @@
  *
  * - Nothing leaves the 32×32 canvas, except deliberate exits. Points are
  *   sampled along every path, since bounding boxes overstate rotations.
- *   Parts inside a `<clipPath>` wrapper are clipped on purpose.
+ * - Parts inside a `<clipPath>` wrapper may pass through the clip in
+ *   expressive mode, but not in productive mode, where getting clipped
+ *   means getting cut off. A clip that splits a part at rest, like
+ *   `View`'s, is measured from where the part sits at rest.
  * - Productive motion ends within 400ms, expressive within 700ms.
  * - Icons that loop repeat forever, with a cycle of 700ms at most.
  *
@@ -87,22 +90,35 @@ const results = await page.evaluate(
       };
     }
 
+    // How far each clipped part already sits outside its clip at rest.
+    const atRest = new Map<Element, number>();
+
     for (let time = 0; time <= limits.expressive; time += step) {
       animations.forEach((animation) => (animation.currentTime = time));
 
       for (const svg of svgs) {
         const toUser = svg.getScreenCTM()!.inverse();
         const entry = report[svg.dataset.key!]!;
+        const productive = svg.dataset.key!.endsWith("/productive");
 
         for (const shape of svg.querySelectorAll<SVGGeometryElement>("path, circle, ellipse, rect, line, polyline, polygon")) {
-          if (shape.closest("clipPath, mask, [clip-path]") || !shape.checkVisibility()) continue;
+          if (shape.closest("clipPath, mask") || !shape.checkVisibility()) continue;
+          // A clipped part counts against its clip rect, and only in productive mode.
+          const clipped = shape.closest("[clip-path]");
+          if (clipped && !productive) continue;
+          const id = clipped?.getAttribute("clip-path")?.match(/#([^)]+)/)?.[1];
+          const rect = id ? svg.querySelector<SVGRectElement>(`[id="${id}"] rect`)!.getBBox() : { x: 0, y: 0, width: 32, height: 32 };
           const matrix = toUser.multiply(shape.getScreenCTM()!);
           const length = shape.getTotalLength();
+          let overflow = -Infinity;
 
           for (let at = 0; at <= length; at += 1) {
             const { x, y } = shape.getPointAtLength(at).matrixTransform(matrix);
-            entry.overflow = Math.max(entry.overflow, -x, x - 32, -y, y - 32);
+            overflow = Math.max(overflow, rect.x - x, x - rect.x - rect.width, rect.y - y, y - rect.y - rect.height);
           }
+
+          if (clipped && !atRest.has(shape)) atRest.set(shape, Math.max(0, overflow));
+          entry.overflow = Math.max(entry.overflow, overflow - (atRest.get(shape) ?? 0));
         }
       }
     }

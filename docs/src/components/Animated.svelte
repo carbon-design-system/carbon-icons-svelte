@@ -48,7 +48,7 @@
     .sort();
 
   const groups = [
-    { id: "animated-actions", title: "Actions", names: ["Add", "Close", "Subtract", "Edit", "EditOff", "Copy", "TrashCan", "Download", "Upload", "Launch", "Send", "Search", "Settings"] },
+    { id: "animated-actions", title: "Actions", names: ["Add", "Close", "Subtract", "Edit", "EditOff", "Copy", "TrashCan", "Download", "Upload", "CloudDownload", "CloudUpload", "Launch", "Send", "Search", "Settings"] },
     {
       id: "animated-status",
       title: "Status",
@@ -72,7 +72,27 @@
     {
       id: "animated-feedback",
       title: "Feedback",
-      names: ["Notification", "Favorite", "FavoriteFilled", "Star", "StarFilled", "Locked", "View", "ViewOff", "Light", "Location", "Time", "Wifi", "VolumeUp"],
+      names: [
+        "Notification",
+        "Favorite",
+        "FavoriteFilled",
+        "Star",
+        "StarFilled",
+        "Locked",
+        "Unlocked",
+        "View",
+        "ViewOff",
+        "Light",
+        "Location",
+        "Pin",
+        "PinFilled",
+        "Time",
+        "Wifi",
+        "WifiOff",
+        "VolumeUp",
+        "VolumeDown",
+        "MicrophoneOff",
+      ],
     },
     {
       id: "animated-refresh",

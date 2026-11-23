@@ -637,9 +637,9 @@ export const spinner = (icon: Family): AnimatedIcon => ({
 
 /**
  * Pending dots swell one after another, left to right. The stagger is in
- * each dot's keyframes, not in \`animation-delay\`, so all dots share one
+ * each dot's keyframes, not in `animation-delay`, so all dots share one
  * cycle and a loop stops cleanly at its end. Each dot's pivot is set
- * inline as its \`transform-origin\`, and its class is \`dot-0\` to \`dot-2\`.
+ * inline as its `transform-origin`, and its class is `dot-0` to `dot-2`.
  *
  * Productive: a quick wave, or a steady wave while looping.
  * Expressive: each dot also hops as it swells.
@@ -691,5 +691,268 @@ ${rules(LOOP_EXPRESSIVE, DURATION.slow02, standard.expressive, true, true)}
 ${[0, 1, 2].map((i) => keyframes(i, false)).join("\n\n")}
 
 ${[0, 1, 2].map((i) => keyframes(i, true)).join("\n\n")}`,
+  };
+};
+
+/**
+ * The shackle lifts as far as the canvas allows (2 units) and drops back.
+ * Productive: the shackle lifts and drops.
+ * Expressive: the shackle and body pull apart (body down 1), hold, then
+ * snap together, and the body rebounds. Opening is slow and closing is
+ * fast, like a latch.
+ */
+export const latch = (icon: Family): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: icon.content,
+  css: `  ${PRODUCTIVE} .shackle {
+    animation: lift ${DURATION.slow01};
+  }
+
+  ${EXPRESSIVE} .shackle {
+    animation: latch ${DURATION.slow02};
+  }
+
+  ${EXPRESSIVE} .body {
+    animation: jolt ${DURATION.slow02};
+  }
+
+  @keyframes lift {
+    0% {
+      transform: translateY(0);
+      animation-timing-function: ${entrance.productive};
+    }
+    45% {
+      transform: translateY(-2px);
+      animation-timing-function: ${exit.productive};
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes latch {
+    0% {
+      transform: translateY(0);
+      animation-timing-function: ${entrance.expressive};
+    }
+    30%,
+    46% {
+      transform: translateY(-2px);
+      animation-timing-function: ${exit.expressive};
+    }
+    58%,
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes jolt {
+    0% {
+      transform: translateY(0);
+      animation-timing-function: ${entrance.expressive};
+    }
+    30%,
+    46% {
+      transform: translateY(1px);
+      animation-timing-function: ${exit.expressive};
+    }
+    58% {
+      transform: translateY(-0.75px);
+      animation-timing-function: ${standard.expressive};
+    }
+    82%,
+    100% {
+      transform: translateY(0);
+    }
+  }`,
+});
+
+/**
+ * An arrow passes through what it points at: it falls into a tray, rises
+ * into a bracket, or travels through a cloud. A clip on a wrapper hides it
+ * where it goes in, and the canvas edge where it goes out. `sign` is 1 for
+ * down and -1 for up; `out` and `back` are where the arrow leaves and
+ * where the next one comes in from, in units.
+ *
+ * Productive: the arrow dips `dip` units (3 by default) toward its target and
+ * back, staying inside its clip.
+ * Expressive: the arrow passes through, the `base` reacts as it goes,
+ * and a new arrow comes in from the other side.
+ */
+export const passThrough = (
+  icon: Family & { base: string; sign: 1 | -1; out: number; back: number; dip?: number }
+): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: icon.content,
+  css: `  ${PRODUCTIVE} .arrow {
+    animation: nudge ${DURATION.slow01};
+  }
+
+  ${EXPRESSIVE} .arrow {
+    animation: pass ${DURATION.slow02};
+  }
+
+  ${EXPRESSIVE} .${icon.base} {
+    animation: catch ${DURATION.slow02};
+  }
+
+  @keyframes nudge {
+    0% {
+      transform: translateY(0);
+      animation-timing-function: ${entrance.productive};
+    }
+    40% {
+      transform: translateY(${icon.sign * (icon.dip ?? 3)}px);
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pass {
+    0% {
+      transform: translateY(0);
+      animation-timing-function: ${exit.expressive};
+    }
+    40% {
+      transform: translateY(${icon.out}px);
+      animation-timing-function: step-end;
+    }
+    40.1% {
+      transform: translateY(${icon.back}px);
+      animation-timing-function: ${entrance.expressive};
+    }
+    85% {
+      transform: translateY(${icon.sign}px);
+      animation-timing-function: ${standard.expressive};
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes catch {
+    0%,
+    36% {
+      transform: translateY(0);
+      animation-timing-function: ${entrance.expressive};
+    }
+    46% {
+      transform: translateY(${icon.sign * 1.5}px);
+      animation-timing-function: ${standard.expressive};
+    }
+    70%,
+    100% {
+      transform: translateY(0);
+    }
+  }`,
+});
+
+/**
+ * Sound and signal waves fade in and grow from their source, one after
+ * another (`--i`), with the parts classed `part`.
+ *
+ * Productive: the waves pulse outward together.
+ * Expressive: the waves fade in and grow from the source in turn.
+ */
+export const waves = (
+  icon: Family & { part: string; origin: [number, number]; from: number; emit: keyof typeof DURATION }
+): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: icon.content,
+  css: `  .${icon.part} {
+    transform-box: view-box;
+    transform-origin: ${icon.origin[0]}px ${icon.origin[1]}px;
+  }
+
+  ${PRODUCTIVE} .${icon.part} {
+    animation: pulse ${DURATION.slow01};
+  }
+
+  ${EXPRESSIVE} .${icon.part} {
+    animation: emit ${DURATION[icon.emit]} ${entrance.expressive} calc(var(--i) * ${DURATION.fast02}) backwards;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      animation-timing-function: ${entrance.productive};
+    }
+    40% {
+      transform: scale(1.08);
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes emit {
+    from {
+      opacity: 0.15;
+      transform: scale(${icon.from});
+    }
+  }`,
+});
+
+/**
+ * Push pins hop off the surface along their needle, `direction` being the
+ * unit vector away from the point, and land again. They reach the canvas
+ * edges, so they move 2 units at most.
+ *
+ * Productive: a hop.
+ * Expressive: a hop that lands with a press into the surface, then settles.
+ */
+export const hopAlong = (icon: Family & { direction: [number, number] }): AnimatedIcon => {
+  const at = (units: number) =>
+    `translate(${Math.round(icon.direction[0] * units * 100) / 100}px, ${Math.round(icon.direction[1] * units * 100) / 100}px)`;
+
+  return {
+    name: icon.name,
+    sourceHash: icon.sourceHash,
+    content: icon.content,
+    css: `  ${PRODUCTIVE} .pin {
+    animation: hop ${DURATION.slow01};
+  }
+
+  ${EXPRESSIVE} .pin {
+    animation: hop-press ${DURATION.slow02};
+  }
+
+  @keyframes hop {
+    0% {
+      transform: ${at(0)};
+      animation-timing-function: ${entrance.productive};
+    }
+    45% {
+      transform: ${at(2)};
+      animation-timing-function: ${exit.productive};
+    }
+    100% {
+      transform: ${at(0)};
+    }
+  }
+
+  @keyframes hop-press {
+    0% {
+      transform: ${at(0)};
+      animation-timing-function: ${entrance.expressive};
+    }
+    30% {
+      transform: ${at(2)};
+      animation-timing-function: ${exit.expressive};
+    }
+    50% {
+      transform: ${at(-0.75)};
+      animation-timing-function: ${standard.expressive};
+    }
+    100% {
+      transform: ${at(0)};
+    }
+  }`,
   };
 };

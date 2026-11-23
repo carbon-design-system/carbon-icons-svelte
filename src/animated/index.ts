@@ -12,6 +12,8 @@ import CheckmarkOutlineIcon from "./icons/CheckmarkOutline.js";
 import ChevronRightIcon from "./icons/ChevronRight.js";
 import CircleDashIcon from "./icons/CircleDash.js";
 import CloseIcon from "./icons/Close.js";
+import CloudDownloadIcon from "./icons/CloudDownload.js";
+import CloudUploadIcon from "./icons/CloudUpload.js";
 import CopyIcon from "./icons/Copy.js";
 import DownloadIcon from "./icons/Download.js";
 import EditIcon from "./icons/Edit.js";
@@ -30,11 +32,14 @@ import LightIcon from "./icons/Light.js";
 import LocationIcon from "./icons/Location.js";
 import LockedIcon from "./icons/Locked.js";
 import MenuIcon from "./icons/Menu.js";
+import MicrophoneOffIcon from "./icons/MicrophoneOff.js";
 import NotificationIcon from "./icons/Notification.js";
 import OverflowMenuHorizontalIcon from "./icons/OverflowMenuHorizontal.js";
 import OverflowMenuVerticalIcon from "./icons/OverflowMenuVertical.js";
 import PendingIcon from "./icons/Pending.js";
 import PendingFilledIcon from "./icons/PendingFilled.js";
+import PinIcon from "./icons/Pin.js";
+import PinFilledIcon from "./icons/PinFilled.js";
 import RenewIcon from "./icons/Renew.js";
 import RotateClockwiseIcon from "./icons/RotateClockwise.js";
 import RotateClockwiseAltIcon from "./icons/RotateClockwiseAlt.js";
@@ -52,9 +57,11 @@ import StarFilledIcon from "./icons/StarFilled.js";
 import SubtractIcon from "./icons/Subtract.js";
 import TimeIcon from "./icons/Time.js";
 import TrashCanIcon from "./icons/TrashCan.js";
+import UnlockedIcon from "./icons/Unlocked.js";
 import UploadIcon from "./icons/Upload.js";
 import ViewIcon from "./icons/View.js";
 import ViewOffIcon from "./icons/ViewOff.js";
+import VolumeDownIcon from "./icons/VolumeDown.js";
 import VolumeUpIcon from "./icons/VolumeUp.js";
 import WarningIcon from "./icons/Warning.js";
 import WarningAltIcon from "./icons/WarningAlt.js";
@@ -63,6 +70,7 @@ import WarningAltInvertedFilledIcon from "./icons/WarningAltInvertedFilled.js";
 import WarningFilledIcon from "./icons/WarningFilled.js";
 import WarningSquareFilledIcon from "./icons/WarningSquareFilled.js";
 import WifiIcon from "./icons/Wifi.js";
+import WifiOffIcon from "./icons/WifiOff.js";
 
 export type { AnimatedIcon } from "./shared.js";
 
@@ -77,6 +85,8 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   ChevronRightIcon,
   CircleDashIcon,
   CloseIcon,
+  CloudDownloadIcon,
+  CloudUploadIcon,
   CopyIcon,
   DownloadIcon,
   EditIcon,
@@ -95,11 +105,14 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   LocationIcon,
   LockedIcon,
   MenuIcon,
+  MicrophoneOffIcon,
   NotificationIcon,
   OverflowMenuHorizontalIcon,
   OverflowMenuVerticalIcon,
   PendingIcon,
   PendingFilledIcon,
+  PinIcon,
+  PinFilledIcon,
   RenewIcon,
   RotateClockwiseIcon,
   RotateClockwiseAltIcon,
@@ -117,9 +130,11 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   SubtractIcon,
   TimeIcon,
   TrashCanIcon,
+  UnlockedIcon,
   UploadIcon,
   ViewIcon,
   ViewOffIcon,
+  VolumeDownIcon,
   VolumeUpIcon,
   WarningIcon,
   WarningAltIcon,
@@ -128,6 +143,7 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   WarningFilledIcon,
   WarningSquareFilledIcon,
   WifiIcon,
+  WifiOffIcon,
 ];
 
 /** Content that references `{id}` gets a unique id prefix per instance. */
