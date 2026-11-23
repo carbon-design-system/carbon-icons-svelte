@@ -62,28 +62,28 @@ exports[`animated icons template 1`] = `
 
   @keyframes swing {
     35% {
-      transform: rotate(8deg);
+      transform: rotate(6deg);
     }
     70% {
-      transform: rotate(-5deg);
+      transform: rotate(-4deg);
     }
   }
 
   @keyframes ring {
     14% {
-      transform: rotate(14deg);
+      transform: rotate(8deg);
     }
     32% {
-      transform: rotate(-11deg);
+      transform: rotate(-7deg);
     }
     50% {
-      transform: rotate(7deg);
+      transform: rotate(5deg);
     }
     68% {
-      transform: rotate(-4deg);
+      transform: rotate(-3deg);
     }
     84% {
-      transform: rotate(1.5deg);
+      transform: rotate(1deg);
     }
   }
 
@@ -94,19 +94,19 @@ exports[`animated icons template 1`] = `
       transform: rotate(0);
     }
     19% {
-      transform: rotate(20deg);
+      transform: rotate(12deg);
     }
     37% {
-      transform: rotate(-15deg);
+      transform: rotate(-10deg);
     }
     55% {
-      transform: rotate(10deg);
+      transform: rotate(7deg);
     }
     72% {
-      transform: rotate(-5deg);
+      transform: rotate(-4deg);
     }
     88% {
-      transform: rotate(2deg);
+      transform: rotate(1.5deg);
     }
   }
 </style>
@@ -149,23 +149,55 @@ type CarbonAnimatedIcon = typeof import("svelte") extends { mount: any }
     ) => SvelteComponent<CarbonAnimatedIconProps, Record<string, any>, {}>;
 
 export declare const Add: CarbonAnimatedIcon;
+export declare const ArrowDown: CarbonAnimatedIcon;
+export declare const ArrowDownLeft: CarbonAnimatedIcon;
+export declare const ArrowDownRight: CarbonAnimatedIcon;
+export declare const ArrowLeft: CarbonAnimatedIcon;
+export declare const ArrowRight: CarbonAnimatedIcon;
+export declare const ArrowShiftDown: CarbonAnimatedIcon;
+export declare const ArrowUp: CarbonAnimatedIcon;
+export declare const ArrowUpLeft: CarbonAnimatedIcon;
+export declare const ArrowUpRight: CarbonAnimatedIcon;
+export declare const CaretDown: CarbonAnimatedIcon;
+export declare const CaretLeft: CarbonAnimatedIcon;
+export declare const CaretRight: CarbonAnimatedIcon;
+export declare const CaretUp: CarbonAnimatedIcon;
 export declare const Checkmark: CarbonAnimatedIcon;
+export declare const ChevronDown: CarbonAnimatedIcon;
+export declare const ChevronLeft: CarbonAnimatedIcon;
 export declare const ChevronRight: CarbonAnimatedIcon;
+export declare const ChevronUp: CarbonAnimatedIcon;
 export declare const Copy: CarbonAnimatedIcon;
+export declare const DoubleChevronLeft: CarbonAnimatedIcon;
+export declare const DoubleChevronRight: CarbonAnimatedIcon;
 export declare const Download: CarbonAnimatedIcon;
 export declare const Edit: CarbonAnimatedIcon;
 export declare const Favorite: CarbonAnimatedIcon;
+export declare const JumpLink: CarbonAnimatedIcon;
 export declare const Light: CarbonAnimatedIcon;
 export declare const Location: CarbonAnimatedIcon;
 export declare const Locked: CarbonAnimatedIcon;
 export declare const Notification: CarbonAnimatedIcon;
+export declare const PageFirst: CarbonAnimatedIcon;
+export declare const PageLast: CarbonAnimatedIcon;
+export declare const Recycle: CarbonAnimatedIcon;
+export declare const Redo: CarbonAnimatedIcon;
 export declare const Renew: CarbonAnimatedIcon;
+export declare const RenewAlt: CarbonAnimatedIcon;
+export declare const Repeat: CarbonAnimatedIcon;
+export declare const Reset: CarbonAnimatedIcon;
+export declare const Restart: CarbonAnimatedIcon;
 export declare const Search: CarbonAnimatedIcon;
 export declare const Send: CarbonAnimatedIcon;
 export declare const Settings: CarbonAnimatedIcon;
+export declare const SkipBack: CarbonAnimatedIcon;
+export declare const SkipBackFilled: CarbonAnimatedIcon;
+export declare const SkipForward: CarbonAnimatedIcon;
+export declare const SkipForwardFilled: CarbonAnimatedIcon;
 export declare const Star: CarbonAnimatedIcon;
 export declare const Time: CarbonAnimatedIcon;
 export declare const TrashCan: CarbonAnimatedIcon;
+export declare const Undo: CarbonAnimatedIcon;
 export declare const Upload: CarbonAnimatedIcon;
 export declare const View: CarbonAnimatedIcon;
 export declare const VolumeUp: CarbonAnimatedIcon;

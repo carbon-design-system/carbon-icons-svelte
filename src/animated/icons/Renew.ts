@@ -4,7 +4,8 @@ const { entrance, standard } = EASING;
 
 /**
  * Turns half a revolution the way the arrows point. The icon looks the same
- * after 180°, so it ends where it started.
+ * after 180°, so it ends where it started. The arrowheads reach the corners,
+ * so it shrinks slightly mid-turn to keep them inside the canvas.
  * Productive: a plain half turn.
  * Expressive: overshoots by 15° and settles back.
  */
@@ -22,31 +23,48 @@ export default {
 
   @media (prefers-reduced-motion: no-preference) {
     ${PRODUCTIVE} .arrows {
-      animation: spin ${DURATION.slow01} ${standard.productive};
+      animation:
+        spin ${DURATION.slow01} ${standard.productive},
+        shrink ${DURATION.slow01} ${standard.productive};
     }
 
     ${EXPRESSIVE} .arrows {
-      animation: spin-overshoot ${DURATION.slow02};
+      animation:
+        spin-overshoot ${DURATION.slow02},
+        shrink-hold ${DURATION.slow02} ${standard.expressive};
     }
   }
 
   @keyframes spin {
     to {
-      transform: rotate(-180deg);
+      rotate: -180deg;
     }
   }
 
   @keyframes spin-overshoot {
     0% {
-      transform: rotate(0);
+      rotate: 0deg;
       animation-timing-function: ${entrance.expressive};
     }
     75% {
-      transform: rotate(-195deg);
+      rotate: -195deg;
       animation-timing-function: ${standard.expressive};
     }
     100% {
-      transform: rotate(-180deg);
+      rotate: -180deg;
+    }
+  }
+
+  @keyframes shrink {
+    50% {
+      scale: 0.94;
+    }
+  }
+
+  @keyframes shrink-hold {
+    12%,
+    88% {
+      scale: 0.94;
     }
   }`,
 } satisfies AnimatedIcon;

@@ -117,7 +117,7 @@ You can use `fill` to customize the color or pass any other valid `svg` attribut
 
 ## Animated icons
 
-Some icons have animated versions: `Add`, `Checkmark`, `ChevronRight`, `Copy`, `Download`, `Edit`, `Favorite`, `Light`, `Location`, `Locked`, `Notification`, `Renew`, `Search`, `Send`, `Settings`, `Star`, `Time`, `TrashCan`, `Upload`, `View`, `VolumeUp`, `WarningAlt` and `Wifi`. They take the same props as the static icons, plus `play`, `trigger` and `motion`.
+Some icons have animated versions. Hand-built: `Add`, `Checkmark`, `ChevronRight`, `Copy`, `Download`, `Edit`, `Favorite`, `Light`, `Location`, `Locked`, `Notification`, `Renew`, `Search`, `Send`, `Settings`, `Star`, `Time`, `TrashCan`, `Upload`, `View`, `VolumeUp`, `WarningAlt` and `Wifi`. Arrows, carets, chevrons, paging, skip, undo and redo icons nudge the way they point, and `Recycle`, `RenewAlt`, `Repeat`, `Reset` and `Restart` turn; see [`src/animated/rules.ts`](src/animated/rules.ts) for the full list. They take the same props as the static icons, plus `play`, `trigger` and `motion`.
 
 ```svelte
 <script>

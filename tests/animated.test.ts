@@ -2,7 +2,8 @@ import metadata from "@carbon/icons/metadata.json" with { type: "json" };
 import type { IconOutput } from "@carbon/icons";
 import { describe, expect, test } from "bun:test";
 import { compile } from "svelte/compiler";
-import { ANIMATED_ICONS, buildAnimated, templateAnimated } from "../src/animated/index.js";
+import { ANIMATED_ICONS, allAnimatedIcons, buildAnimated, templateAnimated } from "../src/animated/index.js";
+import { RULES } from "../src/animated/rules.js";
 import { DURATION, EASING, EXPRESSIVE, PRODUCTIVE, hashSource } from "../src/animated/shared.js";
 
 /** Matches each `d` attribute in an icon's content. */
@@ -17,16 +18,19 @@ const DURATION_PATTERN = /\b\d+(?:\.\d+)?m?s\b/g;
 /** Matches each cubic Bézier easing in CSS. */
 const CUBIC_BEZIER_PATTERN = /cubic-bezier\([^)]*\)/g;
 
-/** The 32px descriptor that the static component is built from. */
-const staticDescriptor = (name: string) =>
-  metadata.icons.flatMap((icon) => icon.output).find((output) => output.moduleName === `${name}32`)
-    ?.descriptor as IconOutput["descriptor"] | undefined;
+/** The 32px output that the static component is built from. */
+const lookup = (name: string) =>
+  metadata.icons.flatMap((icon) => icon.output).find((output) => output.moduleName === `${name}32`) as
+    | IconOutput
+    | undefined;
+
+const staticDescriptor = (name: string) => lookup(name)?.descriptor;
 
 /** A path's commands and numbers, so `1.50` and `1.5` compare equal. */
 const normalize = (d: string) =>
   (d.match(PATH_TOKEN_PATTERN) ?? []).map((token) => (/[a-zA-Z]/.test(token) ? token : parseFloat(token))).join(" ");
 
-const cases = ANIMATED_ICONS.map((icon) => [icon.name, icon] as const);
+const cases = allAnimatedIcons(lookup).map((icon) => [icon.name, icon] as const);
 
 describe("animated icons", () => {
   // Icons are split into parts by hand. If Carbon redraws one, redo its
@@ -87,9 +91,23 @@ describe("animated icons", () => {
     expect(templateAnimated(ANIMATED_ICONS.find(({ name }) => name === "Notification")!)).toMatchSnapshot();
   });
 
+  test("includes every hand-built and rule-based icon", () => {
+    expect(cases.length).toBe(ANIMATED_ICONS.length + Object.keys(RULES).length);
+  });
+
+  test("rule-based icons move as a whole", () => {
+    const arrow = cases.find(([name]) => name === "ArrowUpRight")![1];
+    expect(arrow.content.startsWith('<g class="icon">')).toBe(true);
+    // Diagonals cover the same distance as straight nudges.
+    expect(arrow.css).toContain("translate(2.12px, -2.12px)");
+
+    const reset = cases.find(([name]) => name === "Reset")![1];
+    expect(reset.css).toContain("rotate: -360deg");
+  });
+
   test("build output", async () => {
-    const names = ANIMATED_ICONS.map(({ name }) => name).sort();
-    const files = await buildAnimated(new Set(names));
+    const names = cases.map(([name]) => name);
+    const files = await buildAnimated(lookup);
 
     expect([...files.keys()].sort()).toEqual(
       [...names.map((name) => `${name}.svelte`), "animate.js", "icon.d.ts", "index.d.ts", "index.js"].sort()
@@ -98,6 +116,6 @@ describe("animated icons", () => {
   });
 
   test("requires a static icon of the same name", async () => {
-    await expect(buildAnimated(new Set())).rejects.toThrow("Animated icon has no static icon: Add");
+    await expect(buildAnimated(() => undefined)).rejects.toThrow("Animated icon has no static icon: Add");
   });
 });

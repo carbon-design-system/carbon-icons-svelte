@@ -9,7 +9,8 @@ const { standard } = EASING;
  *
  * Productive: one short swing each way; the clapper moves with the bell.
  * Expressive: swings three times and dies out. The clapper starts later and
- * swings further, so it lags behind the bell.
+ * swings further, so it lags behind the bell. Past about 8°, the rim leaves
+ * the canvas.
  */
 export default {
   name: "Notification",
@@ -39,28 +40,28 @@ export default {
 
   @keyframes swing {
     35% {
-      transform: rotate(8deg);
+      transform: rotate(6deg);
     }
     70% {
-      transform: rotate(-5deg);
+      transform: rotate(-4deg);
     }
   }
 
   @keyframes ring {
     14% {
-      transform: rotate(14deg);
+      transform: rotate(8deg);
     }
     32% {
-      transform: rotate(-11deg);
+      transform: rotate(-7deg);
     }
     50% {
-      transform: rotate(7deg);
+      transform: rotate(5deg);
     }
     68% {
-      transform: rotate(-4deg);
+      transform: rotate(-3deg);
     }
     84% {
-      transform: rotate(1.5deg);
+      transform: rotate(1deg);
     }
   }
 
@@ -71,19 +72,19 @@ export default {
       transform: rotate(0);
     }
     19% {
-      transform: rotate(20deg);
+      transform: rotate(12deg);
     }
     37% {
-      transform: rotate(-15deg);
+      transform: rotate(-10deg);
     }
     55% {
-      transform: rotate(10deg);
+      transform: rotate(7deg);
     }
     72% {
-      transform: rotate(-5deg);
+      transform: rotate(-4deg);
     }
     88% {
-      transform: rotate(2deg);
+      transform: rotate(1.5deg);
     }
   }`,
 } satisfies AnimatedIcon;

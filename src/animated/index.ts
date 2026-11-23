@@ -7,6 +7,8 @@
  * hand where the motion needs it. See "Animated icons" in CONTRIBUTING.md.
  */
 
+import type { IconOutput } from "@carbon/icons";
+import { RULES, ruleIcons } from "./rules.js";
 import type { AnimatedIcon } from "./shared.js";
 import Add from "./icons/Add.js";
 import Checkmark from "./icons/Checkmark.js";
@@ -145,16 +147,31 @@ type CarbonAnimatedIcon = typeof import("svelte") extends { mount: any }
 ${names.map((name) => `export declare const ${name}: CarbonAnimatedIcon;`).join("\n")}
 `;
 
+/** Looks up a static icon's 32px output by name. */
+export type IconLookup = (name: string) => IconOutput | undefined;
+
+/** Hand-built and rule-based icons together, sorted by name. */
+export const allAnimatedIcons = (lookup: IconLookup) => {
+  const handBuilt = new Set(ANIMATED_ICONS.map(({ name }) => name));
+
+  for (const name of handBuilt) {
+    if (!lookup(name)) throw new Error(`Animated icon has no static icon: ${name}`);
+  }
+
+  for (const name of Object.keys(RULES)) {
+    if (handBuilt.has(name)) throw new Error(`Animated icon is both hand-built and rule-based: ${name}`);
+  }
+
+  return [...ANIMATED_ICONS, ...ruleIcons(lookup)].sort((a, b) => (a.name < b.name ? -1 : 1));
+};
+
 /** Returns the files for `lib/animated/`. */
-export const buildAnimated = async (staticNames: Set<string>) => {
+export const buildAnimated = async (lookup: IconLookup) => {
   const files = new Map<string, string>();
-  const names = ANIMATED_ICONS.map(({ name }) => name).sort();
+  const icons = allAnimatedIcons(lookup);
+  const names = icons.map(({ name }) => name);
 
-  for (const icon of ANIMATED_ICONS) {
-    if (!staticNames.has(icon.name)) {
-      throw new Error(`Animated icon has no static icon: ${icon.name}`);
-    }
-
+  for (const icon of icons) {
     files.set(`${icon.name}.svelte`, templateAnimated(icon));
   }
 

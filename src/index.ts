@@ -255,7 +255,7 @@ ${definitions}`
   );
 
   await syncDir("lib", libFiles, ["animated"]);
-  await syncDir("lib/animated", await buildAnimated(names));
+  await syncDir("lib/animated", await buildAnimated((name) => iconMap.get(name)));
 
   await Bun.write(
     "ICON_INDEX.md",

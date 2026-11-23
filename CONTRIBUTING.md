@@ -126,9 +126,14 @@ For Svelte 3, pin [`carbon-icons-svelte@12.13.0`](https://github.com/carbon-desi
 
 ## Animated icons
 
-`carbon-icons-svelte/animated` ships hand-built animated versions of some icons. Each one is a file in [`src/animated/icons/`](src/animated/icons/), listed in [`src/animated/index.ts`](src/animated/index.ts), and built into `lib/animated/` by `buildIcons()`.
+`carbon-icons-svelte/animated` ships animated versions of some icons, built into `lib/animated/` by `buildIcons()`. There are two kinds:
 
-Carbon's icons are filled outlines, often a single merged path, so per-part motion can't be generated from the descriptors. Each icon file exports:
+- **Hand-built**: one file per icon in [`src/animated/icons/`](src/animated/icons/), listed in [`src/animated/index.ts`](src/animated/index.ts). Use these when parts move separately: a bell and its clapper, a lid, a shackle.
+- **Rule-based**: the whole icon moves, so they're generated from the descriptor. [`src/animated/rules.ts`](src/animated/rules.ts) lists each icon with its rule: `nudge` the way it points, or `turn` the way its arrows go. Add an icon there when its whole drawing makes the motion, and check it against the exclusions at the top of the file.
+
+Most icons should stay static. Animate an icon only when motion says what it means; logos and domain nouns like `Assembly` have nothing to show.
+
+Carbon's icons are filled outlines, often a single merged path, so per-part motion can't be generated from the descriptors. Each hand-built icon file exports:
 
 - `name`: the static icon it animates.
 - `sourceHash`: a hash of the static icon's 32px content. [`tests/animated.test.ts`](tests/animated.test.ts) fails if Carbon redraws the icon; redo its parts from the new paths, then update the hash.
@@ -144,7 +149,7 @@ Start the file with a doc comment that says what the motion is and why, in a sen
 - **Start and end at rest.** A one-shot animation can't keep state, so anything left part-way snaps back when it ends. Use the icon's symmetry to keep turns short: `Renew` turns 180°, `Settings` 60° (six teeth), `Add` 90°, `Star` 72°. A clock hand makes whole turns instead (`Time`).
 - **Pivot on the physical hinge.** The bell swings from its stem, the lid from its end, the pencil on its tip, the pin on its point, the warning sign on its base. Set `transform-box: view-box` and a `transform-origin` in user units.
 - **Size motion for 16px.** One unit of the 32-unit grid is 0.5px at 16px. Move at least 3 units, or 2 for a hop or shake near an edge.
-- **Stay inside the 32×32 viewBox.** An icon that touches an edge can't move toward it: `Locked`, `TrashCan` and `Location` get 2 units of travel at most, and `Star` shrinks mid-turn so its points stay in. Rotating about the base (`WarningAlt`) keeps corners in where a sideways shake wouldn't. Leave the canvas only on purpose: through the viewBox edge (`Send`), or through a `<clipPath>` on a wrapper `<g>` so the clip stays put while the part moves (`Download`, `Upload`).
+- **Stay inside the 32×32 viewBox.** Check it by measuring: sample points along every path at each frame. Bounding boxes overstate rotations. Rotation is the easy one to miss: anything farther than 16 units from the pivot leaves the canvas at some angle, so `Renew`, `Star` and the rule-based turns shrink slightly mid-turn, and the bell can't swing past about 8°. Nudges need room too, so `rules.ts` caps `SkipForward` and `ArrowShiftDown` at 2 units. An icon that touches an edge can't move toward it: `Locked`, `TrashCan` and `Location` get 2 units of travel at most. Rotating about the base (`WarningAlt`) keeps corners in where a sideways shake wouldn't. Leave the canvas only on purpose: through the viewBox edge (`Send`), or through a `<clipPath>` on a wrapper `<g>` so the clip stays put while the part moves (`Download`, `Upload`).
 - **Keep stroke weight.** Scaling one axis thins the strokes along the other, and they vanish at 16px. Fold, clip or move parts instead (`View`).
 
 ### Timing
