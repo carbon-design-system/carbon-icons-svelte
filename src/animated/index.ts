@@ -2,7 +2,7 @@
 
 import type { IconOutput } from "@carbon/icons";
 import { RULES, ruleIcons } from "./rules.js";
-import { DURATION, EASING, type AnimatedIcon } from "./shared.js";
+import { DURATION, EASING, withLoop, type AnimatedIcon } from "./shared.js";
 import AddIcon from "./icons/Add.js";
 import ArrowsHorizontalIcon from "./icons/ArrowsHorizontal.js";
 import ArrowsVerticalIcon from "./icons/ArrowsVertical.js";
@@ -10,6 +10,7 @@ import CheckmarkIcon from "./icons/Checkmark.js";
 import CheckmarkFilledIcon from "./icons/CheckmarkFilled.js";
 import CheckmarkOutlineIcon from "./icons/CheckmarkOutline.js";
 import ChevronRightIcon from "./icons/ChevronRight.js";
+import CircleDashIcon from "./icons/CircleDash.js";
 import CloseIcon from "./icons/Close.js";
 import CopyIcon from "./icons/Copy.js";
 import DownloadIcon from "./icons/Download.js";
@@ -19,6 +20,8 @@ import ErrorIcon from "./icons/Error.js";
 import ErrorFilledIcon from "./icons/ErrorFilled.js";
 import FavoriteIcon from "./icons/Favorite.js";
 import FavoriteFilledIcon from "./icons/FavoriteFilled.js";
+import InProgressIcon from "./icons/InProgress.js";
+import IncompleteIcon from "./icons/Incomplete.js";
 import InformationIcon from "./icons/Information.js";
 import InformationFilledIcon from "./icons/InformationFilled.js";
 import InformationSquareFilledIcon from "./icons/InformationSquareFilled.js";
@@ -30,6 +33,8 @@ import MenuIcon from "./icons/Menu.js";
 import NotificationIcon from "./icons/Notification.js";
 import OverflowMenuHorizontalIcon from "./icons/OverflowMenuHorizontal.js";
 import OverflowMenuVerticalIcon from "./icons/OverflowMenuVertical.js";
+import PendingIcon from "./icons/Pending.js";
+import PendingFilledIcon from "./icons/PendingFilled.js";
 import RenewIcon from "./icons/Renew.js";
 import RotateClockwiseIcon from "./icons/RotateClockwise.js";
 import RotateClockwiseAltIcon from "./icons/RotateClockwiseAlt.js";
@@ -70,6 +75,7 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   CheckmarkFilledIcon,
   CheckmarkOutlineIcon,
   ChevronRightIcon,
+  CircleDashIcon,
   CloseIcon,
   CopyIcon,
   DownloadIcon,
@@ -79,6 +85,8 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   ErrorFilledIcon,
   FavoriteIcon,
   FavoriteFilledIcon,
+  InProgressIcon,
+  IncompleteIcon,
   InformationIcon,
   InformationFilledIcon,
   InformationSquareFilledIcon,
@@ -90,6 +98,8 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   NotificationIcon,
   OverflowMenuHorizontalIcon,
   OverflowMenuVerticalIcon,
+  PendingIcon,
+  PendingFilledIcon,
   RenewIcon,
   RotateClockwiseIcon,
   RotateClockwiseAltIcon,
@@ -133,7 +143,7 @@ export const fillTokens = (source: string) =>
     .replace("__EASING_STANDARD_PRODUCTIVE__", JSON.stringify(EASING.standard.productive))
     .replace("__EASING_STANDARD_EXPRESSIVE__", JSON.stringify(EASING.standard.expressive));
 
-export const templateAnimated = ({ content, css }: AnimatedIcon) => {
+export const templateAnimated = ({ content, css, loop }: AnimatedIcon) => {
   const usesId = ID_PATTERN.test(content);
 
   return `<script>
@@ -144,6 +154,8 @@ export const templateAnimated = ({ content, css }: AnimatedIcon) => {
   export let title = undefined;
 
   export let play = false;
+
+  export let loop = false;
 
   export let trigger = undefined;
 
@@ -171,7 +183,7 @@ ${usesId ? "\n  const id = uid();\n" : ""}
   width={size}
   height={size}
   data-motion={motion ?? defaults.motion ?? "productive"}
-  use:animate={{ play, trigger, reducedMotion, hoverDelay, defaults }}
+  use:animate={{ play, loop, loops: ${loop ? "true" : "false"}, trigger, reducedMotion, hoverDelay, defaults }}
   {...attributes}
   {...$$restProps}>
   {#if title}<title>{title}</title>{/if}
@@ -179,7 +191,7 @@ ${usesId ? "\n  const id = uid();\n" : ""}
 </svg>
 
 <style>
-${css}
+${loop ? withLoop(css) : css}
 </style>
 `;
 };
@@ -230,6 +242,17 @@ export type CarbonAnimatedIconProps = CarbonIconProps &
      * @default false
      */
     play?: boolean | number;
+
+    /**
+     * Repeats the animation while \`true\`, for progress. When it turns
+     * \`false\`, the current cycle finishes and the icon stops at rest. Only
+     * icons with a loop respond: the progress icons (\`CircleDash\`,
+     * \`InProgress\`, \`Incomplete\`, \`Pending\`, \`PendingFilled\`) and the
+     * refresh and processing icons (\`Renew\`, \`RenewAlt\`, \`Restart\`,
+     * \`Reset\`, \`Repeat\`, \`Recycle\`, \`Settings\`, \`Time\`).
+     * @default false
+     */
+    loop?: boolean;
   };
 
 /** See \`CarbonIcon\` in \`../index.d.ts\`. */

@@ -91,6 +91,28 @@ describe("animated icons", () => {
     for (const [easing] of icon.css.matchAll(CUBIC_BEZIER_PATTERN)) expect(easings).toContain(easing);
   });
 
+  // A loop repeats one cycle that starts and ends at rest, in both modes, so
+  // stopping at a cycle boundary is seamless.
+  test.each(cases)("%s loops in both modes, or not at all", (name, icon) => {
+    const css = templateAnimated(icon);
+    const loopRules = (mode: string) => css.split(`svg[data-playing="loop"][data-motion="${mode}"]`).length - 1;
+    const oneShotRules = (mode: string) => css.split(`svg[data-playing="motion"][data-motion="${mode}"]`).length - 1;
+
+    if (!icon.loop) {
+      expect(css).not.toContain('data-playing="loop"');
+      return;
+    }
+
+    for (const mode of ["productive", "expressive"]) {
+      expect(loopRules(mode)).toBeGreaterThan(0);
+      // Repeated one-shot loops get one loop rule per one-shot rule.
+      if (!icon.css.includes('data-playing="loop"')) expect(loopRules(mode)).toBe(oneShotRules(mode));
+    }
+    // Looping parts share one cycle: no delays, or a stopped loop would cut
+    // later parts off mid-cycle.
+    expect(css).not.toMatch(/data-playing="loop"[^{]*\{[^}]*calc\(var\(--i\)/);
+  });
+
   test("gives masks and clip paths a unique id prefix per instance", () => {
     const checkmark = templateAnimated(ANIMATED_ICONS.find(({ name }) => name === "Checkmark")!);
     expect(checkmark).toContain('import { animate, getAnimatedIconDefaults, uid } from "./animate.js";');

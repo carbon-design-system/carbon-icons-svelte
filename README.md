@@ -179,6 +179,32 @@ Use `play` to run the animation yourself. It plays when the icon mounts with a t
 </Button>
 ```
 
+### Loop
+
+Progress and refresh icons can loop while something is in progress. When `loop` turns `false`, the current cycle finishes and the icon stops at rest instead of snapping. Hover and `play` don't interrupt a loop.
+
+```svelte
+<script>
+  import { Button } from "carbon-components-svelte";
+  import { Renew } from "carbon-icons-svelte/animated";
+
+  let refreshing = false;
+
+  async function refresh() {
+    refreshing = true;
+    await reload(); // your request
+    refreshing = false;
+  }
+</script>
+
+<Button disabled={refreshing} on:click={refresh}>
+  Refresh
+  <Renew slot="icon" class="bx--btn__icon" aria-hidden="true" loop={refreshing} />
+</Button>
+```
+
+These icons loop: `CircleDash`, `InProgress`, `Incomplete`, `Pending`, `PendingFilled`, `Renew`, `RenewAlt`, `Restart`, `Reset`, `Repeat`, `Recycle`, `Settings` and `Time`. Others ignore `loop`.
+
 ### Motion
 
 `motion` picks one of Carbon's two motion styles. `"productive"` (the default) is one short, subtle move, for routine UI like toolbars and menus. `"expressive"` is larger and livelier, for moments that matter, like a saved state or a new notification. Both use Carbon's motion durations and easings.
@@ -196,12 +222,13 @@ By default, nothing plays for users who prefer reduced motion (`prefers-reduced-
 | Name          | Type                                                   | Default value  |
 | :------------ | :----------------------------------------------------- | :------------- |
 | play          | <code>boolean &#124; number</code>                     | `false`        |
+| loop          | `boolean`                                              | `false`        |
 | trigger       | <code>"hover" &#124; "none"</code>                     | `"hover"`      |
 | motion        | <code>"productive" &#124; "expressive"</code>          | `"productive"` |
 | reducedMotion | <code>"static" &#124; "fade" &#124; "full"</code>      | `"static"`     |
 | hoverDelay    | `number` (ms)                                          | `150`          |
 
-Every prop except `play` can also be set with `setAnimatedIconDefaults`.
+Every prop except `play` and `loop` can also be set with `setAnimatedIconDefaults`.
 
 ## TypeScript
 

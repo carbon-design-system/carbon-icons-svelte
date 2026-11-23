@@ -53,6 +53,7 @@
     motion: "expressive",
     reducedMotion: "fade",
     hoverDelay: 0,
+    loop: false,
   } satisfies CarbonAnimatedIconProps;
 
   // Defaults for icons below this component, like ones passed to an `icon` prop.
@@ -60,6 +61,8 @@
   setAnimatedIconDefaults(defaults);
   // @ts-expect-error (`play` can't be a default)
   setAnimatedIconDefaults({ play: true });
+  // @ts-expect-error (`loop` can't be a default)
+  setAnimatedIconDefaults({ loop: true });
 
   // @ts-expect-error (`trigger` is "hover" or "none")
   mount(Notification, { target: document.body, props: { trigger: "click" } });
@@ -67,6 +70,8 @@
   mount(Notification, { target: document.body, props: { motion: "playful" } });
   // @ts-expect-error (`reducedMotion` is "static", "fade" or "full")
   mount(Notification, { target: document.body, props: { reducedMotion: "always" } });
+  // @ts-expect-error (`loop` is a boolean)
+  mount(Notification, { target: document.body, props: { loop: "yes" } });
   // @ts-expect-error (`play` is a boolean or number)
   mount(AnimatedIcon, { target: document.body, props: { play: "yes" } });
 

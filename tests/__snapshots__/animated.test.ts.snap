@@ -10,6 +10,8 @@ exports[`animated icons template 1`] = `
 
   export let play = false;
 
+  export let loop = false;
+
   export let trigger = undefined;
 
   export let motion = undefined;
@@ -36,7 +38,7 @@ exports[`animated icons template 1`] = `
   width={size}
   height={size}
   data-motion={motion ?? defaults.motion ?? "productive"}
-  use:animate={{ play, trigger, reducedMotion, hoverDelay, defaults }}
+  use:animate={{ play, loop, loops: false, trigger, reducedMotion, hoverDelay, defaults }}
   {...attributes}
   {...$$restProps}>
   {#if title}<title>{title}</title>{/if}
@@ -163,6 +165,17 @@ export type CarbonAnimatedIconProps = CarbonIconProps &
      * @default false
      */
     play?: boolean | number;
+
+    /**
+     * Repeats the animation while \`true\`, for progress. When it turns
+     * \`false\`, the current cycle finishes and the icon stops at rest. Only
+     * icons with a loop respond: the progress icons (\`CircleDash\`,
+     * \`InProgress\`, \`Incomplete\`, \`Pending\`, \`PendingFilled\`) and the
+     * refresh and processing icons (\`Renew\`, \`RenewAlt\`, \`Restart\`,
+     * \`Reset\`, \`Repeat\`, \`Recycle\`, \`Settings\`, \`Time\`).
+     * @default false
+     */
+    loop?: boolean;
   };
 
 /** See \`CarbonIcon\` in \`../index.d.ts\`. */
@@ -202,6 +215,7 @@ export declare const ChevronDown: CarbonAnimatedIcon;
 export declare const ChevronLeft: CarbonAnimatedIcon;
 export declare const ChevronRight: CarbonAnimatedIcon;
 export declare const ChevronUp: CarbonAnimatedIcon;
+export declare const CircleDash: CarbonAnimatedIcon;
 export declare const Close: CarbonAnimatedIcon;
 export declare const Copy: CarbonAnimatedIcon;
 export declare const DoubleChevronLeft: CarbonAnimatedIcon;
@@ -213,6 +227,8 @@ export declare const Error: CarbonAnimatedIcon;
 export declare const ErrorFilled: CarbonAnimatedIcon;
 export declare const Favorite: CarbonAnimatedIcon;
 export declare const FavoriteFilled: CarbonAnimatedIcon;
+export declare const InProgress: CarbonAnimatedIcon;
+export declare const Incomplete: CarbonAnimatedIcon;
 export declare const Information: CarbonAnimatedIcon;
 export declare const InformationFilled: CarbonAnimatedIcon;
 export declare const InformationSquareFilled: CarbonAnimatedIcon;
@@ -227,6 +243,8 @@ export declare const OverflowMenuHorizontal: CarbonAnimatedIcon;
 export declare const OverflowMenuVertical: CarbonAnimatedIcon;
 export declare const PageFirst: CarbonAnimatedIcon;
 export declare const PageLast: CarbonAnimatedIcon;
+export declare const Pending: CarbonAnimatedIcon;
+export declare const PendingFilled: CarbonAnimatedIcon;
 export declare const Recycle: CarbonAnimatedIcon;
 export declare const Redo: CarbonAnimatedIcon;
 export declare const Renew: CarbonAnimatedIcon;

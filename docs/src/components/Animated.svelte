@@ -93,6 +93,11 @@
       ],
     },
     {
+      id: "animated-progress",
+      title: "Progress",
+      names: ["CircleDash", "InProgress", "Incomplete", "Pending", "PendingFilled"],
+    },
+    {
       id: "animated-navigation",
       title: "Navigation",
       names: [
@@ -142,6 +147,7 @@
     ["animated-overview", "Usage"],
     ["animated-carbon", "In Carbon components"],
     ["animated-events", "Play on an event"],
+    ["animated-loop", "Loop"],
     ["animated-defaults", "Defaults"],
     ["animated-motion", "Motion"],
     ["animated-reduced-motion", "Reduced motion"],
@@ -156,6 +162,13 @@
 
   let saved = 0;
   let unread = 0;
+  let refreshing = false;
+  let loading = true;
+
+  const refresh = () => {
+    refreshing = true;
+    setTimeout(() => (refreshing = false), 2500);
+  };
   let motionPlay = 0;
 
   let name = "Notification";
@@ -165,6 +178,7 @@
   let hoverDelay = 150;
   let size = 16;
   let play = 0;
+  let loop = false;
   let expressiveGallery = false;
   let gallerySize = 16;
 
@@ -175,6 +189,7 @@
     reducedMotion !== "static" && `reducedMotion="${reducedMotion}"`,
     hoverDelay !== 150 && `hoverDelay={${hoverDelay}}`,
     trigger === "none" && "play={count}",
+    loop && "loop={loading}",
   ].filter(Boolean);
 
   $: explorerCode = `<script>
@@ -224,6 +239,24 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
 
   setAnimatedIconDefaults({ motion: "expressive", hoverDelay: 0 });
 <\/script>`;
+
+  const loopCode = `<script>
+  import { Button } from "carbon-components-svelte";
+  import { Renew } from "carbon-icons-svelte/animated";
+
+  let refreshing = false;
+
+  async function refresh() {
+    refreshing = true;
+    await reload(); // your request
+    refreshing = false;
+  }
+<\/script>
+
+<Button kind="tertiary" disabled={refreshing} on:click={refresh}>
+  {refreshing ? "Refreshing" : "Refresh"}
+  <Renew slot="icon" class="bx--btn__icon" aria-hidden="true" loop={refreshing} />
+</Button>`;
 
   const reducedCode = `<Checkmark play={saved} trigger="none" reducedMotion="fade" />`;
 </script>
@@ -359,6 +392,31 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
         <Code code={eventCode} />
       </section>
 
+      <section id="animated-loop">
+        <h2>Loop</h2>
+        <p>
+          Progress and refresh icons can loop with <code>loop</code>. While it's <code>true</code>, the icon repeats a
+          cycle that starts and ends at rest; when it turns <code>false</code>, the current cycle finishes and the icon
+          stops at rest instead of snapping. Hover and <code>play</code> don't interrupt a loop. Loop only while
+          something is in progress.
+        </p>
+        <div class="demo">
+          <div class="demo-row">
+            <Button kind="tertiary" disabled={refreshing} on:click={refresh}>
+              {refreshing ? "Refreshing" : "Refresh"}
+              <Renew slot="icon" class="bx--btn__icon" aria-hidden="true" loop={refreshing} />
+            </Button>
+          </div>
+          <div class="demo-row">
+            <Toggle labelText="Loading" size="sm" bind:toggled={loading} />
+            {#each ["CircleDash", "InProgress", "Incomplete", "Pending", "PendingFilled"] as option (option)}
+              <svelte:component this={Animated[option]} size={24} loop={loading} title={option} />
+            {/each}
+          </div>
+        </div>
+        <Code code={loopCode} />
+      </section>
+
       <section id="animated-defaults">
         <h2>Defaults</h2>
         <p>
@@ -416,7 +474,8 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
       <section id="animated-props">
         <h2>Props</h2>
         <p>
-          Every prop except <code>play</code> can also be set with <code>setAnimatedIconDefaults</code>. Try them below.
+          Every prop except <code>play</code> and <code>loop</code> can also be set with
+          <code>setAnimatedIconDefaults</code>. Try them below.
         </p>
         <table>
           <thead>
@@ -424,6 +483,7 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
           </thead>
           <tbody>
             <tr><td><code>play</code></td><td><code>boolean | number</code></td><td><code>false</code></td></tr>
+            <tr><td><code>loop</code></td><td><code>boolean</code></td><td><code>false</code></td></tr>
             <tr><td><code>trigger</code></td><td><code>"hover" | "none"</code></td><td><code>"hover"</code></td></tr>
             <tr><td><code>motion</code></td><td><code>"productive" | "expressive"</code></td><td><code>"productive"</code></td></tr>
             <tr><td><code>reducedMotion</code></td><td><code>"static" | "fade" | "full"</code></td><td><code>"static"</code></td></tr>
@@ -433,7 +493,7 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
         <div class="explorer">
           <div class="stage">
             <div class="stage-icons">
-              <svelte:component this={Animated[name]} {size} {motion} {trigger} {reducedMotion} {hoverDelay} {play} />
+              <svelte:component this={Animated[name]} {size} {motion} {trigger} {reducedMotion} {hoverDelay} {play} {loop} />
               <Button kind="ghost">
                 {name}
                 <svelte:component
@@ -446,6 +506,7 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
                   {reducedMotion}
                   {hoverDelay}
                   {play}
+                  {loop}
                 />
               </Button>
             </div>
@@ -487,6 +548,7 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
               <SelectItem value="fade" />
               <SelectItem value="full" />
             </Select>
+            <Toggle labelText="loop" labelA="false" labelB="true" bind:toggled={loop} />
             <Slider
               labelText="hoverDelay (ms)"
               min={0}
@@ -518,8 +580,8 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
             <code>play</code>.
           </li>
           <li>
-            <strong>Don't loop.</strong> Each animation plays once and ends where it started. Replay it on the next
-            event.
+            <strong>Loop only progress.</strong> Each animation plays once and ends where it started; replay it on the
+            next event. Loop only progress and refresh icons, and only while something is in progress.
           </li>
           <li>
             <strong>Keep the hover delay.</strong> It stops a toolbar from rippling as the pointer crosses it. Lower it

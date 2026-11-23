@@ -1,4 +1,4 @@
-import { DURATION, EASING, EXPRESSIVE, PLAYING, PRODUCTIVE, type AnimatedIcon } from "./shared.js";
+import { DURATION, EASING, EXPRESSIVE, LOOP_EXPRESSIVE, LOOP_PRODUCTIVE, PRODUCTIVE, type AnimatedIcon } from "./shared.js";
 
 const { entrance, exit, standard } = EASING;
 
@@ -24,11 +24,11 @@ const restCss = ({ rest }: Family) =>
     display: none;
   }
 
-  ${PLAYING} .rest {
+  :global(svg[data-playing]) .rest {
     display: none;
   }
 
-  ${PLAYING} .animated {
+  :global(svg[data-playing]) .animated {
     display: inline;
   }`
     : "";
@@ -581,3 +581,115 @@ export const hopDot = (icon: Family): AnimatedIcon => ({
     }
   }`,
 });
+
+/**
+ * Progress spinners turn as a whole. Their drawing fits a circle, so a full
+ * turn never leaves the canvas and always ends where it started.
+ *
+ * Productive: one turn, or a steady spin while looping. A steady spin is
+ * linear, like Carbon's `Loading`, so it doesn't pulse.
+ * Expressive: one turn that overshoots, or a spin that speeds up and slows
+ * down each turn while looping.
+ */
+export const spinner = (icon: Family): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: icon.content,
+  loop: true,
+  css: `${origin(".spinner", [16, 16])}
+
+  ${PRODUCTIVE} .spinner {
+    animation: spin ${DURATION.slow01} ${standard.productive};
+  }
+
+  ${EXPRESSIVE} .spinner {
+    animation: spin-overshoot ${DURATION.slow02};
+  }
+
+  ${LOOP_PRODUCTIVE} .spinner {
+    animation: spin ${DURATION.slow02} linear infinite;
+  }
+
+  ${LOOP_EXPRESSIVE} .spinner {
+    animation: spin ${DURATION.slow02} ${standard.expressive} infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin-overshoot {
+    0% {
+      transform: rotate(0);
+      animation-timing-function: ${entrance.expressive};
+    }
+    75% {
+      transform: rotate(375deg);
+      animation-timing-function: ${standard.expressive};
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }`,
+});
+
+/**
+ * Pending dots swell one after another, left to right. The stagger is in
+ * each dot's keyframes, not in \`animation-delay\`, so all dots share one
+ * cycle and a loop stops cleanly at its end. Each dot's pivot is set
+ * inline as its \`transform-origin\`, and its class is \`dot-0\` to \`dot-2\`.
+ *
+ * Productive: a quick wave, or a steady wave while looping.
+ * Expressive: each dot also hops as it swells.
+ */
+export const pendingDots = (icon: Family): AnimatedIcon => {
+  const keyframes = (i: number, hop: boolean) => {
+    const peak = 20 + i * 25;
+    const lift = hop ? " translateY(-1.5px)" : "";
+    return `  @keyframes dot-${i}${hop ? "-hop" : ""} {
+    0%,
+    ${peak - 18}%,
+    ${peak + 18}%,
+    100% {
+      transform: scale(1);
+    }
+    ${peak}% {
+      transform: scale(1.4)${lift};
+    }
+  }`;
+  };
+  const rules = (selector: string, duration: string, easing: string, hop: boolean, infinite: boolean) =>
+    [0, 1, 2]
+      .map(
+        (i) => `  ${selector} .dot-${i} {
+    animation: dot-${i}${hop ? "-hop" : ""} ${duration} ${easing}${infinite ? " infinite" : ""};
+  }`
+      )
+      .join("\n\n");
+
+  return {
+    name: icon.name,
+    sourceHash: icon.sourceHash,
+    content: withRest(icon),
+    loop: true,
+    css: `  .dot-0,
+  .dot-1,
+  .dot-2 {
+    transform-box: view-box;
+  }${restCss(icon)}
+
+${rules(PRODUCTIVE, DURATION.slow01, standard.productive, false, false)}
+
+${rules(EXPRESSIVE, DURATION.slow02, standard.expressive, true, false)}
+
+${rules(LOOP_PRODUCTIVE, DURATION.slow02, standard.productive, false, true)}
+
+${rules(LOOP_EXPRESSIVE, DURATION.slow02, standard.expressive, true, true)}
+
+${[0, 1, 2].map((i) => keyframes(i, false)).join("\n\n")}
+
+${[0, 1, 2].map((i) => keyframes(i, true)).join("\n\n")}`,
+  };
+};

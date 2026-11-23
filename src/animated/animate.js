@@ -31,9 +31,9 @@ const restart = (node) => {
   node.setAttribute(PLAYING, "motion");
 };
 
-const fade = (node) => {
+const fade = (node, iterations = 1) => {
   const { duration, easing } = FADE[node.dataset.motion] ?? FADE.productive;
-  return node.animate([{ opacity: 1, easing }, { opacity: 0.4, easing }, { opacity: 1 }], duration);
+  return node.animate([{ opacity: 1, easing }, { opacity: 0.4, easing }, { opacity: 1 }], { duration, iterations });
 };
 
 /**
@@ -41,12 +41,14 @@ const fade = (node) => {
  * CSS `:hover` would snap back to rest when the pointer leaves.
  */
 export function animate(node, options) {
-  let play, trigger, reducedMotion, hoverDelay;
+  let play, loop, loops, trigger, reducedMotion, hoverDelay;
   let timer;
   let fading;
 
   const resolve = ({ defaults = {}, ...props }) => {
+    loops = props.loops;
     play = props.play;
+    loop = loops && props.loop;
     trigger = props.trigger ?? defaults.trigger ?? "hover";
     reducedMotion = props.reducedMotion ?? defaults.reducedMotion ?? "static";
     hoverDelay = props.hoverDelay ?? defaults.hoverDelay ?? HOVER_DELAY;
@@ -56,9 +58,31 @@ export function animate(node, options) {
 
   const target = node.closest(TRIGGER) ?? node;
 
+  const moves = () => !matchMedia(REDUCED_MOTION).matches || reducedMotion === "full";
+
   const start = () => {
-    if (!matchMedia(REDUCED_MOTION).matches || reducedMotion === "full") restart(node);
+    if (moves()) restart(node);
     else if (reducedMotion === "fade") fading = fade(node);
+  };
+
+  const startLoop = () => {
+    cancel();
+    if (moves()) node.setAttribute(PLAYING, "loop");
+    else if (reducedMotion === "fade") fading = fade(node, Infinity);
+  };
+
+  // Finish the current cycle, then stop at rest, so a loop never snaps.
+  const stopLoop = () => {
+    if (node.getAttribute(PLAYING) === "loop") {
+      const stop = () => {
+        node.removeEventListener("animationiteration", stop);
+        if (!loop) node.removeAttribute(PLAYING);
+      };
+      node.addEventListener("animationiteration", stop);
+    }
+    if (fading?.effect.getTiming().iterations === Infinity) {
+      fading.effect.updateTiming({ iterations: fading.effect.getComputedTiming().currentIteration + 1 });
+    }
   };
 
   const isPlaying = () => node.hasAttribute(PLAYING) || fading?.playState === "running";
@@ -102,13 +126,16 @@ export function animate(node, options) {
   node.addEventListener("animationend", onAnimationEnd);
   node.addEventListener("animationcancel", onAnimationEnd);
 
-  if (play) start();
+  if (loop) startLoop();
+  else if (play) start();
 
   return {
     update(next) {
-      const previous = play;
+      const previous = { play, loop };
       resolve(next);
-      if (play && play !== previous) start();
+      if (loop && !previous.loop) startLoop();
+      else if (!loop && previous.loop) stopLoop();
+      else if (!loop && play && play !== previous.play) start();
     },
     destroy() {
       cancel();

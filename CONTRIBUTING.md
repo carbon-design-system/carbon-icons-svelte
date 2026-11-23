@@ -170,6 +170,8 @@ Every icon has two modes, matching Carbon's [motion styles](https://carbondesign
 - **Overshoot with a keyframe, not a curve.** Carbon has no overshooting curve, so add a keyframe past the rest point and settle back (`Renew` turns to -195° before -180°). For a move in phases, set `animation-timing-function` per keyframe.
 - **Stagger with `DURATION.fast01` or `fast02`** and `calc(var(--i) * …)`, with `backwards` fill so later parts wait in their start state (`Wifi`, `VolumeUp`, `Light`). Keep the total within the mode's limit.
 - **Symmetry angles don't scale.** A turn has to end on a symmetry angle (`Star` 72°), so productive turns the same amount as expressive, only quicker and without the overshoot.
+- **Loop only progress and refresh icons,** with `loop: true` on the icon. A loop repeats one cycle that starts and ends at rest, so stopping at a cycle boundary is seamless; the runtime finishes the current cycle when `loop` turns off. By default the loop repeats the icon's one-shot animation in each mode (`withLoop` in `shared.ts`). A spinner styles `LOOP_PRODUCTIVE` and `LOOP_EXPRESSIVE` itself, with a `linear` productive spin like Carbon's `Loading`: the only place to use an easing that isn't a Carbon token.
+- **Stagger looping parts inside the keyframes, not with `animation-delay`.** Every part then shares one cycle and stops together (`Pending`). A test fails on a delay in a loop rule.
 - **Give related icons the same motion.** `Download` and `Upload` mirror each other; `Wifi` and `VolumeUp` share one.
 
 ### Construction

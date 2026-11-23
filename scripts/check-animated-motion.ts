@@ -6,6 +6,7 @@
  *   sampled along every path, since bounding boxes overstate rotations.
  *   Parts inside a `<clipPath>` wrapper are clipped on purpose.
  * - Productive motion ends within 400ms, expressive within 700ms.
+ * - Icons that loop repeat forever, with a cycle of 700ms at most.
  *
  * Run `bun run prepack` first so `lib/animated/` exists. Uses an installed
  * Chrome by default; pass `--browser firefox` or `--browser webkit` to use
@@ -54,10 +55,14 @@ for (const name of names) {
   await Bun.write(`${out}/${name}.js`, js.code);
   const { default: Icon } = await import(`${process.cwd()}/${out}/${name}.js`);
 
+  const states = source.includes('data-playing="loop"') ? ["motion", "loop"] : ["motion"];
   for (const motion of ["productive", "expressive"]) {
-    const result = render(Icon, { props: { size: 32, motion, "data-playing": "motion", "data-key": `${name}/${motion}` } });
-    heads.add(result.head);
-    body += result.body;
+    for (const state of states) {
+      const key = `${name}/${motion}${state === "loop" ? "/loop" : ""}`;
+      const result = render(Icon, { props: { size: 32, motion, "data-playing": state, "data-key": key } });
+      heads.add(result.head);
+      body += result.body;
+    }
   }
 }
 
@@ -71,10 +76,15 @@ const results = await page.evaluate(
     const animations = svgs.flatMap((svg) => svg.getAnimations({ subtree: true }));
     animations.forEach((animation) => animation.pause());
 
-    const report: Record<string, { overflow: number; end: number }> = {};
+    const report: Record<string, { overflow: number; end: number; cycle: number; forever: boolean }> = {};
     for (const svg of svgs) {
-      const end = Math.max(0, ...svg.getAnimations({ subtree: true }).map((a) => Number(a.effect?.getComputedTiming().endTime)));
-      report[svg.dataset.key!] = { overflow: 0, end };
+      const timings = svg.getAnimations({ subtree: true }).map((a) => a.effect!.getComputedTiming());
+      report[svg.dataset.key!] = {
+        overflow: 0,
+        end: Math.max(0, ...timings.map((t) => Number(t.endTime))),
+        cycle: Math.max(0, ...timings.map((t) => Number(t.duration))),
+        forever: timings.length > 0 && timings.every((t) => t.iterations === Infinity),
+      };
     }
 
     for (let time = 0; time <= limits.expressive; time += step) {
@@ -106,17 +116,20 @@ await browser.close();
 
 const failures: string[] = [];
 
-for (const [key, { overflow, end }] of Object.entries(results)) {
-  const motion = key.split("/")[1] as keyof typeof LIMITS;
+for (const [key, { overflow, end, cycle, forever }] of Object.entries(results)) {
+  const [, motion, loop] = key.split("/") as [string, keyof typeof LIMITS, string | undefined];
 
   if (end === 0) failures.push(`${key}: doesn't animate`);
-  if (end > LIMITS[motion]) failures.push(`${key}: runs ${end}ms, over ${LIMITS[motion]}ms`);
+  if (loop && !forever) failures.push(`${key}: doesn't repeat forever`);
+  if (loop && cycle > LIMITS.expressive) failures.push(`${key}: has a ${cycle}ms cycle, over ${LIMITS.expressive}ms`);
+  if (!loop && end > LIMITS[motion]) failures.push(`${key}: runs ${end}ms, over ${LIMITS[motion]}ms`);
   if (overflow > TOLERANCE && !EXITS.has(key)) {
     failures.push(`${key}: leaves the canvas by ${overflow.toFixed(2)} units`);
   }
 }
 
-console.log(`Checked ${names.length} animated icons in both modes in ${browserName}.`);
+const loops = Object.keys(results).filter((key) => key.endsWith("/loop")).length / 2;
+console.log(`Checked ${names.length} animated icons in both modes, ${loops} of them looping, in ${browserName}.`);
 
 if (failures.length > 0) {
   console.error(failures.join("\n"));
