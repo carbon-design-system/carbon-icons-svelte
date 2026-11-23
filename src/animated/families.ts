@@ -644,7 +644,7 @@ export const spinner = (icon: Family): AnimatedIcon => ({
  * Productive: a quick wave, or a steady wave while looping.
  * Expressive: each dot also hops as it swells.
  */
-export const pendingDots = (icon: Family): AnimatedIcon => {
+export const pendingDots = (icon: Family & { loop?: boolean }): AnimatedIcon => {
   const keyframes = (i: number, hop: boolean) => {
     const peak = 20 + i * 25;
     const lift = hop ? " translateY(-1.5px)" : "";
@@ -673,7 +673,7 @@ export const pendingDots = (icon: Family): AnimatedIcon => {
     name: icon.name,
     sourceHash: icon.sourceHash,
     content: withRest(icon),
-    loop: true,
+    loop: icon.loop ?? true,
     css: `  .dot-0,
   .dot-1,
   .dot-2 {
@@ -684,11 +684,15 @@ ${rules(PRODUCTIVE, DURATION.slow01, standard.productive, false, false)}
 
 ${rules(EXPRESSIVE, DURATION.slow02, standard.expressive, true, false)}
 
-${rules(LOOP_PRODUCTIVE, DURATION.slow02, standard.productive, false, true)}
+${
+  icon.loop === false
+    ? ""
+    : `${rules(LOOP_PRODUCTIVE, DURATION.slow02, standard.productive, false, true)}
 
 ${rules(LOOP_EXPRESSIVE, DURATION.slow02, standard.expressive, true, true)}
 
-${[0, 1, 2].map((i) => keyframes(i, false)).join("\n\n")}
+`
+}${[0, 1, 2].map((i) => keyframes(i, false)).join("\n\n")}
 
 ${[0, 1, 2].map((i) => keyframes(i, true)).join("\n\n")}`,
   };
@@ -1087,12 +1091,13 @@ ${frames("in-ne", 0.7071, -0.7071)}`,
 
 /**
  * Magnifiers zoom: the lens grows (`scale` above 1) or shrinks around its
- * centre, keeping the handle inside the canvas.
+ * centre, keeping the handle inside the canvas. With another `origin`, an
+ * icon grows out from that point, like `Share` from its source node.
  *
  * Productive: grows or shrinks and comes back.
  * Expressive: further, then past rest, and settles.
  */
-export const zoom = (icon: Family & { scale: number }): AnimatedIcon => {
+export const zoom = (icon: Family & { scale: number; origin?: [number, number] }): AnimatedIcon => {
   const further = Math.round((1 + (icon.scale - 1) * 1.4) * 100) / 100;
   const past = Math.round((1 - (icon.scale - 1) * 0.3) * 100) / 100;
 
@@ -1100,7 +1105,7 @@ export const zoom = (icon: Family & { scale: number }): AnimatedIcon => {
     name: icon.name,
     sourceHash: icon.sourceHash,
     content: icon.content,
-    css: `${origin(".lens", [13, 13])}
+    css: `${origin(".lens", icon.origin ?? [13, 13])}
 
   ${PRODUCTIVE} .lens {
     animation: zoom ${DURATION.slow01};
@@ -1282,10 +1287,14 @@ export const flap = (icon: Family & { hinge: [number, number] }): AnimatedIcon =
  * back in from the opposite one. `direction` is a unit vector; `distance`
  * is how far, in units, the plane travels to clear the canvas.
  *
- * Productive: nudges 4 units forward and back.
+ * Productive: nudges `nudge` units (4 by default) forward and back. An icon
+ * that already reaches the edge it flies toward recoils instead, with a
+ * negative `nudge`.
  * Expressive: pulls back, flies out, and returns from the other side.
  */
-export const flyOut = (icon: Family & { direction: [number, number]; distance: number }): AnimatedIcon => {
+export const flyOut = (
+  icon: Family & { direction: [number, number]; distance: number; nudge?: number }
+): AnimatedIcon => {
   const [dx, dy] = icon.direction;
   const round = (n: number) => Math.round(n * 100) / 100;
   const move = (units: number) =>
@@ -1311,7 +1320,7 @@ export const flyOut = (icon: Family & { direction: [number, number]; distance: n
       animation-timing-function: ${entrance.productive};
     }
     40% {
-      transform: ${move(4)};
+      transform: ${move(icon.nudge ?? 4)};
       animation-timing-function: ${standard.productive};
     }
     100% {
@@ -1525,6 +1534,250 @@ export const clockHands = (icon: Family): AnimatedIcon => ({
   @keyframes turn-twice {
     to {
       transform: rotate(720deg);
+    }
+  }`,
+});
+
+/**
+ * Thumbs bump, pivoting at the wrist (`pivot`), by `angle` degrees. Past
+ * about 9°, the cuff swings out of the canvas.
+ *
+ * Productive: one bump and back.
+ * Expressive: a bigger bump that swings back past rest and settles.
+ */
+export const bump = (icon: Family & { pivot: [number, number]; angle: number }): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: icon.content,
+  css: `${origin(".hand", icon.pivot)}
+
+  ${PRODUCTIVE} .hand {
+    animation: bump ${DURATION.slow01};
+  }
+
+  ${EXPRESSIVE} .hand {
+    animation: bump-swing ${DURATION.slow02};
+  }
+
+  @keyframes bump {
+    0% {
+      transform: rotate(0);
+      animation-timing-function: ${entrance.productive};
+    }
+    40% {
+      transform: rotate(${icon.angle}deg);
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: rotate(0);
+    }
+  }
+
+  @keyframes bump-swing {
+    0% {
+      transform: rotate(0);
+      animation-timing-function: ${entrance.expressive};
+    }
+    30% {
+      transform: rotate(${Math.round(icon.angle * 1.25 * 100) / 100}deg);
+      animation-timing-function: ${standard.expressive};
+    }
+    60% {
+      transform: rotate(${Math.round(icon.angle * -0.3 * 10) / 10}deg);
+      animation-timing-function: ${standard.expressive};
+    }
+    100% {
+      transform: rotate(0);
+    }
+  }`,
+});
+
+/**
+ * Bookmarks stretch down from their top edge, like a ribbon pulled, and
+ * spring back. They reach the canvas bottom, so they stretch 7% at most.
+ *
+ * Productive: a stretch and back.
+ * Expressive: a stretch, a bounce past rest, and settle.
+ */
+export const ribbon = (icon: Family): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: icon.content,
+  css: `${origin(".ribbon", [16, 2])}
+
+  ${PRODUCTIVE} .ribbon {
+    animation: stretch ${DURATION.slow01};
+  }
+
+  ${EXPRESSIVE} .ribbon {
+    animation: stretch-bounce ${DURATION.slow02};
+  }
+
+  @keyframes stretch {
+    0% {
+      transform: scaleY(1);
+      animation-timing-function: ${entrance.productive};
+    }
+    40% {
+      transform: scaleY(1.07);
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: scaleY(1);
+    }
+  }
+
+  @keyframes stretch-bounce {
+    0% {
+      transform: scaleY(1);
+      animation-timing-function: ${entrance.expressive};
+    }
+    30% {
+      transform: scaleY(1.07);
+      animation-timing-function: ${standard.expressive};
+    }
+    55% {
+      transform: scaleY(0.96);
+      animation-timing-function: ${standard.expressive};
+    }
+    78% {
+      transform: scaleY(1.02);
+      animation-timing-function: ${standard.expressive};
+    }
+    100% {
+      transform: scaleY(1);
+    }
+  }`,
+});
+
+/**
+ * Flags flutter: the cloth skews from the pole while the pole stays still.
+ * The pole and cloth are one path in Carbon, so they're split, and Carbon's
+ * path is shown at rest.
+ *
+ * Productive: one flap.
+ * Expressive: a flutter that dies out.
+ */
+export const flutter = (icon: Family): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: withRest(icon),
+  css: `${origin(".cloth", [6, 11])}${restCss(icon)}
+
+  ${PRODUCTIVE} .cloth {
+    animation: flap ${DURATION.slow01} ${standard.productive};
+  }
+
+  ${EXPRESSIVE} .cloth {
+    animation: flutter ${DURATION.slow02} ${standard.expressive};
+  }
+
+  @keyframes flap {
+    40% {
+      transform: skewY(-5deg);
+    }
+  }
+
+  @keyframes flutter {
+    18% {
+      transform: skewY(-6deg);
+    }
+    40% {
+      transform: skewY(4deg);
+    }
+    62% {
+      transform: skewY(-2.5deg);
+    }
+    82% {
+      transform: skewY(1deg);
+    }
+  }`,
+});
+
+/**
+ * A paperclip wiggles about its centre.
+ *
+ * Productive: one wiggle each way.
+ * Expressive: four wiggles that die out.
+ */
+export const wiggle = (icon: Family): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: icon.content,
+  css: `${origin(".clip", [16, 16])}
+
+  ${PRODUCTIVE} .clip {
+    animation: wiggle ${DURATION.slow01} ${standard.productive};
+  }
+
+  ${EXPRESSIVE} .clip {
+    animation: wiggle-hard ${DURATION.slow02} ${standard.expressive};
+  }
+
+  @keyframes wiggle {
+    35% {
+      transform: rotate(-6deg);
+    }
+    70% {
+      transform: rotate(4deg);
+    }
+  }
+
+  @keyframes wiggle-hard {
+    16% {
+      transform: rotate(-8deg);
+    }
+    36% {
+      transform: rotate(6deg);
+    }
+    56% {
+      transform: rotate(-4deg);
+    }
+    76% {
+      transform: rotate(2deg);
+    }
+  }`,
+});
+
+/**
+ * A bulb (`.glow`) flickers on. Opacity only, so nothing moves.
+ *
+ * Productive: one flicker.
+ * Expressive: a few flickers, like a bulb catching.
+ */
+export const flicker = (icon: Family): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: icon.content,
+  css: `  ${PRODUCTIVE} .glow {
+    animation: flicker ${DURATION.slow01} ${standard.productive};
+  }
+
+  ${EXPRESSIVE} .glow {
+    animation: flicker-catch ${DURATION.slow02} ${standard.expressive};
+  }
+
+  @keyframes flicker {
+    30% {
+      opacity: 0.3;
+    }
+  }
+
+  @keyframes flicker-catch {
+    12% {
+      opacity: 0.25;
+    }
+    24% {
+      opacity: 1;
+    }
+    36% {
+      opacity: 0.4;
+    }
+    52% {
+      opacity: 1;
+    }
+    64% {
+      opacity: 0.7;
     }
   }`,
 });

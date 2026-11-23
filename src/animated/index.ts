@@ -6,6 +6,9 @@ import { DURATION, EASING, withLoop, type AnimatedIcon } from "./shared.js";
 import AddIcon from "./icons/Add.js";
 import ArrowsHorizontalIcon from "./icons/ArrowsHorizontal.js";
 import ArrowsVerticalIcon from "./icons/ArrowsVertical.js";
+import AttachmentIcon from "./icons/Attachment.js";
+import BookmarkIcon from "./icons/Bookmark.js";
+import BookmarkFilledIcon from "./icons/BookmarkFilled.js";
 import ChatIcon from "./icons/Chat.js";
 import CheckmarkIcon from "./icons/Checkmark.js";
 import CheckmarkFilledIcon from "./icons/CheckmarkFilled.js";
@@ -17,6 +20,7 @@ import CloudDownloadIcon from "./icons/CloudDownload.js";
 import CloudUploadIcon from "./icons/CloudUpload.js";
 import CopyIcon from "./icons/Copy.js";
 import DownloadIcon from "./icons/Download.js";
+import DraggableIcon from "./icons/Draggable.js";
 import EditIcon from "./icons/Edit.js";
 import EditOffIcon from "./icons/EditOff.js";
 import EmailIcon from "./icons/Email.js";
@@ -24,7 +28,12 @@ import ErrorIcon from "./icons/Error.js";
 import ErrorFilledIcon from "./icons/ErrorFilled.js";
 import FavoriteIcon from "./icons/Favorite.js";
 import FavoriteFilledIcon from "./icons/FavoriteFilled.js";
+import FlagIcon from "./icons/Flag.js";
+import FlagFilledIcon from "./icons/FlagFilled.js";
+import HelpIcon from "./icons/Help.js";
+import HelpFilledIcon from "./icons/HelpFilled.js";
 import HourglassIcon from "./icons/Hourglass.js";
+import IdeaIcon from "./icons/Idea.js";
 import InProgressIcon from "./icons/InProgress.js";
 import IncompleteIcon from "./icons/Incomplete.js";
 import InformationIcon from "./icons/Information.js";
@@ -56,6 +65,7 @@ import PinFilledIcon from "./icons/PinFilled.js";
 import PlayIcon from "./icons/Play.js";
 import PlayFilledIcon from "./icons/PlayFilled.js";
 import RenewIcon from "./icons/Renew.js";
+import RocketIcon from "./icons/Rocket.js";
 import RotateClockwiseIcon from "./icons/RotateClockwise.js";
 import RotateClockwiseAltIcon from "./icons/RotateClockwiseAlt.js";
 import RotateClockwiseAltFilledIcon from "./icons/RotateClockwiseAltFilled.js";
@@ -70,11 +80,16 @@ import SendAltIcon from "./icons/SendAlt.js";
 import SendAltFilledIcon from "./icons/SendAltFilled.js";
 import SendFilledIcon from "./icons/SendFilled.js";
 import SettingsIcon from "./icons/Settings.js";
+import ShareIcon from "./icons/Share.js";
 import StarIcon from "./icons/Star.js";
 import StarFilledIcon from "./icons/StarFilled.js";
 import StopIcon from "./icons/Stop.js";
 import StopFilledIcon from "./icons/StopFilled.js";
 import SubtractIcon from "./icons/Subtract.js";
+import ThumbsDownIcon from "./icons/ThumbsDown.js";
+import ThumbsDownFilledIcon from "./icons/ThumbsDownFilled.js";
+import ThumbsUpIcon from "./icons/ThumbsUp.js";
+import ThumbsUpFilledIcon from "./icons/ThumbsUpFilled.js";
 import TimeIcon from "./icons/Time.js";
 import TimeFilledIcon from "./icons/TimeFilled.js";
 import TrashCanIcon from "./icons/TrashCan.js";
@@ -108,6 +123,9 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   AddIcon,
   ArrowsHorizontalIcon,
   ArrowsVerticalIcon,
+  AttachmentIcon,
+  BookmarkIcon,
+  BookmarkFilledIcon,
   ChatIcon,
   CheckmarkIcon,
   CheckmarkFilledIcon,
@@ -119,6 +137,7 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   CloudUploadIcon,
   CopyIcon,
   DownloadIcon,
+  DraggableIcon,
   EditIcon,
   EditOffIcon,
   EmailIcon,
@@ -126,7 +145,12 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   ErrorFilledIcon,
   FavoriteIcon,
   FavoriteFilledIcon,
+  FlagIcon,
+  FlagFilledIcon,
+  HelpIcon,
+  HelpFilledIcon,
   HourglassIcon,
+  IdeaIcon,
   InProgressIcon,
   IncompleteIcon,
   InformationIcon,
@@ -158,6 +182,7 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   PlayIcon,
   PlayFilledIcon,
   RenewIcon,
+  RocketIcon,
   RotateClockwiseIcon,
   RotateClockwiseAltIcon,
   RotateClockwiseAltFilledIcon,
@@ -172,11 +197,16 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   SendAltFilledIcon,
   SendFilledIcon,
   SettingsIcon,
+  ShareIcon,
   StarIcon,
   StarFilledIcon,
   StopIcon,
   StopFilledIcon,
   SubtractIcon,
+  ThumbsDownIcon,
+  ThumbsDownFilledIcon,
+  ThumbsUpIcon,
+  ThumbsUpFilledIcon,
   TimeIcon,
   TimeFilledIcon,
   TrashCanIcon,

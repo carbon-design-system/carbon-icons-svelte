@@ -23,7 +23,7 @@ import { render } from "svelte/server";
 import { DURATION } from "../src/animated/shared.js";
 
 /** Icons whose motion leaves the canvas on purpose, through the viewBox edge. */
-const EXITS = new Set(["Send", "SendFilled", "SendAlt", "SendAltFilled"].map((name) => `${name}/expressive`));
+const EXITS = new Set(["Send", "SendFilled", "SendAlt", "SendAltFilled", "Rocket"].map((name) => `${name}/expressive`));
 
 /** How far a part may stray past the canvas, in user units, before it counts. */
 const TOLERANCE = 0.5;
