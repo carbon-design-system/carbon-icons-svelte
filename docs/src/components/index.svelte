@@ -17,6 +17,7 @@
   import fuzzy from "fuzzy";
   import FocusKey from "./FocusKey.svelte";
   import Header from "./Header.svelte";
+  import Animated from "./Animated.svelte";
   import { BUILD_INFO_URL } from "../constants";
 
   /** @typedef {{ byModuleName: Record<string, string>; bySize: { order: string[]; sizes: Record<string, string[]> }; total: number; renamedIcons?: Record<string, string> }} BuildInfo */
@@ -66,6 +67,11 @@
       return 16;
     }
   }
+
+  /** @returns {"icons" | "animated"} */
+  const getRoute = () => (location.hash === "#animated" ? "animated" : "icons");
+
+  let route = getRoute();
 
   let ref = null;
   let value = "";
@@ -130,10 +136,15 @@
   $: iconSizeClass = `icon-size--${iconSize}`;
 </script>
 
+<svelte:window on:hashchange={() => (route = getRoute())} />
+
 <FocusKey element={ref} selectText />
 
-<Header />
+<Header {route} />
 
+{#if route === "animated"}
+  <Animated />
+{:else}
 {#if data}
   <Modal
     passiveModal
@@ -234,6 +245,7 @@
     {/if}
   </Grid>
 </Content>
+{/if}
 
 <style>
   :global(html) {

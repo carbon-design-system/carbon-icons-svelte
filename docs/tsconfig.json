@@ -10,7 +10,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "checkJs": true,
-    "noEmit": true
+    "noEmit": true,
+    "paths": {
+      "carbon-icons-svelte/animated": ["../lib/animated/index.d.ts"]
+    }
   },
   "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.svelte"]
 }
