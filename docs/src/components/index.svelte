@@ -69,7 +69,7 @@
   }
 
   /** @returns {"icons" | "animated"} */
-  const getRoute = () => (location.hash === "#animated" ? "animated" : "icons");
+  const getRoute = () => (location.hash.startsWith("#animated") ? "animated" : "icons");
 
   let route = getRoute();
 
