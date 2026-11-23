@@ -24,12 +24,14 @@
     Add,
     ArrowRight,
     Checkmark,
+    CheckmarkFilled,
     ChevronLeft,
     ChevronRight,
     Copy,
     Download,
     Edit,
     Favorite,
+    InProgress,
     Notification,
     PageFirst,
     PageLast,
@@ -148,6 +150,7 @@
     ["animated-carbon", "In Carbon components"],
     ["animated-events", "Play on an event"],
     ["animated-loop", "Loop"],
+    ["animated-states", "Icons for each state"],
     ["animated-defaults", "Defaults"],
     ["animated-motion", "Motion"],
     ["animated-reduced-motion", "Reduced motion"],
@@ -168,6 +171,23 @@
   const refresh = () => {
     refreshing = true;
     setTimeout(() => (refreshing = false), 2500);
+  };
+
+  /** @type {"idle" | "active" | "done"} */
+  let status = "idle";
+  let copied = false;
+
+  const download = () => {
+    status = "active";
+    setTimeout(() => {
+      status = "done";
+      setTimeout(() => (status = "idle"), 2000);
+    }, 2500);
+  };
+
+  const copy = () => {
+    copied = true;
+    setTimeout(() => (copied = false), 2000);
   };
   let motionPlay = 0;
 
@@ -256,6 +276,33 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
 <Button kind="tertiary" disabled={refreshing} on:click={refresh}>
   {refreshing ? "Refreshing" : "Refresh"}
   <Renew slot="icon" class="bx--btn__icon" aria-hidden="true" loop={refreshing} />
+</Button>`;
+
+  const statesCode = `<script>
+  import { Button } from "carbon-components-svelte";
+  import { CheckmarkFilled, Download, InProgress } from "carbon-icons-svelte/animated";
+
+  let status = "idle"; // "idle" | "active" | "done"
+
+  async function download() {
+    status = "active";
+    await save(); // your request
+    status = "done";
+    setTimeout(() => (status = "idle"), 2000);
+  }
+<\/script>
+
+<Button kind="secondary" disabled={status === "active"} on:click={download}>
+  {status === "active" ? "Downloading" : status === "done" ? "Downloaded" : "Download"}
+  <svelte:fragment slot="icon">
+    {#if status === "active"}
+      <InProgress class="bx--btn__icon" aria-hidden="true" loop />
+    {:else if status === "done"}
+      <CheckmarkFilled class="bx--btn__icon" aria-hidden="true" play motion="expressive" />
+    {:else}
+      <Download class="bx--btn__icon" aria-hidden="true" />
+    {/if}
+  </svelte:fragment>
 </Button>`;
 
   const reducedCode = `<Checkmark play={saved} trigger="none" reducedMotion="fade" />`;
@@ -415,6 +462,44 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
           </div>
         </div>
         <Code code={loopCode} />
+      </section>
+
+      <section id="animated-states">
+        <h2>Icons for each state</h2>
+        <p>
+          A button can show a different animated icon for each state. Swap them in an <code>{"{#if}"}</code> inside
+          <code>&lt;svelte:fragment slot="icon"&gt;</code>, since a slot can't be set inside a block. Each icon plays
+          the way that state needs: <code>Download</code> on hover while idle, <code>InProgress</code> on a
+          <code>loop</code> while working, and <code>CheckmarkFilled</code> once with <code>play</code> as it appears,
+          since an icon that mounts with a truthy <code>play</code> plays right away. Change the label too, so the
+          state isn't only shown by the icon.
+        </p>
+        <div class="demo">
+          <div class="demo-row">
+            <Button kind="secondary" disabled={status === "active"} on:click={download}>
+              {status === "active" ? "Downloading" : status === "done" ? "Downloaded" : "Download"}
+              <svelte:fragment slot="icon">
+                {#if status === "active"}
+                  <InProgress class="bx--btn__icon" aria-hidden="true" loop />
+                {:else if status === "done"}
+                  <CheckmarkFilled class="bx--btn__icon" aria-hidden="true" play motion="expressive" />
+                {:else}
+                  <Download class="bx--btn__icon" aria-hidden="true" />
+                {/if}
+              </svelte:fragment>
+            </Button>
+            <Button kind="ghost" iconDescription={copied ? "Copied" : "Copy"} on:click={copy}>
+              <svelte:fragment slot="icon">
+                {#if copied}
+                  <Checkmark class="bx--btn__icon" aria-hidden="true" play style="margin-left: 0" />
+                {:else}
+                  <Copy class="bx--btn__icon" aria-hidden="true" style="margin-left: 0" />
+                {/if}
+              </svelte:fragment>
+            </Button>
+          </div>
+        </div>
+        <Code code={statesCode} />
       </section>
 
       <section id="animated-defaults">
