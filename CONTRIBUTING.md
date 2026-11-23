@@ -132,7 +132,7 @@ For Svelte 3, pin [`carbon-icons-svelte@12.13.0`](https://github.com/carbon-desi
 - **Hand-built**: one file per icon in [`src/animated/icons/`](src/animated/icons/), listed in [`src/animated/index.ts`](src/animated/index.ts). Use these when parts move separately: a bell and its clapper, a lid, a shackle.
 - **Rule-based**: the whole icon moves, so they're generated from the descriptor. [`src/animated/rules.ts`](src/animated/rules.ts) lists each icon with its rule: `nudge` the way it points, or `turn` the way its arrows go. Add an icon there when its whole drawing makes the motion, and check it against the exclusions at the top of the file.
 
-Most icons should stay static. Animate an icon only when motion says what it means; logos and domain nouns like `Assembly` have nothing to show.
+Most icons should stay static. Animate an icon only when motion says what it means; logos and domain nouns like `Assembly` have nothing to show. Look at the drawing before picking a motion, not the name: Carbon's `Key` is the letters "KEY", and `Reply` touches both side edges, so it has no room to nudge.
 
 Carbon's icons are filled outlines, often a single merged path, so per-part motion can't be generated from the descriptors. Each hand-built icon file exports:
 
@@ -157,6 +157,7 @@ Start the file with a doc comment that says what the motion is and why, in a sen
 - **Pivot on the physical hinge.** The bell swings from its stem, the lid from its end, the pencil on its tip, the pin on its point, the warning sign on its base. Set `transform-box: view-box` and a `transform-origin` in user units.
 - **Size motion for 16px.** One unit of the 32-unit grid is 0.5px at 16px. Move at least 3 units, or 2 for a hop or shake near an edge.
 - **Stay inside the 32×32 viewBox.** `bun run test:motion` checks it by playing every icon in Chrome and sampling points along every path at each frame. Bounding boxes overstate rotations. Rotation is the easy one to miss: anything farther than 16 units from the pivot leaves the canvas at some angle, so `Renew`, `Star` and the rule-based turns shrink slightly mid-turn, and the bell can't swing past about 8°. Nudges need room too, so `rules.ts` caps `SkipForward` and `ArrowShiftDown` at 2 units. An icon that touches an edge can't move toward it: `Locked`, `TrashCan` and `Location` get 2 units of travel at most. Rotating about the base (`WarningAlt`) keeps corners in where a sideways shake wouldn't. Leave the canvas only on purpose: through the viewBox edge (`Send`), or through a `<clipPath>` on a wrapper `<g>` so the clip stays put while the part moves (`Download`, `Upload`).
+- **Clip where the part goes in.** A part that passes through something disappears into it and comes back out of it, not through it: `UpToTop`'s chevron vanishes into the bar, and `Logout`'s arrow comes back out of the door's inner wall rather than through the wall.
 - **Keep stroke weight.** Scaling one axis thins the strokes along the other, and they vanish at 16px. Fold, clip or move parts instead (`View`).
 
 ### Timing
@@ -172,6 +173,7 @@ Every icon has two modes, matching Carbon's [motion styles](https://carbondesign
 - **Symmetry angles don't scale.** A turn has to end on a symmetry angle (`Star` 72°), so productive turns the same amount as expressive, only quicker and without the overshoot.
 - **Loop only progress, refresh and waiting icons** (`Terminal` while a command runs), with `loop: true` on the icon. A loop repeats one cycle that starts and ends at rest, so stopping at a cycle boundary is seamless; the runtime finishes the current cycle when `loop` turns off. By default the loop repeats the icon's one-shot animation in each mode (`withLoop` in `shared.ts`). A spinner styles `LOOP_PRODUCTIVE` and `LOOP_EXPRESSIVE` itself, with a `linear` productive spin like Carbon's `Loading`: the only place to use an easing that isn't a Carbon token.
 - **Stagger looping parts inside the keyframes, not with `animation-delay`.** Every part then shares one cycle and stops together (`Pending`). A test fails on a delay in a loop rule.
+- **Switch on and off with `step-end`** (`Terminal`'s blink). It's not a curve, so it doesn't need a token.
 - **Give related icons the same motion.** `Download` and `Upload` mirror each other; `Wifi` and `VolumeUp` share one.
 
 ### Construction
@@ -182,10 +184,19 @@ Every icon has two modes, matching Carbon's [motion styles](https://carbondesign
 - **Animate a hole with a mask.** In filled icons, the glyph is a hole in the shape (the check in `CheckmarkFilled`, the `!` in `WarningFilled`). Move the hole by moving shapes inside a `<mask>`, or draw it in with a black `ink` stroke at the hole's exact width. Don't nest masks: Chrome doesn't render a masked element inside a mask.
 - **Hide a part with a shape wider than it.** A mask shape traced exactly on a part's edges leaves a faint outline of the part, where the two anti-aliased edges meet. To hide an "off" slash and draw it back in, use `slash()`, which hides it with a stroke wider than the slash and reveals it with a wider `ink`.
 - **Show Carbon's paths at rest.** Masks render edges slightly differently in some browsers, so an icon drawn through a mask passes `rest` to its builder in [`src/animated/families.ts`](src/animated/families.ts): Carbon's own markup is shown at rest, and the masked version only while it plays.
-- **Group related icons into a family.** Filled, outline and alternate versions share one motion, built by one function in [`src/animated/families.ts`](src/animated/families.ts) or [`src/animated/rotate.ts`](src/animated/rotate.ts), so a timing change lands everywhere.
+- **Group related icons into a family.** Filled, outline and alternate versions share one motion, built by one function in [`src/animated/families.ts`](src/animated/families.ts) or [`src/animated/rotate.ts`](src/animated/rotate.ts), so a timing change lands everywhere. When a second icon needs a one-off icon's motion, move it into a builder (`Subtract` became `squeeze`, `Light` became `radiate`), and compare `lib/animated/` before and after: a refactor mustn't change any built file. A one-off icon that needs Carbon's paths at rest uses `withRest` and `restCss` instead of copying them.
 - **Layer motions with `rotate`, `scale` and `translate`** when they need their own easing; each is a separate property (`Star`).
 - **Don't gate motion with a media query.** `animate.js` handles reduced motion (see above).
 - **Don't mirror motion for right-to-left layouts.** Motion follows the drawing: an `ArrowRight` still points right in a right-to-left page, unless the app flips the icon with a transform, which flips its motion too.
+
+### Performance
+
+A resting icon costs nothing beyond a few event listeners: no timers, observers or animation frames. Keep it that way.
+
+- **Use a mask only for a hole.** A masked icon also carries Carbon's markup for rest, so it mounts at about twice the cost of a static icon (1,000 `CheckmarkFilled` take 36ms against 20ms in Chrome). Move a plain part directly.
+- **Loops cost main-thread time, even off-screen.** Chrome animates SVG on the main thread: 20 looping icons take about 2% of it, 200 about 20%. Loop only while something is in progress.
+- **Don't force a style flush in the runtime unless the animation needs it.** `animate.js` flushes only to replay an icon that's already playing; a flush per icon adds up when a list plays at once.
+- **Keep the CSS small.** Each icon adds about 0.6KB gzipped, mostly CSS, where a static icon adds 0.1KB. Reuse a builder's keyframes rather than writing near-copies.
 
 ### Checking motion
 
@@ -194,6 +205,8 @@ Every icon has two modes, matching Carbon's [motion styles](https://carbondesign
 - a part leaves the canvas, except deliberate exits listed in the script;
 - productive motion runs past 400ms, or expressive past 700ms;
 - an icon doesn't animate.
+
+Every animation starts paused and is stepped through by time, so the result doesn't depend on how fast the machine is.
 
 It uses an installed Chrome, and CI runs it too. To check Firefox and Safari's engine, install Playwright's builds with `bunx playwright-core install firefox webkit`, then pass `--browser firefox` or `--browser webkit`.
 
