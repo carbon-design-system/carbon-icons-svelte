@@ -176,6 +176,9 @@ Every icon has two modes, matching Carbon's [motion styles](https://carbondesign
 
 - **Copy Carbon's paths verbatim.** Only split a path where its parts move separately. A test fails if an unsplit path differs from Carbon's character for character.
 - **Don't put a CSS `transform` on an element with a `transform` attribute.** CSS replaces the attribute. Wrap the element in a `<g>` and animate that (`Light`).
+- **Animate a hole with a mask.** In filled icons, the glyph is a hole in the shape (the check in `CheckmarkFilled`, the `!` in `WarningFilled`). Move the hole by moving shapes inside a `<mask>`, or draw it in with a black `ink` stroke at the hole's exact width. Don't nest masks: Chrome doesn't render a masked element inside a mask.
+- **Show Carbon's paths at rest.** Masks render edges slightly differently in some browsers, so an icon drawn through a mask passes `rest` to its builder in [`src/animated/families.ts`](src/animated/families.ts): Carbon's own markup is shown at rest, and the masked version only while it plays.
+- **Group related icons into a family.** Filled, outline and alternate versions share one motion, built by one function in [`src/animated/families.ts`](src/animated/families.ts) or [`src/animated/rotate.ts`](src/animated/rotate.ts), so a timing change lands everywhere.
 - **Layer motions with `rotate`, `scale` and `translate`** when they need their own easing; each is a separate property (`Star`).
 - **Don't gate motion with a media query.** `animate.js` handles reduced motion (see above).
 - **Don't mirror motion for right-to-left layouts.** Motion follows the drawing: an `ArrowRight` still points right in a right-to-left page, unless the app flips the icon with a transform, which flips its motion too.

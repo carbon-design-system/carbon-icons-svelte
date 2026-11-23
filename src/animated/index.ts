@@ -3,72 +3,95 @@
 import type { IconOutput } from "@carbon/icons";
 import { RULES, ruleIcons } from "./rules.js";
 import { DURATION, EASING, type AnimatedIcon } from "./shared.js";
-import Add from "./icons/Add.js";
-import Checkmark from "./icons/Checkmark.js";
-import ChevronRight from "./icons/ChevronRight.js";
-import Copy from "./icons/Copy.js";
-import Download from "./icons/Download.js";
-import Edit from "./icons/Edit.js";
-import Favorite from "./icons/Favorite.js";
-import Light from "./icons/Light.js";
-import Location from "./icons/Location.js";
-import Locked from "./icons/Locked.js";
-import Notification from "./icons/Notification.js";
-import Renew from "./icons/Renew.js";
-import RotateClockwise from "./icons/RotateClockwise.js";
-import RotateClockwiseAlt from "./icons/RotateClockwiseAlt.js";
-import RotateClockwiseAltFilled from "./icons/RotateClockwiseAltFilled.js";
-import RotateClockwiseFilled from "./icons/RotateClockwiseFilled.js";
-import RotateCounterclockwise from "./icons/RotateCounterclockwise.js";
-import RotateCounterclockwiseAlt from "./icons/RotateCounterclockwiseAlt.js";
-import RotateCounterclockwiseAltFilled from "./icons/RotateCounterclockwiseAltFilled.js";
-import RotateCounterclockwiseFilled from "./icons/RotateCounterclockwiseFilled.js";
-import Search from "./icons/Search.js";
-import Send from "./icons/Send.js";
-import Settings from "./icons/Settings.js";
-import Star from "./icons/Star.js";
-import Time from "./icons/Time.js";
-import TrashCan from "./icons/TrashCan.js";
-import Upload from "./icons/Upload.js";
-import View from "./icons/View.js";
-import VolumeUp from "./icons/VolumeUp.js";
-import WarningAlt from "./icons/WarningAlt.js";
-import Wifi from "./icons/Wifi.js";
+import AddIcon from "./icons/Add.js";
+import CheckmarkIcon from "./icons/Checkmark.js";
+import CheckmarkFilledIcon from "./icons/CheckmarkFilled.js";
+import CheckmarkOutlineIcon from "./icons/CheckmarkOutline.js";
+import ChevronRightIcon from "./icons/ChevronRight.js";
+import CopyIcon from "./icons/Copy.js";
+import DownloadIcon from "./icons/Download.js";
+import EditIcon from "./icons/Edit.js";
+import EditOffIcon from "./icons/EditOff.js";
+import ErrorIcon from "./icons/Error.js";
+import ErrorFilledIcon from "./icons/ErrorFilled.js";
+import FavoriteIcon from "./icons/Favorite.js";
+import LightIcon from "./icons/Light.js";
+import LocationIcon from "./icons/Location.js";
+import LockedIcon from "./icons/Locked.js";
+import NotificationIcon from "./icons/Notification.js";
+import RenewIcon from "./icons/Renew.js";
+import RotateClockwiseIcon from "./icons/RotateClockwise.js";
+import RotateClockwiseAltIcon from "./icons/RotateClockwiseAlt.js";
+import RotateClockwiseAltFilledIcon from "./icons/RotateClockwiseAltFilled.js";
+import RotateClockwiseFilledIcon from "./icons/RotateClockwiseFilled.js";
+import RotateCounterclockwiseIcon from "./icons/RotateCounterclockwise.js";
+import RotateCounterclockwiseAltIcon from "./icons/RotateCounterclockwiseAlt.js";
+import RotateCounterclockwiseAltFilledIcon from "./icons/RotateCounterclockwiseAltFilled.js";
+import RotateCounterclockwiseFilledIcon from "./icons/RotateCounterclockwiseFilled.js";
+import SearchIcon from "./icons/Search.js";
+import SendIcon from "./icons/Send.js";
+import SettingsIcon from "./icons/Settings.js";
+import StarIcon from "./icons/Star.js";
+import TimeIcon from "./icons/Time.js";
+import TrashCanIcon from "./icons/TrashCan.js";
+import UploadIcon from "./icons/Upload.js";
+import ViewIcon from "./icons/View.js";
+import ViewOffIcon from "./icons/ViewOff.js";
+import VolumeUpIcon from "./icons/VolumeUp.js";
+import WarningIcon from "./icons/Warning.js";
+import WarningAltIcon from "./icons/WarningAlt.js";
+import WarningAltFilledIcon from "./icons/WarningAltFilled.js";
+import WarningAltInvertedFilledIcon from "./icons/WarningAltInvertedFilled.js";
+import WarningFilledIcon from "./icons/WarningFilled.js";
+import WarningSquareFilledIcon from "./icons/WarningSquareFilled.js";
+import WifiIcon from "./icons/Wifi.js";
 
 export type { AnimatedIcon } from "./shared.js";
 
+// Suffixed so icon names like `Error` don't shadow globals.
 export const ANIMATED_ICONS: AnimatedIcon[] = [
-  Add,
-  Checkmark,
-  ChevronRight,
-  Copy,
-  Download,
-  Edit,
-  Favorite,
-  Light,
-  Location,
-  Locked,
-  Notification,
-  Renew,
-  RotateClockwise,
-  RotateClockwiseAlt,
-  RotateClockwiseAltFilled,
-  RotateClockwiseFilled,
-  RotateCounterclockwise,
-  RotateCounterclockwiseAlt,
-  RotateCounterclockwiseAltFilled,
-  RotateCounterclockwiseFilled,
-  Search,
-  Send,
-  Settings,
-  Star,
-  Time,
-  TrashCan,
-  Upload,
-  View,
-  VolumeUp,
-  WarningAlt,
-  Wifi,
+  AddIcon,
+  CheckmarkIcon,
+  CheckmarkFilledIcon,
+  CheckmarkOutlineIcon,
+  ChevronRightIcon,
+  CopyIcon,
+  DownloadIcon,
+  EditIcon,
+  EditOffIcon,
+  ErrorIcon,
+  ErrorFilledIcon,
+  FavoriteIcon,
+  LightIcon,
+  LocationIcon,
+  LockedIcon,
+  NotificationIcon,
+  RenewIcon,
+  RotateClockwiseIcon,
+  RotateClockwiseAltIcon,
+  RotateClockwiseAltFilledIcon,
+  RotateClockwiseFilledIcon,
+  RotateCounterclockwiseIcon,
+  RotateCounterclockwiseAltIcon,
+  RotateCounterclockwiseAltFilledIcon,
+  RotateCounterclockwiseFilledIcon,
+  SearchIcon,
+  SendIcon,
+  SettingsIcon,
+  StarIcon,
+  TimeIcon,
+  TrashCanIcon,
+  UploadIcon,
+  ViewIcon,
+  ViewOffIcon,
+  VolumeUpIcon,
+  WarningIcon,
+  WarningAltIcon,
+  WarningAltFilledIcon,
+  WarningAltInvertedFilledIcon,
+  WarningFilledIcon,
+  WarningSquareFilledIcon,
+  WifiIcon,
 ];
 
 /** Content that references `{id}` gets a unique id prefix per instance. */

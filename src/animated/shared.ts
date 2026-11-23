@@ -17,6 +17,7 @@ export interface AnimatedIcon {
 }
 
 // `animate.js` handles reduced motion, so icon CSS needs no media query.
+export const PLAYING = ':global(svg[data-playing="motion"])';
 export const PRODUCTIVE = ':global(svg[data-playing="motion"][data-motion="productive"])';
 export const EXPRESSIVE = ':global(svg[data-playing="motion"][data-motion="expressive"])';
 

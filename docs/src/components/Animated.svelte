@@ -46,11 +46,28 @@
     .sort();
 
   const groups = [
-    { id: "animated-actions", title: "Actions", names: ["Add", "Edit", "Copy", "TrashCan", "Download", "Upload", "Send", "Search", "Settings"] },
+    { id: "animated-actions", title: "Actions", names: ["Add", "Edit", "EditOff", "Copy", "TrashCan", "Download", "Upload", "Send", "Search", "Settings"] },
     {
       id: "animated-status",
-      title: "Status and feedback",
-      names: ["Checkmark", "Notification", "WarningAlt", "Favorite", "Star", "Locked", "View", "Light", "Location", "Time", "Wifi", "VolumeUp"],
+      title: "Status",
+      names: [
+        "Checkmark",
+        "CheckmarkOutline",
+        "CheckmarkFilled",
+        "Warning",
+        "WarningFilled",
+        "WarningSquareFilled",
+        "WarningAlt",
+        "WarningAltFilled",
+        "WarningAltInvertedFilled",
+        "Error",
+        "ErrorFilled",
+      ],
+    },
+    {
+      id: "animated-feedback",
+      title: "Feedback",
+      names: ["Notification", "Favorite", "Star", "Locked", "View", "ViewOff", "Light", "Location", "Time", "Wifi", "VolumeUp"],
     },
     {
       id: "animated-refresh",

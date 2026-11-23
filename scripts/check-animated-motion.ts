@@ -85,7 +85,7 @@ const results = await page.evaluate(
         const entry = report[svg.dataset.key!]!;
 
         for (const shape of svg.querySelectorAll<SVGGeometryElement>("path, circle, ellipse, rect, line, polyline, polygon")) {
-          if (shape.closest("clipPath, mask, [clip-path]")) continue;
+          if (shape.closest("clipPath, mask, [clip-path]") || !shape.checkVisibility()) continue;
           const matrix = toUser.multiply(shape.getScreenCTM()!);
           const length = shape.getTotalLength();
 
