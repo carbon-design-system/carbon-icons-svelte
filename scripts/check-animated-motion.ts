@@ -107,8 +107,13 @@ const results = await page.evaluate(
           const clipped = shape.closest("[clip-path]");
           if (clipped && !productive) continue;
           const id = clipped?.getAttribute("clip-path")?.match(/#([^)]+)/)?.[1];
-          const rect = id ? svg.querySelector<SVGRectElement>(`[id="${id}"] rect`)!.getBBox() : { x: 0, y: 0, width: 32, height: 32 };
-          const matrix = toUser.multiply(shape.getScreenCTM()!);
+          const clip = id ? svg.querySelector<SVGRectElement>(`[id="${id}"] rect`)! : null;
+          const size = (name: string, fallback: number) => Number(clip?.getAttribute(name) ?? fallback);
+          const rect = { x: size("x", 0), y: size("y", 0), width: size("width", 32), height: size("height", 32) };
+          // Firefox has no matrix for a part squashed flat, which can't be seen anyway.
+          const ctm = shape.getScreenCTM();
+          if (!ctm) continue;
+          const matrix = toUser.multiply(ctm);
           const length = shape.getTotalLength();
           let overflow = -Infinity;
 
