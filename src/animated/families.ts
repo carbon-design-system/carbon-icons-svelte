@@ -303,16 +303,18 @@ export const quarterTurn = (icon: Family & { pivot?: [number, number] }): Animat
 });
 
 /**
- * A bar (`.bar`) squeezes in from both ends and comes back.
+ * A bar (`.bar`) squeezes in from both ends and comes back, about `pivot`
+ * (the centre by default). In a filled circle the bar is a hole, so it
+ * squeezes inside a mask.
  *
  * Productive: squeezes to 70%.
  * Expressive: squeezes to 60%, overshoots and settles.
  */
-export const squeeze = (icon: Family): AnimatedIcon => ({
+export const squeeze = (icon: Family & { pivot?: [number, number] }): AnimatedIcon => ({
   name: icon.name,
   sourceHash: icon.sourceHash,
-  content: icon.content,
-  css: `${origin(".bar", [16, 16])}
+  content: withRest(icon),
+  css: `${origin(".bar", icon.pivot ?? [16, 16])}${restCss(icon)}
 
   ${PRODUCTIVE} .bar {
     animation: squeeze ${DURATION.slow01};
@@ -821,7 +823,7 @@ ${[0, 1, 2].map((i) => keyframes(i, true)).join("\n\n")}`,
 export const latch = (icon: Family): AnimatedIcon => ({
   name: icon.name,
   sourceHash: icon.sourceHash,
-  content: icon.content,
+  content: withRest(icon),
   css: `  ${PRODUCTIVE} .shackle {
     animation: lift ${DURATION.slow01};
   }
@@ -882,7 +884,7 @@ export const latch = (icon: Family): AnimatedIcon => ({
     100% {
       transform: translateY(0);
     }
-  }`,
+  }${restCss(icon)}`,
 });
 
 /**
@@ -1273,6 +1275,59 @@ export const zoom = (icon: Family & { scale: number; origin?: [number, number] }
   }`,
   };
 };
+
+/**
+ * The front sheet (`.front`) moves toward the back sheet and returns.
+ *
+ * Productive: halfway, 3 units.
+ * Expressive: all the way onto the back sheet, then springs out past rest
+ * and settles. Offset by (-6, -6), its border covers the back sheet.
+ */
+export const stack = (icon: Family): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: icon.content,
+  css: `  ${PRODUCTIVE} .front {
+    animation: stack ${DURATION.slow01};
+  }
+
+  ${EXPRESSIVE} .front {
+    animation: duplicate ${DURATION.slow02};
+  }
+
+  @keyframes stack {
+    0% {
+      transform: translate(0, 0);
+      animation-timing-function: ${entrance.productive};
+    }
+    40% {
+      transform: translate(-3px, -3px);
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }
+
+  @keyframes duplicate {
+    0% {
+      transform: translate(0, 0);
+      animation-timing-function: ${standard.expressive};
+    }
+    32%,
+    42% {
+      transform: translate(-6px, -6px);
+      animation-timing-function: ${entrance.expressive};
+    }
+    75% {
+      transform: translate(1px, 1px);
+      animation-timing-function: ${standard.expressive};
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }`,
+});
 
 /**
  * Chain links (`.top` and `.bottom`) pull apart along their diagonal and
