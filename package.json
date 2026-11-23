@@ -31,7 +31,9 @@
       "lib/*.svelte": ["./lib/icon.d.ts"]
     }
   },
-  "sideEffects": false,
+  "sideEffects": [
+    "./lib/animated/*.svelte"
+  ],
   "scripts": {
     "prepack": "bun test",
     "build:docs-assets": "bun -e \"import { buildIcons } from './src/index.ts'; await buildIcons();\"",

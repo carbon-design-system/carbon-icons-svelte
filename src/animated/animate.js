@@ -5,6 +5,8 @@ const TRIGGER = 'a, button, label, summary, [role="button"], [role="link"], [rol
 
 const PLAYING = "data-playing";
 
+const DISABLED = ':disabled, [aria-disabled="true"]';
+
 // The build fills in Carbon's tokens from `src/animated/shared.ts`.
 const FADE = {
   productive: { duration: __DURATION_SLOW_01__, easing: __EASING_STANDARD_PRODUCTIVE__ },
@@ -22,9 +24,6 @@ export const setAnimatedIconDefaults = (defaults) =>
 
 export const getAnimatedIconDefaults = () => getContext(DEFAULTS) ?? {};
 
-const isRunning = (node) =>
-  node.getAnimations?.({ subtree: true }).some((animation) => animation.playState === "running") ?? false;
-
 const restart = (node) => {
   node.removeAttribute(PLAYING);
   // Flush styles so that adding the attribute back starts a new animation.
@@ -34,7 +33,7 @@ const restart = (node) => {
 
 const fade = (node) => {
   const { duration, easing } = FADE[node.dataset.motion] ?? FADE.productive;
-  node.animate([{ opacity: 1, easing }, { opacity: 0.4, easing }, { opacity: 1 }], duration);
+  return node.animate([{ opacity: 1, easing }, { opacity: 0.4, easing }, { opacity: 1 }], duration);
 };
 
 /**
@@ -44,6 +43,7 @@ const fade = (node) => {
 export function animate(node, options) {
   let play, trigger, reducedMotion, hoverDelay;
   let timer;
+  let fading;
 
   const resolve = ({ defaults = {}, ...props }) => {
     play = props.play;
@@ -58,11 +58,23 @@ export function animate(node, options) {
 
   const start = () => {
     if (!matchMedia(REDUCED_MOTION).matches || reducedMotion === "full") restart(node);
-    else if (reducedMotion === "fade") fade(node);
+    else if (reducedMotion === "fade") fading = fade(node);
   };
 
+  const isPlaying = () => node.hasAttribute(PLAYING) || fading?.playState === "running";
+
   const startIfIdle = () => {
-    if (trigger === "hover" && !isRunning(node)) start();
+    if (trigger !== "hover" || isPlaying()) return;
+    if (target !== node && target.matches(DISABLED)) return;
+    start();
+  };
+
+  // Clear the attribute once every part has finished, so a later change to
+  // `motion` doesn't start the other mode's animation on its own. Other
+  // animations on the icon, like a color transition, don't count.
+  const onAnimationEnd = () => {
+    const running = node.getAnimations({ subtree: true }).some((a) => "animationName" in a && a.playState === "running");
+    if (!running) node.removeAttribute(PLAYING);
   };
 
   const cancel = () => clearTimeout(timer);
@@ -74,8 +86,10 @@ export function animate(node, options) {
     timer = setTimeout(startIfIdle, hoverDelay);
   };
 
+  // Only focus on the trigger itself counts: a text input inside a label
+  // matches `:focus-visible` even when clicked.
   const onFocusIn = (event) => {
-    if (event.target.matches(":focus-visible")) startIfIdle();
+    if (event.target === target && target.matches(":focus-visible")) startIfIdle();
   };
 
   // Chrome makes an `<svg>` with a focus listener keyboard-focusable, which
@@ -85,6 +99,8 @@ export function animate(node, options) {
   target.addEventListener("pointerenter", onEnter);
   target.addEventListener("pointerleave", cancel);
   if (listensForFocus) target.addEventListener("focusin", onFocusIn);
+  node.addEventListener("animationend", onAnimationEnd);
+  node.addEventListener("animationcancel", onAnimationEnd);
 
   if (play) start();
 
@@ -99,6 +115,8 @@ export function animate(node, options) {
       target.removeEventListener("pointerenter", onEnter);
       target.removeEventListener("pointerleave", cancel);
       if (listensForFocus) target.removeEventListener("focusin", onFocusIn);
+      node.removeEventListener("animationend", onAnimationEnd);
+      node.removeEventListener("animationcancel", onAnimationEnd);
     },
   };
 }

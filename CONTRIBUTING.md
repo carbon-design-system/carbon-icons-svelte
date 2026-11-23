@@ -148,6 +148,7 @@ Start the file with a doc comment that says what the motion is and why, in a sen
 - **Hover** counts only for a mouse resting on the icon or its interactive ancestor for `hoverDelay` (150ms, Carbon's moderate-01). Sweeping across a toolbar plays nothing, and touch and pen taps don't count. Keyboard focus plays at once.
 - **Once started, an animation runs to the end.** It's JavaScript, not CSS `:hover`, so it doesn't snap back when the pointer leaves, and hovering again mid-animation doesn't restart it.
 - **Reduced motion is decided here, not in CSS.** If the user prefers reduced motion, `reducedMotion` picks nothing (`"static"`), a fade (`"fade"`, played with the Web Animations API so icons carry no fade CSS), or the full motion (`"full"`). Icon CSS must not use a `prefers-reduced-motion` media query, or `"full"` couldn't override it; a test checks.
+- **`package.json` lists `lib/animated/*.svelte` in `sideEffects`.** Their animation CSS lives in each component's `<style>`, and bundlers that emit it as a separate import, like webpack with svelte-loader's `emitCss`, would otherwise drop it in production. Unused icons still tree-shake from the barrel.
 - **Defaults** come from `setAnimatedIconDefaults`, through Svelte context, for icons passed to an `icon` prop that can't take props.
 
 ### Motion

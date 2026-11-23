@@ -162,7 +162,7 @@ An `icon` prop can't take props. Use `Button`'s `icon` slot to pass them, or set
 
 ### Play on an event
 
-Use `play` to run the animation yourself. It plays each time `play` changes to a truthy value, so increment a number to replay it. Set `trigger="none"` to turn off hover and focus.
+Use `play` to run the animation yourself. It plays when the icon mounts with a truthy `play`, and each time `play` changes to a new truthy value, so increment a number to replay it. Set `trigger="none"` to turn off hover and focus.
 
 ```svelte
 <script>

@@ -175,8 +175,9 @@ export type CarbonAnimatedIconDefaults = {
 export type CarbonAnimatedIconProps = CarbonIconProps &
   CarbonAnimatedIconDefaults & {
     /**
-     * Plays the animation each time this changes to a truthy value.
-     * Increment a number to replay it on demand.
+     * Plays the animation when the icon mounts with a truthy value, and each
+     * time this changes to a new truthy value. Increment a number to replay
+     * it on demand.
      * @default false
      */
     play?: boolean | number;
