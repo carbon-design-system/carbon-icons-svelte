@@ -11,12 +11,12 @@ type Family = Pick<AnimatedIcon, "name" | "sourceHash" | "content"> & {
   rest?: string;
 };
 
-const withRest = ({ rest, content }: Family) =>
+export const withRest = ({ rest, content }: Pick<Family, "rest" | "content">) =>
   rest
     ? `<g class="rest">\n    ${rest}\n  </g>\n  <g class="animated">\n    ${content.replaceAll("\n", "\n  ")}\n  </g>`
     : content;
 
-const restCss = ({ rest }: Family) =>
+export const restCss = ({ rest }: Pick<Family, "rest">) =>
   rest
     ? `
 
@@ -888,8 +888,9 @@ export const latch = (icon: Family): AnimatedIcon => ({
  * An arrow passes through what it points at: it falls into a tray, rises
  * into a bracket, or travels through a cloud. A clip on a wrapper hides it
  * where it goes in, and the canvas edge where it goes out. `sign` is 1 for
- * down and -1 for up; `out` and `back` are where the arrow leaves and
- * where the next one comes in from, in units.
+ * down or right, and -1 for up or left, along `axis` ("y" by default);
+ * `out` and `back` are where the arrow leaves and where the next one comes
+ * in from, in units.
  *
  * Productive: the arrow dips `dip` units (3 by default) toward its target and
  * back, staying inside its clip.
@@ -897,12 +898,15 @@ export const latch = (icon: Family): AnimatedIcon => ({
  * and a new arrow comes in from the other side.
  */
 export const passThrough = (
-  icon: Family & { base: string; sign: 1 | -1; out: number; back: number; dip?: number }
-): AnimatedIcon => ({
-  name: icon.name,
-  sourceHash: icon.sourceHash,
-  content: icon.content,
-  css: `  ${PRODUCTIVE} .arrow {
+  icon: Family & { base: string; sign: 1 | -1; out: number; back: number; dip?: number; axis?: "x" | "y" }
+): AnimatedIcon => {
+  const move = `translate${(icon.axis ?? "y").toUpperCase()}`;
+
+  return {
+    name: icon.name,
+    sourceHash: icon.sourceHash,
+    content: icon.content,
+    css: `  ${PRODUCTIVE} .arrow {
     animation: nudge ${DURATION.slow01};
   }
 
@@ -916,56 +920,57 @@ export const passThrough = (
 
   @keyframes nudge {
     0% {
-      transform: translateY(0);
+      transform: ${move}(0);
       animation-timing-function: ${entrance.productive};
     }
     40% {
-      transform: translateY(${icon.sign * (icon.dip ?? 3)}px);
+      transform: ${move}(${icon.sign * (icon.dip ?? 3)}px);
       animation-timing-function: ${standard.productive};
     }
     100% {
-      transform: translateY(0);
+      transform: ${move}(0);
     }
   }
 
   @keyframes pass {
     0% {
-      transform: translateY(0);
+      transform: ${move}(0);
       animation-timing-function: ${exit.expressive};
     }
     40% {
-      transform: translateY(${icon.out}px);
+      transform: ${move}(${icon.out}px);
       animation-timing-function: step-end;
     }
     40.1% {
-      transform: translateY(${icon.back}px);
+      transform: ${move}(${icon.back}px);
       animation-timing-function: ${entrance.expressive};
     }
     85% {
-      transform: translateY(${icon.sign}px);
+      transform: ${move}(${icon.sign}px);
       animation-timing-function: ${standard.expressive};
     }
     100% {
-      transform: translateY(0);
+      transform: ${move}(0);
     }
   }
 
   @keyframes catch {
     0%,
     36% {
-      transform: translateY(0);
+      transform: ${move}(0);
       animation-timing-function: ${entrance.expressive};
     }
     46% {
-      transform: translateY(${icon.sign * 1.5}px);
+      transform: ${move}(${icon.sign * 1.5}px);
       animation-timing-function: ${standard.expressive};
     }
     70%,
     100% {
-      transform: translateY(0);
+      transform: ${move}(0);
     }
   }`,
-});
+  };
+};
 
 /**
  * Sound and signal waves fade in and grow from their source, one after
@@ -1464,17 +1469,62 @@ export const flyOut = (
   };
 };
 
+/** A "new" badge (`.badge`) pops about its centre, or pops in in expressive mode. */
+const badgeCss = (center: [number, number]) => `${origin(".badge", center)}
+
+  ${PRODUCTIVE} .badge {
+    animation: badge ${DURATION.slow01};
+  }
+
+  ${EXPRESSIVE} .badge {
+    animation: badge-in ${DURATION.slow02};
+  }
+
+  @keyframes badge {
+    0% {
+      transform: scale(1);
+      animation-timing-function: ${entrance.productive};
+    }
+    40% {
+      transform: scale(1.2);
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes badge-in {
+    0% {
+      transform: scale(0);
+      animation-timing-function: ${entrance.expressive};
+    }
+    40% {
+      transform: scale(1.2);
+      animation-timing-function: ${standard.expressive};
+    }
+    65% {
+      transform: scale(0.95);
+      animation-timing-function: ${standard.expressive};
+    }
+    85%,
+    100% {
+      transform: scale(1);
+    }
+  }`;
+
 /**
  * Rings. Carbon draws the bell as one path; the clapper is split out so it
  * can swing on its own, and the bell's bottom edge is closed where it joined.
- * Both swing from the top of the stem.
+ * Both swing from the top of the stem. A "new" badge centred on `badge`
+ * pops as the bell rings.
  *
  * Productive: one short swing each way; the clapper moves with the bell.
  * Expressive: swings three times and dies out. The clapper starts later and
  * swings further, so it lags behind the bell. Past about 8°, the rim leaves
  * the canvas.
  */
-export const ring = (icon: Family): AnimatedIcon => ({
+export const ring = (icon: Family & { badge?: [number, number] }): AnimatedIcon => ({
   name: icon.name,
   sourceHash: icon.sourceHash,
   content: icon.content,
@@ -1543,6 +1593,107 @@ export const ring = (icon: Family): AnimatedIcon => ({
     }
     88% {
       transform: rotate(1.5deg);
+    }
+  }${icon.badge ? `\n\n${badgeCss(icon.badge)}` : ""}`,
+});
+
+/**
+ * A "new" badge (`.badge`) pops on an icon that has no motion of its own,
+ * like `EmailNew`. In expressive mode the rest (`.body`) hops as it lands.
+ */
+export const badgePop = (icon: Family & { badge: [number, number] }): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: icon.content,
+  css: `${badgeCss(icon.badge)}
+
+  ${EXPRESSIVE} .body {
+    animation: hop ${DURATION.slow02};
+  }
+
+  @keyframes hop {
+    0%,
+    25% {
+      transform: translateY(0);
+      animation-timing-function: ${entrance.expressive};
+    }
+    45% {
+      transform: translateY(-1.5px);
+      animation-timing-function: ${standard.expressive};
+    }
+    75%,
+    100% {
+      transform: translateY(0);
+    }
+  }`,
+});
+
+/**
+ * Phones (`.handset`) buzz: a fast shake about the centre.
+ *
+ * Productive: one short buzz.
+ * Expressive: two buzzes, like a phone ringing.
+ */
+export const buzz = (icon: Family): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: icon.content,
+  css: `${origin(".handset", [16, 16])}
+
+  ${PRODUCTIVE} .handset {
+    animation: buzz ${DURATION.slow01} ${standard.productive};
+  }
+
+  ${EXPRESSIVE} .handset {
+    animation: buzz-twice ${DURATION.slow02} ${standard.expressive};
+  }
+
+  @keyframes buzz {
+    15% {
+      transform: rotate(-5deg);
+    }
+    35% {
+      transform: rotate(5deg);
+    }
+    55% {
+      transform: rotate(-4deg);
+    }
+    75% {
+      transform: rotate(2deg);
+    }
+  }
+
+  @keyframes buzz-twice {
+    7% {
+      transform: rotate(-6deg);
+    }
+    15% {
+      transform: rotate(6deg);
+    }
+    23% {
+      transform: rotate(-6deg);
+    }
+    31% {
+      transform: rotate(4deg);
+    }
+    39%,
+    50% {
+      transform: rotate(0);
+    }
+    57% {
+      transform: rotate(-6deg);
+    }
+    65% {
+      transform: rotate(6deg);
+    }
+    73% {
+      transform: rotate(-5deg);
+    }
+    81% {
+      transform: rotate(3deg);
+    }
+    89% {
+      transform: rotate(0);
     }
   }`,
 });

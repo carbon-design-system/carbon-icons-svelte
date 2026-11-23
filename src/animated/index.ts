@@ -14,6 +14,7 @@ import AttachmentIcon from "./icons/Attachment.js";
 import BluetoothOffIcon from "./icons/BluetoothOff.js";
 import BookmarkIcon from "./icons/Bookmark.js";
 import BookmarkFilledIcon from "./icons/BookmarkFilled.js";
+import CalendarIcon from "./icons/Calendar.js";
 import ChatIcon from "./icons/Chat.js";
 import CheckmarkIcon from "./icons/Checkmark.js";
 import CheckmarkFilledIcon from "./icons/CheckmarkFilled.js";
@@ -27,20 +28,24 @@ import CloudDownloadIcon from "./icons/CloudDownload.js";
 import CloudUploadIcon from "./icons/CloudUpload.js";
 import CodeIcon from "./icons/Code.js";
 import CopyIcon from "./icons/Copy.js";
+import CutIcon from "./icons/Cut.js";
 import DownToBottomIcon from "./icons/DownToBottom.js";
 import DownloadIcon from "./icons/Download.js";
 import DraggableIcon from "./icons/Draggable.js";
 import EditIcon from "./icons/Edit.js";
 import EditOffIcon from "./icons/EditOff.js";
 import EmailIcon from "./icons/Email.js";
+import EmailNewIcon from "./icons/EmailNew.js";
 import ErrorIcon from "./icons/Error.js";
 import ErrorFilledIcon from "./icons/ErrorFilled.js";
 import FavoriteIcon from "./icons/Favorite.js";
 import FavoriteFilledIcon from "./icons/FavoriteFilled.js";
+import FireIcon from "./icons/Fire.js";
 import FlagIcon from "./icons/Flag.js";
 import FlagFilledIcon from "./icons/FlagFilled.js";
 import FlashIcon from "./icons/Flash.js";
 import FlashFilledIcon from "./icons/FlashFilled.js";
+import GiftIcon from "./icons/Gift.js";
 import HelpIcon from "./icons/Help.js";
 import HelpFilledIcon from "./icons/HelpFilled.js";
 import HourglassIcon from "./icons/Hourglass.js";
@@ -57,6 +62,8 @@ import LinkIcon from "./icons/Link.js";
 import LocationIcon from "./icons/Location.js";
 import LocationFilledIcon from "./icons/LocationFilled.js";
 import LockedIcon from "./icons/Locked.js";
+import LoginIcon from "./icons/Login.js";
+import LogoutIcon from "./icons/Logout.js";
 import MaximizeIcon from "./icons/Maximize.js";
 import MenuIcon from "./icons/Menu.js";
 import MicrophoneOffIcon from "./icons/MicrophoneOff.js";
@@ -65,6 +72,7 @@ import MisuseIcon from "./icons/Misuse.js";
 import MisuseOutlineIcon from "./icons/MisuseOutline.js";
 import NotificationIcon from "./icons/Notification.js";
 import NotificationFilledIcon from "./icons/NotificationFilled.js";
+import NotificationNewIcon from "./icons/NotificationNew.js";
 import NotificationOffIcon from "./icons/NotificationOff.js";
 import NotificationOffFilledIcon from "./icons/NotificationOffFilled.js";
 import OverflowMenuHorizontalIcon from "./icons/OverflowMenuHorizontal.js";
@@ -73,6 +81,8 @@ import PauseIcon from "./icons/Pause.js";
 import PauseFilledIcon from "./icons/PauseFilled.js";
 import PendingIcon from "./icons/Pending.js";
 import PendingFilledIcon from "./icons/PendingFilled.js";
+import PhoneIcon from "./icons/Phone.js";
+import PhoneFilledIcon from "./icons/PhoneFilled.js";
 import PinIcon from "./icons/Pin.js";
 import PinFilledIcon from "./icons/PinFilled.js";
 import PlayIcon from "./icons/Play.js";
@@ -101,6 +111,7 @@ import StopFilledIcon from "./icons/StopFilled.js";
 import SubtractIcon from "./icons/Subtract.js";
 import SubtractAltIcon from "./icons/SubtractAlt.js";
 import SunIcon from "./icons/Sun.js";
+import TerminalIcon from "./icons/Terminal.js";
 import ThumbsDownIcon from "./icons/ThumbsDown.js";
 import ThumbsDownFilledIcon from "./icons/ThumbsDownFilled.js";
 import ThumbsUpIcon from "./icons/ThumbsUp.js";
@@ -148,6 +159,7 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   BluetoothOffIcon,
   BookmarkIcon,
   BookmarkFilledIcon,
+  CalendarIcon,
   ChatIcon,
   CheckmarkIcon,
   CheckmarkFilledIcon,
@@ -161,20 +173,24 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   CloudUploadIcon,
   CodeIcon,
   CopyIcon,
+  CutIcon,
   DownToBottomIcon,
   DownloadIcon,
   DraggableIcon,
   EditIcon,
   EditOffIcon,
   EmailIcon,
+  EmailNewIcon,
   ErrorIcon,
   ErrorFilledIcon,
   FavoriteIcon,
   FavoriteFilledIcon,
+  FireIcon,
   FlagIcon,
   FlagFilledIcon,
   FlashIcon,
   FlashFilledIcon,
+  GiftIcon,
   HelpIcon,
   HelpFilledIcon,
   HourglassIcon,
@@ -191,6 +207,8 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   LocationIcon,
   LocationFilledIcon,
   LockedIcon,
+  LoginIcon,
+  LogoutIcon,
   MaximizeIcon,
   MenuIcon,
   MicrophoneOffIcon,
@@ -199,6 +217,7 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   MisuseOutlineIcon,
   NotificationIcon,
   NotificationFilledIcon,
+  NotificationNewIcon,
   NotificationOffIcon,
   NotificationOffFilledIcon,
   OverflowMenuHorizontalIcon,
@@ -207,6 +226,8 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   PauseFilledIcon,
   PendingIcon,
   PendingFilledIcon,
+  PhoneIcon,
+  PhoneFilledIcon,
   PinIcon,
   PinFilledIcon,
   PlayIcon,
@@ -235,6 +256,7 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   SubtractIcon,
   SubtractAltIcon,
   SunIcon,
+  TerminalIcon,
   ThumbsDownIcon,
   ThumbsDownFilledIcon,
   ThumbsUpIcon,
@@ -387,7 +409,8 @@ export type CarbonAnimatedIconProps = CarbonIconProps &
      * icons with a loop respond: the progress icons (\`CircleDash\`, \`Hourglass\`,
      * \`InProgress\`, \`Incomplete\`, \`Pending\`, \`PendingFilled\`) and the
      * refresh and processing icons (\`Renew\`, \`RenewAlt\`, \`Restart\`,
-     * \`Reset\`, \`Repeat\`, \`Recycle\`, \`Settings\`, \`Time\`, \`TimeFilled\`).
+     * \`Reset\`, \`Repeat\`, \`Recycle\`, \`Settings\`, \`Terminal\`, \`Time\`,
+     * \`TimeFilled\`).
      * @default false
      */
     loop?: boolean;

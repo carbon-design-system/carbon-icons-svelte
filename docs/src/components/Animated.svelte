@@ -48,7 +48,7 @@
     .sort();
 
   const groups = [
-    { id: "animated-actions", title: "Actions", names: ["Add", "AddAlt", "AddFilled", "Close", "CloseOutline", "CloseFilled", "Subtract", "SubtractAlt", "Edit", "EditOff", "Copy", "TrashCan", "Download", "Upload", "DownToBottom", "UpToTop", "CloudDownload", "CloudUpload", "Launch", "Send", "SendFilled", "SendAlt", "SendAltFilled", "Search", "ZoomIn", "ZoomOut", "Maximize", "Minimize", "Link", "Unlink", "Attachment", "Share", "Email", "Chat", "Code", "Draggable", "Rocket", "Settings"] },
+    { id: "animated-actions", title: "Actions", names: ["Add", "AddAlt", "AddFilled", "Close", "CloseOutline", "CloseFilled", "Subtract", "SubtractAlt", "Edit", "EditOff", "Copy", "TrashCan", "Download", "Upload", "DownToBottom", "UpToTop", "CloudDownload", "CloudUpload", "Launch", "Send", "SendFilled", "SendAlt", "SendAltFilled", "Search", "ZoomIn", "ZoomOut", "Maximize", "Minimize", "Link", "Unlink", "Attachment", "Share", "Email", "EmailNew", "Chat", "Code", "Cut", "Terminal", "Login", "Logout", "Calendar", "Phone", "PhoneFilled", "Draggable", "Rocket", "Settings"] },
     {
       id: "animated-status",
       title: "Status",
@@ -81,6 +81,7 @@
       names: [
         "Notification",
         "NotificationFilled",
+        "NotificationNew",
         "NotificationOff",
         "NotificationOffFilled",
         "Favorite",
@@ -96,6 +97,8 @@
         "Flag",
         "FlagFilled",
         "Idea",
+        "Fire",
+        "Gift",
         "Locked",
         "Unlocked",
         "View",
@@ -499,7 +502,7 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
       <section id="animated-loop">
         <h2>Loop</h2>
         <p>
-          Progress and refresh icons can loop with <code>loop</code>. While it's <code>true</code>, the icon repeats a
+          Progress, refresh and waiting icons can loop with <code>loop</code>. While it's <code>true</code>, the icon repeats a
           cycle that starts and ends at rest; when it turns <code>false</code>, the current cycle finishes and the icon
           stops at rest instead of snapping. Hover and <code>play</code> don't interrupt a loop. Loop only while
           something is in progress.

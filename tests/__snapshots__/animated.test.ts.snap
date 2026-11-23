@@ -172,7 +172,8 @@ export type CarbonAnimatedIconProps = CarbonIconProps &
      * icons with a loop respond: the progress icons (\`CircleDash\`, \`Hourglass\`,
      * \`InProgress\`, \`Incomplete\`, \`Pending\`, \`PendingFilled\`) and the
      * refresh and processing icons (\`Renew\`, \`RenewAlt\`, \`Restart\`,
-     * \`Reset\`, \`Repeat\`, \`Recycle\`, \`Settings\`, \`Time\`, \`TimeFilled\`).
+     * \`Reset\`, \`Repeat\`, \`Recycle\`, \`Settings\`, \`Terminal\`, \`Time\`,
+     * \`TimeFilled\`).
      * @default false
      */
     loop?: boolean;
@@ -212,6 +213,7 @@ export declare const Attachment: CarbonAnimatedIcon;
 export declare const BluetoothOff: CarbonAnimatedIcon;
 export declare const Bookmark: CarbonAnimatedIcon;
 export declare const BookmarkFilled: CarbonAnimatedIcon;
+export declare const Calendar: CarbonAnimatedIcon;
 export declare const CaretDown: CarbonAnimatedIcon;
 export declare const CaretLeft: CarbonAnimatedIcon;
 export declare const CaretRight: CarbonAnimatedIcon;
@@ -232,6 +234,7 @@ export declare const CloudDownload: CarbonAnimatedIcon;
 export declare const CloudUpload: CarbonAnimatedIcon;
 export declare const Code: CarbonAnimatedIcon;
 export declare const Copy: CarbonAnimatedIcon;
+export declare const Cut: CarbonAnimatedIcon;
 export declare const DoubleChevronLeft: CarbonAnimatedIcon;
 export declare const DoubleChevronRight: CarbonAnimatedIcon;
 export declare const DownToBottom: CarbonAnimatedIcon;
@@ -240,14 +243,17 @@ export declare const Draggable: CarbonAnimatedIcon;
 export declare const Edit: CarbonAnimatedIcon;
 export declare const EditOff: CarbonAnimatedIcon;
 export declare const Email: CarbonAnimatedIcon;
+export declare const EmailNew: CarbonAnimatedIcon;
 export declare const Error: CarbonAnimatedIcon;
 export declare const ErrorFilled: CarbonAnimatedIcon;
 export declare const Favorite: CarbonAnimatedIcon;
 export declare const FavoriteFilled: CarbonAnimatedIcon;
+export declare const Fire: CarbonAnimatedIcon;
 export declare const Flag: CarbonAnimatedIcon;
 export declare const FlagFilled: CarbonAnimatedIcon;
 export declare const Flash: CarbonAnimatedIcon;
 export declare const FlashFilled: CarbonAnimatedIcon;
+export declare const Gift: CarbonAnimatedIcon;
 export declare const Help: CarbonAnimatedIcon;
 export declare const HelpFilled: CarbonAnimatedIcon;
 export declare const Hourglass: CarbonAnimatedIcon;
@@ -265,6 +271,8 @@ export declare const Link: CarbonAnimatedIcon;
 export declare const Location: CarbonAnimatedIcon;
 export declare const LocationFilled: CarbonAnimatedIcon;
 export declare const Locked: CarbonAnimatedIcon;
+export declare const Login: CarbonAnimatedIcon;
+export declare const Logout: CarbonAnimatedIcon;
 export declare const Maximize: CarbonAnimatedIcon;
 export declare const Menu: CarbonAnimatedIcon;
 export declare const MicrophoneOff: CarbonAnimatedIcon;
@@ -273,6 +281,7 @@ export declare const Misuse: CarbonAnimatedIcon;
 export declare const MisuseOutline: CarbonAnimatedIcon;
 export declare const Notification: CarbonAnimatedIcon;
 export declare const NotificationFilled: CarbonAnimatedIcon;
+export declare const NotificationNew: CarbonAnimatedIcon;
 export declare const NotificationOff: CarbonAnimatedIcon;
 export declare const NotificationOffFilled: CarbonAnimatedIcon;
 export declare const OverflowMenuHorizontal: CarbonAnimatedIcon;
@@ -283,6 +292,8 @@ export declare const Pause: CarbonAnimatedIcon;
 export declare const PauseFilled: CarbonAnimatedIcon;
 export declare const Pending: CarbonAnimatedIcon;
 export declare const PendingFilled: CarbonAnimatedIcon;
+export declare const Phone: CarbonAnimatedIcon;
+export declare const PhoneFilled: CarbonAnimatedIcon;
 export declare const Pin: CarbonAnimatedIcon;
 export declare const PinFilled: CarbonAnimatedIcon;
 export declare const Play: CarbonAnimatedIcon;
@@ -321,6 +332,7 @@ export declare const StopFilled: CarbonAnimatedIcon;
 export declare const Subtract: CarbonAnimatedIcon;
 export declare const SubtractAlt: CarbonAnimatedIcon;
 export declare const Sun: CarbonAnimatedIcon;
+export declare const Terminal: CarbonAnimatedIcon;
 export declare const ThumbsDown: CarbonAnimatedIcon;
 export declare const ThumbsDownFilled: CarbonAnimatedIcon;
 export declare const ThumbsUp: CarbonAnimatedIcon;
