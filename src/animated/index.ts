@@ -4,9 +4,14 @@ import type { IconOutput } from "@carbon/icons";
 import { RULES, ruleIcons } from "./rules.js";
 import { DURATION, EASING, withLoop, type AnimatedIcon } from "./shared.js";
 import AddIcon from "./icons/Add.js";
+import AddAltIcon from "./icons/AddAlt.js";
+import AddFilledIcon from "./icons/AddFilled.js";
 import ArrowsHorizontalIcon from "./icons/ArrowsHorizontal.js";
 import ArrowsVerticalIcon from "./icons/ArrowsVertical.js";
+import AsleepIcon from "./icons/Asleep.js";
+import AsleepFilledIcon from "./icons/AsleepFilled.js";
 import AttachmentIcon from "./icons/Attachment.js";
+import BluetoothOffIcon from "./icons/BluetoothOff.js";
 import BookmarkIcon from "./icons/Bookmark.js";
 import BookmarkFilledIcon from "./icons/BookmarkFilled.js";
 import ChatIcon from "./icons/Chat.js";
@@ -16,9 +21,13 @@ import CheckmarkOutlineIcon from "./icons/CheckmarkOutline.js";
 import ChevronRightIcon from "./icons/ChevronRight.js";
 import CircleDashIcon from "./icons/CircleDash.js";
 import CloseIcon from "./icons/Close.js";
+import CloseFilledIcon from "./icons/CloseFilled.js";
+import CloseOutlineIcon from "./icons/CloseOutline.js";
 import CloudDownloadIcon from "./icons/CloudDownload.js";
 import CloudUploadIcon from "./icons/CloudUpload.js";
+import CodeIcon from "./icons/Code.js";
 import CopyIcon from "./icons/Copy.js";
+import DownToBottomIcon from "./icons/DownToBottom.js";
 import DownloadIcon from "./icons/Download.js";
 import DraggableIcon from "./icons/Draggable.js";
 import EditIcon from "./icons/Edit.js";
@@ -30,6 +39,8 @@ import FavoriteIcon from "./icons/Favorite.js";
 import FavoriteFilledIcon from "./icons/FavoriteFilled.js";
 import FlagIcon from "./icons/Flag.js";
 import FlagFilledIcon from "./icons/FlagFilled.js";
+import FlashIcon from "./icons/Flash.js";
+import FlashFilledIcon from "./icons/FlashFilled.js";
 import HelpIcon from "./icons/Help.js";
 import HelpFilledIcon from "./icons/HelpFilled.js";
 import HourglassIcon from "./icons/Hourglass.js";
@@ -50,6 +61,8 @@ import MaximizeIcon from "./icons/Maximize.js";
 import MenuIcon from "./icons/Menu.js";
 import MicrophoneOffIcon from "./icons/MicrophoneOff.js";
 import MinimizeIcon from "./icons/Minimize.js";
+import MisuseIcon from "./icons/Misuse.js";
+import MisuseOutlineIcon from "./icons/MisuseOutline.js";
 import NotificationIcon from "./icons/Notification.js";
 import NotificationFilledIcon from "./icons/NotificationFilled.js";
 import NotificationOffIcon from "./icons/NotificationOff.js";
@@ -86,6 +99,8 @@ import StarFilledIcon from "./icons/StarFilled.js";
 import StopIcon from "./icons/Stop.js";
 import StopFilledIcon from "./icons/StopFilled.js";
 import SubtractIcon from "./icons/Subtract.js";
+import SubtractAltIcon from "./icons/SubtractAlt.js";
+import SunIcon from "./icons/Sun.js";
 import ThumbsDownIcon from "./icons/ThumbsDown.js";
 import ThumbsDownFilledIcon from "./icons/ThumbsDownFilled.js";
 import ThumbsUpIcon from "./icons/ThumbsUp.js";
@@ -95,7 +110,9 @@ import TimeFilledIcon from "./icons/TimeFilled.js";
 import TrashCanIcon from "./icons/TrashCan.js";
 import UnlinkIcon from "./icons/Unlink.js";
 import UnlockedIcon from "./icons/Unlocked.js";
+import UpToTopIcon from "./icons/UpToTop.js";
 import UploadIcon from "./icons/Upload.js";
+import VideoOffIcon from "./icons/VideoOff.js";
 import ViewIcon from "./icons/View.js";
 import ViewOffIcon from "./icons/ViewOff.js";
 import VolumeDownIcon from "./icons/VolumeDown.js";
@@ -121,9 +138,14 @@ export type { AnimatedIcon } from "./shared.js";
 // Suffixed so icon names like `Error` don't shadow globals.
 export const ANIMATED_ICONS: AnimatedIcon[] = [
   AddIcon,
+  AddAltIcon,
+  AddFilledIcon,
   ArrowsHorizontalIcon,
   ArrowsVerticalIcon,
+  AsleepIcon,
+  AsleepFilledIcon,
   AttachmentIcon,
+  BluetoothOffIcon,
   BookmarkIcon,
   BookmarkFilledIcon,
   ChatIcon,
@@ -133,9 +155,13 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   ChevronRightIcon,
   CircleDashIcon,
   CloseIcon,
+  CloseFilledIcon,
+  CloseOutlineIcon,
   CloudDownloadIcon,
   CloudUploadIcon,
+  CodeIcon,
   CopyIcon,
+  DownToBottomIcon,
   DownloadIcon,
   DraggableIcon,
   EditIcon,
@@ -147,6 +173,8 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   FavoriteFilledIcon,
   FlagIcon,
   FlagFilledIcon,
+  FlashIcon,
+  FlashFilledIcon,
   HelpIcon,
   HelpFilledIcon,
   HourglassIcon,
@@ -167,6 +195,8 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   MenuIcon,
   MicrophoneOffIcon,
   MinimizeIcon,
+  MisuseIcon,
+  MisuseOutlineIcon,
   NotificationIcon,
   NotificationFilledIcon,
   NotificationOffIcon,
@@ -203,6 +233,8 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   StopIcon,
   StopFilledIcon,
   SubtractIcon,
+  SubtractAltIcon,
+  SunIcon,
   ThumbsDownIcon,
   ThumbsDownFilledIcon,
   ThumbsUpIcon,
@@ -212,7 +244,9 @@ export const ANIMATED_ICONS: AnimatedIcon[] = [
   TrashCanIcon,
   UnlinkIcon,
   UnlockedIcon,
+  UpToTopIcon,
   UploadIcon,
+  VideoOffIcon,
   ViewIcon,
   ViewOffIcon,
   VolumeDownIcon,

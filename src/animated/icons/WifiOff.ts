@@ -1,4 +1,4 @@
-import { drawIn, ink } from "../families.js";
+import { drawIn, slash } from "../families.js";
 
 export default drawIn({
   name: "WifiOff",
@@ -9,8 +9,7 @@ export default drawIn({
     <path d="M16,7a17.87,17.87,0,0,1,4.2324.5254L21.875,5.8828A19.9537,19.9537,0,0,0,2,10.7412v.0225L3.4043,12.168A17.9193,17.9193,0,0,1,16,7Z" />`,
   content: `<mask id="{id}-slash" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
     <rect width="32" height="32" fill="#fff" />
-    <path fill="#000" d="M28.5859,2 30,3.4141 3.4141,30 2,28.5859Z" />
-    ${ink("M31 1 1 31", 2.8)}
+    ${slash("M31 1 1 31")}
   </mask>
   <g class="accent">
     <circle cx="16" cy="25" r="2" />

@@ -48,6 +48,17 @@ export const ink = (d: string, width: number, color = "#fff") =>
   `<path class="ink" d="${d}" fill="none" stroke="${color}" stroke-width="${width}" pathLength="1" stroke-dasharray="1 1" />`;
 
 /**
+ * Hides a 2-unit "off" slash so `ink` can draw it back in along `d`. A
+ * shape traced on the slash's edges would leave a faint outline, where its
+ * anti-aliased edges meet the slash's, so a wider stroke along `cut` hides
+ * it and a wider ink still reveals it. `cut` stops at the slash's ends when
+ * something sits past them, like `Error`'s ring.
+ */
+export const slash = (d: string, cut = d) =>
+  `<path d="${cut}" fill="none" stroke="#000" stroke-width="3.4" />
+    ${ink(d, 5)}`;
+
+/**
  * Warning signs wobble on their base, or swing from their top edge when
  * hung upside down. Rotating about an edge keeps the corners inside the
  * canvas, where a sideways shake would hit the edges.
@@ -249,7 +260,8 @@ export const drawIn = (icon: Family & { accent: keyof typeof ACCENTS }): Animate
 
 /**
  * Glyphs that look the same every 90°, like `Add` and `Close`, turn a
- * quarter and end where they started.
+ * quarter and end where they started. In a filled circle the glyph is a
+ * hole, so it turns inside a mask.
  *
  * Productive: a plain quarter turn.
  * Expressive: overshoots by 10° and settles back.
@@ -257,8 +269,8 @@ export const drawIn = (icon: Family & { accent: keyof typeof ACCENTS }): Animate
 export const quarterTurn = (icon: Family): AnimatedIcon => ({
   name: icon.name,
   sourceHash: icon.sourceHash,
-  content: icon.content,
-  css: `${origin(".glyph", [16, 16])}
+  content: withRest(icon),
+  css: `${origin(".glyph", [16, 16])}${restCss(icon)}
 
   ${PRODUCTIVE} .glyph {
     animation: turn ${DURATION.slow01} ${standard.productive};
@@ -285,6 +297,103 @@ export const quarterTurn = (icon: Family): AnimatedIcon => ({
     }
     100% {
       transform: rotate(90deg);
+    }
+  }`,
+});
+
+/**
+ * A bar (`.bar`) squeezes in from both ends and comes back.
+ *
+ * Productive: squeezes to 70%.
+ * Expressive: squeezes to 60%, overshoots and settles.
+ */
+export const squeeze = (icon: Family): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: icon.content,
+  css: `${origin(".bar", [16, 16])}
+
+  ${PRODUCTIVE} .bar {
+    animation: squeeze ${DURATION.slow01};
+  }
+
+  ${EXPRESSIVE} .bar {
+    animation: squeeze-spring ${DURATION.slow02};
+  }
+
+  @keyframes squeeze {
+    0% {
+      transform: scaleX(1);
+      animation-timing-function: ${entrance.productive};
+    }
+    40% {
+      transform: scaleX(0.7);
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes squeeze-spring {
+    0% {
+      transform: scaleX(1);
+      animation-timing-function: ${entrance.expressive};
+    }
+    35% {
+      transform: scaleX(0.6);
+      animation-timing-function: ${standard.expressive};
+    }
+    65% {
+      transform: scaleX(1.08);
+      animation-timing-function: ${standard.expressive};
+    }
+    100% {
+      transform: scaleX(1);
+    }
+  }`,
+});
+
+/**
+ * Rays (`.ray`) grow out from the centre, in turn by `--i`. Diagonal rays
+ * carry a `transform` attribute, which a CSS `transform` would replace, so
+ * each ray is wrapped in a `<g>` that animates.
+ *
+ * Productive: all rays pulse out together.
+ * Expressive: the rays dim, then light up one by one clockwise from the top.
+ */
+export const radiate = (icon: Family): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: icon.content,
+  css: `${origin(".ray", [16, 16])}
+
+  ${PRODUCTIVE} .ray {
+    animation: pulse ${DURATION.slow01};
+  }
+
+  ${EXPRESSIVE} .ray {
+    animation: radiate ${DURATION.moderate01} ${entrance.expressive} calc(var(--i) * ${DURATION.fast01}) backwards;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      animation-timing-function: ${entrance.productive};
+    }
+    40% {
+      transform: scale(1.12);
+      animation-timing-function: ${standard.productive};
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes radiate {
+    from {
+      opacity: 0.15;
+      transform: scale(0.8);
     }
   }`,
 });
@@ -439,12 +548,15 @@ export const pulseDots = (icon: Family): AnimatedIcon => ({
 });
 
 /**
- * Paired arrows push apart along their axis and come back together.
+ * Paired parts push apart along their axis and come back together: `.back`
+ * moves toward the start of the axis, `.forward` toward the end. Swap them
+ * to squeeze the parts together instead.
  *
  * Productive: 2 units apart and back.
- * Expressive: 3 units apart, springs back past rest, and settles.
+ * Expressive: 3 units apart, springs back past rest by `settle` (0.75 by
+ * default; less for parts that touch the canvas edge), and settles.
  */
-export const pushApart = (icon: Family & { axis: "x" | "y" }): AnimatedIcon => {
+export const pushApart = (icon: Family & { axis: "x" | "y"; settle?: number }): AnimatedIcon => {
   const move = (units: number) => `translate${icon.axis.toUpperCase()}(${units}px)`;
   const keyframes = (name: string, sign: 1 | -1) => `  @keyframes ${name} {
     0% {
@@ -470,7 +582,7 @@ export const pushApart = (icon: Family & { axis: "x" | "y" }): AnimatedIcon => {
       animation-timing-function: ${standard.expressive};
     }
     65% {
-      transform: ${move(sign * -0.75)};
+      transform: ${move(sign * -(icon.settle ?? 0.75))};
       animation-timing-function: ${standard.expressive};
     }
     100% {

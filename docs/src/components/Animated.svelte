@@ -48,7 +48,7 @@
     .sort();
 
   const groups = [
-    { id: "animated-actions", title: "Actions", names: ["Add", "Close", "Subtract", "Edit", "EditOff", "Copy", "TrashCan", "Download", "Upload", "CloudDownload", "CloudUpload", "Launch", "Send", "SendFilled", "SendAlt", "SendAltFilled", "Search", "ZoomIn", "ZoomOut", "Maximize", "Minimize", "Link", "Unlink", "Attachment", "Share", "Email", "Chat", "Draggable", "Rocket", "Settings"] },
+    { id: "animated-actions", title: "Actions", names: ["Add", "AddAlt", "AddFilled", "Close", "CloseOutline", "CloseFilled", "Subtract", "SubtractAlt", "Edit", "EditOff", "Copy", "TrashCan", "Download", "Upload", "DownToBottom", "UpToTop", "CloudDownload", "CloudUpload", "Launch", "Send", "SendFilled", "SendAlt", "SendAltFilled", "Search", "ZoomIn", "ZoomOut", "Maximize", "Minimize", "Link", "Unlink", "Attachment", "Share", "Email", "Chat", "Code", "Draggable", "Rocket", "Settings"] },
     {
       id: "animated-status",
       title: "Status",
@@ -64,6 +64,8 @@
         "WarningAltInvertedFilled",
         "Error",
         "ErrorFilled",
+        "Misuse",
+        "MisuseOutline",
         "Information",
         "InformationFilled",
         "InformationSquare",
@@ -99,6 +101,11 @@
         "View",
         "ViewOff",
         "Light",
+        "Sun",
+        "Asleep",
+        "AsleepFilled",
+        "Flash",
+        "FlashFilled",
         "Location",
         "LocationFilled",
         "Pin",
@@ -107,6 +114,7 @@
         "TimeFilled",
         "Wifi",
         "WifiOff",
+        "BluetoothOff",
         "VolumeUp",
         "VolumeUpFilled",
         "VolumeDown",
@@ -114,6 +122,7 @@
         "VolumeMute",
         "VolumeMuteFilled",
         "MicrophoneOff",
+        "VideoOff",
       ],
     },
     {
