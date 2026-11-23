@@ -2229,3 +2229,50 @@ export const sort = (icon: Family): AnimatedIcon => ({
     }
   }`,
 });
+
+/**
+ * An error badge (`.shake`) shakes side to side, like `ErrorFilled` does
+ * once its slash is drawn.
+ *
+ * Productive: one shake.
+ * Expressive: four shakes that die out.
+ */
+export const shake = (icon: Family): AnimatedIcon => ({
+  name: icon.name,
+  sourceHash: icon.sourceHash,
+  content: icon.content,
+  css: `  ${PRODUCTIVE} .shake {
+    animation: shake ${DURATION.slow01} ${standard.productive};
+  }
+
+  ${EXPRESSIVE} .shake {
+    animation: shake-hard ${DURATION.slow02} ${standard.expressive};
+  }
+
+  @keyframes shake {
+    25% {
+      transform: translateX(-1.5px);
+    }
+    60% {
+      transform: translateX(1.5px);
+    }
+  }
+
+  @keyframes shake-hard {
+    14% {
+      transform: translateX(-2px);
+    }
+    32% {
+      transform: translateX(2px);
+    }
+    50% {
+      transform: translateX(-1.5px);
+    }
+    68% {
+      transform: translateX(1px);
+    }
+    84% {
+      transform: translateX(-0.5px);
+    }
+  }`,
+});

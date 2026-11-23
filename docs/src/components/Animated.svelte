@@ -48,7 +48,7 @@
     .sort();
 
   const groups = [
-    { id: "animated-actions", title: "Actions", names: ["Add", "AddAlt", "AddFilled", "Close", "CloseOutline", "CloseFilled", "CloseLarge", "Subtract", "SubtractAlt", "SubtractLarge", "SubtractFilled", "Edit", "EditOff", "Save", "Copy", "CopyFile", "CopyLink", "TrashCan", "Download", "Upload", "DownToBottom", "UpToTop", "DocumentAdd", "DocumentDownload", "DocumentExport", "FolderAdd", "Printer", "CloudDownload", "CloudUpload", "Launch", "Send", "SendFilled", "SendAlt", "SendAltFilled", "Search", "SortAscending", "SortDescending", "ZoomIn", "ZoomOut", "ZoomReset", "Maximize", "Minimize", "Link", "Unlink", "Attachment", "Share", "Email", "EmailNew", "Chat", "ChatOff", "Code", "Cut", "Terminal", "Login", "Logout", "Calendar", "Phone", "PhoneFilled", "Alarm", "Power", "Plug", "Keyboard", "Cursor_1", "Bullhorn", "PhoneOff", "PhoneOffFilled", "Camera", "Tag", "ShoppingCart", "UserFollow", "Draggable", "Rocket", "Settings"] },
+    { id: "animated-actions", title: "Actions", names: ["Add", "AddAlt", "AddFilled", "Close", "CloseOutline", "CloseFilled", "CloseLarge", "Subtract", "SubtractAlt", "SubtractLarge", "SubtractFilled", "Edit", "EditOff", "Save", "Copy", "CopyFile", "CopyLink", "TrashCan", "Download", "Upload", "DownToBottom", "UpToTop", "DocumentAdd", "DocumentSubtract", "DocumentDownload", "DocumentExport", "FolderAdd", "Printer", "CloudDownload", "CloudUpload", "Launch", "Send", "SendFilled", "SendAlt", "SendAltFilled", "Search", "SortAscending", "SortDescending", "ZoomIn", "ZoomOut", "ZoomReset", "Maximize", "Minimize", "Link", "Unlink", "Attachment", "Share", "Email", "EmailNew", "Chat", "ChatOff", "Code", "Cut", "Terminal", "Login", "Logout", "Calendar", "Phone", "PhoneFilled", "Alarm", "Power", "Plug", "Keyboard", "Cursor_1", "Bullhorn", "PhoneOff", "PhoneOffFilled", "PhoneIncoming", "PhoneOutgoing", "Camera", "Tag", "ShoppingCart", "ShoppingCartPlus", "ShoppingCartMinus", "ShoppingCartClear", "UserFollow", "Draggable", "Rocket", "Settings"] },
     {
       id: "animated-status",
       title: "Status",
@@ -56,6 +56,10 @@
         "Checkmark",
         "CheckmarkOutline",
         "CheckmarkFilled",
+        "CheckmarkOutlineError",
+        "CheckmarkOutlineWarning",
+        "CheckmarkFilledError",
+        "CheckmarkFilledWarning",
         "CheckboxChecked",
         "CheckboxCheckedFilled",
         "RadioButtonChecked",
@@ -90,18 +94,22 @@
         "Notification",
         "NotificationFilled",
         "NotificationNew",
+        "NotificationCounter",
         "NotificationOff",
         "NotificationOffFilled",
         "Favorite",
         "FavoriteFilled",
+        "FavoriteHalf",
         "Star",
         "StarFilled",
         "ThumbsUp",
         "ThumbsUpFilled",
+        "ThumbsUpDouble",
         "ThumbsDown",
         "ThumbsDownFilled",
         "Bookmark",
         "BookmarkFilled",
+        "BookmarkAdd",
         "Flag",
         "FlagFilled",
         "Idea",
@@ -183,7 +191,7 @@
     {
       id: "animated-progress",
       title: "Progress",
-      names: ["CircleDash", "InProgress", "Incomplete", "Pending", "PendingFilled", "Hourglass", "Timer"],
+      names: ["CircleDash", "InProgress", "Incomplete", "Pending", "PendingFilled", "Hourglass", "Timer", "InProgressError", "InProgressWarning", "IncompleteError", "IncompleteWarning", "IncompleteCancel"],
     },
     {
       id: "animated-media",
