@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 import { mkdir, readdir, rm, unlink } from "node:fs/promises";
 import deprecatedIcons from "./deprecated-icons.json" with { type: "json" };
 import pkg from "../package.json" with { type: "json" };
+import { buildAnimated } from "./animated/index.js";
 import { renderContent, template, templateSvg } from "./template.js";
 
 const VERSION = pkg.devDependencies["@carbon/icons"];
@@ -54,18 +55,19 @@ const formatIconIndexLine = (moduleName: string) => {
 };
 
 /**
- * Writes `files` to `dir`, removing any existing entries not in `files`.
+ * Writes `files` to `dir`, removing any existing entries not in `files`
+ * or `keep`.
  * Overwriting in place is much faster than wiping and recreating the
  * directory's thousands of files. Stale entries are removed before
  * writing so that a case-only rename is not clobbered on
  * case-insensitive filesystems.
  */
-const syncDir = async (dir: string, files: Map<string, string>) => {
+const syncDir = async (dir: string, files: Map<string, string>, keep: string[] = []) => {
   await mkdir(dir, { recursive: true });
 
   await Promise.all(
     (await readdir(dir))
-      .filter((file) => !files.has(file))
+      .filter((file) => !files.has(file) && !keep.includes(file))
       .map((file) => rm(`${dir}/${file}`, { recursive: true, force: true }))
   );
 
@@ -171,7 +173,7 @@ type CarbonIcon = typeof import("svelte") extends { mount: any }
     },
   };
 
-  let names = new Set();
+  let names = new Set<string>();
   let glyphNames = new Set<string>();
   let iconNames = new Set<string>();
   const libFiles = new Map<string, string>();
@@ -252,7 +254,8 @@ export default Icon;
 ${definitions}`
   );
 
-  await syncDir("lib", libFiles);
+  await syncDir("lib", libFiles, ["animated"]);
+  await syncDir("lib/animated", await buildAnimated((name) => iconMap.get(name)));
 
   await Bun.write(
     "ICON_INDEX.md",

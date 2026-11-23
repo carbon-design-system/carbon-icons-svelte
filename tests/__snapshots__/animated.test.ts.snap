@@ -1,0 +1,246 @@
+// Bun Snapshot v1, https://bun.sh/docs/test/snapshots
+
+exports[`animated icons template 1`] = `
+"<script>
+  import { animate, getAnimatedIconDefaults } from "./animate.js";
+
+  export let size = 16;
+
+  export let title = undefined;
+
+  export let play = false;
+
+  export let trigger = undefined;
+
+  export let motion = undefined;
+
+  export let reducedMotion = undefined;
+
+  export let hoverDelay = undefined;
+
+  const defaults = getAnimatedIconDefaults();
+
+  $: labelled = $$props["aria-label"] || $$props["aria-labelledby"] || title;
+  $: attributes = {
+    "aria-hidden": labelled ? undefined : true,
+    role: labelled ? "img" : undefined,
+    focusable: Number($$props["tabindex"]) === 0 ? true : undefined
+  };
+</script>
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 32 32"
+  fill="currentColor"
+  preserveAspectRatio="xMidYMid meet"
+  width={size}
+  height={size}
+  data-motion={motion ?? defaults.motion ?? "productive"}
+  use:animate={{ play, trigger, reducedMotion, hoverDelay, defaults }}
+  {...attributes}
+  {...$$restProps}>
+  {#if title}<title>{title}</title>{/if}
+  <path class="clapper" d="M11,24v.7768a5.152,5.152,0,0,0,4.5,5.1987A5.0057,5.0057,0,0,0,21,25V24ZM19,25a3,3,0,0,1-6,0V24h6Z" />
+  <path class="bell" d="M28.7071,19.293,26,16.5859V13a10.0136,10.0136,0,0,0-9-9.9492V1H15V3.0508A10.0136,10.0136,0,0,0,6,13v3.5859L3.2929,19.293A1,1,0,0,0,3,20v3a1,1,0,0,0,1,1H28a1,1,0,0,0,1-1V20A1,1,0,0,0,28.7071,19.293ZM27,22H5V20.4141L7.707,17.707A1,1,0,0,0,8,17V13a8,8,0,0,1,16,0v4a1,1,0,0,0,.293.707L27,20.4141Z" />
+</svg>
+
+<style>
+  .bell,
+  .clapper {
+    transform-box: view-box;
+    transform-origin: 16px 1px;
+  }
+
+  :global(svg[data-playing="motion"][data-motion="productive"]) .bell,
+  :global(svg[data-playing="motion"][data-motion="productive"]) .clapper {
+    animation: swing 400ms cubic-bezier(0.2, 0, 0.38, 0.9);
+  }
+
+  :global(svg[data-playing="motion"][data-motion="expressive"]) .bell {
+    animation: ring 700ms cubic-bezier(0.4, 0.14, 0.3, 1);
+  }
+
+  :global(svg[data-playing="motion"][data-motion="expressive"]) .clapper {
+    animation: ring-clapper 700ms cubic-bezier(0.4, 0.14, 0.3, 1);
+  }
+
+  @keyframes swing {
+    35% {
+      transform: rotate(6deg);
+    }
+    70% {
+      transform: rotate(-4deg);
+    }
+  }
+
+  @keyframes ring {
+    14% {
+      transform: rotate(8deg);
+    }
+    32% {
+      transform: rotate(-7deg);
+    }
+    50% {
+      transform: rotate(5deg);
+    }
+    68% {
+      transform: rotate(-3deg);
+    }
+    84% {
+      transform: rotate(1deg);
+    }
+  }
+
+  @keyframes ring-clapper {
+    0%,
+    5% {
+      transform: rotate(0);
+    }
+    19% {
+      transform: rotate(12deg);
+    }
+    37% {
+      transform: rotate(-10deg);
+    }
+    55% {
+      transform: rotate(7deg);
+    }
+    72% {
+      transform: rotate(-4deg);
+    }
+    88% {
+      transform: rotate(1.5deg);
+    }
+  }
+</style>
+"
+`;
+
+exports[`animated icons build output 1`] = `
+"import type { ComponentConstructorOptions, SvelteComponent } from "svelte";
+import type { CarbonIconProps } from "../index.js";
+
+/** Props that \`setAnimatedIconDefaults\` can set for every icon below a component. */
+export type CarbonAnimatedIconDefaults = {
+  /**
+   * \`"hover"\` plays the animation when a mouse rests on the icon, or on the
+   * link, button, label or summary around it, for \`hoverDelay\` ms, or when
+   * that gets keyboard focus. \`"none"\` plays it only through \`play\`.
+   * @default "hover"
+   */
+  trigger?: "hover" | "none";
+
+  /**
+   * Carbon's motion style. \`"productive"\` is short and subtle, for routine UI.
+   * \`"expressive"\` is larger and livelier, for moments that matter.
+   * @default "productive"
+   */
+  motion?: "productive" | "expressive";
+
+  /**
+   * What plays when the user prefers reduced motion. \`"static"\` plays
+   * nothing. \`"fade"\` dims the icon and brings it back, without moving it.
+   * \`"full"\` plays the full motion anyway; use it only when the motion is
+   * essential to understanding the change.
+   * @default "static"
+   */
+  reducedMotion?: "static" | "fade" | "full";
+
+  /**
+   * How long, in ms, a mouse must rest on the trigger before the icon plays,
+   * so sweeping across a toolbar plays nothing.
+   * @default 150
+   */
+  hoverDelay?: number;
+};
+
+export type CarbonAnimatedIconProps = CarbonIconProps &
+  CarbonAnimatedIconDefaults & {
+    /**
+     * Plays the animation when the icon mounts with a truthy value, and each
+     * time this changes to a new truthy value. Increment a number to replay
+     * it on demand.
+     * @default false
+     */
+    play?: boolean | number;
+  };
+
+/** See \`CarbonIcon\` in \`../index.d.ts\`. */
+type CarbonAnimatedIcon = typeof import("svelte") extends { mount: any }
+  ? (this: void, internals: unknown, props: CarbonAnimatedIconProps) => {}
+  : new (
+      options: ComponentConstructorOptions<CarbonAnimatedIconProps>
+    ) => SvelteComponent<CarbonAnimatedIconProps, Record<string, any>, {}>;
+
+/**
+ * Sets defaults for every animated icon in this component and its children,
+ * such as icons passed to a component's \`icon\` prop, which can't take
+ * extra props. Call it while the component initializes. Props on an icon win.
+ */
+export declare function setAnimatedIconDefaults(defaults: CarbonAnimatedIconDefaults): void;
+
+export declare const Add: CarbonAnimatedIcon;
+export declare const ArrowDown: CarbonAnimatedIcon;
+export declare const ArrowDownLeft: CarbonAnimatedIcon;
+export declare const ArrowDownRight: CarbonAnimatedIcon;
+export declare const ArrowLeft: CarbonAnimatedIcon;
+export declare const ArrowRight: CarbonAnimatedIcon;
+export declare const ArrowShiftDown: CarbonAnimatedIcon;
+export declare const ArrowUp: CarbonAnimatedIcon;
+export declare const ArrowUpLeft: CarbonAnimatedIcon;
+export declare const ArrowUpRight: CarbonAnimatedIcon;
+export declare const CaretDown: CarbonAnimatedIcon;
+export declare const CaretLeft: CarbonAnimatedIcon;
+export declare const CaretRight: CarbonAnimatedIcon;
+export declare const CaretUp: CarbonAnimatedIcon;
+export declare const Checkmark: CarbonAnimatedIcon;
+export declare const ChevronDown: CarbonAnimatedIcon;
+export declare const ChevronLeft: CarbonAnimatedIcon;
+export declare const ChevronRight: CarbonAnimatedIcon;
+export declare const ChevronUp: CarbonAnimatedIcon;
+export declare const Copy: CarbonAnimatedIcon;
+export declare const DoubleChevronLeft: CarbonAnimatedIcon;
+export declare const DoubleChevronRight: CarbonAnimatedIcon;
+export declare const Download: CarbonAnimatedIcon;
+export declare const Edit: CarbonAnimatedIcon;
+export declare const Favorite: CarbonAnimatedIcon;
+export declare const JumpLink: CarbonAnimatedIcon;
+export declare const Light: CarbonAnimatedIcon;
+export declare const Location: CarbonAnimatedIcon;
+export declare const Locked: CarbonAnimatedIcon;
+export declare const Notification: CarbonAnimatedIcon;
+export declare const PageFirst: CarbonAnimatedIcon;
+export declare const PageLast: CarbonAnimatedIcon;
+export declare const Recycle: CarbonAnimatedIcon;
+export declare const Redo: CarbonAnimatedIcon;
+export declare const Renew: CarbonAnimatedIcon;
+export declare const RenewAlt: CarbonAnimatedIcon;
+export declare const Repeat: CarbonAnimatedIcon;
+export declare const Reset: CarbonAnimatedIcon;
+export declare const Restart: CarbonAnimatedIcon;
+export declare const RotateClockwise: CarbonAnimatedIcon;
+export declare const RotateClockwiseAlt: CarbonAnimatedIcon;
+export declare const RotateClockwiseAltFilled: CarbonAnimatedIcon;
+export declare const RotateClockwiseFilled: CarbonAnimatedIcon;
+export declare const RotateCounterclockwise: CarbonAnimatedIcon;
+export declare const RotateCounterclockwiseAlt: CarbonAnimatedIcon;
+export declare const RotateCounterclockwiseAltFilled: CarbonAnimatedIcon;
+export declare const RotateCounterclockwiseFilled: CarbonAnimatedIcon;
+export declare const Search: CarbonAnimatedIcon;
+export declare const Send: CarbonAnimatedIcon;
+export declare const Settings: CarbonAnimatedIcon;
+export declare const SkipBack: CarbonAnimatedIcon;
+export declare const SkipBackFilled: CarbonAnimatedIcon;
+export declare const SkipForward: CarbonAnimatedIcon;
+export declare const SkipForwardFilled: CarbonAnimatedIcon;
+export declare const Star: CarbonAnimatedIcon;
+export declare const Time: CarbonAnimatedIcon;
+export declare const TrashCan: CarbonAnimatedIcon;
+export declare const Undo: CarbonAnimatedIcon;
+export declare const Upload: CarbonAnimatedIcon;
+export declare const View: CarbonAnimatedIcon;
+export declare const VolumeUp: CarbonAnimatedIcon;
+export declare const WarningAlt: CarbonAnimatedIcon;
+export declare const Wifi: CarbonAnimatedIcon;
+"
+`;

@@ -43,6 +43,7 @@ bun install
 | `bun run prepack` | Same as `bun test`. Builds `lib/`, regenerates [`ICON_INDEX.md`](ICON_INDEX.md) and docs assets, runs snapshot and unit tests. |
 | `bun run build:docs-assets` | Run `buildIcons()` only, no tests. Used by the docs site's `predev` / `prebuild` hooks. |
 | `bun run test:types` | Pack the local package and run `svelte-check` in [`tests/svelte@3/`](tests/svelte@3/), [`tests/svelte@4/`](tests/svelte@4/), [`tests/svelte@5/`](tests/svelte@5/), and [`tests/svelte@5-nodenext/`](tests/svelte@5-nodenext/). |
+| `bun run test:motion` | Play every animated icon in Chrome and check its motion (see [Animated icons](#animated-icons)). Needs `lib/`, so run `bun run prepack` first. |
 
 When iterating locally, scope test runs to what you changed. The full suite regenerates thousands of icon files and takes a while.
 
@@ -55,6 +56,7 @@ When iterating locally, scope test runs to what you changed. The full suite rege
    - `lib/<IconName>.svelte`, one component per icon
    - `lib/icon.d.ts`, one declaration shared by every icon; the `./lib/*.svelte` export (and `typesVersions`, for `moduleResolution: "node"`) points deep imports at it
    - `lib/index.js` and `lib/index.d.ts`, barrel export and `CarbonIconProps` type
+   - `lib/animated/`, the animated icons (see [Animated icons](#animated-icons))
    - [`ICON_INDEX.md`](ICON_INDEX.md), committed icon list
    - `docs/public/build-info.<hash>.json` and [`docs/src/generated/build-info-url.ts`](docs/src/generated/build-info-url.ts), hashed preview data for the docs site (gitignored, regenerated each build)
 
@@ -122,6 +124,71 @@ Don't remove a `DEPRECATED_ICONS` or `RENAMED_ICONS` entry in a minor release. T
 Svelte 4 and 5 are supported in `13.x`. Type-check coverage lives in `tests/svelte@4/` and `tests/svelte@5/`. `tests/svelte@5-nodenext/` checks that deep imports stay typed under `"moduleResolution": "NodeNext"`. `13.x` doesn't support Svelte 3, but carbon-components-svelte type-checks against it, so `tests/svelte@3/` keeps the types from breaking there. For example, Svelte 3's `svelte/elements` has no `data-*` index signature, so `CarbonIconProps` declares one.
 
 For Svelte 3, pin [`carbon-icons-svelte@12.13.0`](https://github.com/carbon-design-system/carbon-icons-svelte/tree/v12.13.0). Template changes shouldn't break Svelte 4 barrel imports or `CarbonIconProps`.
+
+## Animated icons
+
+`carbon-icons-svelte/animated` ships animated versions of some icons, built into `lib/animated/` by `buildIcons()`. There are two kinds:
+
+- **Hand-built**: one file per icon in [`src/animated/icons/`](src/animated/icons/), listed in [`src/animated/index.ts`](src/animated/index.ts). Use these when parts move separately: a bell and its clapper, a lid, a shackle.
+- **Rule-based**: the whole icon moves, so they're generated from the descriptor. [`src/animated/rules.ts`](src/animated/rules.ts) lists each icon with its rule: `nudge` the way it points, or `turn` the way its arrows go. Add an icon there when its whole drawing makes the motion, and check it against the exclusions at the top of the file.
+
+Most icons should stay static. Animate an icon only when motion says what it means; logos and domain nouns like `Assembly` have nothing to show.
+
+Carbon's icons are filled outlines, often a single merged path, so per-part motion can't be generated from the descriptors. Each hand-built icon file exports:
+
+- `name`: the static icon it animates.
+- `sourceHash`: a hash of the static icon's 32px content. [`tests/animated.test.ts`](tests/animated.test.ts) fails if Carbon redraws the icon; redo its parts from the new paths, then update the hash.
+- `content`: the SVG markup. `{id}` is a unique prefix for `<mask>` and `<clipPath>` ids.
+- `css`: component CSS. Svelte scopes it, keyframe names included. It defines both `motion` modes (see [Timing](#timing)).
+
+Start the file with a doc comment that says what the motion is and why, in a sentence or two, then one line each for `Productive:` and `Expressive:`.
+
+[`src/animated/animate.js`](src/animated/animate.js) is the shared runtime, copied to `lib/animated/`. It's a Svelte action that decides when and what to play, and sets `data-playing` on the `<svg>` to start it:
+
+- **Hover** counts only for a mouse resting on the icon or its interactive ancestor for `hoverDelay` (150ms, Carbon's moderate-01). Sweeping across a toolbar plays nothing, and touch and pen taps don't count. Keyboard focus plays at once.
+- **Once started, an animation runs to the end.** It's JavaScript, not CSS `:hover`, so it doesn't snap back when the pointer leaves, and hovering again mid-animation doesn't restart it.
+- **Reduced motion is decided here, not in CSS.** If the user prefers reduced motion, `reducedMotion` picks nothing (`"static"`), a fade (`"fade"`, played with the Web Animations API so icons carry no fade CSS), or the full motion (`"full"`). Icon CSS must not use a `prefers-reduced-motion` media query, or `"full"` couldn't override it; a test checks.
+- **`package.json` lists `lib/animated/*.svelte` in `sideEffects`.** Their animation CSS lives in each component's `<style>`, and bundlers that emit it as a separate import, like webpack with svelte-loader's `emitCss`, would otherwise drop it in production. Unused icons still tree-shake from the barrel.
+- **Defaults** come from `setAnimatedIconDefaults`, through Svelte context, for icons passed to an `icon` prop that can't take props.
+
+### Motion
+
+- **Start and end at rest.** A one-shot animation can't keep state, so anything left part-way snaps back when it ends. Use the icon's symmetry to keep turns short: `Renew` turns 180°, `Settings` 60° (six teeth), `Add` 90°, `Star` 72°. A clock hand makes whole turns instead (`Time`).
+- **Pivot on the physical hinge.** The bell swings from its stem, the lid from its end, the pencil on its tip, the pin on its point, the warning sign on its base. Set `transform-box: view-box` and a `transform-origin` in user units.
+- **Size motion for 16px.** One unit of the 32-unit grid is 0.5px at 16px. Move at least 3 units, or 2 for a hop or shake near an edge.
+- **Stay inside the 32×32 viewBox.** `bun run test:motion` checks it by playing every icon in Chrome and sampling points along every path at each frame. Bounding boxes overstate rotations. Rotation is the easy one to miss: anything farther than 16 units from the pivot leaves the canvas at some angle, so `Renew`, `Star` and the rule-based turns shrink slightly mid-turn, and the bell can't swing past about 8°. Nudges need room too, so `rules.ts` caps `SkipForward` and `ArrowShiftDown` at 2 units. An icon that touches an edge can't move toward it: `Locked`, `TrashCan` and `Location` get 2 units of travel at most. Rotating about the base (`WarningAlt`) keeps corners in where a sideways shake wouldn't. Leave the canvas only on purpose: through the viewBox edge (`Send`), or through a `<clipPath>` on a wrapper `<g>` so the clip stays put while the part moves (`Download`, `Upload`).
+- **Keep stroke weight.** Scaling one axis thins the strokes along the other, and they vanish at 16px. Fold, clip or move parts instead (`View`).
+
+### Timing
+
+Every icon has two modes, matching Carbon's [motion styles](https://carbondesignsystem.com/elements/motion/overview/). The `<svg>` carries the `motion` prop as `data-motion`; select each mode with `${PRODUCTIVE}` or `${EXPRESSIVE}` from [`src/animated/shared.ts`](src/animated/shared.ts).
+
+- **Productive** (the default) is for routine UI, which people hover all day. One simple move, about half the travel of expressive, with no secondary motion: no lagging part, no second beat. `DURATION.slow01` (400ms) or less, with productive easings.
+- **Expressive** is for moments that matter, usually played through `play`. Secondary motion, overshoot and multiple beats belong here. `DURATION.slow02` (700ms) or less, with expressive easings.
+- **Use Carbon's tokens only.** Durations, delays and staggers come from `DURATION`, and easings from `EASING`, both in [`src/animated/shared.ts`](src/animated/shared.ts), copied from `@carbon/motion`. A test fails on any other duration or `cubic-bezier()`.
+- **Pick the easing by direction.** `entrance` for moving out to an extreme (it decelerates into it), `exit` for leaving the canvas or dropping into place (it accelerates), and `standard` for a move that goes and comes back, or a swing between extremes.
+- **Overshoot with a keyframe, not a curve.** Carbon has no overshooting curve, so add a keyframe past the rest point and settle back (`Renew` turns to -195° before -180°). For a move in phases, set `animation-timing-function` per keyframe.
+- **Stagger with `DURATION.fast01` or `fast02`** and `calc(var(--i) * …)`, with `backwards` fill so later parts wait in their start state (`Wifi`, `VolumeUp`, `Light`). Keep the total within the mode's limit.
+- **Symmetry angles don't scale.** A turn has to end on a symmetry angle (`Star` 72°), so productive turns the same amount as expressive, only quicker and without the overshoot.
+- **Give related icons the same motion.** `Download` and `Upload` mirror each other; `Wifi` and `VolumeUp` share one.
+
+### Construction
+
+- **Copy Carbon's paths verbatim.** Only split a path where its parts move separately. A test fails if an unsplit path differs from Carbon's character for character.
+- **Don't put a CSS `transform` on an element with a `transform` attribute.** CSS replaces the attribute. Wrap the element in a `<g>` and animate that (`Light`).
+- **Layer motions with `rotate`, `scale` and `translate`** when they need their own easing; each is a separate property (`Star`).
+- **Don't gate motion with a media query.** `animate.js` handles reduced motion (see above).
+- **Don't mirror motion for right-to-left layouts.** Motion follows the drawing: an `ArrowRight` still points right in a right-to-left page, unless the app flips the icon with a transform, which flips its motion too.
+
+### Checking motion
+
+`bun run test:motion` ([`scripts/check-animated-motion.ts`](scripts/check-animated-motion.ts)) plays every icon in both modes and fails if:
+
+- a part leaves the canvas, except deliberate exits listed in the script;
+- productive motion runs past 400ms, or expressive past 700ms;
+- an icon doesn't animate.
+
+It uses an installed Chrome, and CI runs it too. To check Firefox and Safari's engine, install Playwright's builds with `bunx playwright-core install firefox webkit`, then pass `--browser firefox` or `--browser webkit`.
 
 ## Conventions
 
@@ -192,9 +259,10 @@ CI runs this. Run it locally too:
 bun install
 bun run prepack      # build lib/, snapshot test, template tests
 bun run test:types   # svelte-check against Svelte 4 and 5
+bun run test:motion  # play every animated icon in Chrome
 ```
 
-All three must pass. If `prepack` fails on the icon count, the snapshot moved, or a rename alias target is missing, fix the generator or compatibility tables before updating snapshots.
+All of them must pass. If `prepack` fails on the icon count, the snapshot moved, or a rename alias target is missing, fix the generator or compatibility tables before updating snapshots.
 
 ### Open a pull request
 

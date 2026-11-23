@@ -1,0 +1,11 @@
+import { rotateIcon } from "../rotate.js";
+
+export default rotateIcon({
+  name: "RotateClockwiseFilled",
+  sourceHash: "3abe090f3309",
+  square: "M28,30H16a2.0023,2.0023,0,0,1-2-2V16a2.0023,2.0023,0,0,1,2-2H28a2.0023,2.0023,0,0,1,2,2V28A2.0023,2.0023,0,0,1,28,30Z",
+  arrow: "M15,2,13.59,3.41,16.17,6H11a7.0078,7.0078,0,0,0-7,7v5H6V13a5.0057,5.0057,0,0,1,5-5h5.17l-2.58,2.59L15,12l5-5Z",
+  origin: [22, 22],
+  direction: 1,
+  push: [2, 0],
+});

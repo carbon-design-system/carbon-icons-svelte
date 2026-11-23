@@ -1,6 +1,8 @@
 <script>
   import {
     Header,
+    HeaderNav,
+    HeaderNavItem,
     HeaderUtilities,
     HeaderAction,
     HeaderActionLink,
@@ -11,6 +13,9 @@
   } from "carbon-components-svelte";
   import LogoGithub from "./LogoGithub.svelte";
   import { VERSION } from "../constants";
+
+  /** @type {"icons" | "animated"} */
+  export let route = "icons";
 </script>
 
 <Header aria-label="Navigation" href="/">
@@ -22,6 +27,11 @@
     Carbon Icons Svelte
     <code title="Version {VERSION}">v{VERSION}</code>
   </span>
+
+  <HeaderNav aria-label="Pages">
+    <HeaderNavItem href="#" text="Icons" isSelected={route === "icons"} />
+    <HeaderNavItem href="#animated" text="Animated" isSelected={route === "animated"} />
+  </HeaderNav>
 
   <HeaderUtilities>
     <HeaderActionLink
