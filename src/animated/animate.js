@@ -25,9 +25,12 @@ export const setAnimatedIconDefaults = (defaults) =>
 export const getAnimatedIconDefaults = () => getContext(DEFAULTS) ?? {};
 
 const restart = (node) => {
-  node.removeAttribute(PLAYING);
-  // Flush styles so that adding the attribute back starts a new animation.
-  node.getBoundingClientRect();
+  // Mid-animation, flush styles so that adding the attribute back starts a
+  // new one. Only then: a flush per icon is slow when many start at once.
+  if (node.hasAttribute(PLAYING)) {
+    node.removeAttribute(PLAYING);
+    node.getBoundingClientRect();
+  }
   node.setAttribute(PLAYING, "motion");
 };
 
