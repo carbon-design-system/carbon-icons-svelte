@@ -815,7 +815,7 @@ ${explorerTag}`;
         <dt>
           size <span class="unit">(px)</span>
           <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
-            <span slot="tooltipText">{propInfo.size[0]} Default: <code>{propInfo.size[1]}</code>.</span>
+            <span slot="tooltipText">{propInfo.size[0]} Default: {propInfo.size[1]}.</span>
           </TooltipIcon>
         </dt>
         <dd>
@@ -829,7 +829,7 @@ ${explorerTag}`;
         <dt>
           motion
           <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
-            <span slot="tooltipText">{propInfo.motion[0]} Default: <code>{propInfo.motion[1]}</code>.</span>
+            <span slot="tooltipText">{propInfo.motion[0]} Default: {propInfo.motion[1]}.</span>
           </TooltipIcon>
         </dt>
         <dd>
@@ -841,7 +841,7 @@ ${explorerTag}`;
         <dt>
           trigger
           <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
-            <span slot="tooltipText">{propInfo.trigger[0]} Default: <code>{propInfo.trigger[1]}</code>.</span>
+            <span slot="tooltipText">{propInfo.trigger[0]} Default: {propInfo.trigger[1]}.</span>
           </TooltipIcon>
         </dt>
         <dd>
@@ -853,7 +853,7 @@ ${explorerTag}`;
         <dt>
           hoverDelay <span class="unit">(ms)</span>
           <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
-            <span slot="tooltipText">{propInfo.hoverDelay[0]} Default: <code>{propInfo.hoverDelay[1]}</code>.</span>
+            <span slot="tooltipText">{propInfo.hoverDelay[0]} Default: {propInfo.hoverDelay[1]}.</span>
           </TooltipIcon>
         </dt>
         <dd>
@@ -867,7 +867,7 @@ ${explorerTag}`;
         <dt>
           reducedMotion
           <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
-            <span slot="tooltipText">{propInfo.reducedMotion[0]} Default: <code>{propInfo.reducedMotion[1]}</code>.</span>
+            <span slot="tooltipText">{propInfo.reducedMotion[0]} Default: {propInfo.reducedMotion[1]}.</span>
           </TooltipIcon>
         </dt>
         <dd>
@@ -880,7 +880,7 @@ ${explorerTag}`;
         <dt>
           loop
           <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
-            <span slot="tooltipText">{propInfo.loop[0]} Default: <code>{propInfo.loop[1]}</code>.</span>
+            <span slot="tooltipText">{propInfo.loop[0]} Default: {propInfo.loop[1]}.</span>
           </TooltipIcon>
         </dt>
         <dd>
