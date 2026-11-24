@@ -24,11 +24,11 @@ export const restCss = ({ rest }: Pick<Family, "rest">) =>
     display: none;
   }
 
-  :global(svg[data-playing]) .rest {
+  svg[data-playing] .rest {
     display: none;
   }
 
-  :global(svg[data-playing]) .animated {
+  svg[data-playing] .animated {
     display: inline;
   }`
     : "";

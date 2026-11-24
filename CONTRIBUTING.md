@@ -139,7 +139,7 @@ Carbon's icons are filled outlines, often a single merged path, so per-part moti
 - `name`: the static icon it animates.
 - `sourceHash`: a hash of the static icon's 32px content. [`tests/animated.test.ts`](tests/animated.test.ts) fails if Carbon redraws the icon; redo its parts from the new paths, then update the hash.
 - `content`: the SVG markup. `{id}` is a unique prefix for `<mask>` and `<clipPath>` ids.
-- `css`: component CSS. Svelte scopes it, keyframe names included. It defines both `motion` modes (see [Timing](#timing)).
+- `css`: the icon's CSS, written with plain class selectors and keyframe names. The build scopes it to the icon with `scopeCss` in [`src/animated/shared.ts`](src/animated/shared.ts): every selector starts at `svg[data-animated-icon="Name"]`, and every keyframe name becomes `ccs-animated-Name-…`. It doesn't rely on Svelte's scoping, so the same CSS works outside Svelte; a test checks every icon. It defines both `motion` modes (see [Timing](#timing)).
 
 Start the file with a doc comment that says what the motion is and why, in a sentence or two, then one line each for `Productive:` and `Expressive:`.
 
