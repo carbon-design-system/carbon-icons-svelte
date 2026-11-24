@@ -19,6 +19,7 @@
     TableOfContentsItem,
     Tag,
     Toggle,
+    TooltipIcon,
   } from "carbon-components-svelte";
   import * as Animated from "carbon-icons-svelte/animated";
   import {
@@ -314,6 +315,16 @@
   const PROP_DEFAULTS = { size: 16, motion: "productive", trigger: "hover", reducedMotion: "static", hoverDelay: 150, loop: "false" };
   const oneOf = (value, options, fallback) => (options.includes(value) ? value : fallback);
   const iconSizes = [16, 20, 24, 32];
+
+  /** What each prop in the explorer does, and its default, for its tooltip. */
+  const propInfo = {
+    size: ["The icon's width and height. Carbon's scale is 16, 20, 24 and 32.", "16"],
+    motion: ["productive is one short, subtle move, for routine UI. expressive is larger and livelier, for moments that matter.", "productive"],
+    trigger: ["hover plays when the pointer rests on the icon, or the button or link around it, or when that gets keyboard focus. none plays only from play.", "hover"],
+    hoverDelay: ["How long the pointer has to rest before the icon plays, so sweeping across a toolbar plays nothing.", "150"],
+    reducedMotion: ["What users who prefer reduced motion see. static plays nothing, fade dims the icon and brings it back, full plays the motion anyway.", "static"],
+    loop: ["Repeats the animation while true, for progress. When it turns false, the current cycle finishes. Only progress, refresh and waiting icons loop.", "false"],
+  };
   const hoverDelays = [0, 150, 300, 600];
   let urlReady = false;
 
@@ -802,7 +813,12 @@ ${explorerTag}`;
     </div>
     <Layer class="controls">
       <dl class="prop-list">
-        <dt>size <span class="unit">px</span></dt>
+        <dt>
+          size <span class="unit">(px)</span>
+          <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
+            <span slot="tooltipText">{propInfo.size[0]} Default: <code>{propInfo.size[1]}</code>.</span>
+          </TooltipIcon>
+        </dt>
         <dd>
           <RadioButtonGroup legendText="size" hideLegend bind:selected={size}>
             <RadioButton labelText="16" value={16} />
@@ -811,21 +827,36 @@ ${explorerTag}`;
             <RadioButton labelText="32" value={32} />
           </RadioButtonGroup>
         </dd>
-        <dt>motion</dt>
+        <dt>
+          motion
+          <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
+            <span slot="tooltipText">{propInfo.motion[0]} Default: <code>{propInfo.motion[1]}</code>.</span>
+          </TooltipIcon>
+        </dt>
         <dd>
           <RadioButtonGroup legendText="motion" hideLegend bind:selected={motion}>
             <RadioButton labelText="productive" value="productive" />
             <RadioButton labelText="expressive" value="expressive" />
           </RadioButtonGroup>
         </dd>
-        <dt>trigger</dt>
+        <dt>
+          trigger
+          <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
+            <span slot="tooltipText">{propInfo.trigger[0]} Default: <code>{propInfo.trigger[1]}</code>.</span>
+          </TooltipIcon>
+        </dt>
         <dd>
           <RadioButtonGroup legendText="trigger" hideLegend bind:selected={trigger}>
             <RadioButton labelText="hover" value="hover" />
             <RadioButton labelText="none" value="none" />
           </RadioButtonGroup>
         </dd>
-        <dt>hoverDelay <span class="unit">ms</span></dt>
+        <dt>
+          hoverDelay <span class="unit">(ms)</span>
+          <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
+            <span slot="tooltipText">{propInfo.hoverDelay[0]} Default: <code>{propInfo.hoverDelay[1]}</code>.</span>
+          </TooltipIcon>
+        </dt>
         <dd>
           <RadioButtonGroup legendText="hoverDelay" hideLegend disabled={trigger === "none"} bind:selected={hoverDelay}>
             <RadioButton labelText="0" value={0} />
@@ -834,7 +865,12 @@ ${explorerTag}`;
             <RadioButton labelText="600" value={600} />
           </RadioButtonGroup>
         </dd>
-        <dt>reducedMotion</dt>
+        <dt>
+          reducedMotion
+          <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
+            <span slot="tooltipText">{propInfo.reducedMotion[0]} Default: <code>{propInfo.reducedMotion[1]}</code>.</span>
+          </TooltipIcon>
+        </dt>
         <dd>
           <RadioButtonGroup legendText="reducedMotion" hideLegend bind:selected={reducedMotion}>
             <RadioButton labelText="static" value="static" />
@@ -842,7 +878,12 @@ ${explorerTag}`;
             <RadioButton labelText="full" value="full" />
           </RadioButtonGroup>
         </dd>
-        <dt>loop</dt>
+        <dt>
+          loop
+          <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
+            <span slot="tooltipText">{propInfo.loop[0]} Default: <code>{propInfo.loop[1]}</code>.</span>
+          </TooltipIcon>
+        </dt>
         <dd>
           <RadioButtonGroup legendText="loop" hideLegend bind:selected={loopChoice}>
             <RadioButton labelText="false" value="false" />
@@ -989,7 +1030,7 @@ ${explorerTag}`;
   /* One row per prop: its name, then its control. */
   .prop-list {
     display: grid;
-    grid-template-columns: 8rem minmax(0, 1fr);
+    grid-template-columns: 10.5rem minmax(0, 1fr);
     margin: 0;
   }
 
