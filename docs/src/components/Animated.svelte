@@ -49,7 +49,7 @@
     Settings,
     TrashCan,
   } from "carbon-icons-svelte/animated";
-  import { onMount } from "svelte";
+  import { onMount, tick } from "svelte";
   import AnimatedDefaults from "./AnimatedDefaults.svelte";
   import Code from "./Code.svelte";
 
@@ -380,6 +380,18 @@
     history.replaceState(history.state, "", `${location.pathname}${query}${location.hash}`);
   }
   let galleryMotionIndex = 0;
+
+  // Changing a motion control plays the icons in the new mode, so the
+  // difference shows without hovering. Only on change, not on load. Wait
+  // for the new mode to render before playing.
+  const replayGallery = async () => {
+    await tick();
+    galleryPlay++;
+  };
+  const replayExplorer = async () => {
+    await tick();
+    play++;
+  };
   let galleryQuery = "";
   let galleryPlay = 0;
   let galleryLoop = false;
@@ -858,7 +870,7 @@ ${explorerTag}`;
         <div class="gallery-controls">
           <div class="gallery-motion">
             <span id="gallery-motion-label" class="bx--label">Motion</span>
-            <ContentSwitcher size="sm" autoWidth lowContrast aria-labelledby="gallery-motion-label" bind:selectedIndex={galleryMotionIndex}>
+            <ContentSwitcher size="sm" autoWidth lowContrast aria-labelledby="gallery-motion-label" bind:selectedIndex={galleryMotionIndex} on:change={replayGallery}>
               <Switch text="Productive" />
               <Switch text="Expressive" />
             </ContentSwitcher>
@@ -1447,7 +1459,7 @@ ${explorerTag}`;
           </TooltipIcon>
         </dt>
         <dd>
-          <RadioButtonGroup legendText="motion" hideLegend bind:selected={motion}>
+          <RadioButtonGroup legendText="motion" hideLegend bind:selected={motion} on:change={replayExplorer}>
             <RadioButton labelText="productive" value="productive" />
             <RadioButton labelText="expressive" value="expressive" />
           </RadioButtonGroup>
