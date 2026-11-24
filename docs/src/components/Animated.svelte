@@ -3,6 +3,7 @@
     Button,
     Content,
     ContentSwitcher,
+    Dropdown,
     FluidForm,
     CssColumn,
     CssGrid,
@@ -11,6 +12,7 @@
     OverflowMenu,
     OverflowMenuItem,
     Prose,
+    Popover,
     RadioButton,
     RadioButtonGroup,
     Select,
@@ -19,7 +21,6 @@
     SidePanel,
     Switch,
     Search as SearchInput,
-    Slider,
     TableOfContents,
     TableOfContentsItem,
     TextInput,
@@ -273,7 +274,6 @@
     ["animated-props", "Props", "Edit"],
   ];
 
-  const sizeMarks = [16, 20, 24, 32].map((value) => ({ value, label: `${value}` }));
 
   const motionIcons = [Notification, Renew, Download, Favorite, Checkmark];
 
@@ -328,12 +328,6 @@
   const oneOf = (value, options, fallback) => (options.includes(value) ? value : fallback);
   const iconSizes = [16, 20, 24, 32];
 
-  /** What each gallery control does, for its tooltip. */
-  const controlInfo = {
-    motion: "Productive is a short, subtle move for routine UI. Expressive is larger, for events people should notice. Switching plays every icon, and the play button replays them.",
-    loop: "Shows only the icons that can loop, looping, as they do with loop set to true.",
-  };
-
   /** What each prop in the explorer does, and its default, for its tooltip. */
   const propInfo = {
     size: ["Width and height in pixels. Carbon's sizes are 16, 20, 24 and 32.", "16"],
@@ -387,6 +381,37 @@
     history.replaceState(history.state, "", `${location.pathname}${query}${location.hash}`);
   }
   let galleryMotionIndex = 0;
+
+  let optionsOpen = false;
+
+  // The toolbar shows its bottom border only while stuck under the header.
+  // A zero-height element just above it leaves the viewport, below the
+  // 48px header, exactly when the toolbar sticks.
+  let toolbarStuck = false;
+
+  // Below 82rem the toolbar's controls don't fit on one row, so they move
+  // into a popover.
+  let compactToolbar = false;
+  onMount(() => {
+    const query = matchMedia("(max-width: 81.98rem)");
+    const update = () => {
+      compactToolbar = query.matches;
+      if (!compactToolbar) optionsOpen = false;
+    };
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  });
+  function watchStuck(node) {
+    const observer = new IntersectionObserver(
+      ([entry]) =>
+        (toolbarStuck =
+          !entry.isIntersecting && entry.boundingClientRect.top < 48 && matchMedia("(min-width: 82rem)").matches),
+      { rootMargin: "-48px 0px 0px 0px" }
+    );
+    observer.observe(node);
+    return { destroy: () => observer.disconnect() };
+  }
 
   let jumpTarget = "";
   // Select's change event fires before `bind:selected` updates, so the
@@ -512,6 +537,7 @@
 
   // Shared with the icon list's theme select.
   const themes = ["white", "g10", "g80", "g90", "g100"];
+  const themeNames = { white: "White", g10: "Gray 10", g80: "Gray 80", g90: "Gray 90", g100: "Gray 100" };
   let theme = "white";
   $: dark = ["g80", "g90", "g100"].includes(theme);
   let themeSwitches = 0;
@@ -842,6 +868,55 @@ ${explorerTag}`;
 </script>
 
 <Content>
+
+<!-- Gallery toolbar controls, shared by the full and compact toolbars. -->
+{#snippet searchControl(size)}
+  <SearchInput {size} labelText="Search animated icons" placeholder="Search {names.length} icons" bind:value={galleryQuery} />
+{/snippet}
+
+{#snippet motionControl(labelledBy)}
+  <ContentSwitcher size="sm" autoWidth lowContrast aria-label={labelledBy ? undefined : "Motion"} aria-labelledby={labelledBy} bind:selectedIndex={galleryMotionIndex} on:change={replayGallery}>
+    <Switch text="Productive" />
+    <Switch text="Expressive" />
+  </ContentSwitcher>
+{/snippet}
+
+{#snippet sizeControl(labelledBy)}
+  <ContentSwitcher
+    size="sm"
+    autoWidth
+    lowContrast
+    aria-label={labelledBy ? undefined : "Icon size"}
+    aria-labelledby={labelledBy}
+    selectedIndex={Math.max(0, iconSizes.indexOf(iconSize))}
+    on:change={({ detail }) => (iconSize = iconSizes[detail])}
+  >
+    {#each iconSizes as option (option)}
+      <Switch text="{option}" />
+    {/each}
+  </ContentSwitcher>
+{/snippet}
+
+{#snippet themeControl(id)}
+  <div class="toolbar-theme">
+    <span id={id} class="bx--label">Theme</span>
+    <Dropdown
+      type="inline"
+      size="sm"
+      titleText="Theme"
+      hideLabel
+      aria-labelledby={id}
+      items={themes.map((option) => ({ id: option, text: themeNames[option] }))}
+      selectedId={theme}
+      on:select={({ detail }) => (theme = detail.selectedId)}
+    />
+  </div>
+{/snippet}
+
+{#snippet playControl()}
+  <Button kind="ghost" size="small" icon={Animated.Play} iconDescription="Play all" tooltipPosition="bottom" tooltipAlignment="end" on:click={() => galleryPlay++} />
+{/snippet}
+
 <!-- Full width, with the table of contents narrowing to 3 columns on wide
      screens, so the gallery gets the extra room. -->
 <CssGrid class="page" fullWidth>
@@ -866,7 +941,7 @@ ${explorerTag}`;
     </div>
     <!-- On narrow screens, the table of contents is one row: pick a section to jump to it. -->
     <div class="toc-select">
-      <Select labelText="On this page" hideLabel bind:selected={jumpTarget} on:change={(event) => jump(event.currentTarget.value)}>
+      <Select inline size="sm" labelText="On this page" hideLabel bind:selected={jumpTarget} on:change={(event) => jump(event.currentTarget.value)}>
         <SelectItem value="" text="On this page" disabled />
         {#each sections as [id, text] (id)}
           <SelectItem value={id} {text} />
@@ -891,83 +966,60 @@ ${explorerTag}`;
           Carbon icons that animate on hover, keyboard focus or when you play them.
         </p>
         <Theme bind:theme persist persistKey="theme" />
-        <div class="gallery-search">
-          <SearchInput
-            size="lg"
-            labelText="Search animated icons"
-            placeholder="Search {names.length} animated icons"
-            bind:value={galleryQuery}
-          />
-        </div>
-        <div class="gallery-controls">
-          <div class="gallery-motion">
-            <div class="control-label">
-              <span id="gallery-motion-label" class="bx--label">Motion</span>
-              <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
-                <span slot="tooltipText">{controlInfo.motion}</span>
-              </TooltipIcon>
-            </div>
-            <div class="gallery-motion-row">
-              <ContentSwitcher size="sm" autoWidth lowContrast aria-labelledby="gallery-motion-label" bind:selectedIndex={galleryMotionIndex} on:change={replayGallery}>
-                <Switch text="Productive" />
-                <Switch text="Expressive" />
-              </ContentSwitcher>
+        <!-- One toolbar row, every control 32px, sticky while scrolling the gallery. -->
+        <div class="toolbar-sentinel" use:watchStuck></div>
+        <div class="gallery-toolbar" class:stuck={toolbarStuck} class:compact={compactToolbar}>
+          {@render searchControl("sm")}
+          {#if compactToolbar}
+            <!-- Where the controls don't fit on one row: search, play, and the rest in a popover. -->
+            {@render playControl()}
+            <div class="toolbar-options">
               <Button
                 kind="ghost"
                 size="small"
-                icon={Animated.Play}
-                iconDescription="Play all"
+                icon={Animated.Settings}
+                iconDescription="View options"
                 tooltipPosition="bottom"
-                on:click={() => galleryPlay++}
+                tooltipAlignment="end"
+                aria-expanded={optionsOpen}
+                on:click={() => (optionsOpen = !optionsOpen)}
               />
+              <Popover bind:open={optionsOpen} align="bottom-right" caret closeOnOutsideClick closeOnEscape>
+                <div class="options-panel">
+                  <div class="options-field">
+                    <span id="compact-motion-label" class="bx--label">Motion</span>
+                    {@render motionControl("compact-motion-label")}
+                  </div>
+                  <div class="options-field">
+                    <span id="compact-size-label" class="bx--label">Size</span>
+                    {@render sizeControl("compact-size-label")}
+                  </div>
+                  {@render themeControl("compact-theme-label")}
+                  <div class="toolbar-field">
+                    <span id="compact-loop-label" class="bx--label">Loop</span>
+                    <Toggle size="sm" labelText="Loop" hideLabel labelA="" labelB="" aria-labelledby="compact-loop-label" bind:toggled={galleryLoop} />
+                  </div>
+                </div>
+              </Popover>
             </div>
-          </div>
-          <div class="gallery-size">
-            <div class="control-label">
-              <span id="gallery-size-label" class="bx--label">Size</span>
+          {:else}
+          <div class="toolbar-controls">
+            <div class="toolbar-field">
+              <span id="toolbar-motion-label" class="bx--label">Motion</span>
+              {@render motionControl("toolbar-motion-label")}
             </div>
-            <Slider
-            labelText="Size"
-            hideLabel
-            min={16}
-            max={32}
-            marks={sizeMarks}
-            snapToMarks
-            hideTextInput
-            hideRangeLabels
-            formatValue={(value) => `${value}px`}
-            bind:value={iconSize}
-          />
-          </div>
-          <div class="gallery-theme">
-            <div class="control-label">
-              <span id="gallery-theme-label" class="bx--label">Theme</span>
+            <div class="toolbar-field">
+              <span id="toolbar-size-label" class="bx--label">Size</span>
+              {@render sizeControl("toolbar-size-label")}
             </div>
-            <ContentSwitcher
-              size="sm"
-              autoWidth
-              lowContrast
-              aria-labelledby="gallery-theme-label"
-              selectedIndex={Math.max(0, themes.indexOf(theme))}
-              on:change={({ detail }) => (theme = themes[detail])}
-            >
-              {#each themes as option (option)}
-                <Switch text={option} />
-              {/each}
-            </ContentSwitcher>
-          </div>
-          <div class="gallery-loop">
-            <div class="control-label">
-              <span id="gallery-loop-label" class="bx--label">Loop</span>
-              <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
-                <span slot="tooltipText">{controlInfo.loop}</span>
-              </TooltipIcon>
+            {@render themeControl("toolbar-theme-label")}
+            <div class="toolbar-field">
+              <span id="toolbar-loop-label" class="bx--label">Loop</span>
+              <Toggle size="sm" labelText="Loop" hideLabel labelA="" labelB="" aria-labelledby="toolbar-loop-label" bind:toggled={galleryLoop} />
             </div>
-            <Toggle labelText="Loop" hideLabel size="sm" bind:toggled={galleryLoop}>
-              <span slot="labelA">Off</span>
-              <span slot="labelB">On</span>
-            </Toggle>
+            {@render playControl()}
           </div>
+          {/if}
         </div>
         {#if visibleGroups.length === 0}
           <p class="gallery-empty">No animated icons match “{galleryQuery.trim()}”.</p>
@@ -1623,7 +1675,7 @@ ${explorerTag}`;
 
     .toc-select {
       display: block;
-      margin-block-end: var(--cds-spacing-06);
+      margin-block-end: var(--cds-spacing-05);
     }
   }
 
@@ -1837,18 +1889,6 @@ ${explorerTag}`;
     max-width: none;
   }
 
-  /* Each control's label, with its tooltip, on one line above the control. */
-  .control-label {
-    display: flex;
-    align-items: center;
-    gap: var(--cds-spacing-02);
-    margin-block-end: var(--cds-spacing-03);
-  }
-
-  .control-label .bx--label {
-    margin: 0;
-  }
-
   /* The table of contents sits on the right on wide screens, and stays
      above the content on narrow ones. */
   @media (min-width: 66rem) {
@@ -1857,15 +1897,129 @@ ${explorerTag}`;
     }
   }
 
-  .gallery-search {
-    max-width: 44rem;
-    margin-block-end: var(--cds-spacing-07);
+  .gallery-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cds-spacing-03) var(--cds-spacing-05);
+    padding-block: var(--cds-spacing-03);
+    background: var(--cds-background, var(--cds-ui-background));
+    /* Always 1px, so the border appearing doesn't shift the page. */
+    border-block-end: 1px solid transparent;
   }
 
-  .gallery-motion-row {
+  .toolbar-sentinel {
+    height: 0;
+    margin-block-start: var(--cds-spacing-06);
+  }
+
+  .gallery-toolbar.stuck {
+    border-block-end-color: var(--cds-border-subtle-01, var(--cds-ui-03));
+  }
+
+  /* Narrow, and shrinks before the controls wrap to a second row. */
+  .gallery-toolbar :global(.bx--search) {
+    flex: 1 1 12rem;
+    max-width: 18rem;
+  }
+
+  .gallery-toolbar .toolbar-controls {
+    margin-inline-start: auto;
+  }
+
+  .gallery-toolbar.compact {
+    flex-wrap: nowrap;
+    gap: var(--cds-spacing-02);
+  }
+
+  .gallery-toolbar.compact :global(.bx--search) {
+    flex: 1 1 auto;
+    max-width: none;
+  }
+
+  .toolbar-options {
+    position: relative;
+  }
+
+  .options-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cds-spacing-03);
+  }
+
+  .options-field .bx--label {
+    margin: 0;
+  }
+
+  /* Sticky only where it fits on one row. */
+  @media (min-width: 82rem) {
+    .gallery-toolbar {
+      position: sticky;
+      top: 3rem;
+      z-index: 2;
+    }
+  }
+
+  .options-panel :global(.bx--form-item) {
+    flex: none;
+    margin: 0;
+  }
+
+  .options-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--cds-spacing-04);
+    padding: var(--cds-spacing-05);
+    min-width: 14rem;
+  }
+
+  .options-panel .bx--label {
+    margin: 0;
+  }
+
+  .toolbar-field,
+  .toolbar-theme {
     display: flex;
     align-items: center;
+  }
+
+  /* 12px from label to control, matching Theme, whose dropdown pads its
+     4px gap with 8px of its own. */
+  .toolbar-field {
+    gap: var(--cds-spacing-04);
+  }
+
+  .toolbar-theme {
     gap: var(--cds-spacing-02);
+  }
+
+  /* Carbon's inline dropdown menu is at least 18rem; fit it to the names. */
+  .toolbar-theme :global(.bx--list-box__menu) {
+    min-width: 8rem;
+    width: max-content;
+  }
+
+  .toolbar-field .bx--label,
+  .toolbar-theme .bx--label {
+    margin: 0;
+  }
+
+  .toolbar-field :global(.bx--form-item) {
+    flex: none;
+    margin: 0;
+  }
+
+  .toolbar-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cds-spacing-05);
+  }
+
+  .toolbar-controls :global(.bx--form-item) {
+    flex: none;
+    margin: 0;
   }
 
   /* A category heading sits closer to its own tiles than to the grid above. */
@@ -1900,13 +2054,6 @@ ${explorerTag}`;
   .gallery-empty {
     margin-block-start: var(--cds-spacing-07);
     color: var(--cds-text-secondary, var(--cds-text-02));
-  }
-
-  .gallery-controls {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: var(--cds-spacing-07);
   }
 
   .gallery {
