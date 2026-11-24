@@ -765,7 +765,7 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
 </CssGrid>
 </Content>
 
-<SidePanel bind:open={explorerOpen} titleText={name} size="lg" includeOverlay>
+<SidePanel bind:open={explorerOpen} titleText={name} size="lg" includeOverlay class="explorer-panel">
   <div class="explorer">
     <div class="example">
     <div class="stage">
@@ -925,6 +925,13 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
     display: flex;
     flex-direction: column;
     gap: var(--cds-spacing-06);
+  }
+
+  /* The panel and its overlay appear and leave at once. Without an
+     animation, SidePanel closes without waiting for one. */
+  :global(.bx--side-panel.explorer-panel),
+  :global(.bx--side-panel__overlay) {
+    animation: none;
   }
 
   /* The preview and its code read as one example, like Carbon's docs. */
