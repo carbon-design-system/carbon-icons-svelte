@@ -857,7 +857,7 @@ ${explorerTag}`;
             {#each groups as group (group.id)}
               <TableOfContentsItem href="#{group.id}" level={2}>
                 {group.title}
-                <span class="toc-count">{group.names.length}</span>
+                <span class="toc-count">({group.names.length})</span>
               </TableOfContentsItem>
             {/each}
           {/if}
@@ -1879,7 +1879,7 @@ ${explorerTag}`;
   }
 
   .toc-count {
-    font-size: 0.75rem;
+    font-size: 0.6875rem;
     color: var(--cds-text-helper, var(--cds-text-05));
   }
 
