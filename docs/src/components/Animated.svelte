@@ -257,7 +257,8 @@
     ["animated-loop", "Loop", "Renew"],
     ["animated-states", "Icons for each state", "CheckmarkOutline"],
     ["animated-defaults", "Defaults", "Settings"],
-    ["animated-reduced-motion", "Reduced motion", "ViewOff"],
+    ["animated-accessibility", "Accessibility", "ViewOff"],
+    ["animated-ssr", "Server rendering", "Terminal"],
     ["animated-performance", "Performance", "Dashboard"],
     ["animated-props", "Props", "Edit"],
   ];
@@ -582,7 +583,8 @@ ${explorerTag}`;
           </li>
           <li>
             <strong>Keep a label.</strong> Animation doesn't replace text: icon-only buttons still need
-            <code>iconDescription</code>, and state changes still need to be announced.
+            <code>iconDescription</code>, and state changes still need to be announced. See
+            <a href="#animated-accessibility">Accessibility</a>.
           </li>
         </ul>
       </section>
@@ -759,8 +761,25 @@ ${explorerTag}`;
         </div>
       </section>
 
-      <section id="animated-reduced-motion">
-        <h2>Reduced motion</h2>
+      <section id="animated-accessibility">
+        <h2>Accessibility</h2>
+        <ul>
+          <li>
+            <strong>Icons are hidden from screen readers unless labelled.</strong> Like the static icons, an animated
+            icon gets <code>aria-hidden</code> unless it has a <code>title</code>, <code>aria-label</code> or
+            <code>aria-labelledby</code>, which make it an image with that name. In a button or link, label the button
+            or link instead: give icon-only buttons an <code>iconDescription</code>.
+          </li>
+          <li>
+            <strong>Keyboard focus plays the icon.</strong> Tabbing to a button or link plays its icon, as resting a
+            mouse on it does, so keyboard users see the same motion. Focus that comes from a click doesn't.
+          </li>
+          <li>
+            <strong>Motion never carries the message.</strong> An icon that plays to confirm a save or flag an error
+            doesn't announce anything. Announce the change too, with a notification or a live region.
+          </li>
+        </ul>
+        <h3 id="animated-reduced-motion">Reduced motion</h3>
         <p>
           By default, nothing plays for users who prefer reduced motion. <code>reducedMotion</code> changes what they
           see: <code>"static"</code> plays nothing, <code>"fade"</code> dims the icon and brings it back without moving
@@ -768,6 +787,20 @@ ${explorerTag}`;
           event, and <code>"full"</code> only when the motion itself is essential to understanding the change.
         </p>
         <Code code={reducedCode} />
+      </section>
+
+      <section id="animated-ssr">
+        <h2>Server rendering</h2>
+        <p>
+          Animated icons work with SvelteKit and other server rendering with no setup. The server renders each icon at
+          rest, and motion starts in the browser once the page hydrates. Whether the user prefers reduced motion is
+          checked in the browser each time an icon plays, so server and browser never disagree.
+        </p>
+        <p>
+          Filled icons, like <code>CheckmarkFilled</code>, draw their moving part through a <code>&lt;mask&gt;</code>
+          or <code>&lt;clipPath&gt;</code> with an id. Each icon on a page gets its own id, so several copies of the
+          same icon don't share one, and hydration keeps the ids the server rendered.
+        </p>
       </section>
 
       <section id="animated-performance">
