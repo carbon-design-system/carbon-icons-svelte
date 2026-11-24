@@ -330,12 +330,12 @@
 
   /** What each prop in the explorer does, and its default, for its tooltip. */
   const propInfo = {
-    size: ["The icon's width and height. Carbon's scale is 16, 20, 24 and 32.", "16"],
-    motion: ["productive is one short, subtle move, for routine UI. expressive is larger and livelier, for moments that matter.", "productive"],
-    trigger: ["hover plays when the pointer rests on the icon, or the button or link around it, or when that gets keyboard focus. none plays only from play.", "hover"],
-    hoverDelay: ["How long the pointer has to rest before the icon plays, so sweeping across a toolbar plays nothing.", "150"],
-    reducedMotion: ["What users who prefer reduced motion see. static plays nothing, fade dims the icon and brings it back, full plays the motion anyway.", "static"],
-    loop: ["Repeats the animation while true, for progress. When it turns false, the current cycle finishes. Only progress, refresh and waiting icons loop.", "false"],
+    size: ["Width and height in pixels. Carbon's sizes are 16, 20, 24 and 32.", "16"],
+    motion: ["productive is a short, subtle move for routine UI. expressive is larger, for events people should notice.", "productive"],
+    trigger: ["hover plays the icon when the pointer rests on it or on the button or link around it, or when that gets keyboard focus. none plays it only through play.", "hover"],
+    hoverDelay: ["How long the pointer rests before the icon plays.", "150"],
+    reducedMotion: ["What users who prefer reduced motion see. static: nothing plays. fade: the icon dims and comes back. full: the normal animation plays.", "static"],
+    loop: ["Repeats the animation while true. When it turns false, the current cycle finishes. Only progress, refresh and waiting icons loop.", "false"],
   };
   const hoverDelays = [0, 150, 300, 600];
   let urlReady = false;
@@ -728,7 +728,7 @@ ${explorerTag}`;
 <PageHeader
   grid
   title="Animated icons"
-  subtitle="{names.length} icons that move with Carbon's motion, for routine UI and moments that matter."
+  subtitle="{names.length} Carbon icons that animate on hover, on keyboard focus, or when you play them."
 />
 
 <CssGrid class="page">
@@ -758,10 +758,8 @@ ${explorerTag}`;
       <section id="animated-icons">
         <h2>Icons</h2>
         <p>
-          Hover an icon to play it, or select one to try its props. Parts
-          move on their own where it means something, like the bell and its clapper; arrows nudge the way they point.
+          Hover an icon to play it, or select one to try its props. Icons with separate parts move them separately, like a bell and its clapper.
         </p>
-        <Theme bind:theme persist persistKey="theme" />
         <div class="gallery-search">
           <SearchInput
             size="lg"
@@ -832,10 +830,10 @@ ${explorerTag}`;
       <section id="animated-overview">
         <h2>Usage</h2>
         <p>
-          Import animated icons from <code>carbon-icons-svelte/animated</code>, or one at a time from
-          <code>carbon-icons-svelte/lib/animated/Notification.svelte</code>. They take the same props as the static
-          icons. An icon plays when a mouse rests on it, or on the button or link around it, or when that gets keyboard
-          focus. Sweeping the pointer across a toolbar plays nothing, and once an animation starts, it runs to the end.
+          Import animated icons from <code>carbon-icons-svelte/animated</code>. They take the same props as the static icons.
+        </p>
+        <p>
+          An icon plays when the pointer rests on it, or on the button or link around it, for 150ms. It also plays when that button or link gets keyboard focus. Moving the pointer across a toolbar plays nothing. Once an icon starts, it plays to the end.
         </p>
         <Code code={importCode} />
       </section>
@@ -844,27 +842,19 @@ ${explorerTag}`;
         <h2>Guidance</h2>
         <ul>
           <li>
-            <strong>Animate for meaning.</strong> Motion should say what the icon does: the bell rings, the arrow moves
-            the way it points. Most icons, like logos and nouns, stay static.
+            Animate an icon only when its motion shows what it does, like a bell ringing or an arrow moving the way it points. Logos and nouns stay static.
           </li>
           <li>
-            <strong>Productive for routine UI, expressive for moments that matter.</strong> Toolbars, menus and
-            navigation stay productive. Save confirmations, new notifications and errors can be expressive, played with
-            <code>play</code>.
+            Use productive motion for routine UI like toolbars, menus and navigation. Use expressive motion for events people should notice, like a save or a new message, and trigger it with <code>play</code>.
           </li>
           <li>
-            <strong>Loop only while something is in progress.</strong> Each animation plays once and ends where it
-            started; replay it on the next event. Loop only progress, refresh and waiting icons, and only while the work
-            runs.
+            Loop only progress, refresh and waiting icons, and only while the work runs. Everything else plays once.
           </li>
           <li>
-            <strong>Keep the hover delay.</strong> It stops a toolbar from rippling as the pointer crosses it. Lower it
-            only where the pointer is expected to rest, like a single call to action.
+            Keep the hover delay, unless the pointer is meant to rest on a single control, like one call to action.
           </li>
           <li>
-            <strong>Keep a label.</strong> Animation doesn't replace text: icon-only buttons still need
-            <code>iconDescription</code>, and state changes still need to be announced. See
-            <a href="#animated-accessibility">Accessibility</a>.
+            Keep text labels. Icon-only buttons still need an <code>iconDescription</code>, and state changes still need to be announced. See <a href="#animated-accessibility">Accessibility</a>.
           </li>
         </ul>
       </section>
@@ -872,10 +862,7 @@ ${explorerTag}`;
       <section id="animated-motion">
         <h2>Motion</h2>
         <p>
-          <code>motion</code> picks one of Carbon's two motion styles, using Carbon's durations and easings.
-          <code>"productive"</code>, the default, is one short move in 400ms or less, for routine UI like toolbars and
-          menus. <code>"expressive"</code> adds secondary motion and overshoot in 700ms or less, for moments that
-          matter.
+          <code>motion</code> picks one of Carbon's two motion styles, with Carbon's durations and easings. <code>"productive"</code>, the default, is one short move of 400ms or less. <code>"expressive"</code> runs up to 700ms and adds secondary motion and overshoot.
         </p>
         <div class="demo motion-compare">
           {#each ["productive", "expressive"] as mode (mode)}
@@ -930,10 +917,7 @@ ${explorerTag}`;
       <section id="animated-events">
         <h2>Play on an event</h2>
         <p>
-          For a moment that matters, like a save or a new notification, play the icon from your own state with
-          <code>play</code>. It plays each time <code>play</code> changes to a truthy value, so increment a number to
-          replay it. To pass props to an icon in a <code>Button</code>, put it in the <code>icon</code> slot with the
-          <code>bx--btn__icon</code> class that <code>Button</code> gives its own icons.
+          To play an icon from your own state, pass a number to <code>play</code> and increment it. The icon plays each time the value changes to something truthy. To give props to an icon in a <code>Button</code>, put it in the button's <code>icon</code> slot with the <code>bx--btn__icon</code> class.
         </p>
         <div class="example">
         <div class="demo">
@@ -955,10 +939,7 @@ ${explorerTag}`;
       <section id="animated-loop">
         <h2>Loop</h2>
         <p>
-          Progress, refresh and waiting icons can loop with <code>loop</code>. While it's <code>true</code>, the icon repeats a
-          cycle that starts and ends at rest; when it turns <code>false</code>, the current cycle finishes and the icon
-          stops at rest instead of snapping. Hover and <code>play</code> don't interrupt a loop, and a loop pauses while the icon is scrolled out of view. Loop only while
-          something is in progress.
+          Set <code>loop</code> to repeat an icon's animation while something is in progress. When <code>loop</code> turns <code>false</code>, the current cycle finishes and the icon stops at rest. Hover and <code>play</code> don't interrupt a loop, and loops pause while scrolled out of view. Only progress, refresh and waiting icons loop.
         </p>
         <div class="example">
         <div class="demo">
@@ -982,12 +963,7 @@ ${explorerTag}`;
       <section id="animated-states">
         <h2>Icons for each state</h2>
         <p>
-          A button can show a different animated icon for each state. Swap them in an <code>{"{#if}"}</code> inside
-          <code>&lt;svelte:fragment slot="icon"&gt;</code>, since a slot can't be set inside a block. Each icon plays
-          the way that state needs: <code>Download</code> on hover while idle, <code>InProgress</code> on a
-          <code>loop</code> while working, and <code>CheckmarkFilled</code> once with <code>play</code> as it appears,
-          since an icon that mounts with a truthy <code>play</code> plays right away. The icon has the
-          <code>bx--btn__icon</code> class that <code>Button</code> gives its own icons, for its spacing and color.
+          To show a different icon for each state of a button, swap icons in an <code>{"{#if}"}</code> block inside <code>&lt;svelte:fragment slot="icon"&gt;</code>. Here, <code>Download</code> plays on hover, <code>InProgress</code> loops during the download, and <code>CheckmarkFilled</code> plays once when it finishes, because an icon that mounts with a truthy <code>play</code> plays immediately. Give each icon the <code>bx--btn__icon</code> class for the button's spacing and color.
         </p>
         <div class="example">
         <div class="demo">
@@ -1021,12 +997,12 @@ ${explorerTag}`;
 
       <section id="animated-patterns">
         <h2>Patterns</h2>
-        <p>Common places for animated icons, each built from Carbon components.</p>
-
+        <p>
+          Examples built with Carbon components.
+        </p>
         <h3 id="animated-pattern-toolbar">Toolbar</h3>
         <p>
-          Icon-only buttons in a row. Sweep the pointer across them and nothing plays; rest it on one and that one does.
-          The hover delay keeps a toolbar from rippling as the pointer crosses it.
+          Icon-only buttons in a <code>Toolbar</code>. Moving the pointer across the toolbar plays nothing. Resting it on a button plays that button's icon.
         </p>
         <div class="example">
           <div class="demo">
@@ -1045,8 +1021,7 @@ ${explorerTag}`;
 
         <h3 id="animated-pattern-submit">Form submission</h3>
         <p>
-          The submit button answers each attempt: the error shakes when the email isn't valid, and the check plays once
-          it is. Each failed attempt replays the error, since <code>play</code> takes the attempt count.
+          The button's icon shows the result. If the email is invalid, the error icon shakes, and it shakes again on each failed attempt because <code>play</code> gets the attempt count. If the email is valid, the check plays.
         </p>
         <div class="example">
           <div class="demo">
@@ -1078,9 +1053,7 @@ ${explorerTag}`;
 
         <h3 id="animated-pattern-fluid-form">Fluid form</h3>
         <p>
-          A whole form, with the submit button's icon following each step: <code>Send</code> while it waits,
-          <code>InProgress</code> looping while the request runs, then <code>CheckmarkFilled</code> once, or
-          <code>ErrorFilled</code> on every failed attempt.
+          The submit button's icon follows the request: <code>Send</code> before submitting, <code>InProgress</code> looping while the request runs, then <code>CheckmarkFilled</code>. An invalid email plays <code>ErrorFilled</code> instead.
         </p>
         <div class="example">
           <div class="demo">
@@ -1122,8 +1095,7 @@ ${explorerTag}`;
 
         <h3 id="animated-pattern-password">Password visibility</h3>
         <p>
-          A button that shows and hides a password swaps <code>View</code> and <code>ViewOff</code>, and the new icon
-          plays as it appears.
+          The button swaps <code>View</code> and <code>ViewOff</code> each time it's pressed, and the new icon plays.
         </p>
         <div class="example">
           <div class="demo">
@@ -1153,8 +1125,7 @@ ${explorerTag}`;
 
         <h3 id="animated-pattern-toggles">Favorite and bookmark</h3>
         <p>
-          Toggle buttons swap to the filled icon when on, and it plays expressively, since marking something is a
-          moment that matters. <code>aria-pressed</code> tells screen readers the state.
+          Each button swaps to the filled icon when pressed and plays it with expressive motion. <code>aria-pressed</code> gives screen readers the state.
         </p>
         <div class="example">
           <div class="demo">
@@ -1194,8 +1165,7 @@ ${explorerTag}`;
 
         <h3 id="animated-pattern-theme">Theme switch</h3>
         <p>
-          A button that switches this page between light and dark themes. It shows the theme it switches to, and the new
-          icon plays as it appears.
+          This button switches the page between light and dark themes. It shows the icon for the theme it switches to.
         </p>
         <div class="example">
           <div class="demo">
@@ -1225,9 +1195,7 @@ ${explorerTag}`;
       <section id="animated-defaults">
         <h2>Defaults</h2>
         <p>
-          An icon passed to an <code>icon</code> prop can't take props. Set defaults for a whole area with
-          <code>setAnimatedIconDefaults</code> in a parent component instead. Props on an icon still win. These buttons
-          are expressive and play without a hover delay.
+          An icon passed to a component's <code>icon</code> prop can't take props of its own. Instead, call <code>setAnimatedIconDefaults</code> in a parent component to set defaults for everything inside it. Props set on an icon override the defaults. The buttons below use expressive motion with no hover delay.
         </p>
         <div class="example">
         <div class="demo">
@@ -1246,28 +1214,18 @@ ${explorerTag}`;
 
       <section id="animated-accessibility">
         <h2>Accessibility</h2>
-        <ul>
-          <li>
-            <strong>Icons are hidden from screen readers unless labelled.</strong> Like the static icons, an animated
-            icon gets <code>aria-hidden</code> unless it has a <code>title</code>, <code>aria-label</code> or
-            <code>aria-labelledby</code>, which make it an image with that name. In a button or link, label the button
-            or link instead: give icon-only buttons an <code>iconDescription</code>.
-          </li>
-          <li>
-            <strong>Keyboard focus plays the icon.</strong> Tabbing to a button or link plays its icon, as resting a
-            mouse on it does, so keyboard users see the same motion. Focus that comes from a click doesn't.
-          </li>
-          <li>
-            <strong>Motion never carries the message.</strong> An icon that plays to confirm a save or flag an error
-            doesn't announce anything. Announce the change too, with a notification or a live region.
-          </li>
-        </ul>
+        <p>
+          Animated icons are hidden from screen readers by default, like the static icons. Give an icon a <code>title</code>, <code>aria-label</code> or <code>aria-labelledby</code> to make it an image with that name. Inside a button or link, label the button or link instead, for example with <code>iconDescription</code>.
+        </p>
+        <p>
+          Tabbing to a button or link plays its icon, the same as hovering it. Clicking it doesn't.
+        </p>
+        <p>
+          An icon's animation isn't announced. When an icon confirms a save or shows an error, announce the change too, with a notification or a live region.
+        </p>
         <h3 id="animated-reduced-motion">Reduced motion</h3>
         <p>
-          By default, nothing plays for users who prefer reduced motion. <code>reducedMotion</code> changes what they
-          see: <code>"static"</code> plays nothing, <code>"fade"</code> dims the icon and brings it back without moving
-          it, and <code>"full"</code> plays the full motion anyway. Use <code>"fade"</code> to still acknowledge an
-          event, and <code>"full"</code> only when the motion itself is essential to understanding the change.
+          By default, icons don't play for users who prefer reduced motion. <code>reducedMotion</code> changes this: <code>"static"</code> plays nothing, <code>"fade"</code> dims and restores the icon without moving it, and <code>"full"</code> plays the normal animation. Use <code>"fade"</code> when an event still needs acknowledging. Use <code>"full"</code> only when the motion is needed to understand the change.
         </p>
         <Code code={reducedCode} />
       </section>
@@ -1275,55 +1233,36 @@ ${explorerTag}`;
       <section id="animated-ssr">
         <h2>Server rendering</h2>
         <p>
-          Animated icons work with SvelteKit and other server rendering with no setup. The server renders each icon at
-          rest, and motion starts in the browser once the page hydrates. Whether the user prefers reduced motion is
-          checked in the browser each time an icon plays, so server and browser never disagree.
+          Animated icons work with SvelteKit and other server rendering without setup. The server renders icons at rest. Animation starts in the browser after hydration, and the reduced-motion preference is checked there each time an icon plays.
         </p>
         <p>
-          Filled icons, like <code>CheckmarkFilled</code>, draw their moving part through a <code>&lt;mask&gt;</code>
-          or <code>&lt;clipPath&gt;</code> with an id. Each icon on a page gets its own id, so several copies of the
-          same icon don't share one, and hydration keeps the ids the server rendered.
+          Filled icons like <code>CheckmarkFilled</code> use a <code>&lt;mask&gt;</code> or <code>&lt;clipPath&gt;</code> with an id. Each icon gets its own id, so copies of the same icon don't conflict, and hydration keeps the ids from the server.
         </p>
       </section>
 
       <section id="animated-performance">
         <h2>Performance</h2>
-        <ul>
-          <li>
-            <strong>You ship only the icons you import.</strong> The first animated icon adds about 1.6 kB gzipped,
-            including the runtime they share, and each one after that about 0.6 kB, mostly its CSS. Importing from
-            <code>carbon-icons-svelte/animated</code> tree-shakes to the same bundle as a direct import in Vite and
-            webpack.
-          </li>
-          <li>
-            <strong>Import directly for faster dev builds outside Vite.</strong> Vite pre-bundles the barrel once, but
-            webpack and Rollup compile every animated icon it lists on each dev build, and
-            <code>optimizeImports</code> doesn't rewrite <code>carbon-icons-svelte/animated</code> yet. Import
-            <code>carbon-icons-svelte/lib/animated/Notification.svelte</code> there instead.
-          </li>
-          <li>
-            <strong>Icons at rest cost nothing.</strong> No timers, observers or animation frames run until an icon
-            plays, and an animation lasts 700ms at most. The hover delay keeps a sweep across a toolbar from playing
-            every icon in it.
-          </li>
-          <li>
-            <strong>Filled icons render twice.</strong> An icon whose glyph is a hole, like
-            <code>CheckmarkFilled</code>, keeps Carbon's own markup for rest and a masked copy for playing, so it
-            mounts at about twice the cost of a static icon. That's about 16µs each in Chrome.
-          </li>
-          <li>
-            <strong>Loops take main-thread time.</strong> Browsers animate SVG on the main thread: 20 looping icons
-            take about 2% of it. A loop pauses while its icon is scrolled out of view, but keep loops to what's
-            actually in progress.
-          </li>
-        </ul>
+        <p>
+          Only the icons you import are bundled. The first animated icon adds about 1.6 kB gzipped, including the shared runtime. Each additional icon adds about 0.6 kB, mostly CSS. Importing from <code>carbon-icons-svelte/animated</code> produces the same bundle as importing each file directly, in both Vite and webpack.
+        </p>
+        <p>
+          In development, Vite bundles <code>carbon-icons-svelte/animated</code> once. Webpack and Rollup compile every icon it exports on each build, and <code>optimizeImports</code> doesn't rewrite this path yet. With those tools, import files directly, like <code>carbon-icons-svelte/lib/animated/Notification.svelte</code>.
+        </p>
+        <p>
+          An icon that isn't playing runs no timers, observers or animation frames. Animations last 700ms at most.
+        </p>
+        <p>
+          Filled icons whose glyph is a hole, like <code>CheckmarkFilled</code>, include two copies of their markup: Carbon's original for rest and a masked copy for animation. They take about twice as long to mount as a static icon, about 16µs each in Chrome.
+        </p>
+        <p>
+          Browsers animate SVG on the main thread. Twenty looping icons use about 2% of it. Loops pause while scrolled out of view.
+        </p>
       </section>
 
       <section id="animated-props">
         <h2>Props</h2>
         <p>
-          Every prop except <code>play</code> and <code>loop</code> can also be set with
-          <code>setAnimatedIconDefaults</code>. Select any icon above to try them on it.
+          Every prop except <code>play</code> and <code>loop</code> can also be set with <code>setAnimatedIconDefaults</code>. Select an icon above to try its props.
         </p>
         <table>
           <thead>

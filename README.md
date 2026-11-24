@@ -206,7 +206,7 @@ These icons loop: `CircleDash`, `Hourglass`, `InProgress`, `Incomplete`, `Pendin
 
 ### Motion
 
-`motion` picks one of Carbon's two motion styles. `"productive"` (the default) is one short, subtle move, for routine UI like toolbars and menus. `"expressive"` is larger and livelier, for moments that matter, like a saved state or a new notification. Both use Carbon's motion durations and easings.
+`motion` picks one of Carbon's two motion styles. `"productive"` (the default) is one short, subtle move, for routine UI like toolbars and menus. `"expressive"` is larger and livelier, for events people should notice, like a save or a new notification. Both use Carbon's motion durations and easings.
 
 ### Reduced motion
 
