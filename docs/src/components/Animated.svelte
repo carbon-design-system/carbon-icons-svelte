@@ -1335,7 +1335,7 @@ ${explorerTag}`;
         />
       </div>
     </div>
-    <Code code={explorerCode} />
+    <Code code={explorerCode} wrapText />
     </div>
     <Layer class="controls">
       <dl class="prop-list">
@@ -1567,13 +1567,6 @@ ${explorerTag}`;
 
   .example :global(.bx--snippet) {
     border-block-start: 1px solid var(--cds-border-subtle-01, var(--cds-ui-03));
-  }
-
-  /* Long lines, like a long icon's import on a phone, wrap instead of
-     scrolling. */
-  .example :global(.bx--snippet pre) {
-    white-space: pre-wrap;
-    overflow-wrap: break-word;
   }
 
   /* Play and copy-link sit in the preview's corner, like a code block's copy button. */
