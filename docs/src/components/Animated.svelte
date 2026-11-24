@@ -20,7 +20,6 @@
     Slider,
     TableOfContents,
     TableOfContentsItem,
-    Tag,
     TextInput,
     Theme,
     Toolbar,
@@ -825,7 +824,7 @@ ${explorerTag}`;
 <PageHeader
   grid
   title="Animated icons"
-  subtitle="{names.length} Carbon icons that animate on hover, on keyboard focus, or when you play them."
+  subtitle="Carbon icons that animate on hover, on keyboard focus, or when you play them."
 />
 
 <CssGrid class="page">
@@ -841,7 +840,7 @@ ${explorerTag}`;
             {#each groups as group (group.id)}
               <TableOfContentsItem href="#{group.id}" level={2}>
                 {group.title}
-                <Tag size="sm" type="cool-gray">{group.names.length}</Tag>
+                <span class="toc-count">{group.names.length}</span>
               </TableOfContentsItem>
             {/each}
           {/if}
@@ -865,15 +864,24 @@ ${explorerTag}`;
             placeholder="Search {names.length} animated icons"
             bind:value={galleryQuery}
           />
-          <Button kind="tertiary" size="field" on:click={() => galleryPlay++}>Play all</Button>
         </div>
         <div class="gallery-controls">
           <div class="gallery-motion">
             <span id="gallery-motion-label" class="bx--label">Motion</span>
-            <ContentSwitcher size="sm" autoWidth lowContrast aria-labelledby="gallery-motion-label" bind:selectedIndex={galleryMotionIndex} on:change={replayGallery}>
-              <Switch text="Productive" />
-              <Switch text="Expressive" />
-            </ContentSwitcher>
+            <div class="gallery-motion-row">
+              <ContentSwitcher size="sm" autoWidth lowContrast aria-labelledby="gallery-motion-label" bind:selectedIndex={galleryMotionIndex} on:change={replayGallery}>
+                <Switch text="Productive" />
+                <Switch text="Expressive" />
+              </ContentSwitcher>
+              <Button
+                kind="ghost"
+                size="small"
+                icon={Animated.Play}
+                iconDescription="Play all"
+                tooltipPosition="bottom"
+                on:click={() => galleryPlay++}
+              />
+            </div>
           </div>
           <Slider
             labelText="Size"
@@ -903,7 +911,7 @@ ${explorerTag}`;
           </div>
           <Toggle labelText="Loop" size="sm" bind:toggled={galleryLoop}>
             <span slot="labelA">Off</span>
-            <span slot="labelB">Only the icons that loop</span>
+            <span slot="labelB">On</span>
           </Toggle>
         </div>
         {#if visibleGroups.length === 0}
@@ -1765,14 +1773,29 @@ ${explorerTag}`;
   }
 
   .gallery-search {
-    display: flex;
-    gap: var(--cds-spacing-05);
-    max-width: 52rem;
+    max-width: 44rem;
     margin-block-end: var(--cds-spacing-07);
   }
 
-  .gallery-search :global(.bx--search) {
-    flex: 1;
+  .gallery-motion-row {
+    display: flex;
+    align-items: center;
+    gap: var(--cds-spacing-02);
+  }
+
+  /* A category heading sits closer to its own tiles than to the grid above. */
+  .gallery {
+    margin-block-start: var(--cds-spacing-05);
+  }
+
+  /* Nested links line up with their parent's text, past its icon. */
+  .toc :global(.bx--toc__item--nested .bx--toc__link) {
+    padding-inline-start: calc(1rem + 16px + var(--cds-spacing-03));
+  }
+
+  .toc-count {
+    font-size: 0.75rem;
+    color: var(--cds-text-helper, var(--cds-text-05));
   }
 
   .visually-hidden {
