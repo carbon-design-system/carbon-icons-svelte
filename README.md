@@ -160,6 +160,20 @@ An `icon` prop can't take props. Use `Button`'s `icon` slot to pass them, or set
 </script>
 ```
 
+To set defaults for icons outside any component that calls it, like icons mounted on their own, call `configureAnimatedIcons` once for the whole page, or put data attributes on an element for the icons inside it. Props win, then `setAnimatedIconDefaults`, then the nearest data attribute, then `configureAnimatedIcons`. Data attributes and page defaults are read each time an icon plays, so changing them applies to its next play.
+
+```svelte
+<script>
+  import { configureAnimatedIcons } from "carbon-icons-svelte/animated";
+
+  configureAnimatedIcons({ reducedMotion: "fade" });
+</script>
+
+<nav data-animated-motion="expressive" data-animated-hover-delay="0">
+  <!-- icons in here use expressive motion and no hover delay -->
+</nav>
+```
+
 ### Play on an event
 
 Use `play` to run the animation yourself. It plays when the icon mounts with a truthy `play`, and each time `play` changes to a new truthy value, so increment a number to replay it. Set `trigger="none"` to turn off hover and focus.

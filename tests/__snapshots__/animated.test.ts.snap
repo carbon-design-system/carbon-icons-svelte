@@ -39,7 +39,7 @@ exports[`animated icons template 1`] = `
   height={size}
   data-animated-icon="Notification"
   data-motion={motion ?? defaults.motion ?? "productive"}
-  use:animate={{ play, loop, loops: false, trigger, reducedMotion, hoverDelay, defaults }}
+  use:animate={{ play, loop, loops: false, motion, trigger, reducedMotion, hoverDelay, defaults }}
   {...attributes}
   {...$$restProps}>
   {#if title}<title>{title}</title>{/if}
@@ -193,6 +193,20 @@ type CarbonAnimatedIcon = typeof import("svelte") extends { mount: any }
  * extra props. Call it while the component initializes. Props on an icon win.
  */
 export declare function setAnimatedIconDefaults(defaults: CarbonAnimatedIconDefaults): void;
+
+/**
+ * Sets defaults for every animated icon on the page, including icons outside
+ * any component that calls \`setAnimatedIconDefaults\`. Later calls merge into
+ * earlier ones, and apply from each icon's next play.
+ *
+ * An element can also set defaults for the icons inside it with data
+ * attributes: \`data-animated-motion\`, \`data-animated-trigger\`,
+ * \`data-animated-reduced-motion\` and \`data-animated-hover-delay\`.
+ *
+ * Props win, then \`setAnimatedIconDefaults\`, then the nearest data
+ * attribute, then these.
+ */
+export declare function configureAnimatedIcons(defaults: CarbonAnimatedIconDefaults): void;
 
 export declare const Activity: CarbonAnimatedIcon;
 export declare const Add: CarbonAnimatedIcon;

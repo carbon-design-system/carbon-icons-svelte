@@ -527,7 +527,7 @@ ${usesId ? "\n  const id = uid();\n" : ""}
   height={size}
   data-animated-icon="${name}"
   data-motion={motion ?? defaults.motion ?? "productive"}
-  use:animate={{ play, loop, loops: ${loop ? "true" : "false"}, trigger, reducedMotion, hoverDelay, defaults }}
+  use:animate={{ play, loop, loops: ${loop ? "true" : "false"}, motion, trigger, reducedMotion, hoverDelay, defaults }}
   {...attributes}
   {...$$restProps}>
   {#if title}<title>{title}</title>{/if}
@@ -614,6 +614,20 @@ type CarbonAnimatedIcon = typeof import("svelte") extends { mount: any }
  */
 export declare function setAnimatedIconDefaults(defaults: CarbonAnimatedIconDefaults): void;
 
+/**
+ * Sets defaults for every animated icon on the page, including icons outside
+ * any component that calls \`setAnimatedIconDefaults\`. Later calls merge into
+ * earlier ones, and apply from each icon's next play.
+ *
+ * An element can also set defaults for the icons inside it with data
+ * attributes: \`data-animated-motion\`, \`data-animated-trigger\`,
+ * \`data-animated-reduced-motion\` and \`data-animated-hover-delay\`.
+ *
+ * Props win, then \`setAnimatedIconDefaults\`, then the nearest data
+ * attribute, then these.
+ */
+export declare function configureAnimatedIcons(defaults: CarbonAnimatedIconDefaults): void;
+
 ${names.map((name) => `export declare const ${name}: CarbonAnimatedIcon;`).join("\n")}
 `;
 
@@ -645,7 +659,7 @@ export const buildAnimated = async (lookup: IconLookup) => {
   files.set("animate.js", fillTokens(await Bun.file(new URL("./animate.js", import.meta.url)).text()));
   files.set(
     "index.js",
-    'export { setAnimatedIconDefaults } from "./animate.js";\n' +
+    'export { configureAnimatedIcons, setAnimatedIconDefaults } from "./animate.js";\n' +
       names.map((name) => `export { default as ${name} } from "./${name}.svelte";\n`).join("")
   );
   files.set("index.d.ts", definitions(names));
