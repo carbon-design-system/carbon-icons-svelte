@@ -16,10 +16,13 @@
     RadioButtonGroup,
     SidePanel,
     Switch,
+    Search as SearchInput,
     Slider,
     TableOfContents,
     TableOfContentsItem,
     Tag,
+    TextInput,
+    Theme,
     Toggle,
     TooltipIcon,
   } from "carbon-components-svelte";
@@ -258,6 +261,7 @@
     ["animated-events", "Play on an event", "Play"],
     ["animated-loop", "Loop", "Renew"],
     ["animated-states", "Icons for each state", "CheckmarkOutline"],
+    ["animated-patterns", "Patterns", "Idea"],
     ["animated-defaults", "Defaults", "Settings"],
     ["animated-accessibility", "Accessibility", "ViewOff"],
     ["animated-ssr", "Server rendering", "Terminal"],
@@ -366,6 +370,164 @@
     history.replaceState(history.state, "", `${location.pathname}${query}${location.hash}`);
   }
   let galleryMotionIndex = 0;
+  let galleryQuery = "";
+  let galleryPlay = 0;
+  let galleryLoop = false;
+
+  // The icons that loop. The components don't expose it, so it's listed here.
+  const looping = new Set(["CircleDash", "Hourglass", "InProgress", "Incomplete", "Pending", "PendingFilled", "Renew", "RenewAlt", "Restart", "Reset", "Repeat", "Recycle", "Settings", "Terminal", "Time", "TimeFilled", "Timer"]);
+
+  const normalize = (text) => text.toLowerCase().replace(/[\s_-]+/g, "");
+  $: queryKey = normalize(galleryQuery);
+  $: visibleGroups = groups
+    .map((group) => ({
+      ...group,
+      names: group.names.filter((option) => (!galleryLoop || looping.has(option)) && normalize(option).includes(queryKey)),
+    }))
+    .filter((group) => group.names.length > 0);
+
+  // Shared with the icon list's theme select.
+  const themes = ["white", "g10", "g80", "g90", "g100"];
+  let theme = "white";
+  $: dark = ["g80", "g90", "g100"].includes(theme);
+  let themeSwitches = 0;
+
+  let email = "";
+  let attempts = 0;
+  /** @type {"idle" | "invalid" | "done"} */
+  let submitStatus = "idle";
+  const submit = () => {
+    attempts++;
+    submitStatus = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? "done" : "invalid";
+  };
+
+  let passwordVisible = false;
+  let passwordToggles = 0;
+  let favorited = false;
+  let bookmarked = false;
+
+  const toolbarCode = `<script>
+  import { Button } from "carbon-components-svelte";
+  import { Copy, Download, Edit, Share, TrashCan } from "carbon-icons-svelte/animated";
+<\/script>
+
+<div role="toolbar" aria-label="Document actions">
+  <Button kind="ghost" icon={Edit} iconDescription="Edit" />
+  <Button kind="ghost" icon={Copy} iconDescription="Copy" />
+  <Button kind="ghost" icon={Share} iconDescription="Share" />
+  <Button kind="ghost" icon={Download} iconDescription="Download" />
+  <Button kind="ghost" icon={TrashCan} iconDescription="Delete" />
+</div>`;
+
+  const submitCode = `<script>
+  import { Button, TextInput } from "carbon-components-svelte";
+  import { CheckmarkFilled, ErrorFilled, Send } from "carbon-icons-svelte/animated";
+
+  let email = "";
+  let attempts = 0;
+  let status = "idle";
+
+  function submit() {
+    attempts++;
+    status = isEmail(email) ? "done" : "invalid";
+  }
+<\/script>
+
+<TextInput
+  labelText="Email"
+  bind:value={email}
+  invalid={status === "invalid"}
+  invalidText="Enter an email address, like name@example.com."
+  on:input={() => (status = "idle")}
+/>
+<Button on:click={submit}>
+  Subscribe
+  <svelte:fragment slot="icon">
+    {#if status === "done"}
+      <CheckmarkFilled class="bx--btn__icon" play motion="expressive" />
+    {:else if status === "invalid"}
+      <ErrorFilled class="bx--btn__icon" play={attempts} trigger="none" motion="expressive" />
+    {:else}
+      <Send class="bx--btn__icon" />
+    {/if}
+  </svelte:fragment>
+</Button>`;
+
+  const passwordCode = `<script>
+  import { Button, TextInput } from "carbon-components-svelte";
+  import { View, ViewOff } from "carbon-icons-svelte/animated";
+
+  let visible = false;
+  let toggles = 0;
+<\/script>
+
+<TextInput labelText="Password" {...{ type: visible ? "text" : "password" }} />
+<Button
+  kind="ghost"
+  iconDescription={visible ? "Hide password" : "Show password"}
+  on:click={() => {
+    visible = !visible;
+    toggles++;
+  }}
+>
+  <svelte:fragment slot="icon">
+    {#if visible}
+      <ViewOff class="bx--btn__icon" play={toggles} />
+    {:else}
+      <View class="bx--btn__icon" play={toggles} />
+    {/if}
+  </svelte:fragment>
+</Button>`;
+
+  const togglesCode = `<script>
+  import { Button } from "carbon-components-svelte";
+  import { Favorite, FavoriteFilled } from "carbon-icons-svelte/animated";
+
+  let favorited = false;
+<\/script>
+
+<Button
+  kind="ghost"
+  iconDescription={favorited ? "Remove from favorites" : "Add to favorites"}
+  aria-pressed={favorited}
+  on:click={() => (favorited = !favorited)}
+>
+  <svelte:fragment slot="icon">
+    {#if favorited}
+      <FavoriteFilled class="bx--btn__icon" play motion="expressive" />
+    {:else}
+      <Favorite class="bx--btn__icon" />
+    {/if}
+  </svelte:fragment>
+</Button>`;
+
+  const themeCode = `<script>
+  import { Button, Theme } from "carbon-components-svelte";
+  import { Moon, Sun } from "carbon-icons-svelte/animated";
+
+  let theme = "white";
+  let switches = 0;
+
+  $: dark = theme === "g100";
+<\/script>
+
+<Theme bind:theme persist />
+<Button
+  kind="ghost"
+  iconDescription={dark ? "Switch to light theme" : "Switch to dark theme"}
+  on:click={() => {
+    theme = dark ? "white" : "g100";
+    switches++;
+  }}
+>
+  <svelte:fragment slot="icon">
+    {#if dark}
+      <Sun class="bx--btn__icon" play={switches} />
+    {:else}
+      <Moon class="bx--btn__icon" play={switches} />
+    {/if}
+  </svelte:fragment>
+</Button>`;
   $: galleryMotion = galleryMotionIndex === 1 ? "expressive" : "productive";
   /** The icon size picked on either page, saved by the parent. */
   export let iconSize = 24;
@@ -521,10 +683,20 @@ ${explorerTag}`;
           Hover an icon to play it, or select one to try its props. Parts
           move on their own where it means something, like the bell and its clapper; arrows nudge the way they point.
         </p>
+        <Theme bind:theme persist persistKey="theme" />
+        <div class="gallery-search">
+          <SearchInput
+            size="lg"
+            labelText="Search animated icons"
+            placeholder="Search {names.length} animated icons"
+            bind:value={galleryQuery}
+          />
+          <Button kind="tertiary" size="field" on:click={() => galleryPlay++}>Play all</Button>
+        </div>
         <div class="gallery-controls">
           <div class="gallery-motion">
             <span id="gallery-motion-label" class="bx--label">Motion</span>
-            <ContentSwitcher size="sm" aria-labelledby="gallery-motion-label" bind:selectedIndex={galleryMotionIndex}>
+            <ContentSwitcher size="sm" autoWidth aria-labelledby="gallery-motion-label" bind:selectedIndex={galleryMotionIndex}>
               <Switch text="Productive" />
               <Switch text="Expressive" />
             </ContentSwitcher>
@@ -540,14 +712,35 @@ ${explorerTag}`;
             formatValue={(value) => `${value}px`}
             bind:value={iconSize}
           />
+          <div class="gallery-theme">
+            <span id="gallery-theme-label" class="bx--label">Theme</span>
+            <ContentSwitcher
+              size="sm"
+              autoWidth
+              aria-labelledby="gallery-theme-label"
+              selectedIndex={Math.max(0, themes.indexOf(theme))}
+              on:change={({ detail }) => (theme = themes[detail])}
+            >
+              {#each themes as option (option)}
+                <Switch text={option} />
+              {/each}
+            </ContentSwitcher>
+          </div>
+          <Toggle labelText="Loop" size="sm" bind:toggled={galleryLoop}>
+            <span slot="labelA">Off</span>
+            <span slot="labelB">Only the icons that loop</span>
+          </Toggle>
         </div>
-        {#each groups as group (group.id)}
+        {#if visibleGroups.length === 0}
+          <p class="gallery-empty">No animated icons match “{galleryQuery.trim()}”.</p>
+        {/if}
+        {#each visibleGroups as group (group.id)}
           <h3 id={group.id}>{group.title}</h3>
           <div class="gallery">
             {#each group.names as option (option)}
               <button type="button" title={option} on:click={() => explore(option)}>
                 <span class="tile-icon">
-                  <svelte:component this={Animated[option]} size={iconSize} motion={galleryMotion} />
+                  <svelte:component this={Animated[option]} size={iconSize} motion={galleryMotion} play={galleryPlay} loop={galleryLoop} />
                 </span>
                 <span class="tile-name">
                   {#each option.split(/(?=[A-Z_])/) as word, i}{#if i}<wbr />{/if}{word}{/each}
@@ -745,6 +938,162 @@ ${explorerTag}`;
           </div>
         </div>
         <Code code={statesCode} />
+        </div>
+      </section>
+
+      <section id="animated-patterns">
+        <h2>Patterns</h2>
+        <p>Common places for animated icons, each built from Carbon components.</p>
+
+        <h3 id="animated-pattern-toolbar">Toolbar</h3>
+        <p>
+          Icon-only buttons in a row. Sweep the pointer across them and nothing plays; rest it on one and that one does.
+          The hover delay keeps a toolbar from rippling as the pointer crosses it.
+        </p>
+        <div class="example">
+          <div class="demo">
+            <div class="demo-row toolbar" role="toolbar" aria-label="Document actions">
+              <Button kind="ghost" icon={Animated.Edit} iconDescription="Edit" />
+              <Button kind="ghost" icon={Animated.Copy} iconDescription="Copy" />
+              <Button kind="ghost" icon={Animated.Share} iconDescription="Share" />
+              <Button kind="ghost" icon={Animated.Download} iconDescription="Download" />
+              <Button kind="ghost" icon={Animated.TrashCan} iconDescription="Delete" />
+            </div>
+          </div>
+          <Code code={toolbarCode} />
+        </div>
+
+        <h3 id="animated-pattern-submit">Form submission</h3>
+        <p>
+          The submit button answers each attempt: the error shakes when the email isn't valid, and the check plays once
+          it is. Each failed attempt replays the error, since <code>play</code> takes the attempt count.
+        </p>
+        <div class="example">
+          <div class="demo">
+            <div class="demo-row form-row">
+              <TextInput
+                labelText="Email"
+                placeholder="name@example.com"
+                bind:value={email}
+                invalid={submitStatus === "invalid"}
+                invalidText="Enter an email address, like name@example.com."
+                on:input={() => (submitStatus = "idle")}
+              />
+              <Button on:click={submit}>
+                Subscribe
+                <svelte:fragment slot="icon">
+                  {#if submitStatus === "done"}
+                    <Animated.CheckmarkFilled class="bx--btn__icon" play motion="expressive" />
+                  {:else if submitStatus === "invalid"}
+                    <Animated.ErrorFilled class="bx--btn__icon" play={attempts} trigger="none" motion="expressive" />
+                  {:else}
+                    <Animated.Send class="bx--btn__icon" />
+                  {/if}
+                </svelte:fragment>
+              </Button>
+            </div>
+          </div>
+          <Code code={submitCode} />
+        </div>
+
+        <h3 id="animated-pattern-password">Password visibility</h3>
+        <p>
+          A button that shows and hides a password swaps <code>View</code> and <code>ViewOff</code>, and the new icon
+          plays as it appears.
+        </p>
+        <div class="example">
+          <div class="demo">
+            <div class="demo-row form-row">
+              <TextInput labelText="Password" {...{ type: passwordVisible ? "text" : "password" }} value="correct horse" />
+              <Button
+                kind="ghost"
+                iconDescription={passwordVisible ? "Hide password" : "Show password"}
+                on:click={() => {
+                  passwordVisible = !passwordVisible;
+                  passwordToggles++;
+                }}
+              >
+                <svelte:fragment slot="icon">
+                  {#if passwordVisible}
+                    <Animated.ViewOff class="bx--btn__icon" play={passwordToggles} style="margin-left: 0" />
+                  {:else}
+                    <Animated.View class="bx--btn__icon" play={passwordToggles} style="margin-left: 0" />
+                  {/if}
+                </svelte:fragment>
+              </Button>
+            </div>
+          </div>
+          <Code code={passwordCode} />
+        </div>
+
+        <h3 id="animated-pattern-toggles">Favorite and bookmark</h3>
+        <p>
+          Toggle buttons swap to the filled icon when on, and it plays expressively, since marking something is a
+          moment that matters. <code>aria-pressed</code> tells screen readers the state.
+        </p>
+        <div class="example">
+          <div class="demo">
+            <div class="demo-row">
+              <Button
+                kind="ghost"
+                iconDescription={favorited ? "Remove from favorites" : "Add to favorites"}
+                aria-pressed={favorited}
+                on:click={() => (favorited = !favorited)}
+              >
+                <svelte:fragment slot="icon">
+                  {#if favorited}
+                    <Animated.FavoriteFilled class="bx--btn__icon" play motion="expressive" style="margin-left: 0" />
+                  {:else}
+                    <Animated.Favorite class="bx--btn__icon" style="margin-left: 0" />
+                  {/if}
+                </svelte:fragment>
+              </Button>
+              <Button
+                kind="ghost"
+                iconDescription={bookmarked ? "Remove bookmark" : "Bookmark"}
+                aria-pressed={bookmarked}
+                on:click={() => (bookmarked = !bookmarked)}
+              >
+                <svelte:fragment slot="icon">
+                  {#if bookmarked}
+                    <Animated.BookmarkFilled class="bx--btn__icon" play motion="expressive" style="margin-left: 0" />
+                  {:else}
+                    <Animated.Bookmark class="bx--btn__icon" style="margin-left: 0" />
+                  {/if}
+                </svelte:fragment>
+              </Button>
+            </div>
+          </div>
+          <Code code={togglesCode} />
+        </div>
+
+        <h3 id="animated-pattern-theme">Theme switch</h3>
+        <p>
+          A button that switches this page between light and dark themes. It shows the theme it switches to, and the new
+          icon plays as it appears.
+        </p>
+        <div class="example">
+          <div class="demo">
+            <div class="demo-row">
+              <Button
+                kind="ghost"
+                iconDescription={dark ? "Switch to light theme" : "Switch to dark theme"}
+                on:click={() => {
+                  theme = dark ? "white" : "g100";
+                  themeSwitches++;
+                }}
+              >
+                <svelte:fragment slot="icon">
+                  {#if dark}
+                    <Animated.Sun class="bx--btn__icon" play={themeSwitches} style="margin-left: 0" />
+                  {:else}
+                    <Animated.Moon class="bx--btn__icon" play={themeSwitches} style="margin-left: 0" />
+                  {/if}
+                </svelte:fragment>
+              </Button>
+            </div>
+          </div>
+          <Code code={themeCode} />
         </div>
       </section>
 
@@ -1197,19 +1546,32 @@ ${explorerTag}`;
     max-width: none;
   }
 
-  .gallery-motion {
-    width: 16rem;
+  .gallery-motion .bx--label,
+  .gallery-theme .bx--label {
+    display: block;
   }
 
-  .gallery-motion .bx--label {
-    display: block;
+  .gallery-search {
+    display: flex;
+    gap: var(--cds-spacing-05);
+    max-width: 52rem;
+    margin-block-end: var(--cds-spacing-07);
+  }
+
+  .gallery-search :global(.bx--search) {
+    flex: 1;
+  }
+
+  .gallery-empty {
+    margin-block-start: var(--cds-spacing-07);
+    color: var(--cds-text-secondary, var(--cds-text-02));
   }
 
   .gallery-controls {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
-    gap: var(--cds-spacing-09);
+    gap: var(--cds-spacing-07);
   }
 
   .gallery {
