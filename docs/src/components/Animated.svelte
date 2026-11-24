@@ -23,6 +23,8 @@
     Tag,
     TextInput,
     Theme,
+    Toolbar,
+    ToolbarContent,
     Toggle,
     TooltipIcon,
   } from "carbon-components-svelte";
@@ -407,17 +409,19 @@
   let bookmarked = false;
 
   const toolbarCode = `<script>
-  import { Button } from "carbon-components-svelte";
+  import { Button, Toolbar, ToolbarContent } from "carbon-components-svelte";
   import { Copy, Download, Edit, Share, TrashCan } from "carbon-icons-svelte/animated";
 <\/script>
 
-<div role="toolbar" aria-label="Document actions">
-  <Button kind="ghost" icon={Edit} iconDescription="Edit" />
-  <Button kind="ghost" icon={Copy} iconDescription="Copy" />
-  <Button kind="ghost" icon={Share} iconDescription="Share" />
-  <Button kind="ghost" icon={Download} iconDescription="Download" />
-  <Button kind="ghost" icon={TrashCan} iconDescription="Delete" />
-</div>`;
+<Toolbar ariaLabel="Document actions">
+  <ToolbarContent>
+    <Button kind="ghost" icon={Edit} iconDescription="Edit" />
+    <Button kind="ghost" icon={Copy} iconDescription="Copy" />
+    <Button kind="ghost" icon={Share} iconDescription="Share" />
+    <Button kind="ghost" icon={Download} iconDescription="Download" />
+    <Button kind="ghost" icon={TrashCan} iconDescription="Delete" />
+  </ToolbarContent>
+</Toolbar>`;
 
   const submitCode = `<script>
   import { Button, TextInput } from "carbon-components-svelte";
@@ -440,7 +444,7 @@
   invalidText="Enter an email address, like name@example.com."
   on:input={() => (status = "idle")}
 />
-<Button on:click={submit}>
+<Button size="field" on:click={submit}>
   Subscribe
   <svelte:fragment slot="icon">
     {#if status === "done"}
@@ -464,6 +468,7 @@
 <TextInput labelText="Password" {...{ type: visible ? "text" : "password" }} />
 <Button
   kind="ghost"
+  size="field"
   iconDescription={visible ? "Hide password" : "Show password"}
   on:click={() => {
     visible = !visible;
@@ -952,13 +957,15 @@ ${explorerTag}`;
         </p>
         <div class="example">
           <div class="demo">
-            <div class="demo-row toolbar" role="toolbar" aria-label="Document actions">
-              <Button kind="ghost" icon={Animated.Edit} iconDescription="Edit" />
-              <Button kind="ghost" icon={Animated.Copy} iconDescription="Copy" />
-              <Button kind="ghost" icon={Animated.Share} iconDescription="Share" />
-              <Button kind="ghost" icon={Animated.Download} iconDescription="Download" />
-              <Button kind="ghost" icon={Animated.TrashCan} iconDescription="Delete" />
-            </div>
+            <Toolbar ariaLabel="Document actions">
+              <ToolbarContent>
+                <Button kind="ghost" icon={Animated.Edit} iconDescription="Edit" />
+                <Button kind="ghost" icon={Animated.Copy} iconDescription="Copy" />
+                <Button kind="ghost" icon={Animated.Share} iconDescription="Share" />
+                <Button kind="ghost" icon={Animated.Download} iconDescription="Download" />
+                <Button kind="ghost" icon={Animated.TrashCan} iconDescription="Delete" />
+              </ToolbarContent>
+            </Toolbar>
           </div>
           <Code code={toolbarCode} />
         </div>
@@ -979,7 +986,7 @@ ${explorerTag}`;
                 invalidText="Enter an email address, like name@example.com."
                 on:input={() => (submitStatus = "idle")}
               />
-              <Button on:click={submit}>
+              <Button size="field" on:click={submit}>
                 Subscribe
                 <svelte:fragment slot="icon">
                   {#if submitStatus === "done"}
@@ -1007,6 +1014,7 @@ ${explorerTag}`;
               <TextInput labelText="Password" {...{ type: passwordVisible ? "text" : "password" }} value="correct horse" />
               <Button
                 kind="ghost"
+                size="field"
                 iconDescription={passwordVisible ? "Hide password" : "Show password"}
                 on:click={() => {
                   passwordVisible = !passwordVisible;
@@ -1221,7 +1229,14 @@ ${explorerTag}`;
 </CssGrid>
 </Content>
 
-<SidePanel bind:open={explorerOpen} titleText={name} size="lg" includeOverlay class="explorer-panel">
+<SidePanel
+  bind:open={explorerOpen}
+  titleText={name}
+  size="lg"
+  includeOverlay
+  selectorPrimaryFocus=".bx--side-panel__close"
+  class="explorer-panel"
+>
   <div class="explorer">
     <div class="example">
     <div class="stage">
@@ -1371,6 +1386,22 @@ ${explorerTag}`;
     gap: var(--cds-spacing-05);
     padding: var(--cds-spacing-07) var(--cds-spacing-06);
     background: var(--cds-layer-01, var(--cds-ui-01));
+  }
+
+  /* A field and its button: the button lines up with the field, below the
+     field's label, whatever the field's helper or error text does. */
+  .demo-row.form-row {
+    align-items: flex-start;
+    flex-wrap: nowrap;
+  }
+
+  .form-row :global(.bx--form-item) {
+    flex: 0 1 20rem;
+  }
+
+  .form-row :global(.bx--btn) {
+    flex: none;
+    margin-block-start: 1.5rem;
   }
 
   .demo-row {
