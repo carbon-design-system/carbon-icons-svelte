@@ -4,7 +4,6 @@
     Content,
     ContentSwitcher,
     FluidForm,
-    PasswordInput,
     CssColumn,
     CssGrid,
     Layer,
@@ -426,26 +425,26 @@
   };
 
   const fluidCode = `<script>
-  import { Button, FluidForm, PasswordInput, TextInput } from "carbon-components-svelte";
+  import { Button, FluidForm, TextInput } from "carbon-components-svelte";
   import { CheckmarkFilled, ErrorFilled, InProgress, Send } from "carbon-icons-svelte/animated";
 
   let email = "";
   let attempts = 0;
   let status = "idle";
 
-  async function signUp() {
+  async function join() {
     attempts++;
     if (!isEmail(email)) {
       status = "invalid";
       return;
     }
     status = "sending";
-    await createAccount(email);
+    await joinWaitlist(email);
     status = "done";
   }
 <\/script>
 
-<FluidForm on:submit={(event) => { event.preventDefault(); signUp(); }}>
+<FluidForm on:submit={(event) => { event.preventDefault(); join(); }}>
   <TextInput labelText="Name" />
   <TextInput
     labelText="Email"
@@ -454,9 +453,9 @@
     invalidText="Enter an email address, like name@example.com."
     on:input={() => (status = "idle")}
   />
-  <PasswordInput labelText="Password" />
+  <TextInput labelText="Company" />
   <Button type="submit" disabled={status === "sending" || status === "done"}>
-    {status === "done" ? "Account created" : "Create account"}
+    {status === "done" ? "You're on the list" : "Join the waitlist"}
     <svelte:fragment slot="icon">
       {#if status === "sending"}
         <InProgress class="bx--btn__icon" loop />
@@ -471,8 +470,12 @@
   </Button>
 </FluidForm>`;
 
-  let passwordVisible = false;
-  let passwordToggles = 0;
+  // A secret shown in a read-only field, not a password input, so the
+  // browser doesn't offer to save a password.
+  const apiKey = "sk_live_51NcQ8rT2vX";
+  const maskedKey = "•".repeat(apiKey.length);
+  let secretVisible = false;
+  let secretToggles = 0;
   let favorited = false;
   let bookmarked = false;
 
@@ -525,19 +528,23 @@
   </svelte:fragment>
 </Button>`;
 
-  const passwordCode = `<script>
+  const secretCode = `<script>
   import { Button, TextInput } from "carbon-components-svelte";
   import { View, ViewOff } from "carbon-icons-svelte/animated";
 
+  export let apiKey;
+
   let visible = false;
   let toggles = 0;
+
+  $: masked = "•".repeat(apiKey.length);
 <\/script>
 
-<TextInput labelText="Password" {...{ type: visible ? "text" : "password" }} />
+<TextInput labelText="API key" readonly value={visible ? apiKey : masked} />
 <Button
   kind="ghost"
   size="field"
-  iconDescription={visible ? "Hide password" : "Show password"}
+  iconDescription={visible ? "Hide API key" : "Show API key"}
   on:click={() => {
     visible = !visible;
     toggles++;
@@ -753,8 +760,9 @@ ${explorerTag}`;
       <section id="animated-icons">
         <h2>Icons</h2>
         <p>
-          Hover an icon to play it, or select one to try its props. Icons with separate parts move them separately, like a bell and its clapper.
+          Hover an icon to play it, or select one to try its props.
         </p>
+        <Theme bind:theme persist persistKey="theme" />
         <div class="gallery-search">
           <SearchInput
             size="lg"
@@ -767,7 +775,7 @@ ${explorerTag}`;
         <div class="gallery-controls">
           <div class="gallery-motion">
             <span id="gallery-motion-label" class="bx--label">Motion</span>
-            <ContentSwitcher size="sm" autoWidth aria-labelledby="gallery-motion-label" bind:selectedIndex={galleryMotionIndex}>
+            <ContentSwitcher size="sm" autoWidth lowContrast aria-labelledby="gallery-motion-label" bind:selectedIndex={galleryMotionIndex}>
               <Switch text="Productive" />
               <Switch text="Expressive" />
             </ContentSwitcher>
@@ -788,6 +796,7 @@ ${explorerTag}`;
             <ContentSwitcher
               size="sm"
               autoWidth
+              lowContrast
               aria-labelledby="gallery-theme-label"
               selectedIndex={Math.max(0, themes.indexOf(theme))}
               on:change={({ detail }) => (theme = themes[detail])}
@@ -1068,9 +1077,9 @@ ${explorerTag}`;
                 invalidText="Enter an email address, like name@example.com."
                 on:input={() => (signupStatus = "idle")}
               />
-              <PasswordInput labelText="Password" />
+              <TextInput labelText="Company" />
               <Button type="submit" disabled={signupStatus === "sending" || signupStatus === "done"}>
-                {signupStatus === "done" ? "Account created" : "Create account"}
+                {signupStatus === "done" ? "You're on the list" : "Join the waitlist"}
                 <svelte:fragment slot="icon">
                   {#if signupStatus === "sending"}
                     <Animated.InProgress class="bx--btn__icon" loop />
@@ -1088,34 +1097,34 @@ ${explorerTag}`;
           <Code code={fluidCode} />
         </div>
 
-        <h3 id="animated-pattern-password">Password visibility</h3>
+        <h3 id="animated-pattern-secret">Show and hide a secret</h3>
         <p>
           The button swaps <code>View</code> and <code>ViewOff</code> each time it's pressed, and the new icon plays.
         </p>
         <div class="example">
           <div class="demo">
             <div class="demo-row form-row">
-              <TextInput labelText="Password" {...{ type: passwordVisible ? "text" : "password" }} value="correct horse" />
+              <TextInput labelText="API key" readonly value={secretVisible ? apiKey : maskedKey} />
               <Button
                 kind="ghost"
                 size="field"
-                iconDescription={passwordVisible ? "Hide password" : "Show password"}
+                iconDescription={secretVisible ? "Hide API key" : "Show API key"}
                 on:click={() => {
-                  passwordVisible = !passwordVisible;
-                  passwordToggles++;
+                  secretVisible = !secretVisible;
+                  secretToggles++;
                 }}
               >
                 <svelte:fragment slot="icon">
-                  {#if passwordVisible}
-                    <Animated.ViewOff class="bx--btn__icon" play={passwordToggles} style="margin-left: 0" />
+                  {#if secretVisible}
+                    <Animated.ViewOff class="bx--btn__icon" play={secretToggles} style="margin-left: 0" />
                   {:else}
-                    <Animated.View class="bx--btn__icon" play={passwordToggles} style="margin-left: 0" />
+                    <Animated.View class="bx--btn__icon" play={secretToggles} style="margin-left: 0" />
                   {/if}
                 </svelte:fragment>
               </Button>
             </div>
           </div>
-          <Code code={passwordCode} />
+          <Code code={secretCode} />
         </div>
 
         <h3 id="animated-pattern-toggles">Favorite and bookmark</h3>
