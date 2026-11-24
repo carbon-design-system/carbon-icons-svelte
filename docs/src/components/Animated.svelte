@@ -54,7 +54,8 @@
   import Code from "./Code.svelte";
 
   const names = Object.keys(Animated)
-    .filter((name) => name !== "setAnimatedIconDefaults")
+    // Icons are the capitalized exports; the rest are functions like setAnimatedIconDefaults.
+    .filter((name) => /^[A-Z]/.test(name))
     .sort();
 
   const groups = [
@@ -388,6 +389,88 @@
 
   const normalize = (text) => text.toLowerCase().replace(/[\s_-]+/g, "");
   $: queryKey = normalize(galleryQuery);
+  // Announce the number of matches once typing pauses, so a screen reader
+  // isn't interrupted on every keystroke.
+  let searchStatus = "";
+  let statusTimer;
+  $: {
+    clearTimeout(statusTimer);
+    const count = visibleGroups.reduce((total, group) => total + group.names.length, 0);
+    const text = queryKey
+      ? count === 0
+        ? `No animated icons match ${galleryQuery.trim()}`
+        : `${count} ${count === 1 ? "icon matches" : "icons match"} ${galleryQuery.trim()}`
+      : "";
+    statusTimer = setTimeout(() => (searchStatus = text), 500);
+  }
+
+  /**
+   * One tab stop for the whole gallery: the arrow keys move between tiles,
+   * Up and Down to the nearest tile in the row above or below, and Home and
+   * End to the first and last tile.
+   */
+  function rovingFocus(node) {
+    let current = null;
+    const tiles = () => [...node.querySelectorAll(".gallery button")];
+    const sync = () => {
+      const all = tiles();
+      if (!all.includes(current)) current = all[0] ?? null;
+      for (const tile of all) tile.tabIndex = tile === current ? 0 : -1;
+    };
+    const rowStep = (from, direction) => {
+      const box = from.getBoundingClientRect();
+      const center = box.left + box.width / 2;
+      const rows = tiles().filter((tile) => {
+        const top = tile.getBoundingClientRect().top;
+        return direction > 0 ? top > box.top + 1 : top < box.top - 1;
+      });
+      if (rows.length === 0) return null;
+      const tops = rows.map((tile) => tile.getBoundingClientRect().top);
+      const rowTop = direction > 0 ? Math.min(...tops) : Math.max(...tops);
+      const row = rows.filter((tile) => Math.abs(tile.getBoundingClientRect().top - rowTop) < 1);
+      const distance = (tile) => {
+        const b = tile.getBoundingClientRect();
+        return Math.abs(b.left + b.width / 2 - center);
+      };
+      return row.reduce((best, tile) => (distance(tile) < distance(best) ? tile : best));
+    };
+    const onKeydown = (event) => {
+      const all = tiles();
+      const index = all.indexOf(event.target);
+      if (index === -1) return;
+      const next = {
+        ArrowRight: all[index + 1],
+        ArrowLeft: all[index - 1],
+        ArrowDown: event.key === "ArrowDown" && rowStep(all[index], 1),
+        ArrowUp: event.key === "ArrowUp" && rowStep(all[index], -1),
+        Home: all[0],
+        End: all[all.length - 1],
+      }[event.key];
+      if (next === undefined) return;
+      event.preventDefault();
+      if (!next) return;
+      current = next;
+      sync();
+      next.focus();
+    };
+    const onFocusin = (event) => {
+      if (tiles().includes(event.target)) {
+        current = event.target;
+        sync();
+      }
+    };
+    node.addEventListener("keydown", onKeydown);
+    node.addEventListener("focusin", onFocusin);
+    sync();
+    return {
+      update: () => queueMicrotask(sync),
+      destroy() {
+        node.removeEventListener("keydown", onKeydown);
+        node.removeEventListener("focusin", onFocusin);
+      },
+    };
+  }
+
   $: visibleGroups = groups
     .map((group) => ({
       ...group,
@@ -814,6 +897,9 @@ ${explorerTag}`;
         {#if visibleGroups.length === 0}
           <p class="gallery-empty">No animated icons match “{galleryQuery.trim()}”.</p>
         {/if}
+        <p class="visually-hidden" aria-live="polite">{searchStatus}</p>
+        <p id="gallery-keys" class="visually-hidden">Use the arrow keys to move between icons.</p>
+        <div class="gallery-groups" role="group" aria-label="Animated icons" aria-describedby="gallery-keys" use:rovingFocus={visibleGroups}>
         {#each visibleGroups as group (group.id)}
           <h3 id={group.id}>{group.title}</h3>
           <div class="gallery">
@@ -829,6 +915,7 @@ ${explorerTag}`;
             {/each}
           </div>
         {/each}
+        </div>
       </section>
 
       <section id="animated-overview">
@@ -1674,6 +1761,15 @@ ${explorerTag}`;
 
   .gallery-search :global(.bx--search) {
     flex: 1;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .gallery-empty {
