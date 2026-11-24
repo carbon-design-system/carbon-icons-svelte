@@ -5,7 +5,6 @@
     ContentSwitcher,
     FluidForm,
     PasswordInput,
-    CopyButton,
     CssColumn,
     CssGrid,
     Layer,
@@ -339,8 +338,7 @@
   };
   const hoverDelays = [0, 150, 300, 600];
   let urlReady = false;
-  // Temporary: which layout the panel's actions use, while exploring.
-  let layout = "current";
+
   let linkCopied = false;
   const copyLink = async () => {
     await navigator.clipboard.writeText(permalink);
@@ -350,7 +348,6 @@
 
   onMount(() => {
     const params = new URLSearchParams(location.search);
-    layout = oneOf(params.get("layout"), ["header", "footer", "split"], "current");
     const icon = params.get("icon");
     // A missing number reads as NaN, not 0, which is a valid hoverDelay.
     const number = (key) => (params.has(key) ? Number(params.get(key)) : NaN);
@@ -369,17 +366,15 @@
 
   /** The query for the explorer's state: the icon, then every prop that isn't its default. */
   const explorerQuery = (open, state) => {
-    const params = new URLSearchParams(state.layout === "current" ? {} : { layout: state.layout });
-    if (!open) return params.size ? `?${params}` : "";
-    params.set("icon", state.name);
+    if (!open) return "";
+    const params = new URLSearchParams({ icon: state.name });
     for (const key of Object.keys(PROP_DEFAULTS)) {
-      if (!(key in state)) continue;
       if (String(state[key]) !== String(PROP_DEFAULTS[key])) params.set(key, String(state[key]));
     }
     return `?${params}`;
   };
 
-  $: query = explorerQuery(explorerOpen, { name, size, motion, trigger, reducedMotion, hoverDelay, loop: loopChoice, layout });
+  $: query = explorerQuery(explorerOpen, { name, size, motion, trigger, reducedMotion, hoverDelay, loop: loopChoice });
   $: permalink = typeof location === "undefined" ? "" : `${location.origin}${location.pathname}${query}#animated`;
   $: if (urlReady && query !== location.search) {
     history.replaceState(history.state, "", `${location.pathname}${query}${location.hash}`);
@@ -1285,8 +1280,14 @@ ${explorerTag}`;
 </CssGrid>
 </Content>
 
-<!-- Exploring layouts for the panel's actions: ?layout=header, footer or split. -->
-{#snippet explorerBody()}
+<SidePanel
+  bind:open={explorerOpen}
+  titleText={name}
+  size="lg"
+  includeOverlay
+  selectorPrimaryFocus=".bx--side-panel__close"
+  class="explorer-panel"
+>
   <div class="explorer">
     <div class="example">
     <div class="stage">
@@ -1305,12 +1306,25 @@ ${explorerTag}`;
           {loop}
         />
       </Button>
-      {#if layout === "current"}
-        <div class="stage-actions">
-          <Button kind="tertiary" size="field" on:click={() => play++}>Play</Button>
-          <CopyButton text={permalink} iconDescription="Copy a link to these props" feedback="Link copied" />
-        </div>
-      {/if}
+      <div class="stage-actions">
+        <Button
+          kind="ghost"
+          size="field"
+          icon={Animated.Play}
+          iconDescription="Play"
+          tooltipPosition="bottom"
+          on:click={() => play++}
+        />
+        <Button
+          kind="ghost"
+          size="field"
+          icon={linkCopied ? Animated.Checkmark : Animated.Link}
+          iconDescription={linkCopied ? "Link copied" : "Copy a link to these props"}
+          tooltipPosition="bottom"
+          tooltipAlignment="end"
+          on:click={copyLink}
+        />
+      </div>
     </div>
     <Code code={explorerCode} />
     </div>
@@ -1396,75 +1410,7 @@ ${explorerTag}`;
       </dl>
     </Layer>
   </div>
-{/snippet}
-
-{#snippet copyLinkIcon()}
-  <CopyButton text={permalink} iconDescription="Copy a link to these props" feedback="Link copied" />
-{/snippet}
-
-{#if layout === "header"}
-  <SidePanel
-    bind:open={explorerOpen}
-    titleText={name}
-    size="lg"
-    includeOverlay
-    selectorPrimaryFocus=".bx--side-panel__close"
-    class="explorer-panel"
-  >
-    <svelte:fragment slot="toolbar">
-      <Button kind="ghost" size="small" icon={Animated.Play} iconDescription="Play" on:click={() => play++} />
-      {@render copyLinkIcon()}
-    </svelte:fragment>
-    {@render explorerBody()}
-  </SidePanel>
-{:else if layout === "footer"}
-  <SidePanel
-    bind:open={explorerOpen}
-    titleText={name}
-    size="lg"
-    includeOverlay
-    selectorPrimaryFocus=".bx--side-panel__close"
-    class="explorer-panel"
-    preventCloseOnClickOutside={false}
-  >
-    {@render explorerBody()}
-    <svelte:fragment slot="actions">
-      <Button kind="secondary" icon={linkCopied ? Animated.Checkmark : Animated.Link} on:click={copyLink}>
-        {linkCopied ? "Link copied" : "Copy link"}
-      </Button>
-      <Button icon={Animated.Play} on:click={() => play++}>Play</Button>
-    </svelte:fragment>
-  </SidePanel>
-{:else if layout === "split"}
-  <SidePanel
-    bind:open={explorerOpen}
-    titleText={name}
-    size="lg"
-    includeOverlay
-    selectorPrimaryFocus=".bx--side-panel__close"
-    class="explorer-panel"
-    preventCloseOnClickOutside={false}
-  >
-    <svelte:fragment slot="toolbar">
-      {@render copyLinkIcon()}
-    </svelte:fragment>
-    {@render explorerBody()}
-    <svelte:fragment slot="actions">
-      <Button icon={Animated.Play} on:click={() => play++}>Play</Button>
-    </svelte:fragment>
-  </SidePanel>
-{:else}
-  <SidePanel
-    bind:open={explorerOpen}
-    titleText={name}
-    size="lg"
-    includeOverlay
-    selectorPrimaryFocus=".bx--side-panel__close"
-    class="explorer-panel"
-  >
-    {@render explorerBody()}
-  </SidePanel>
-{/if}
+</SidePanel>
 
 <style>
   :global(html) {
@@ -1621,11 +1567,16 @@ ${explorerTag}`;
     overflow-wrap: break-word;
   }
 
+  /* Play and copy-link sit in the preview's corner, like a code block's copy button. */
+  .stage {
+    position: relative;
+  }
+
   .stage-actions {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
     display: flex;
-    align-items: center;
-    gap: var(--cds-spacing-03);
-    margin-inline-start: auto;
   }
 
   .explorer :global(.controls) {
