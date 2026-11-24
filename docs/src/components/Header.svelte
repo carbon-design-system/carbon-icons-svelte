@@ -9,6 +9,9 @@
     HeaderPanelLinks,
     HeaderPanelLink,
     HeaderPanelDivider,
+    SideNav,
+    SideNavItems,
+    SideNavLink,
     SkipToContent,
   } from "carbon-components-svelte";
   import LogoGithub from "./LogoGithub.svelte";
@@ -16,9 +19,14 @@
 
   /** @type {"icons" | "animated"} */
   export let route = "icons";
+
+  // Below the header's breakpoint the page links move into a side nav,
+  // opened by the header's menu button. Closed by default on wide screens,
+  // where the header shows the links.
+  let isSideNavOpen = false;
 </script>
 
-<Header aria-label="Navigation" href="/">
+<Header aria-label="Navigation" href="/" expandedByDefault={false} bind:isSideNavOpen>
   <svelte:fragment slot="skipToContent">
     <SkipToContent />
   </svelte:fragment>
@@ -69,6 +77,13 @@
   </HeaderUtilities>
 </Header>
 
+<SideNav bind:isOpen={isSideNavOpen} ariaLabel="Pages">
+  <SideNavItems>
+    <SideNavLink href="#" text="Icons" isSelected={route === "icons"} on:click={() => (isSideNavOpen = false)} />
+    <SideNavLink href="#animated" text="Animated" isSelected={route === "animated"} on:click={() => (isSideNavOpen = false)} />
+  </SideNavItems>
+</SideNav>
+
 <style>
   .platform-name {
     display: flex;
@@ -81,5 +96,12 @@
     font-weight: var(--cds-code-01-font-weight);
     letter-spacing: var(--cds-code-01-letter-spacing);
     line-height: var(--cds-code-01-line-height);
+  }
+
+  /* Next to the menu button, the name and version don't fit on one line. */
+  @media (max-width: 41.98rem) {
+    .platform-name code {
+      display: none;
+    }
   }
 </style>
