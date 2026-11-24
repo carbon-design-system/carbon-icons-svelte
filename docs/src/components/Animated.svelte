@@ -2,6 +2,7 @@
   import {
     Button,
     Content,
+    CopyButton,
     CssColumn,
     CssGrid,
     Layer,
@@ -40,6 +41,7 @@
     Settings,
     TrashCan,
   } from "carbon-icons-svelte/animated";
+  import { onMount } from "svelte";
   import AnimatedDefaults from "./AnimatedDefaults.svelte";
   import Code from "./Code.svelte";
 
@@ -307,6 +309,45 @@
   let play = 0;
   let loopChoice = "false";
   $: loop = loopChoice === "true";
+
+  // The open panel and its non-default props live in the URL's query, so a
+  // link reopens the explorer as it was. The hash stays the page route.
+  const PROP_DEFAULTS = { size: 16, motion: "productive", trigger: "hover", reducedMotion: "static", hoverDelay: 150, loop: "false" };
+  const oneOf = (value, options, fallback) => (options.includes(value) ? value : fallback);
+  let urlReady = false;
+
+  onMount(() => {
+    const params = new URLSearchParams(location.search);
+    const icon = params.get("icon");
+    if (icon && names.includes(icon)) {
+      name = icon;
+      size = oneOf(Number(params.get("size")), [16, 20, 24, 32], PROP_DEFAULTS.size);
+      motion = oneOf(params.get("motion"), ["productive", "expressive"], PROP_DEFAULTS.motion);
+      trigger = oneOf(params.get("trigger"), ["hover", "none"], PROP_DEFAULTS.trigger);
+      reducedMotion = oneOf(params.get("reducedMotion"), ["static", "fade", "full"], PROP_DEFAULTS.reducedMotion);
+      const delay = Number(params.get("hoverDelay"));
+      hoverDelay = params.has("hoverDelay") && delay >= 0 && delay <= 600 ? Math.round(delay / 10) * 10 : PROP_DEFAULTS.hoverDelay;
+      loopChoice = oneOf(params.get("loop"), ["true", "false"], PROP_DEFAULTS.loop);
+      explorerOpen = true;
+    }
+    urlReady = true;
+  });
+
+  /** The query for the explorer's state: the icon, then every prop that isn't its default. */
+  const explorerQuery = (open, state) => {
+    if (!open) return "";
+    const params = new URLSearchParams({ icon: state.name });
+    for (const key of Object.keys(PROP_DEFAULTS)) {
+      if (String(state[key]) !== String(PROP_DEFAULTS[key])) params.set(key, String(state[key]));
+    }
+    return `?${params}`;
+  };
+
+  $: query = explorerQuery(explorerOpen, { name, size, motion, trigger, reducedMotion, hoverDelay, loop: loopChoice });
+  $: permalink = typeof location === "undefined" ? "" : `${location.origin}${location.pathname}${query}#animated`;
+  $: if (urlReady && query !== location.search) {
+    history.replaceState(history.state, "", `${location.pathname}${query}${location.hash}`);
+  }
   let expressiveGallery = false;
   /** The icon size picked on either page, saved by the parent. */
   export let iconSize = 24;
@@ -740,50 +781,75 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
           {loop}
         />
       </Button>
-      <Button kind="tertiary" size="small" class="stage-play" on:click={() => play++}>Play</Button>
+      <div class="stage-actions">
+        <Button kind="tertiary" size="field" on:click={() => play++}>Play</Button>
+        <CopyButton text={permalink} iconDescription="Copy a link to these props" feedback="Link copied" />
+      </div>
     </div>
     <Code code={explorerCode} />
     <Layer class="controls">
-      <Slider
-        labelText="size"
-        min={16}
-        max={32}
-        marks={sizeMarks}
-        snapToMarks
-        hideTextInput
-        hideRangeLabels
-        fullWidth
-        formatValue={(value) => `${value}px`}
-        bind:value={size}
-      />
-      <RadioButtonGroup legendText="motion" orientation="vertical" bind:selected={motion}>
-        <RadioButton labelText="productive" value="productive" />
-        <RadioButton labelText="expressive" value="expressive" />
-      </RadioButtonGroup>
-      <RadioButtonGroup legendText="trigger" orientation="vertical" bind:selected={trigger}>
-        <RadioButton labelText="hover" value="hover" />
-        <RadioButton labelText="none" value="none" />
-      </RadioButtonGroup>
-      <RadioButtonGroup legendText="reducedMotion" orientation="vertical" bind:selected={reducedMotion}>
-        <RadioButton labelText="static" value="static" />
-        <RadioButton labelText="fade" value="fade" />
-        <RadioButton labelText="full" value="full" />
-      </RadioButtonGroup>
-      <RadioButtonGroup legendText="loop" orientation="vertical" bind:selected={loopChoice}>
-        <RadioButton labelText="false" value="false" />
-        <RadioButton labelText="true" value="true" />
-      </RadioButtonGroup>
-      <Slider
-        labelText="hoverDelay (ms)"
-        min={0}
-        max={600}
-        step={10}
-        marks={delayMarks}
-        hideRangeLabels
-        fullWidth
-        bind:value={hoverDelay}
-        disabled={trigger === "none"}
-      />
+      <dl class="prop-list">
+        <dt><code>size</code></dt>
+        <dd>
+          <Slider
+            labelText="size"
+            hideLabel
+            min={16}
+            max={32}
+            marks={sizeMarks}
+            snapToMarks
+            hideTextInput
+            hideRangeLabels
+            fullWidth
+            formatValue={(value) => `${value}px`}
+            bind:value={size}
+          />
+        </dd>
+        <dt><code>motion</code></dt>
+        <dd>
+          <RadioButtonGroup legendText="motion" hideLegend bind:selected={motion}>
+            <RadioButton labelText="productive" value="productive" />
+            <RadioButton labelText="expressive" value="expressive" />
+          </RadioButtonGroup>
+        </dd>
+        <dt><code>trigger</code></dt>
+        <dd>
+          <RadioButtonGroup legendText="trigger" hideLegend bind:selected={trigger}>
+            <RadioButton labelText="hover" value="hover" />
+            <RadioButton labelText="none" value="none" />
+          </RadioButtonGroup>
+        </dd>
+        <dt><code>hoverDelay</code></dt>
+        <dd>
+          <Slider
+            labelText="hoverDelay (ms)"
+            hideLabel
+            min={0}
+            max={600}
+            step={10}
+            marks={delayMarks}
+            hideRangeLabels
+            fullWidth
+            bind:value={hoverDelay}
+            disabled={trigger === "none"}
+          />
+        </dd>
+        <dt><code>reducedMotion</code></dt>
+        <dd>
+          <RadioButtonGroup legendText="reducedMotion" hideLegend bind:selected={reducedMotion}>
+            <RadioButton labelText="static" value="static" />
+            <RadioButton labelText="fade" value="fade" />
+            <RadioButton labelText="full" value="full" />
+          </RadioButtonGroup>
+        </dd>
+        <dt><code>loop</code></dt>
+        <dd>
+          <RadioButtonGroup legendText="loop" hideLegend bind:selected={loopChoice}>
+            <RadioButton labelText="false" value="false" />
+            <RadioButton labelText="true" value="true" />
+          </RadioButtonGroup>
+        </dd>
+      </dl>
     </Layer>
   </div>
 </SidePanel>
@@ -872,6 +938,7 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
 
   .stage {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--cds-spacing-07);
     min-height: 6rem;
@@ -879,21 +946,71 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
     border: 1px solid var(--cds-border-subtle-01, var(--cds-ui-03));
   }
 
-  .stage :global(.stage-play) {
+  .stage-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--cds-spacing-03);
     margin-inline-start: auto;
   }
 
   .explorer :global(.controls) {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--cds-spacing-07) var(--cds-spacing-05);
-    padding: var(--cds-spacing-06);
+    padding: 0 var(--cds-spacing-05);
     background: var(--cds-layer-01, var(--cds-ui-01));
   }
 
-  /* Sliders take the full row; radio groups pair up. */
-  .explorer :global(.controls > .bx--form-item:has(.bx--slider)) {
-    grid-column: 1 / -1;
+  /* One row per prop: its name, then its control. */
+  .prop-list {
+    display: grid;
+    grid-template-columns: 8rem minmax(0, 1fr);
+    margin: 0;
+  }
+
+  .prop-list dt,
+  .prop-list dd {
+    min-height: 3.5rem;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding-block: var(--cds-spacing-04);
+    border-block-end: 1px solid var(--cds-border-subtle-01, var(--cds-ui-03));
+  }
+
+  .prop-list dt:last-of-type,
+  .prop-list dd:last-of-type {
+    border-block-end: 0;
+  }
+
+  .prop-list dd {
+    min-width: 0;
+  }
+
+  .prop-list dd :global(.bx--form-item),
+  .prop-list dd :global(.bx--slider-container) {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+  }
+
+  /* On narrow screens each prop's name sits above its control. */
+  @media (max-width: 41.98rem) {
+    .prop-list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .prop-list dt {
+      min-height: 0;
+      padding-block: var(--cds-spacing-04) 0;
+      border-block-end: 0;
+    }
+
+    .prop-list dd {
+      min-height: 0;
+      padding-block-start: var(--cds-spacing-03);
+    }
+  }
+
+  .prop-list dd :global(fieldset) {
+    margin: 0;
   }
 
   .explorer :global(.code) {
