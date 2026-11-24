@@ -12,8 +12,6 @@
     Prose,
     RadioButton,
     RadioButtonGroup,
-    Select,
-    SelectItem,
     SidePanel,
     Slider,
     TableOfContents,
@@ -307,7 +305,8 @@
   let hoverDelay = 150;
   let size = 16;
   let play = 0;
-  let loop = false;
+  let loopChoice = "false";
+  $: loop = loopChoice === "true";
   let expressiveGallery = false;
   /** The icon size picked on either page, saved by the parent. */
   export let iconSize = 24;
@@ -723,39 +722,28 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
 </CssGrid>
 </Content>
 
-<SidePanel bind:open={explorerOpen} titleText={name} subtitleText="Props explorer" size="lg" includeOverlay>
+<SidePanel bind:open={explorerOpen} titleText={name} size="lg" includeOverlay>
   <div class="explorer">
     <div class="stage">
-      <div class="stage-icons">
-        <svelte:component this={Animated[name]} {size} {motion} {trigger} {reducedMotion} {hoverDelay} {play} {loop} />
-        <Button kind="ghost">
-          {name}
-          <svelte:component
-            this={Animated[name]}
-            slot="icon"
-            class="bx--btn__icon"
-            {motion}
-            {trigger}
-            {reducedMotion}
-            {hoverDelay}
-            {play}
-            {loop}
-          />
-        </Button>
-      </div>
-      <div class="stage-footer">
-        <span class="stage-hint">
-          {trigger === "hover" ? "Hover the icon or the button, or tab to the button." : "Plays only from Play."}
-        </span>
-        <Button kind="tertiary" size="small" on:click={() => play++}>Play</Button>
-      </div>
+      <svelte:component this={Animated[name]} {size} {motion} {trigger} {reducedMotion} {hoverDelay} {play} {loop} />
+      <Button kind="ghost">
+        {name}
+        <svelte:component
+          this={Animated[name]}
+          slot="icon"
+          class="bx--btn__icon"
+          {motion}
+          {trigger}
+          {reducedMotion}
+          {hoverDelay}
+          {play}
+          {loop}
+        />
+      </Button>
+      <Button kind="tertiary" size="small" class="stage-play" on:click={() => play++}>Play</Button>
     </div>
+    <Code code={explorerCode} />
     <Layer class="controls">
-      <Select labelText="Icon" bind:selected={name}>
-        {#each names as option (option)}
-          <SelectItem value={option} />
-        {/each}
-      </Select>
       <Slider
         labelText="size"
         min={16}
@@ -768,20 +756,23 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
         formatValue={(value) => `${value}px`}
         bind:value={size}
       />
-      <RadioButtonGroup legendText="motion" bind:selected={motion}>
+      <RadioButtonGroup legendText="motion" orientation="vertical" bind:selected={motion}>
         <RadioButton labelText="productive" value="productive" />
         <RadioButton labelText="expressive" value="expressive" />
       </RadioButtonGroup>
-      <RadioButtonGroup legendText="trigger" bind:selected={trigger}>
+      <RadioButtonGroup legendText="trigger" orientation="vertical" bind:selected={trigger}>
         <RadioButton labelText="hover" value="hover" />
         <RadioButton labelText="none" value="none" />
       </RadioButtonGroup>
-      <Select labelText="reducedMotion" bind:selected={reducedMotion}>
-        <SelectItem value="static" />
-        <SelectItem value="fade" />
-        <SelectItem value="full" />
-      </Select>
-      <Toggle labelText="loop" labelA="false" labelB="true" bind:toggled={loop} />
+      <RadioButtonGroup legendText="reducedMotion" orientation="vertical" bind:selected={reducedMotion}>
+        <RadioButton labelText="static" value="static" />
+        <RadioButton labelText="fade" value="fade" />
+        <RadioButton labelText="full" value="full" />
+      </RadioButtonGroup>
+      <RadioButtonGroup legendText="loop" orientation="vertical" bind:selected={loopChoice}>
+        <RadioButton labelText="false" value="false" />
+        <RadioButton labelText="true" value="true" />
+      </RadioButtonGroup>
       <Slider
         labelText="hoverDelay (ms)"
         min={0}
@@ -794,9 +785,6 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
         disabled={trigger === "none"}
       />
     </Layer>
-    <div class="explorer-code">
-      <Code code={explorerCode} />
-    </div>
   </div>
 </SidePanel>
 
@@ -884,33 +872,15 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
 
   .stage {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    align-items: center;
     gap: var(--cds-spacing-07);
-    min-height: 14rem;
-    padding: var(--cds-spacing-06);
+    min-height: 6rem;
+    padding: var(--cds-spacing-05) var(--cds-spacing-06);
     border: 1px solid var(--cds-border-subtle-01, var(--cds-ui-03));
   }
 
-  .stage-icons {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--cds-spacing-07);
-  }
-
-  .stage-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--cds-spacing-05);
-  }
-
-  .stage-hint {
-    font-size: 0.875rem;
-    color: var(--cds-text-secondary, var(--cds-text-02));
+  .stage :global(.stage-play) {
+    margin-inline-start: auto;
   }
 
   .explorer :global(.controls) {
@@ -921,12 +891,12 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
     background: var(--cds-layer-01, var(--cds-ui-01));
   }
 
-  /* Selects and sliders take the full row; radio groups and the toggle pair up. */
-  .explorer :global(.controls > :is(.bx--form-item:has(.bx--select), .bx--form-item:has(.bx--slider))) {
+  /* Sliders take the full row; radio groups pair up. */
+  .explorer :global(.controls > .bx--form-item:has(.bx--slider)) {
     grid-column: 1 / -1;
   }
 
-  .explorer-code :global(.code) {
+  .explorer :global(.code) {
     max-width: none;
   }
 
