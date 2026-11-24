@@ -842,8 +842,10 @@ ${explorerTag}`;
 </script>
 
 <Content>
-<CssGrid class="page">
-  <CssColumn sm={4} md={8} lg={4} class="toc-column">
+<!-- Full width, with the table of contents narrowing to 3 columns on wide
+     screens, so the gallery gets the extra room. -->
+<CssGrid class="page" fullWidth>
+  <CssColumn sm={4} md={8} lg={4} xlg={3} class="toc-column">
     <div class="toc">
       <TableOfContents labelText="On this page" size="sm" scrollOffset={64}>
         {#each sections as [id, text, icon] (id)}
@@ -880,7 +882,7 @@ ${explorerTag}`;
     </div>
   </CssColumn>
 
-  <CssColumn sm={4} md={8} lg={12}>
+  <CssColumn sm={4} md={8} lg={12} xlg={13}>
     <Prose maxWidth="none">
       <section id="animated-icons">
         <!-- The page's only h1, sized like the other sections so the gallery starts high. -->
