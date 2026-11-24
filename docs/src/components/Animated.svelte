@@ -325,6 +325,14 @@
   const oneOf = (value, options, fallback) => (options.includes(value) ? value : fallback);
   const iconSizes = [16, 20, 24, 32];
 
+  /** What each gallery control does, for its tooltip. */
+  const controlInfo = {
+    motion: "Productive is a short, subtle move for routine UI. Expressive is larger, for events people should notice. Switching plays every icon, and the play button replays them.",
+    size: "The icons' size in pixels, on Carbon's 16, 20, 24 and 32 scale. Shared with the Icons page.",
+    theme: "The Carbon theme for this page. Shared with the Icons page.",
+    loop: "Shows only the icons that can loop, looping, as they do with loop set to true.",
+  };
+
   /** What each prop in the explorer does, and its default, for its tooltip. */
   const propInfo = {
     size: ["Width and height in pixels. Carbon's sizes are 16, 20, 24 and 32.", "16"],
@@ -848,8 +856,7 @@ ${explorerTag}`;
         <!-- The page's only h1, sized like the other sections so the gallery starts high. -->
         <h1 class="page-title">Animated icons</h1>
         <p>
-          Carbon icons that animate on hover, keyboard focus or when you play them. Hover one to play it, or select it
-          to try its props.
+          Carbon icons that animate on hover, keyboard focus or when you play them.
         </p>
         <Theme bind:theme persist persistKey="theme" />
         <div class="gallery-search">
@@ -862,7 +869,12 @@ ${explorerTag}`;
         </div>
         <div class="gallery-controls">
           <div class="gallery-motion">
-            <span id="gallery-motion-label" class="bx--label">Motion</span>
+            <div class="control-label">
+              <span id="gallery-motion-label" class="bx--label">Motion</span>
+              <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
+                <span slot="tooltipText">{controlInfo.motion}</span>
+              </TooltipIcon>
+            </div>
             <div class="gallery-motion-row">
               <ContentSwitcher size="sm" autoWidth lowContrast aria-labelledby="gallery-motion-label" bind:selectedIndex={galleryMotionIndex} on:change={replayGallery}>
                 <Switch text="Productive" />
@@ -878,8 +890,16 @@ ${explorerTag}`;
               />
             </div>
           </div>
-          <Slider
+          <div class="gallery-size">
+            <div class="control-label">
+              <span id="gallery-size-label" class="bx--label">Size</span>
+              <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
+                <span slot="tooltipText">{controlInfo.size}</span>
+              </TooltipIcon>
+            </div>
+            <Slider
             labelText="Size"
+            hideLabel
             min={16}
             max={32}
             marks={sizeMarks}
@@ -889,8 +909,14 @@ ${explorerTag}`;
             formatValue={(value) => `${value}px`}
             bind:value={iconSize}
           />
+          </div>
           <div class="gallery-theme">
-            <span id="gallery-theme-label" class="bx--label">Theme</span>
+            <div class="control-label">
+              <span id="gallery-theme-label" class="bx--label">Theme</span>
+              <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
+                <span slot="tooltipText">{controlInfo.theme}</span>
+              </TooltipIcon>
+            </div>
             <ContentSwitcher
               size="sm"
               autoWidth
@@ -904,10 +930,18 @@ ${explorerTag}`;
               {/each}
             </ContentSwitcher>
           </div>
-          <Toggle labelText="Loop" size="sm" bind:toggled={galleryLoop}>
-            <span slot="labelA">Off</span>
-            <span slot="labelB">On</span>
-          </Toggle>
+          <div class="gallery-loop">
+            <div class="control-label">
+              <span id="gallery-loop-label" class="bx--label">Loop</span>
+              <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
+                <span slot="tooltipText">{controlInfo.loop}</span>
+              </TooltipIcon>
+            </div>
+            <Toggle labelText="Loop" hideLabel size="sm" bind:toggled={galleryLoop}>
+              <span slot="labelA">Off</span>
+              <span slot="labelB">On</span>
+            </Toggle>
+          </div>
         </div>
         {#if visibleGroups.length === 0}
           <p class="gallery-empty">No animated icons match “{galleryQuery.trim()}”.</p>
@@ -1769,9 +1803,24 @@ ${explorerTag}`;
     max-width: none;
   }
 
-  .gallery-motion .bx--label,
-  .gallery-theme .bx--label {
-    display: block;
+  /* Each control's label, with its tooltip, on one line above the control. */
+  .control-label {
+    display: flex;
+    align-items: center;
+    gap: var(--cds-spacing-02);
+    margin-block-end: var(--cds-spacing-03);
+  }
+
+  .control-label .bx--label {
+    margin: 0;
+  }
+
+  /* The table of contents sits on the right on wide screens, and stays
+     above the content on narrow ones. */
+  @media (min-width: 66rem) {
+    :global(.toc-column) {
+      order: 2;
+    }
   }
 
   .gallery-search {
