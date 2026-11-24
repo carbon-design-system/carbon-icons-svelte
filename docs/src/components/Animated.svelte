@@ -250,15 +250,16 @@
   const sections = [
     ["animated-icons", "Icons", "Star"],
     ["animated-overview", "Usage", "Code"],
+    ["animated-guidance", "Guidance", "Information"],
+    ["animated-motion", "Motion", "Activity"],
     ["animated-carbon", "In Carbon components", "Add"],
     ["animated-events", "Play on an event", "Play"],
     ["animated-loop", "Loop", "Renew"],
     ["animated-states", "Icons for each state", "CheckmarkOutline"],
     ["animated-defaults", "Defaults", "Settings"],
-    ["animated-motion", "Motion", "Activity"],
     ["animated-reduced-motion", "Reduced motion", "ViewOff"],
+    ["animated-performance", "Performance", "Dashboard"],
     ["animated-props", "Props", "Edit"],
-    ["animated-guidance", "Guidance", "Information"],
   ];
 
   const sizeMarks = [16, 20, 24, 32].map((value) => ({ value, label: `${value}` }));
@@ -558,6 +559,57 @@ ${explorerTag}`;
         <Code code={importCode} />
       </section>
 
+      <section id="animated-guidance">
+        <h2>Guidance</h2>
+        <ul>
+          <li>
+            <strong>Animate for meaning.</strong> Motion should say what the icon does: the bell rings, the arrow moves
+            the way it points. Most icons, like logos and nouns, stay static.
+          </li>
+          <li>
+            <strong>Productive for routine UI, expressive for moments that matter.</strong> Toolbars, menus and
+            navigation stay productive. Save confirmations, new notifications and errors can be expressive, played with
+            <code>play</code>.
+          </li>
+          <li>
+            <strong>Loop only while something is in progress.</strong> Each animation plays once and ends where it
+            started; replay it on the next event. Loop only progress, refresh and waiting icons, and only while the work
+            runs.
+          </li>
+          <li>
+            <strong>Keep the hover delay.</strong> It stops a toolbar from rippling as the pointer crosses it. Lower it
+            only where the pointer is expected to rest, like a single call to action.
+          </li>
+          <li>
+            <strong>Keep a label.</strong> Animation doesn't replace text: icon-only buttons still need
+            <code>iconDescription</code>, and state changes still need to be announced.
+          </li>
+        </ul>
+      </section>
+
+      <section id="animated-motion">
+        <h2>Motion</h2>
+        <p>
+          <code>motion</code> picks one of Carbon's two motion styles, using Carbon's durations and easings.
+          <code>"productive"</code>, the default, is one short move in 400ms or less, for routine UI like toolbars and
+          menus. <code>"expressive"</code> adds secondary motion and overshoot in 700ms or less, for moments that
+          matter.
+        </p>
+        <div class="demo motion-compare">
+          {#each ["productive", "expressive"] as mode (mode)}
+            <div class="motion-mode">
+              <span class="motion-label">{mode}</span>
+              <span class="motion-icons">
+                {#each motionIcons as Icon}
+                  <Icon motion={mode} trigger="none" play={motionPlay} />
+                {/each}
+              </span>
+            </div>
+          {/each}
+          <Button kind="tertiary" size="small" on:click={() => motionPlay++}>Play both</Button>
+        </div>
+      </section>
+
       <section id="animated-carbon">
         <h2>In Carbon components</h2>
         <p>Pass an animated icon wherever a component takes an <code>icon</code>. Hover or tab to each one.</p>
@@ -697,29 +749,6 @@ ${explorerTag}`;
         <Code code={defaultsCode} />
       </section>
 
-      <section id="animated-motion">
-        <h2>Motion</h2>
-        <p>
-          <code>motion</code> picks one of Carbon's two motion styles, using Carbon's durations and easings.
-          <code>"productive"</code>, the default, is one short move in 400ms or less, for routine UI like toolbars and
-          menus. <code>"expressive"</code> adds secondary motion and overshoot in 700ms or less, for moments that
-          matter.
-        </p>
-        <div class="demo motion-compare">
-          {#each ["productive", "expressive"] as mode (mode)}
-            <div class="motion-mode">
-              <span class="motion-label">{mode}</span>
-              <span class="motion-icons">
-                {#each motionIcons as Icon}
-                  <Icon motion={mode} trigger="none" play={motionPlay} />
-                {/each}
-              </span>
-            </div>
-          {/each}
-          <Button kind="tertiary" size="small" on:click={() => motionPlay++}>Play both</Button>
-        </div>
-      </section>
-
       <section id="animated-reduced-motion">
         <h2>Reduced motion</h2>
         <p>
@@ -729,6 +758,39 @@ ${explorerTag}`;
           event, and <code>"full"</code> only when the motion itself is essential to understanding the change.
         </p>
         <Code code={reducedCode} />
+      </section>
+
+      <section id="animated-performance">
+        <h2>Performance</h2>
+        <ul>
+          <li>
+            <strong>You ship only the icons you import.</strong> The first animated icon adds about 1.6 kB gzipped,
+            including the runtime they share, and each one after that about 0.6 kB, mostly its CSS. Importing from
+            <code>carbon-icons-svelte/animated</code> tree-shakes to the same bundle as a direct import in Vite and
+            webpack.
+          </li>
+          <li>
+            <strong>Import directly for faster dev builds outside Vite.</strong> Vite pre-bundles the barrel once, but
+            webpack and Rollup compile every animated icon it lists on each dev build, and
+            <code>optimizeImports</code> doesn't rewrite <code>carbon-icons-svelte/animated</code> yet. Import
+            <code>carbon-icons-svelte/lib/animated/Notification.svelte</code> there instead.
+          </li>
+          <li>
+            <strong>Icons at rest cost nothing.</strong> No timers, observers or animation frames run until an icon
+            plays, and an animation lasts 700ms at most. The hover delay keeps a sweep across a toolbar from playing
+            every icon in it.
+          </li>
+          <li>
+            <strong>Filled icons render twice.</strong> An icon whose glyph is a hole, like
+            <code>CheckmarkFilled</code>, keeps Carbon's own markup for rest and a masked copy for playing, so it
+            mounts at about twice the cost of a static icon. That's about 16µs each in Chrome.
+          </li>
+          <li>
+            <strong>Loops take main-thread time.</strong> Browsers animate SVG on the main thread: 20 looping icons
+            take about 2% of it. A loop pauses while its icon is scrolled out of view, but keep loops to what's
+            actually in progress.
+          </li>
+        </ul>
       </section>
 
       <section id="animated-props">
@@ -753,32 +815,6 @@ ${explorerTag}`;
         <Button kind="tertiary" icon={Animated.Edit} on:click={() => (explorerOpen = true)}>Open the props explorer</Button>
       </section>
 
-      <section id="animated-guidance">
-        <h2>Guidance</h2>
-        <ul>
-          <li>
-            <strong>Animate for meaning.</strong> Motion should say what the icon does: the bell rings, the arrow moves
-            the way it points. Most icons, like logos and nouns, stay static.
-          </li>
-          <li>
-            <strong>Productive for routine UI, expressive for moments that matter.</strong> Toolbars, menus and
-            navigation stay productive. Save confirmations, new notifications and errors can be expressive, played with
-            <code>play</code>.
-          </li>
-          <li>
-            <strong>Loop only progress.</strong> Each animation plays once and ends where it started; replay it on the
-            next event. Loop only progress and refresh icons, and only while something is in progress.
-          </li>
-          <li>
-            <strong>Keep the hover delay.</strong> It stops a toolbar from rippling as the pointer crosses it. Lower it
-            only where the pointer is expected to rest, like a single call to action.
-          </li>
-          <li>
-            <strong>Keep a label.</strong> Animation doesn't replace text: icon-only buttons still need
-            <code>iconDescription</code>, and state changes still need to be announced.
-          </li>
-        </ul>
-      </section>
     </Prose>
   </CssColumn>
 </CssGrid>
@@ -815,7 +851,7 @@ ${explorerTag}`;
         <dt>
           size <span class="unit">(px)</span>
           <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
-            <span slot="tooltipText">{propInfo.size[0]} Default: {propInfo.size[1]}.</span>
+            <span slot="tooltipText">{propInfo.size[0]}<span class="tooltip-default">Default: {propInfo.size[1]}</span></span>
           </TooltipIcon>
         </dt>
         <dd>
@@ -829,7 +865,7 @@ ${explorerTag}`;
         <dt>
           motion
           <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
-            <span slot="tooltipText">{propInfo.motion[0]} Default: {propInfo.motion[1]}.</span>
+            <span slot="tooltipText">{propInfo.motion[0]}<span class="tooltip-default">Default: {propInfo.motion[1]}</span></span>
           </TooltipIcon>
         </dt>
         <dd>
@@ -841,7 +877,7 @@ ${explorerTag}`;
         <dt>
           trigger
           <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
-            <span slot="tooltipText">{propInfo.trigger[0]} Default: {propInfo.trigger[1]}.</span>
+            <span slot="tooltipText">{propInfo.trigger[0]}<span class="tooltip-default">Default: {propInfo.trigger[1]}</span></span>
           </TooltipIcon>
         </dt>
         <dd>
@@ -853,7 +889,7 @@ ${explorerTag}`;
         <dt>
           hoverDelay <span class="unit">(ms)</span>
           <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
-            <span slot="tooltipText">{propInfo.hoverDelay[0]} Default: {propInfo.hoverDelay[1]}.</span>
+            <span slot="tooltipText">{propInfo.hoverDelay[0]}<span class="tooltip-default">Default: {propInfo.hoverDelay[1]}</span></span>
           </TooltipIcon>
         </dt>
         <dd>
@@ -867,7 +903,7 @@ ${explorerTag}`;
         <dt>
           reducedMotion
           <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
-            <span slot="tooltipText">{propInfo.reducedMotion[0]} Default: {propInfo.reducedMotion[1]}.</span>
+            <span slot="tooltipText">{propInfo.reducedMotion[0]}<span class="tooltip-default">Default: {propInfo.reducedMotion[1]}</span></span>
           </TooltipIcon>
         </dt>
         <dd>
@@ -880,7 +916,7 @@ ${explorerTag}`;
         <dt>
           loop
           <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
-            <span slot="tooltipText">{propInfo.loop[0]} Default: {propInfo.loop[1]}.</span>
+            <span slot="tooltipText">{propInfo.loop[0]}<span class="tooltip-default">Default: {propInfo.loop[1]}</span></span>
           </TooltipIcon>
         </dt>
         <dd>
@@ -1037,6 +1073,11 @@ ${explorerTag}`;
     gap: var(--cds-spacing-02);
     font-size: 0.875rem;
     color: var(--cds-text-secondary, var(--cds-text-02));
+  }
+
+  .tooltip-default {
+    display: block;
+    margin-block-start: var(--cds-spacing-03);
   }
 
   .unit {
