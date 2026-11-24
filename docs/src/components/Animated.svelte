@@ -613,6 +613,7 @@ ${explorerTag}`;
       <section id="animated-carbon">
         <h2>In Carbon components</h2>
         <p>Pass an animated icon wherever a component takes an <code>icon</code>. Hover or tab to each one.</p>
+        <div class="example">
         <div class="demo">
           <div class="demo-row">
             <Button icon={Add}>Add item</Button>
@@ -641,6 +642,7 @@ ${explorerTag}`;
           </div>
         </div>
         <Code code={componentsCode} />
+        </div>
       </section>
 
       <section id="animated-events">
@@ -651,6 +653,7 @@ ${explorerTag}`;
           replay it. To pass props to an icon in a <code>Button</code>, put it in the <code>icon</code> slot with the
           <code>bx--btn__icon</code> class that <code>Button</code> gives its own icons.
         </p>
+        <div class="example">
         <div class="demo">
           <div class="demo-row">
             <Button on:click={() => saved++}>
@@ -664,6 +667,7 @@ ${explorerTag}`;
           </div>
         </div>
         <Code code={eventCode} />
+        </div>
       </section>
 
       <section id="animated-loop">
@@ -674,6 +678,7 @@ ${explorerTag}`;
           stops at rest instead of snapping. Hover and <code>play</code> don't interrupt a loop, and a loop pauses while the icon is scrolled out of view. Loop only while
           something is in progress.
         </p>
+        <div class="example">
         <div class="demo">
           <div class="demo-row">
             <Button kind="tertiary" disabled={refreshing} on:click={refresh}>
@@ -689,6 +694,7 @@ ${explorerTag}`;
           </div>
         </div>
         <Code code={loopCode} />
+        </div>
       </section>
 
       <section id="animated-states">
@@ -701,6 +707,7 @@ ${explorerTag}`;
           since an icon that mounts with a truthy <code>play</code> plays right away. The icon has the
           <code>bx--btn__icon</code> class that <code>Button</code> gives its own icons, for its spacing and color.
         </p>
+        <div class="example">
         <div class="demo">
           <div class="demo-row">
             <Button kind="secondary" disabled={status === "active"} on:click={download}>
@@ -727,6 +734,7 @@ ${explorerTag}`;
           </div>
         </div>
         <Code code={statesCode} />
+        </div>
       </section>
 
       <section id="animated-defaults">
@@ -736,6 +744,7 @@ ${explorerTag}`;
           <code>setAnimatedIconDefaults</code> in a parent component instead. Props on an icon still win. These buttons
           are expressive and play without a hover delay.
         </p>
+        <div class="example">
         <div class="demo">
           <AnimatedDefaults defaults={{ motion: "expressive", hoverDelay: 0 }}>
             <div class="demo-row">
@@ -747,6 +756,7 @@ ${explorerTag}`;
           </AnimatedDefaults>
         </div>
         <Code code={defaultsCode} />
+        </div>
       </section>
 
       <section id="animated-reduced-motion">
@@ -1024,9 +1034,18 @@ ${explorerTag}`;
     width: min(46rem, 100%);
   }
 
-  /* The preview and its code read as one example, like Carbon's docs. */
+  /* A preview and its code read as one example, like Carbon's docs: one
+     frame, one width, no gap between them. */
   .example {
     border: 1px solid var(--cds-border-subtle-01, var(--cds-ui-03));
+  }
+
+  section .example :global(.code) {
+    max-width: none;
+  }
+
+  .example .demo {
+    background: var(--cds-background, var(--cds-ui-background));
   }
 
   .stage {
