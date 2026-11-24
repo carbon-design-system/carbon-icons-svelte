@@ -10,7 +10,6 @@
     Link,
     OverflowMenu,
     OverflowMenuItem,
-    PageHeader,
     Prose,
     RadioButton,
     RadioButtonGroup,
@@ -255,7 +254,7 @@
 
   // Each section's link carries an animated icon, which plays on hover.
   const sections = [
-    ["animated-icons", "Icons", "Star"],
+    ["animated-icons", "Animated icons", "Star"],
     ["animated-overview", "Usage", "Code"],
     ["animated-guidance", "Guidance", "Information"],
     ["animated-motion", "Motion", "Activity"],
@@ -821,12 +820,6 @@ ${explorerTag}`;
 </script>
 
 <Content>
-<PageHeader
-  grid
-  title="Animated icons"
-  subtitle="Carbon icons that animate on hover, on keyboard focus, or when you play them."
-/>
-
 <CssGrid class="page">
   <CssColumn sm={4} md={8} lg={4} class="toc-column">
     <div class="toc">
@@ -852,9 +845,11 @@ ${explorerTag}`;
   <CssColumn sm={4} md={8} lg={12}>
     <Prose maxWidth="none">
       <section id="animated-icons">
-        <h2>Icons</h2>
+        <!-- The page's only h1, sized like the other sections so the gallery starts high. -->
+        <h1 class="page-title">Animated icons</h1>
         <p>
-          Hover an icon to play it, or select one to try its props.
+          Carbon icons that animate on hover, keyboard focus or when you play them. Hover one to play it, or select it
+          to try its props.
         </p>
         <Theme bind:theme persist persistKey="theme" />
         <div class="gallery-search">
@@ -1531,6 +1526,13 @@ ${explorerTag}`;
 <style>
   :global(html) {
     scroll-padding-top: 4rem;
+  }
+
+  section :global(.page-title) {
+    font-size: 1.75rem;
+    font-weight: 400;
+    line-height: 1.29;
+    margin: 0;
   }
 
   :global(.page) {
