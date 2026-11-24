@@ -375,14 +375,13 @@
     loop && "loop={loading}",
   ].filter(Boolean);
 
-  // One prop stays on the tag's line; more go one per line, so the code
-  // never needs a horizontal scrollbar.
+  // The tag stays on one line if it fits Prettier's default 80 columns,
+  // which the panel shows without scrolling; otherwise one prop per line.
+  $: explorerLine = `<${name}${explorerProps.map((prop) => ` ${prop}`).join("")} />`;
   $: explorerTag =
-    explorerProps.length === 0
-      ? `<${name} />`
-      : explorerProps.length === 1
-        ? `<${name} ${explorerProps[0]} />`
-        : `<${name}\n${explorerProps.map((prop) => `  ${prop}`).join("\n")}\n/>`;
+    explorerLine.length <= 80
+      ? explorerLine
+      : `<${name}\n${explorerProps.map((prop) => `  ${prop}`).join("\n")}\n/>`;
 
   $: explorerCode = `<script>
   import { ${name} } from "carbon-icons-svelte/animated";${trigger === "none" ? "\n\n  let count = 0;" : ""}
