@@ -14,9 +14,11 @@
     RadioButtonGroup,
     Select,
     SelectItem,
+    SidePanel,
     Slider,
     TableOfContents,
     TableOfContentsItem,
+    Tag,
     Toggle,
   } from "carbon-components-svelte";
   import * as Animated from "carbon-icons-svelte/animated";
@@ -243,18 +245,19 @@
   const ungrouped = names.filter((name) => !grouped.has(name));
   if (ungrouped.length > 0) groups.push({ id: "animated-other", title: "Other", names: ungrouped });
 
+  // Each section's link carries an animated icon, which plays on hover.
   const sections = [
-    ["animated-icons", "Icons"],
-    ["animated-overview", "Usage"],
-    ["animated-carbon", "In Carbon components"],
-    ["animated-events", "Play on an event"],
-    ["animated-loop", "Loop"],
-    ["animated-states", "Icons for each state"],
-    ["animated-defaults", "Defaults"],
-    ["animated-motion", "Motion"],
-    ["animated-reduced-motion", "Reduced motion"],
-    ["animated-props", "Props"],
-    ["animated-guidance", "Guidance"],
+    ["animated-icons", "Icons", "Star"],
+    ["animated-overview", "Usage", "Code"],
+    ["animated-carbon", "In Carbon components", "Add"],
+    ["animated-events", "Play on an event", "Play"],
+    ["animated-loop", "Loop", "Renew"],
+    ["animated-states", "Icons for each state", "CheckmarkOutline"],
+    ["animated-defaults", "Defaults", "Settings"],
+    ["animated-motion", "Motion", "Activity"],
+    ["animated-reduced-motion", "Reduced motion", "ViewOff"],
+    ["animated-props", "Props", "Edit"],
+    ["animated-guidance", "Guidance", "Information"],
   ];
 
   const sizeMarks = [16, 20, 24, 32].map((value) => ({ value, label: `${value}` }));
@@ -291,6 +294,12 @@
   let motionPlay = 0;
 
   let name = "Notification";
+  let explorerOpen = false;
+
+  const explore = (option) => {
+    name = option;
+    explorerOpen = true;
+  };
   let motion = "productive";
   let trigger = "hover";
   let reducedMotion = "static";
@@ -417,12 +426,18 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
 <CssGrid class="page">
   <CssColumn sm={4} md={8} lg={4} class="toc-column">
     <div class="toc">
-      <TableOfContents labelText="On this page" scrollOffset={64}>
-        {#each sections as [id, text] (id)}
-          <TableOfContentsItem href="#{id}" {text} />
+      <TableOfContents labelText="On this page" size="sm" scrollOffset={64}>
+        {#each sections as [id, text, icon] (id)}
+          <TableOfContentsItem href="#{id}">
+            <svelte:component this={Animated[icon]} />
+            {text}
+          </TableOfContentsItem>
           {#if id === "animated-icons"}
             {#each groups as group (group.id)}
-              <TableOfContentsItem href="#{group.id}" text={group.title} level={2} />
+              <TableOfContentsItem href="#{group.id}" level={2}>
+                {group.title}
+                <Tag size="sm" type="cool-gray">{group.names.length}</Tag>
+              </TableOfContentsItem>
             {/each}
           {/if}
         {/each}
@@ -435,7 +450,7 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
       <section id="animated-icons">
         <h2>Icons</h2>
         <p>
-          Hover an icon to play it, or select one to try it in the <a href="#animated-props">props explorer</a>. Parts
+          Hover an icon to play it, or select one to try its props. Parts
           move on their own where it means something, like the bell and its clapper; arrows nudge the way they point.
         </p>
         <div class="gallery-controls">
@@ -456,16 +471,13 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
           <h3 id={group.id}>{group.title}</h3>
           <div class="gallery">
             {#each group.names as option (option)}
-              <button
-                type="button"
-                title={option}
-                on:click={() => {
-                  name = option;
-                  location.hash = "animated-props";
-                }}
-              >
-                <svelte:component this={Animated[option]} size={gallerySize} motion={expressiveGallery ? "expressive" : "productive"} />
-                <span>{option}</span>
+              <button type="button" title={option} on:click={() => explore(option)}>
+                <span class="tile-icon">
+                  <svelte:component this={Animated[option]} size={gallerySize} motion={expressiveGallery ? "expressive" : "productive"} />
+                </span>
+                <span class="tile-name">
+                  {#each option.split(/(?=[A-Z_])/) as word, i}{#if i}<wbr />{/if}{word}{/each}
+                </span>
               </button>
             {/each}
           </div>
@@ -660,7 +672,7 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
         <h2>Props</h2>
         <p>
           Every prop except <code>play</code> and <code>loop</code> can also be set with
-          <code>setAnimatedIconDefaults</code>. Try them below.
+          <code>setAnimatedIconDefaults</code>. Select any icon above to try them on it.
         </p>
         <table>
           <thead>
@@ -675,81 +687,7 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
             <tr><td><code>hoverDelay</code></td><td><code>number</code> (ms)</td><td><code>150</code></td></tr>
           </tbody>
         </table>
-        <div class="explorer">
-          <div class="stage">
-            <div class="stage-icons">
-              <svelte:component this={Animated[name]} {size} {motion} {trigger} {reducedMotion} {hoverDelay} {play} {loop} />
-              <Button kind="ghost">
-                {name}
-                <svelte:component
-                  this={Animated[name]}
-                  slot="icon"
-                  class="bx--btn__icon"
-                 
-                  {motion}
-                  {trigger}
-                  {reducedMotion}
-                  {hoverDelay}
-                  {play}
-                  {loop}
-                />
-              </Button>
-            </div>
-            <div class="stage-footer">
-              <span class="stage-hint">
-                {trigger === "hover" ? "Hover the icon or the button, or tab to the button." : "Plays only from Play."}
-              </span>
-              <Button kind="tertiary" size="small" on:click={() => play++}>Play</Button>
-            </div>
-          </div>
-          <Layer class="controls">
-            <Select labelText="Icon" bind:selected={name}>
-              {#each names as option (option)}
-                <SelectItem value={option} />
-              {/each}
-            </Select>
-            <Slider
-              labelText="size"
-              min={16}
-              max={32}
-              marks={sizeMarks}
-              snapToMarks
-              hideTextInput
-              hideRangeLabels
-              fullWidth
-              formatValue={(value) => `${value}px`}
-              bind:value={size}
-            />
-            <RadioButtonGroup legendText="motion" bind:selected={motion}>
-              <RadioButton labelText="productive" value="productive" />
-              <RadioButton labelText="expressive" value="expressive" />
-            </RadioButtonGroup>
-            <RadioButtonGroup legendText="trigger" bind:selected={trigger}>
-              <RadioButton labelText="hover" value="hover" />
-              <RadioButton labelText="none" value="none" />
-            </RadioButtonGroup>
-            <Select labelText="reducedMotion" bind:selected={reducedMotion}>
-              <SelectItem value="static" />
-              <SelectItem value="fade" />
-              <SelectItem value="full" />
-            </Select>
-            <Toggle labelText="loop" labelA="false" labelB="true" bind:toggled={loop} />
-            <Slider
-              labelText="hoverDelay (ms)"
-              min={0}
-              max={600}
-              step={10}
-              marks={delayMarks}
-              hideRangeLabels
-              fullWidth
-              bind:value={hoverDelay}
-              disabled={trigger === "none"}
-            />
-          </Layer>
-          <div class="explorer-code">
-            <Code code={explorerCode} />
-          </div>
-        </div>
+        <Button kind="tertiary" icon={Animated.Edit} on:click={() => (explorerOpen = true)}>Open the props explorer</Button>
       </section>
 
       <section id="animated-guidance">
@@ -782,6 +720,83 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
   </CssColumn>
 </CssGrid>
 </Content>
+
+<SidePanel bind:open={explorerOpen} titleText={name} subtitleText="Props explorer" size="lg" includeOverlay>
+  <div class="explorer">
+    <div class="stage">
+      <div class="stage-icons">
+        <svelte:component this={Animated[name]} {size} {motion} {trigger} {reducedMotion} {hoverDelay} {play} {loop} />
+        <Button kind="ghost">
+          {name}
+          <svelte:component
+            this={Animated[name]}
+            slot="icon"
+            class="bx--btn__icon"
+            {motion}
+            {trigger}
+            {reducedMotion}
+            {hoverDelay}
+            {play}
+            {loop}
+          />
+        </Button>
+      </div>
+      <div class="stage-footer">
+        <span class="stage-hint">
+          {trigger === "hover" ? "Hover the icon or the button, or tab to the button." : "Plays only from Play."}
+        </span>
+        <Button kind="tertiary" size="small" on:click={() => play++}>Play</Button>
+      </div>
+    </div>
+    <Layer class="controls">
+      <Select labelText="Icon" bind:selected={name}>
+        {#each names as option (option)}
+          <SelectItem value={option} />
+        {/each}
+      </Select>
+      <Slider
+        labelText="size"
+        min={16}
+        max={32}
+        marks={sizeMarks}
+        snapToMarks
+        hideTextInput
+        hideRangeLabels
+        fullWidth
+        formatValue={(value) => `${value}px`}
+        bind:value={size}
+      />
+      <RadioButtonGroup legendText="motion" bind:selected={motion}>
+        <RadioButton labelText="productive" value="productive" />
+        <RadioButton labelText="expressive" value="expressive" />
+      </RadioButtonGroup>
+      <RadioButtonGroup legendText="trigger" bind:selected={trigger}>
+        <RadioButton labelText="hover" value="hover" />
+        <RadioButton labelText="none" value="none" />
+      </RadioButtonGroup>
+      <Select labelText="reducedMotion" bind:selected={reducedMotion}>
+        <SelectItem value="static" />
+        <SelectItem value="fade" />
+        <SelectItem value="full" />
+      </Select>
+      <Toggle labelText="loop" labelA="false" labelB="true" bind:toggled={loop} />
+      <Slider
+        labelText="hoverDelay (ms)"
+        min={0}
+        max={600}
+        step={10}
+        marks={delayMarks}
+        hideRangeLabels
+        fullWidth
+        bind:value={hoverDelay}
+        disabled={trigger === "none"}
+      />
+    </Layer>
+    <div class="explorer-code">
+      <Code code={explorerCode} />
+    </div>
+  </div>
+</SidePanel>
 
 <style>
   :global(html) {
@@ -860,21 +875,17 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
   }
 
   .explorer {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(18rem, 22rem);
-    grid-template-areas:
-      "stage controls"
-      "code code";
-    gap: var(--cds-spacing-05);
+    display: flex;
+    flex-direction: column;
+    gap: var(--cds-spacing-06);
   }
 
   .stage {
-    grid-area: stage;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     gap: var(--cds-spacing-07);
-    min-height: 20rem;
+    min-height: 14rem;
     padding: var(--cds-spacing-06);
     border: 1px solid var(--cds-border-subtle-01, var(--cds-ui-03));
   }
@@ -901,34 +912,20 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
   }
 
   .explorer :global(.controls) {
-    grid-area: controls;
-    display: flex;
-    flex-direction: column;
-    gap: var(--cds-spacing-07);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--cds-spacing-07) var(--cds-spacing-05);
     padding: var(--cds-spacing-06);
     background: var(--cds-layer-01, var(--cds-ui-01));
   }
 
-  .explorer-code {
-    grid-area: code;
+  /* Selects and sliders take the full row; radio groups and the toggle pair up. */
+  .explorer :global(.controls > :is(.bx--form-item:has(.bx--select), .bx--form-item:has(.bx--slider))) {
+    grid-column: 1 / -1;
   }
 
   .explorer-code :global(.code) {
     max-width: none;
-  }
-
-  @media (max-width: 41.98rem) {
-    .explorer {
-      grid-template-columns: minmax(0, 1fr);
-      grid-template-areas:
-        "stage"
-        "controls"
-        "code";
-    }
-
-    .stage {
-      min-height: 14rem;
-    }
   }
 
   .gallery-controls {
@@ -940,16 +937,26 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
 
   .gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
     gap: 1px;
   }
 
+  @media (max-width: 41.98rem) {
+    .gallery {
+      grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
+    }
+  }
+
+  /* Square tiles, with room for the icon at 32px, so changing the size or a
+     long name never changes a tile's shape. */
   .gallery button {
-    display: flex;
-    flex-direction: column;
+    aspect-ratio: 1;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    justify-items: center;
     align-items: center;
     gap: var(--cds-spacing-03);
-    padding: var(--cds-spacing-05) var(--cds-spacing-03);
+    padding: var(--cds-spacing-05) var(--cds-spacing-03) var(--cds-spacing-04);
     background: var(--cds-layer-01, var(--cds-ui-01));
     border: 0;
     color: var(--cds-text-primary, var(--cds-text-01));
@@ -965,11 +972,25 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
     outline-offset: -2px;
   }
 
-  .gallery span {
+  .tile-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .tile-name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
     max-width: 100%;
-    overflow-wrap: anywhere;
+    min-height: 2lh;
     text-align: center;
     font-size: 0.75rem;
+    line-height: 1rem;
     color: var(--cds-text-secondary, var(--cds-text-02));
   }
 </style>
