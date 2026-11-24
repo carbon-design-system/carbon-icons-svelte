@@ -2,6 +2,7 @@
   import {
     Button,
     Content,
+    ContentSwitcher,
     CopyButton,
     CssColumn,
     CssGrid,
@@ -14,6 +15,7 @@
     RadioButton,
     RadioButtonGroup,
     SidePanel,
+    Switch,
     Slider,
     TableOfContents,
     TableOfContentsItem,
@@ -363,7 +365,8 @@
   $: if (urlReady && query !== location.search) {
     history.replaceState(history.state, "", `${location.pathname}${query}${location.hash}`);
   }
-  let expressiveGallery = false;
+  let galleryMotionIndex = 0;
+  $: galleryMotion = galleryMotionIndex === 1 ? "expressive" : "productive";
   /** The icon size picked on either page, saved by the parent. */
   export let iconSize = 24;
 
@@ -519,7 +522,13 @@ ${explorerTag}`;
           move on their own where it means something, like the bell and its clapper; arrows nudge the way they point.
         </p>
         <div class="gallery-controls">
-          <Toggle labelText="Motion" labelA="Productive" labelB="Expressive" bind:toggled={expressiveGallery} />
+          <div class="gallery-motion">
+            <span id="gallery-motion-label" class="bx--label">Motion</span>
+            <ContentSwitcher size="sm" aria-labelledby="gallery-motion-label" bind:selectedIndex={galleryMotionIndex}>
+              <Switch text="Productive" />
+              <Switch text="Expressive" />
+            </ContentSwitcher>
+          </div>
           <Slider
             labelText="Size"
             min={16}
@@ -538,7 +547,7 @@ ${explorerTag}`;
             {#each group.names as option (option)}
               <button type="button" title={option} on:click={() => explore(option)}>
                 <span class="tile-icon">
-                  <svelte:component this={Animated[option]} size={iconSize} motion={expressiveGallery ? "expressive" : "productive"} />
+                  <svelte:component this={Animated[option]} size={iconSize} motion={galleryMotion} />
                 </span>
                 <span class="tile-name">
                   {#each option.split(/(?=[A-Z_])/) as word, i}{#if i}<wbr />{/if}{word}{/each}
@@ -1186,6 +1195,14 @@ ${explorerTag}`;
 
   .explorer :global(.code) {
     max-width: none;
+  }
+
+  .gallery-motion {
+    width: 16rem;
+  }
+
+  .gallery-motion .bx--label {
+    display: block;
   }
 
   .gallery-controls {
