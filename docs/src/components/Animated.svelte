@@ -389,24 +389,41 @@
   // 48px header, exactly when the toolbar sticks.
   let toolbarStuck = false;
 
-  // Below 82rem the toolbar's controls don't fit on one row, so they move
-  // into a popover.
-  let compactToolbar = false;
-  onMount(() => {
-    const query = matchMedia("(max-width: 81.98rem)");
-    const update = () => {
-      compactToolbar = query.matches;
-      if (!compactToolbar) optionsOpen = false;
+  // When the controls don't fit on one row next to the search, they move
+  // into a popover. Whether they fit depends on their content (a theme like
+  // "Gray 100" is wider than "White"), so it's measured, not a breakpoint.
+  let compactToolbar = typeof matchMedia !== "undefined" && matchMedia("(max-width: 81.98rem)").matches;
+  // The width the full toolbar needs, measured whenever it's shown.
+  let fullWidth = 1312;
+
+  function fitToolbar(node) {
+    const check = () => {
+      if (!compactToolbar) {
+        fullWidth = node.scrollWidth;
+        if (node.scrollWidth > node.clientWidth) compactToolbar = true;
+      } else if (node.clientWidth >= fullWidth) {
+        compactToolbar = false;
+        optionsOpen = false;
+      }
     };
-    update();
-    query.addEventListener("change", update);
-    return () => query.removeEventListener("change", update);
-  });
+    const resize = new ResizeObserver(check);
+    // Content changes, like a longer theme name, change the controls' width.
+    const content = new MutationObserver(() => requestAnimationFrame(check));
+    resize.observe(node);
+    content.observe(node, { subtree: true, childList: true, characterData: true });
+    requestAnimationFrame(check);
+    return {
+      destroy() {
+        resize.disconnect();
+        content.disconnect();
+      },
+    };
+  }
   function watchStuck(node) {
     const observer = new IntersectionObserver(
       ([entry]) =>
         (toolbarStuck =
-          !entry.isIntersecting && entry.boundingClientRect.top < 48 && matchMedia("(min-width: 82rem)").matches),
+          !entry.isIntersecting && entry.boundingClientRect.top < 48 && !compactToolbar),
       { rootMargin: "-48px 0px 0px 0px" }
     );
     observer.observe(node);
@@ -968,7 +985,7 @@ ${explorerTag}`;
         <Theme bind:theme persist persistKey="theme" />
         <!-- One toolbar row, every control 32px, sticky while scrolling the gallery. -->
         <div class="toolbar-sentinel" use:watchStuck></div>
-        <div class="gallery-toolbar" class:stuck={toolbarStuck} class:compact={compactToolbar}>
+        <div class="gallery-toolbar" class:stuck={toolbarStuck} class:compact={compactToolbar} use:fitToolbar>
           {@render searchControl("sm")}
           {#if compactToolbar}
             <!-- Where the controls don't fit on one row: search, play, and the rest in a popover. -->
@@ -1899,7 +1916,7 @@ ${explorerTag}`;
 
   .gallery-toolbar {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
     gap: var(--cds-spacing-03) var(--cds-spacing-05);
     padding-block: var(--cds-spacing-03);
@@ -1917,9 +1934,11 @@ ${explorerTag}`;
     border-block-end-color: var(--cds-border-subtle-01, var(--cds-ui-03));
   }
 
-  /* Narrow, and shrinks before the controls wrap to a second row. */
+  /* Narrow, and shrinks to 12rem before the controls give up and move
+     into the popover. */
   .gallery-toolbar :global(.bx--search) {
     flex: 1 1 12rem;
+    min-width: 12rem;
     max-width: 18rem;
   }
 
@@ -1951,13 +1970,11 @@ ${explorerTag}`;
     margin: 0;
   }
 
-  /* Sticky only where it fits on one row. */
-  @media (min-width: 82rem) {
-    .gallery-toolbar {
-      position: sticky;
-      top: 3rem;
-      z-index: 2;
-    }
+  /* Sticky while it's the full, one-row toolbar. */
+  .gallery-toolbar:not(.compact) {
+    position: sticky;
+    top: 3rem;
+    z-index: 2;
   }
 
   .options-panel :global(.bx--form-item) {
@@ -2012,7 +2029,7 @@ ${explorerTag}`;
 
   .toolbar-controls {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
     gap: var(--cds-spacing-05);
   }
@@ -2020,6 +2037,18 @@ ${explorerTag}`;
   .toolbar-controls :global(.bx--form-item) {
     flex: none;
     margin: 0;
+  }
+
+  /* Controls keep their size, so a toolbar that's too narrow overflows,
+     which switches it to the compact toolbar, instead of squeezing them. */
+  .toolbar-controls > *,
+  .gallery-toolbar > .toolbar-controls {
+    flex: none;
+  }
+
+  .toolbar-field .bx--label,
+  .toolbar-theme .bx--label {
+    white-space: nowrap;
   }
 
   /* A category heading sits closer to its own tiles than to the grid above. */
