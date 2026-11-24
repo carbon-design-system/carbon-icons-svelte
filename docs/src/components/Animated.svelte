@@ -1878,6 +1878,11 @@ ${explorerTag}`;
     padding-inline-start: calc(1rem + 16px + var(--cds-spacing-03));
   }
 
+  /* Counts sit on their label's baseline, not centered against it. */
+  .toc :global(.bx--toc__item--nested .bx--toc__link-content) {
+    align-items: baseline;
+  }
+
   .toc-count {
     font-size: 0.6875rem;
     color: var(--cds-text-helper, var(--cds-text-05));
