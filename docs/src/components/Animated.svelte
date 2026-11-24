@@ -328,8 +328,6 @@
   /** What each gallery control does, for its tooltip. */
   const controlInfo = {
     motion: "Productive is a short, subtle move for routine UI. Expressive is larger, for events people should notice. Switching plays every icon, and the play button replays them.",
-    size: "The icons' size in pixels, on Carbon's 16, 20, 24 and 32 scale. Shared with the Icons page.",
-    theme: "The Carbon theme for this page. Shared with the Icons page.",
     loop: "Shows only the icons that can loop, looping, as they do with loop set to true.",
   };
 
@@ -893,9 +891,6 @@ ${explorerTag}`;
           <div class="gallery-size">
             <div class="control-label">
               <span id="gallery-size-label" class="bx--label">Size</span>
-              <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
-                <span slot="tooltipText">{controlInfo.size}</span>
-              </TooltipIcon>
             </div>
             <Slider
             labelText="Size"
@@ -913,9 +908,6 @@ ${explorerTag}`;
           <div class="gallery-theme">
             <div class="control-label">
               <span id="gallery-theme-label" class="bx--label">Theme</span>
-              <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
-                <span slot="tooltipText">{controlInfo.theme}</span>
-              </TooltipIcon>
             </div>
             <ContentSwitcher
               size="sm"
@@ -953,7 +945,7 @@ ${explorerTag}`;
           <h3 id={group.id}>{group.title}</h3>
           <div class="gallery">
             {#each group.names as option (option)}
-              <button type="button" title={option} on:click={() => explore(option)}>
+              <button type="button" on:click={() => explore(option)}>
                 <span class="tile-icon">
                   <svelte:component this={Animated[option]} size={iconSize} motion={galleryMotion} play={galleryPlay} loop={galleryLoop} />
                 </span>
