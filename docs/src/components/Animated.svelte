@@ -261,7 +261,6 @@
   ];
 
   const sizeMarks = [16, 20, 24, 32].map((value) => ({ value, label: `${value}` }));
-  const delayMarks = [0, 150, 300, 450, 600].map((value) => ({ value, label: `${value}` }));
 
   const motionIcons = [Notification, Renew, Download, Favorite, Checkmark];
 
@@ -314,19 +313,22 @@
   // link reopens the explorer as it was. The hash stays the page route.
   const PROP_DEFAULTS = { size: 16, motion: "productive", trigger: "hover", reducedMotion: "static", hoverDelay: 150, loop: "false" };
   const oneOf = (value, options, fallback) => (options.includes(value) ? value : fallback);
+  const iconSizes = [16, 20, 24, 32];
+  const hoverDelays = [0, 150, 300, 600];
   let urlReady = false;
 
   onMount(() => {
     const params = new URLSearchParams(location.search);
     const icon = params.get("icon");
+    // A missing number reads as NaN, not 0, which is a valid hoverDelay.
+    const number = (key) => (params.has(key) ? Number(params.get(key)) : NaN);
     if (icon && names.includes(icon)) {
       name = icon;
-      size = oneOf(Number(params.get("size")), [16, 20, 24, 32], PROP_DEFAULTS.size);
+      size = oneOf(number("size"), iconSizes, PROP_DEFAULTS.size);
       motion = oneOf(params.get("motion"), ["productive", "expressive"], PROP_DEFAULTS.motion);
       trigger = oneOf(params.get("trigger"), ["hover", "none"], PROP_DEFAULTS.trigger);
       reducedMotion = oneOf(params.get("reducedMotion"), ["static", "fade", "full"], PROP_DEFAULTS.reducedMotion);
-      const delay = Number(params.get("hoverDelay"));
-      hoverDelay = params.has("hoverDelay") && delay >= 0 && delay <= 600 ? Math.round(delay / 10) * 10 : PROP_DEFAULTS.hoverDelay;
+      hoverDelay = oneOf(number("hoverDelay"), hoverDelays, PROP_DEFAULTS.hoverDelay);
       loopChoice = oneOf(params.get("loop"), ["true", "false"], PROP_DEFAULTS.loop);
       explorerOpen = true;
     }
@@ -363,7 +365,7 @@
   ].filter(Boolean);
 
   $: explorerCode = `<script>
-  import { ${name} } from "carbon-icons-svelte/animated";${trigger === "none" ? "\n\n  let count = 0;" : ""}
+  import ${name} from "carbon-icons-svelte/lib/animated/${name}.svelte";${trigger === "none" ? "\n\n  let count = 0;" : ""}
 <\/script>
 ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""}
 <${name}${explorerProps.length ? " " + explorerProps.join(" ") : ""} />`;
@@ -765,6 +767,7 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
 
 <SidePanel bind:open={explorerOpen} titleText={name} size="lg" includeOverlay>
   <div class="explorer">
+    <div class="example">
     <div class="stage">
       <svelte:component this={Animated[name]} {size} {motion} {trigger} {reducedMotion} {hoverDelay} {play} {loop} />
       <Button kind="ghost">
@@ -787,54 +790,42 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
       </div>
     </div>
     <Code code={explorerCode} />
+    </div>
     <Layer class="controls">
       <dl class="prop-list">
-        <dt><code>size</code></dt>
+        <dt>size</dt>
         <dd>
-          <Slider
-            labelText="size"
-            hideLabel
-            min={16}
-            max={32}
-            marks={sizeMarks}
-            snapToMarks
-            hideTextInput
-            hideRangeLabels
-            fullWidth
-            formatValue={(value) => `${value}px`}
-            bind:value={size}
-          />
+          <RadioButtonGroup legendText="size" hideLegend bind:selected={size}>
+            <RadioButton labelText="16" value={16} />
+            <RadioButton labelText="20" value={20} />
+            <RadioButton labelText="24" value={24} />
+            <RadioButton labelText="32" value={32} />
+          </RadioButtonGroup>
         </dd>
-        <dt><code>motion</code></dt>
+        <dt>motion</dt>
         <dd>
           <RadioButtonGroup legendText="motion" hideLegend bind:selected={motion}>
             <RadioButton labelText="productive" value="productive" />
             <RadioButton labelText="expressive" value="expressive" />
           </RadioButtonGroup>
         </dd>
-        <dt><code>trigger</code></dt>
+        <dt>trigger</dt>
         <dd>
           <RadioButtonGroup legendText="trigger" hideLegend bind:selected={trigger}>
             <RadioButton labelText="hover" value="hover" />
             <RadioButton labelText="none" value="none" />
           </RadioButtonGroup>
         </dd>
-        <dt><code>hoverDelay</code></dt>
+        <dt>hoverDelay</dt>
         <dd>
-          <Slider
-            labelText="hoverDelay (ms)"
-            hideLabel
-            min={0}
-            max={600}
-            step={10}
-            marks={delayMarks}
-            hideRangeLabels
-            fullWidth
-            bind:value={hoverDelay}
-            disabled={trigger === "none"}
-          />
+          <RadioButtonGroup legendText="hoverDelay" hideLegend disabled={trigger === "none"} bind:selected={hoverDelay}>
+            <RadioButton labelText="0" value={0} />
+            <RadioButton labelText="150" value={150} />
+            <RadioButton labelText="300" value={300} />
+            <RadioButton labelText="600" value={600} />
+          </RadioButtonGroup>
         </dd>
-        <dt><code>reducedMotion</code></dt>
+        <dt>reducedMotion</dt>
         <dd>
           <RadioButtonGroup legendText="reducedMotion" hideLegend bind:selected={reducedMotion}>
             <RadioButton labelText="static" value="static" />
@@ -842,7 +833,7 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
             <RadioButton labelText="full" value="full" />
           </RadioButtonGroup>
         </dd>
-        <dt><code>loop</code></dt>
+        <dt>loop</dt>
         <dd>
           <RadioButtonGroup legendText="loop" hideLegend bind:selected={loopChoice}>
             <RadioButton labelText="false" value="false" />
@@ -936,6 +927,11 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
     gap: var(--cds-spacing-06);
   }
 
+  /* The preview and its code read as one example, like Carbon's docs. */
+  .example {
+    border: 1px solid var(--cds-border-subtle-01, var(--cds-ui-03));
+  }
+
   .stage {
     display: flex;
     flex-wrap: wrap;
@@ -943,7 +939,11 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
     gap: var(--cds-spacing-07);
     min-height: 6rem;
     padding: var(--cds-spacing-05) var(--cds-spacing-06);
-    border: 1px solid var(--cds-border-subtle-01, var(--cds-ui-03));
+    background: var(--cds-background, var(--cds-ui-background));
+  }
+
+  .example :global(.bx--snippet) {
+    border-block-start: 1px solid var(--cds-border-subtle-01, var(--cds-ui-03));
   }
 
   .stage-actions {
@@ -963,6 +963,11 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
     display: grid;
     grid-template-columns: 8rem minmax(0, 1fr);
     margin: 0;
+  }
+
+  .prop-list dt {
+    font-size: 0.875rem;
+    color: var(--cds-text-secondary, var(--cds-text-02));
   }
 
   .prop-list dt,
