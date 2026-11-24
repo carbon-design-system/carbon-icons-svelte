@@ -364,11 +364,20 @@
     loop && "loop={loading}",
   ].filter(Boolean);
 
+  // One prop stays on the tag's line; more go one per line, so the code
+  // never needs a horizontal scrollbar.
+  $: explorerTag =
+    explorerProps.length === 0
+      ? `<${name} />`
+      : explorerProps.length === 1
+        ? `<${name} ${explorerProps[0]} />`
+        : `<${name}\n${explorerProps.map((prop) => `  ${prop}`).join("\n")}\n/>`;
+
   $: explorerCode = `<script>
-  import ${name} from "carbon-icons-svelte/lib/animated/${name}.svelte";${trigger === "none" ? "\n\n  let count = 0;" : ""}
+  import { ${name} } from "carbon-icons-svelte/animated";${trigger === "none" ? "\n\n  let count = 0;" : ""}
 <\/script>
 ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""}
-<${name}${explorerProps.length ? " " + explorerProps.join(" ") : ""} />`;
+${explorerTag}`;
 
   const importCode = `<script>
   import { Notification } from "carbon-icons-svelte/animated";
@@ -793,7 +802,7 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
     </div>
     <Layer class="controls">
       <dl class="prop-list">
-        <dt>size</dt>
+        <dt>size <span class="unit">px</span></dt>
         <dd>
           <RadioButtonGroup legendText="size" hideLegend bind:selected={size}>
             <RadioButton labelText="16" value={16} />
@@ -816,7 +825,7 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
             <RadioButton labelText="none" value="none" />
           </RadioButtonGroup>
         </dd>
-        <dt>hoverDelay</dt>
+        <dt>hoverDelay <span class="unit">ms</span></dt>
         <dd>
           <RadioButtonGroup legendText="hoverDelay" hideLegend disabled={trigger === "none"} bind:selected={hoverDelay}>
             <RadioButton labelText="0" value={0} />
@@ -934,6 +943,11 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
     animation: none;
   }
 
+  /* Between lg and xl: wide enough for the longest icon's import line. */
+  :global(.bx--side-panel.explorer-panel) {
+    width: min(46rem, 100%);
+  }
+
   /* The preview and its code read as one example, like Carbon's docs. */
   .example {
     border: 1px solid var(--cds-border-subtle-01, var(--cds-ui-03));
@@ -951,6 +965,13 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
 
   .example :global(.bx--snippet) {
     border-block-start: 1px solid var(--cds-border-subtle-01, var(--cds-ui-03));
+  }
+
+  /* Long lines, like a long icon's import on a phone, wrap instead of
+     scrolling. */
+  .example :global(.bx--snippet pre) {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
   }
 
   .stage-actions {
@@ -973,8 +994,13 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
   }
 
   .prop-list dt {
+    gap: var(--cds-spacing-02);
     font-size: 0.875rem;
     color: var(--cds-text-secondary, var(--cds-text-02));
+  }
+
+  .unit {
+    color: var(--cds-text-helper, var(--cds-text-05));
   }
 
   .prop-list dt,
