@@ -37,6 +37,9 @@
   const VALID_THEMES = ["white", "g10", "g80", "g90", "g100"];
   const ICON_SIZE_KEY = "icon-size";
   const VALID_ICON_SIZES = [16, 20, 24, 32];
+  // Shared by the icon list and the animated gallery. 24 so detail, and
+  // motion, are easy to see.
+  const DEFAULT_ICON_SIZE = 24;
 
   /** @returns {import("svelte").ComponentProps<Theme>["theme"]} */
   function getStoredTheme() {
@@ -52,7 +55,7 @@
   function getStoredIconSize() {
     try {
       const stored = localStorage.getItem(ICON_SIZE_KEY);
-      if (stored == null) return 16;
+      if (stored == null) return DEFAULT_ICON_SIZE;
 
       let parsed = stored;
       try {
@@ -62,9 +65,9 @@
       }
 
       const size = typeof parsed === "number" ? parsed : Number(parsed);
-      return VALID_ICON_SIZES.includes(size) ? size : 16;
+      return VALID_ICON_SIZES.includes(size) ? size : DEFAULT_ICON_SIZE;
     } catch {
-      return 16;
+      return DEFAULT_ICON_SIZE;
     }
   }
 
@@ -142,8 +145,12 @@
 
 <Header {route} />
 
+{#if mounted}
+  <LocalStorage key={ICON_SIZE_KEY} bind:value={iconSize} />
+{/if}
+
 {#if route === "animated"}
-  <Animated />
+  <Animated bind:iconSize />
 {:else}
 {#if data}
   <Modal
@@ -178,7 +185,6 @@
                 themes: VALID_THEMES,
               }}
             />
-            <LocalStorage key={ICON_SIZE_KEY} bind:value={iconSize} />
             <Select
               id="select-icon-size"
               labelText="Icon size"

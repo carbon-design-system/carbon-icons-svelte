@@ -298,6 +298,7 @@
 
   const explore = (option) => {
     name = option;
+    size = iconSize;
     explorerOpen = true;
   };
   let motion = "productive";
@@ -308,7 +309,8 @@
   let play = 0;
   let loop = false;
   let expressiveGallery = false;
-  let gallerySize = 16;
+  /** The icon size picked on either page, saved by the parent. */
+  export let iconSize = 24;
 
   $: explorerProps = [
     size !== 16 && `size={${size}}`,
@@ -464,7 +466,7 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
             hideTextInput
             hideRangeLabels
             formatValue={(value) => `${value}px`}
-            bind:value={gallerySize}
+            bind:value={iconSize}
           />
         </div>
         {#each groups as group (group.id)}
@@ -473,7 +475,7 @@ ${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""
             {#each group.names as option (option)}
               <button type="button" title={option} on:click={() => explore(option)}>
                 <span class="tile-icon">
-                  <svelte:component this={Animated[option]} size={gallerySize} motion={expressiveGallery ? "expressive" : "productive"} />
+                  <svelte:component this={Animated[option]} size={iconSize} motion={expressiveGallery ? "expressive" : "productive"} />
                 </span>
                 <span class="tile-name">
                   {#each option.split(/(?=[A-Z_])/) as word, i}{#if i}<wbr />{/if}{word}{/each}
