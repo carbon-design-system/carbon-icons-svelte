@@ -15,9 +15,6 @@
     Popover,
     RadioButton,
     RadioButtonGroup,
-    Select,
-    SelectItem,
-    SelectItemGroup,
     SidePanel,
     Switch,
     Search as SearchInput,
@@ -53,6 +50,7 @@
   } from "carbon-icons-svelte/animated";
   import { onMount, tick } from "svelte";
   import AnimatedDefaults from "./AnimatedDefaults.svelte";
+  import { pageLinks } from "../page-links.js";
   import Code from "./Code.svelte";
 
   const names = Object.keys(Animated)
@@ -430,18 +428,17 @@
     return { destroy: () => observer.disconnect() };
   }
 
-  let jumpTarget = "";
-  // Select's change event fires before `bind:selected` updates, so the
-  // section comes from the select element itself.
-  const jump = async (id) => {
-    if (!id) return;
-    // Setting the hash it already has doesn't scroll, so scroll directly.
-    if (location.hash === `#${id}`) document.getElementById(id)?.scrollIntoView();
-    else location.hash = id;
-    // Back to the placeholder, so picking the same section again still jumps.
-    await tick();
-    jumpTarget = "";
-  };
+  // The header's side nav lists this page's sections on narrow screens.
+  onMount(() => {
+    pageLinks.set(
+      sections.flatMap(([id, text]) => [
+        { href: `#${id}`, text },
+        ...(id === "animated-icons" ? groups.map((group) => ({ href: `#${group.id}`, text: group.title, nested: true })) : []),
+      ])
+    );
+    return () => pageLinks.set([]);
+  });
+
 
   // Changing a motion control plays the icons in the new mode, so the
   // difference shows without hovering. Only on change, not on load. Wait
@@ -956,22 +953,7 @@ ${explorerTag}`;
         {/each}
       </TableOfContents>
     </div>
-    <!-- On narrow screens, the table of contents is one row: pick a section to jump to it. -->
-    <div class="toc-select">
-      <Select inline size="sm" labelText="On this page" hideLabel bind:selected={jumpTarget} on:change={(event) => jump(event.currentTarget.value)}>
-        <SelectItem value="" text="On this page" disabled />
-        {#each sections as [id, text] (id)}
-          <SelectItem value={id} {text} />
-          {#if id === "animated-icons"}
-            <SelectItemGroup label="Icon groups">
-              {#each groups as group (group.id)}
-                <SelectItem value={group.id} text="{group.title} ({group.names.length})" />
-              {/each}
-            </SelectItemGroup>
-          {/if}
-        {/each}
-      </Select>
-    </div>
+    <!-- On narrow screens the table of contents is hidden, and its links are in the header's menu. -->
   </CssColumn>
 
   <CssColumn sm={4} md={8} lg={12} xlg={13}>
@@ -979,9 +961,7 @@ ${explorerTag}`;
       <section id="animated-icons">
         <!-- The page's only h1, sized like the other sections so the gallery starts high. -->
         <h1 class="page-title">Animated icons</h1>
-        <p>
-          Carbon icons that animate on hover, keyboard focus or when you play them.
-        </p>
+        <p class="page-description">Carbon icons that animate on hover, keyboard focus or when you play them.</p>
         <Theme bind:theme persist persistKey="theme" />
         <!-- One toolbar row, every control 32px, sticky while scrolling the gallery. -->
         <div class="toolbar-sentinel" use:watchStuck></div>
@@ -1664,6 +1644,15 @@ ${explorerTag}`;
     margin: 0;
   }
 
+  /* A caption under the title, like Carbon's page header subtitle. */
+  section .page-description {
+    margin-block: var(--cds-spacing-02) 0;
+    font-size: 0.875rem;
+    line-height: 1.29;
+    letter-spacing: 0.16px;
+    color: var(--cds-text-secondary, var(--cds-text-02));
+  }
+
   :global(.page) {
     padding-block: var(--cds-spacing-07) var(--cds-spacing-10);
   }
@@ -1681,18 +1670,10 @@ ${explorerTag}`;
     top: 4rem;
   }
 
-  .toc-select {
-    display: none;
-  }
 
   @media (max-width: 65.98rem) {
     .toc {
       display: none;
-    }
-
-    .toc-select {
-      display: block;
-      margin-block-end: var(--cds-spacing-05);
     }
   }
 
