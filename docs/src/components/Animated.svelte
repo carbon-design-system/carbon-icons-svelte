@@ -13,6 +13,9 @@
     Prose,
     RadioButton,
     RadioButtonGroup,
+    Select,
+    SelectItem,
+    SelectItemGroup,
     SidePanel,
     Switch,
     Search as SearchInput,
@@ -384,6 +387,19 @@
     history.replaceState(history.state, "", `${location.pathname}${query}${location.hash}`);
   }
   let galleryMotionIndex = 0;
+
+  let jumpTarget = "";
+  // Select's change event fires before `bind:selected` updates, so the
+  // section comes from the select element itself.
+  const jump = async (id) => {
+    if (!id) return;
+    // Setting the hash it already has doesn't scroll, so scroll directly.
+    if (location.hash === `#${id}`) document.getElementById(id)?.scrollIntoView();
+    else location.hash = id;
+    // Back to the placeholder, so picking the same section again still jumps.
+    await tick();
+    jumpTarget = "";
+  };
 
   // Changing a motion control plays the icons in the new mode, so the
   // difference shows without hovering. Only on change, not on load. Wait
@@ -845,6 +861,22 @@ ${explorerTag}`;
           {/if}
         {/each}
       </TableOfContents>
+    </div>
+    <!-- On narrow screens, the table of contents is one row: pick a section to jump to it. -->
+    <div class="toc-select">
+      <Select labelText="On this page" hideLabel bind:selected={jumpTarget} on:change={(event) => jump(event.currentTarget.value)}>
+        <SelectItem value="" text="On this page" disabled />
+        {#each sections as [id, text] (id)}
+          <SelectItem value={id} {text} />
+          {#if id === "animated-icons"}
+            <SelectItemGroup label="Icon groups">
+              {#each groups as group (group.id)}
+                <SelectItem value={group.id} text="{group.title} ({group.names.length})" />
+              {/each}
+            </SelectItemGroup>
+          {/if}
+        {/each}
+      </Select>
     </div>
   </CssColumn>
 
@@ -1578,10 +1610,18 @@ ${explorerTag}`;
     top: 4rem;
   }
 
+  .toc-select {
+    display: none;
+  }
+
   @media (max-width: 65.98rem) {
     .toc {
-      position: static;
-      margin-block-end: var(--cds-spacing-09);
+      display: none;
+    }
+
+    .toc-select {
+      display: block;
+      margin-block-end: var(--cds-spacing-06);
     }
   }
 
