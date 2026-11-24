@@ -98,6 +98,23 @@ const results = await page.evaluate(
 
     // How far each clipped part already sits outside its clip at rest.
     const atRest = new Map<Element, number>();
+    // Animations move parts but never change their paths, so each path's
+    // points are sampled once, in its own coordinates, and only transformed
+    // at each frame. Sampling is most of the cost.
+    const points = new Map<SVGGeometryElement, { x: number; y: number }[]>();
+    const pointsOf = (shape: SVGGeometryElement) => {
+      let list = points.get(shape);
+      if (!list) {
+        list = [];
+        const length = shape.getTotalLength();
+        for (let at = 0; at <= length; at += 1) {
+          const { x, y } = shape.getPointAtLength(at);
+          list.push({ x, y });
+        }
+        points.set(shape, list);
+      }
+      return list;
+    };
 
     for (let time = 0; time <= limits.expressive; time += step) {
       animations.forEach((animation) => (animation.currentTime = time));
@@ -119,12 +136,12 @@ const results = await page.evaluate(
           // Firefox has no matrix for a part squashed flat, which can't be seen anyway.
           const ctm = shape.getScreenCTM();
           if (!ctm) continue;
-          const matrix = toUser.multiply(ctm);
-          const length = shape.getTotalLength();
+          const { a, b, c, d, e, f } = toUser.multiply(ctm);
           let overflow = -Infinity;
 
-          for (let at = 0; at <= length; at += 1) {
-            const { x, y } = shape.getPointAtLength(at).matrixTransform(matrix);
+          for (const point of pointsOf(shape)) {
+            const x = a * point.x + c * point.y + e;
+            const y = b * point.x + d * point.y + f;
             overflow = Math.max(overflow, rect.x - x, x - rect.x - rect.width, rect.y - y, y - rect.y - rect.height);
           }
 
