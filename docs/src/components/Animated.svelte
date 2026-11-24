@@ -3,6 +3,8 @@
     Button,
     Content,
     ContentSwitcher,
+    FluidForm,
+    PasswordInput,
     CopyButton,
     CssColumn,
     CssGrid,
@@ -337,9 +339,18 @@
   };
   const hoverDelays = [0, 150, 300, 600];
   let urlReady = false;
+  // Temporary: which layout the panel's actions use, while exploring.
+  let layout = "current";
+  let linkCopied = false;
+  const copyLink = async () => {
+    await navigator.clipboard.writeText(permalink);
+    linkCopied = true;
+    setTimeout(() => (linkCopied = false), 2000);
+  };
 
   onMount(() => {
     const params = new URLSearchParams(location.search);
+    layout = oneOf(params.get("layout"), ["header", "footer", "split"], "current");
     const icon = params.get("icon");
     // A missing number reads as NaN, not 0, which is a valid hoverDelay.
     const number = (key) => (params.has(key) ? Number(params.get(key)) : NaN);
@@ -358,15 +369,17 @@
 
   /** The query for the explorer's state: the icon, then every prop that isn't its default. */
   const explorerQuery = (open, state) => {
-    if (!open) return "";
-    const params = new URLSearchParams({ icon: state.name });
+    const params = new URLSearchParams(state.layout === "current" ? {} : { layout: state.layout });
+    if (!open) return params.size ? `?${params}` : "";
+    params.set("icon", state.name);
     for (const key of Object.keys(PROP_DEFAULTS)) {
+      if (!(key in state)) continue;
       if (String(state[key]) !== String(PROP_DEFAULTS[key])) params.set(key, String(state[key]));
     }
     return `?${params}`;
   };
 
-  $: query = explorerQuery(explorerOpen, { name, size, motion, trigger, reducedMotion, hoverDelay, loop: loopChoice });
+  $: query = explorerQuery(explorerOpen, { name, size, motion, trigger, reducedMotion, hoverDelay, loop: loopChoice, layout });
   $: permalink = typeof location === "undefined" ? "" : `${location.origin}${location.pathname}${query}#animated`;
   $: if (urlReady && query !== location.search) {
     history.replaceState(history.state, "", `${location.pathname}${query}${location.hash}`);
@@ -402,6 +415,66 @@
     attempts++;
     submitStatus = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? "done" : "invalid";
   };
+
+  let signupEmail = "";
+  let signupAttempts = 0;
+  /** @type {"idle" | "sending" | "invalid" | "done"} */
+  let signupStatus = "idle";
+  const signUp = () => {
+    signupAttempts++;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(signupEmail)) {
+      signupStatus = "invalid";
+      return;
+    }
+    signupStatus = "sending";
+    setTimeout(() => (signupStatus = "done"), 1800);
+  };
+
+  const fluidCode = `<script>
+  import { Button, FluidForm, PasswordInput, TextInput } from "carbon-components-svelte";
+  import { CheckmarkFilled, ErrorFilled, InProgress, Send } from "carbon-icons-svelte/animated";
+
+  let email = "";
+  let attempts = 0;
+  let status = "idle";
+
+  async function signUp() {
+    attempts++;
+    if (!isEmail(email)) {
+      status = "invalid";
+      return;
+    }
+    status = "sending";
+    await createAccount(email);
+    status = "done";
+  }
+<\/script>
+
+<FluidForm on:submit={(event) => { event.preventDefault(); signUp(); }}>
+  <TextInput labelText="Name" />
+  <TextInput
+    labelText="Email"
+    bind:value={email}
+    invalid={status === "invalid"}
+    invalidText="Enter an email address, like name@example.com."
+    on:input={() => (status = "idle")}
+  />
+  <PasswordInput labelText="Password" />
+  <Button type="submit" disabled={status === "sending" || status === "done"}>
+    {status === "done" ? "Account created" : "Create account"}
+    <svelte:fragment slot="icon">
+      {#if status === "sending"}
+        <InProgress class="bx--btn__icon" loop />
+      {:else if status === "done"}
+        <CheckmarkFilled class="bx--btn__icon" play motion="expressive" />
+      {:else if status === "invalid"}
+        <ErrorFilled class="bx--btn__icon" play={attempts} trigger="none" motion="expressive" />
+      {:else}
+        <Send class="bx--btn__icon" />
+      {/if}
+    </svelte:fragment>
+  </Button>
+</FluidForm>`;
 
   let passwordVisible = false;
   let passwordToggles = 0;
@@ -1003,6 +1076,50 @@ ${explorerTag}`;
           <Code code={submitCode} />
         </div>
 
+        <h3 id="animated-pattern-fluid-form">Fluid form</h3>
+        <p>
+          A whole form, with the submit button's icon following each step: <code>Send</code> while it waits,
+          <code>InProgress</code> looping while the request runs, then <code>CheckmarkFilled</code> once, or
+          <code>ErrorFilled</code> on every failed attempt.
+        </p>
+        <div class="example">
+          <div class="demo">
+            <FluidForm
+              class="fluid-demo"
+              on:submit={(event) => {
+                event.preventDefault();
+                signUp();
+              }}
+            >
+              <TextInput labelText="Name" />
+              <TextInput
+                labelText="Email"
+                placeholder="name@example.com"
+                bind:value={signupEmail}
+                invalid={signupStatus === "invalid"}
+                invalidText="Enter an email address, like name@example.com."
+                on:input={() => (signupStatus = "idle")}
+              />
+              <PasswordInput labelText="Password" />
+              <Button type="submit" disabled={signupStatus === "sending" || signupStatus === "done"}>
+                {signupStatus === "done" ? "Account created" : "Create account"}
+                <svelte:fragment slot="icon">
+                  {#if signupStatus === "sending"}
+                    <Animated.InProgress class="bx--btn__icon" loop />
+                  {:else if signupStatus === "done"}
+                    <Animated.CheckmarkFilled class="bx--btn__icon" play motion="expressive" />
+                  {:else if signupStatus === "invalid"}
+                    <Animated.ErrorFilled class="bx--btn__icon" play={signupAttempts} trigger="none" motion="expressive" />
+                  {:else}
+                    <Animated.Send class="bx--btn__icon" />
+                  {/if}
+                </svelte:fragment>
+              </Button>
+            </FluidForm>
+          </div>
+          <Code code={fluidCode} />
+        </div>
+
         <h3 id="animated-pattern-password">Password visibility</h3>
         <p>
           A button that shows and hides a password swaps <code>View</code> and <code>ViewOff</code>, and the new icon
@@ -1229,14 +1346,8 @@ ${explorerTag}`;
 </CssGrid>
 </Content>
 
-<SidePanel
-  bind:open={explorerOpen}
-  titleText={name}
-  size="lg"
-  includeOverlay
-  selectorPrimaryFocus=".bx--side-panel__close"
-  class="explorer-panel"
->
+<!-- Exploring layouts for the panel's actions: ?layout=header, footer or split. -->
+{#snippet explorerBody()}
   <div class="explorer">
     <div class="example">
     <div class="stage">
@@ -1255,10 +1366,12 @@ ${explorerTag}`;
           {loop}
         />
       </Button>
-      <div class="stage-actions">
-        <Button kind="tertiary" size="field" on:click={() => play++}>Play</Button>
-        <CopyButton text={permalink} iconDescription="Copy a link to these props" feedback="Link copied" />
-      </div>
+      {#if layout === "current"}
+        <div class="stage-actions">
+          <Button kind="tertiary" size="field" on:click={() => play++}>Play</Button>
+          <CopyButton text={permalink} iconDescription="Copy a link to these props" feedback="Link copied" />
+        </div>
+      {/if}
     </div>
     <Code code={explorerCode} />
     </div>
@@ -1344,7 +1457,75 @@ ${explorerTag}`;
       </dl>
     </Layer>
   </div>
-</SidePanel>
+{/snippet}
+
+{#snippet copyLinkIcon()}
+  <CopyButton text={permalink} iconDescription="Copy a link to these props" feedback="Link copied" />
+{/snippet}
+
+{#if layout === "header"}
+  <SidePanel
+    bind:open={explorerOpen}
+    titleText={name}
+    size="lg"
+    includeOverlay
+    selectorPrimaryFocus=".bx--side-panel__close"
+    class="explorer-panel"
+  >
+    <svelte:fragment slot="toolbar">
+      <Button kind="ghost" size="small" icon={Animated.Play} iconDescription="Play" on:click={() => play++} />
+      {@render copyLinkIcon()}
+    </svelte:fragment>
+    {@render explorerBody()}
+  </SidePanel>
+{:else if layout === "footer"}
+  <SidePanel
+    bind:open={explorerOpen}
+    titleText={name}
+    size="lg"
+    includeOverlay
+    selectorPrimaryFocus=".bx--side-panel__close"
+    class="explorer-panel"
+    preventCloseOnClickOutside={false}
+  >
+    {@render explorerBody()}
+    <svelte:fragment slot="actions">
+      <Button kind="secondary" icon={linkCopied ? Animated.Checkmark : Animated.Link} on:click={copyLink}>
+        {linkCopied ? "Link copied" : "Copy link"}
+      </Button>
+      <Button icon={Animated.Play} on:click={() => play++}>Play</Button>
+    </svelte:fragment>
+  </SidePanel>
+{:else if layout === "split"}
+  <SidePanel
+    bind:open={explorerOpen}
+    titleText={name}
+    size="lg"
+    includeOverlay
+    selectorPrimaryFocus=".bx--side-panel__close"
+    class="explorer-panel"
+    preventCloseOnClickOutside={false}
+  >
+    <svelte:fragment slot="toolbar">
+      {@render copyLinkIcon()}
+    </svelte:fragment>
+    {@render explorerBody()}
+    <svelte:fragment slot="actions">
+      <Button icon={Animated.Play} on:click={() => play++}>Play</Button>
+    </svelte:fragment>
+  </SidePanel>
+{:else}
+  <SidePanel
+    bind:open={explorerOpen}
+    titleText={name}
+    size="lg"
+    includeOverlay
+    selectorPrimaryFocus=".bx--side-panel__close"
+    class="explorer-panel"
+  >
+    {@render explorerBody()}
+  </SidePanel>
+{/if}
 
 <style>
   :global(html) {
@@ -1393,6 +1574,7 @@ ${explorerTag}`;
   .demo-row.form-row {
     align-items: flex-start;
     flex-wrap: nowrap;
+    gap: 1px;
   }
 
   .form-row :global(.bx--form-item) {
@@ -1402,6 +1584,15 @@ ${explorerTag}`;
   .form-row :global(.bx--btn) {
     flex: none;
     margin-block-start: 1.5rem;
+  }
+
+  .demo :global(.fluid-demo) {
+    max-width: 24rem;
+  }
+
+  .demo :global(.fluid-demo > .bx--btn) {
+    width: 100%;
+    max-width: none;
   }
 
   .demo-row {
