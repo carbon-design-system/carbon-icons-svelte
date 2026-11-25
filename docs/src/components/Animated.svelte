@@ -18,8 +18,11 @@
     SidePanel,
     Switch,
     Search as SearchInput,
+    Tab,
+    TabContent,
     TableOfContents,
     TableOfContentsItem,
+    Tabs,
     TextInput,
     Theme,
     Toolbar,
@@ -264,7 +267,7 @@
     ["animated-events", "Play on an event", "Play"],
     ["animated-loop", "Loop", "Renew"],
     ["animated-states", "Icons for each state", "CheckmarkOutline"],
-    ["animated-patterns", "Patterns", "Idea"],
+    ["animated-recipes", "Recipes", "Idea"],
     ["animated-defaults", "Defaults", "Settings"],
     ["animated-accessibility", "Accessibility", "ViewOff"],
     ["animated-ssr", "Server rendering", "Terminal"],
@@ -795,9 +798,7 @@ ${explorerTag}`;
   import { Notification } from "carbon-icons-svelte/animated";
 <\/script>
 
-<button>
-  <Notification /> Notifications
-</button>`;
+<Notification />`;
 
   const componentsCode = `<script>
   import { Button, Link, OverflowMenu } from "carbon-components-svelte";
@@ -853,15 +854,21 @@ ${explorerTag}`;
 
   const statesCode = `<script>
   import { Button } from "carbon-components-svelte";
-  import { CheckmarkFilled, Download, InProgress } from "carbon-icons-svelte/animated";
+  import { Checkmark, CheckmarkFilled, Copy, Download, InProgress } from "carbon-icons-svelte/animated";
 
   let status = "idle"; // "idle" | "active" | "done"
+  let copied = false;
 
   async function download() {
     status = "active";
     await save(); // your request
     status = "done";
     setTimeout(() => (status = "idle"), 2000);
+  }
+
+  function copy() {
+    copied = true;
+    setTimeout(() => (copied = false), 2000);
   }
 <\/script>
 
@@ -875,6 +882,14 @@ ${explorerTag}`;
     {:else}
       <Download class="bx--btn__icon" />
     {/if}
+  </svelte:fragment>
+</Button>
+
+<Button kind="ghost" iconDescription={copied ? "Copied" : "Copy"} on:click={copy}>
+  <svelte:fragment slot="icon">
+    {#key copied}
+      <svelte:component this={copied ? Checkmark : Copy} class="bx--btn__icon" play={copied} />
+    {/key}
   </svelte:fragment>
 </Button>`;
 
@@ -1057,40 +1072,51 @@ ${explorerTag}`;
         <h2>Guidance</h2>
         <ul>
           <li>
-            Animate an icon only when its motion shows what it does, like a bell ringing or an arrow moving the way it points. Logos and nouns stay static.
+            <strong>Animate for meaning.</strong> Animate an icon only when its motion shows what it does, like a bell ringing or an arrow moving the way it points. Logos and nouns stay static.
           </li>
           <li>
-            Use productive motion for routine UI like toolbars, menus and navigation. Use expressive motion for events people should notice, like a save or a new message, and trigger it with <code>play</code>.
+            <strong>Match the motion to the moment.</strong>
+            <ul>
+              <li><strong>Productive</strong> for routine UI, like toolbars, menus and navigation.</li>
+              <li><strong>Expressive</strong> for events people should notice, like a save or a new message, triggered with <code>play</code>.</li>
+            </ul>
           </li>
           <li>
-            Loop only progress, refresh and waiting icons, and only while the work runs. Everything else plays once.
+            <strong>Loop only while work runs.</strong> Progress, refresh and waiting icons loop until the work finishes. Everything else plays once.
           </li>
           <li>
-            Keep the hover delay, unless the pointer is meant to rest on a single control, like one call to action.
+            <strong>Keep the hover delay,</strong> unless the pointer is meant to rest on a single control, like one call to action.
           </li>
           <li>
-            Keep text labels. Icon-only buttons still need an <code>iconDescription</code>, and state changes still need to be announced. See <a href="#animated-accessibility">Accessibility</a>.
+            <strong>Keep text labels.</strong> Icon-only buttons still need an <code>iconDescription</code>, and state changes still need to be announced. See <a href="#animated-accessibility">Accessibility</a>.
           </li>
         </ul>
       </section>
 
       <section id="animated-motion">
         <h2>Motion</h2>
-        <p>
-          <code>motion</code> picks one of Carbon's two motion styles, with Carbon's durations and easings. <code>"productive"</code>, the default, is one short move of 400ms or less. <code>"expressive"</code> runs up to 700ms and adds secondary motion and overshoot.
-        </p>
-        <div class="demo motion-compare">
-          {#each ["productive", "expressive"] as mode (mode)}
-            <div class="motion-mode">
-              <span class="motion-label">{mode}</span>
-              <span class="motion-icons">
-                {#each motionIcons as Icon}
-                  <Icon motion={mode} trigger="none" play={motionPlay} />
-                {/each}
-              </span>
-            </div>
-          {/each}
-          <Button kind="tertiary" size="small" on:click={() => motionPlay++}>Play both</Button>
+        <p><code>motion</code> picks one of Carbon's two motion styles, with Carbon's durations and easings:</p>
+        <ul>
+          <li><strong>Productive</strong> (<code>"productive"</code>, the default): one short move, 400ms or less.</li>
+          <li><strong>Expressive</strong> (<code>"expressive"</code>): up to 700ms, with secondary motion and overshoot.</li>
+        </ul>
+        <div class="example">
+          <div class="demo-bar">
+            <span class="demo-bar-label">Preview</span>
+            <Button kind="ghost" size="small" icon={Animated.Play} on:click={() => motionPlay++}>Play</Button>
+          </div>
+          <div class="demo motion-compare">
+            {#each ["productive", "expressive"] as mode (mode)}
+              <div class="motion-mode">
+                <span class="motion-label">{mode === "productive" ? "Productive" : "Expressive"}</span>
+                <span class="motion-icons">
+                  {#each motionIcons as Icon}
+                    <Icon motion={mode} trigger="none" play={motionPlay} />
+                  {/each}
+                </span>
+              </div>
+            {/each}
+          </div>
         </div>
       </section>
 
@@ -1135,6 +1161,10 @@ ${explorerTag}`;
           To play an icon from your own state, pass a number to <code>play</code> and increment it. The icon plays each time the value changes to something truthy. To give props to an icon in a <code>Button</code>, put it in the button's <code>icon</code> slot with the <code>bx--btn__icon</code> class.
         </p>
         <div class="example">
+        <div class="demo-bar">
+          <span class="demo-bar-label">Preview</span>
+          <Button kind="ghost" size="small" on:click={() => unread++}>Simulate a notification</Button>
+        </div>
         <div class="demo">
           <div class="demo-row">
             <Button on:click={() => saved++}>
@@ -1144,7 +1174,6 @@ ${explorerTag}`;
             <Button kind="ghost" iconDescription="Notifications ({unread} unread)">
               <Notification slot="icon" class="bx--btn__icon" play={unread} trigger="none" motion="expressive" />
             </Button>
-            <Button kind="tertiary" size="small" on:click={() => unread++}>Simulate a notification</Button>
           </div>
         </div>
         <Code code={eventCode} />
@@ -1157,6 +1186,10 @@ ${explorerTag}`;
           Set <code>loop</code> to repeat an icon's animation while something is in progress. When <code>loop</code> turns <code>false</code>, the current cycle finishes and the icon stops at rest. Hover and <code>play</code> don't interrupt a loop, and loops pause while scrolled out of view. Only progress, refresh and waiting icons loop.
         </p>
         <div class="example">
+        <div class="demo-bar">
+          <span class="demo-bar-label">Preview</span>
+          <Toggle size="sm" labelText="Simulate loading" hideLabel labelA="Simulate loading" labelB="Simulate loading" bind:toggled={loading} />
+        </div>
         <div class="demo">
           <div class="demo-row">
             <Button kind="tertiary" disabled={refreshing} on:click={refresh}>
@@ -1165,7 +1198,6 @@ ${explorerTag}`;
             </Button>
           </div>
           <div class="demo-row">
-            <Toggle labelText="Loading" size="sm" bind:toggled={loading} />
             {#each ["CircleDash", "InProgress", "Incomplete", "Pending", "PendingFilled"] as option (option)}
               <svelte:component this={Animated[option]} size={24} loop={loading} title={option} />
             {/each}
@@ -1179,6 +1211,9 @@ ${explorerTag}`;
         <h2>Icons for each state</h2>
         <p>
           To show a different icon for each state of a button, swap icons in an <code>{"{#if}"}</code> block inside <code>&lt;svelte:fragment slot="icon"&gt;</code>. Here, <code>Download</code> plays on hover, <code>InProgress</code> loops during the download, and <code>CheckmarkFilled</code> plays once when it finishes, because an icon that mounts with a truthy <code>play</code> plays immediately. Give each icon the <code>bx--btn__icon</code> class for the button's spacing and color.
+        </p>
+        <p>
+          To replay an icon whenever a value changes, wrap it in <code>{"{#key value}"}</code>. Svelte mounts the icon again, so it plays again. The copy button uses one <code>{"{#key}"}</code> block for both its icons.
         </p>
         <div class="example">
         <div class="demo">
@@ -1197,11 +1232,9 @@ ${explorerTag}`;
             </Button>
             <Button kind="ghost" iconDescription={copied ? "Copied" : "Copy"} on:click={copy}>
               <svelte:fragment slot="icon">
-                {#if copied}
-                  <Checkmark class="bx--btn__icon" play style="margin-left: 0" />
-                {:else}
-                  <Copy class="bx--btn__icon" style="margin-left: 0" />
-                {/if}
+                {#key copied}
+                  <svelte:component this={copied ? Checkmark : Copy} class="bx--btn__icon" play={copied} style="margin-left: 0" />
+                {/key}
               </svelte:fragment>
             </Button>
           </div>
@@ -1210,201 +1243,222 @@ ${explorerTag}`;
         </div>
       </section>
 
-      <section id="animated-patterns">
-        <h2>Patterns</h2>
-        <p>
-          Examples built with Carbon components.
-        </p>
-        <h3 id="animated-pattern-toolbar">Toolbar</h3>
-        <p>
-          Icon-only buttons in a <code>Toolbar</code>. Moving the pointer across the toolbar plays nothing. Resting it on a button plays that button's icon.
-        </p>
-        <div class="example">
-          <div class="demo">
-            <Toolbar ariaLabel="Document actions">
-              <ToolbarContent>
-                <Button kind="ghost" icon={Animated.Edit} iconDescription="Edit" />
-                <Button kind="ghost" icon={Animated.Copy} iconDescription="Copy" />
-                <Button kind="ghost" icon={Animated.Share} iconDescription="Share" />
-                <Button kind="ghost" icon={Animated.Download} iconDescription="Download" />
-                <Button kind="ghost" icon={Animated.TrashCan} iconDescription="Delete" />
-              </ToolbarContent>
-            </Toolbar>
-          </div>
-          <Code code={toolbarCode} />
-        </div>
-
-        <h3 id="animated-pattern-submit">Form submission</h3>
-        <p>
-          The button's icon shows the result. If the email is invalid, the error icon shakes, and it shakes again on each failed attempt because <code>play</code> gets the attempt count. If the email is valid, the check plays.
-        </p>
-        <div class="example">
-          <div class="demo">
-            <div class="demo-row form-row">
-              <TextInput
-                labelText="Email"
-                placeholder="name@example.com"
-                bind:value={email}
-                invalid={submitStatus === "invalid"}
-                invalidText="Enter an email address, like name@example.com."
-                on:input={() => (submitStatus = "idle")}
-              />
-              <Button size="field" on:click={submit}>
-                Subscribe
-                <svelte:fragment slot="icon">
-                  {#if submitStatus === "done"}
-                    <Animated.CheckmarkFilled class="bx--btn__icon" play motion="expressive" />
-                  {:else if submitStatus === "invalid"}
-                    <Animated.ErrorFilled class="bx--btn__icon" play={attempts} trigger="none" motion="expressive" />
-                  {:else}
-                    <Animated.Send class="bx--btn__icon" />
-                  {/if}
-                </svelte:fragment>
-              </Button>
+      <section id="animated-recipes">
+        <h2>Recipes</h2>
+        <p>Common patterns, built with Carbon components.</p>
+        <Tabs type="container" class="recipes" autoWidth>
+          <Tab label="Toolbar" />
+          <Tab label="Form submission" />
+          <Tab label="Fluid form" />
+          <Tab label="Show secret" />
+          <Tab label="Favorite" />
+          <Tab label="Theme switch" />
+          <svelte:fragment slot="content">
+            <TabContent>
+              <div class="recipe">
+            <p>
+              Icon-only buttons in a <code>Toolbar</code>. Moving the pointer across the toolbar plays nothing. Resting it on a button plays that button's icon.
+            </p>
+            <div class="example">
+              <div class="demo">
+                <Toolbar ariaLabel="Document actions">
+                  <ToolbarContent>
+                    <Button kind="ghost" icon={Animated.Edit} iconDescription="Edit" />
+                    <Button kind="ghost" icon={Animated.Copy} iconDescription="Copy" />
+                    <Button kind="ghost" icon={Animated.Share} iconDescription="Share" />
+                    <Button kind="ghost" icon={Animated.Download} iconDescription="Download" />
+                    <Button kind="ghost" icon={Animated.TrashCan} iconDescription="Delete" />
+                  </ToolbarContent>
+                </Toolbar>
+              </div>
+              <Code code={toolbarCode} />
             </div>
-          </div>
-          <Code code={submitCode} />
-        </div>
-
-        <h3 id="animated-pattern-fluid-form">Fluid form</h3>
-        <p>
-          The submit button's icon follows the request: <code>Send</code> before submitting, <code>InProgress</code> looping while the request runs, then <code>CheckmarkFilled</code>. An invalid email plays <code>ErrorFilled</code> instead.
-        </p>
-        <div class="example">
-          <div class="demo">
-            <FluidForm
-              class="fluid-demo"
-              on:submit={(event) => {
-                event.preventDefault();
-                signUp();
-              }}
-            >
-              <TextInput labelText="Name" />
-              <TextInput
-                labelText="Email"
-                placeholder="name@example.com"
-                bind:value={signupEmail}
-                invalid={signupStatus === "invalid"}
-                invalidText="Enter an email address, like name@example.com."
-                on:input={() => (signupStatus = "idle")}
-              />
-              <TextInput labelText="Company" />
-              <Button type="submit" disabled={signupStatus === "sending" || signupStatus === "done"}>
-                {signupStatus === "done" ? "You're on the list" : "Join the waitlist"}
-                <svelte:fragment slot="icon">
-                  {#if signupStatus === "sending"}
-                    <Animated.InProgress class="bx--btn__icon" loop />
-                  {:else if signupStatus === "done"}
-                    <Animated.CheckmarkFilled class="bx--btn__icon" play motion="expressive" />
-                  {:else if signupStatus === "invalid"}
-                    <Animated.ErrorFilled class="bx--btn__icon" play={signupAttempts} trigger="none" motion="expressive" />
-                  {:else}
-                    <Animated.Send class="bx--btn__icon" />
-                  {/if}
-                </svelte:fragment>
-              </Button>
-            </FluidForm>
-          </div>
-          <Code code={fluidCode} />
-        </div>
-
-        <h3 id="animated-pattern-secret">Show and hide a secret</h3>
-        <p>
-          The button swaps <code>View</code> and <code>ViewOff</code> each time it's pressed, and the new icon plays.
-        </p>
-        <div class="example">
-          <div class="demo">
-            <div class="demo-row form-row">
-              <TextInput labelText="API key" readonly value={secretVisible ? apiKey : maskedKey} />
-              <Button
-                kind="ghost"
-                size="field"
-                iconDescription={secretVisible ? "Hide API key" : "Show API key"}
-                on:click={() => {
-                  secretVisible = !secretVisible;
-                  secretToggles++;
-                }}
-              >
-                <svelte:fragment slot="icon">
-                  {#if secretVisible}
-                    <Animated.ViewOff class="bx--btn__icon" play={secretToggles} style="margin-left: 0" />
-                  {:else}
-                    <Animated.View class="bx--btn__icon" play={secretToggles} style="margin-left: 0" />
-                  {/if}
-                </svelte:fragment>
-              </Button>
+              </div>
+            </TabContent>
+            <TabContent>
+              <div class="recipe">
+            <p>
+              The button's icon shows the result. If the email is invalid, the error icon shakes, and it shakes again on each failed attempt because <code>play</code> gets the attempt count. If the email is valid, the check plays.
+            </p>
+            <div class="example">
+              <div class="demo">
+                <div class="demo-row form-row">
+                  <TextInput
+                    labelText="Email"
+                    placeholder="name@example.com"
+                    bind:value={email}
+                    invalid={submitStatus === "invalid"}
+                    invalidText="Enter an email address, like name@example.com."
+                    on:input={() => (submitStatus = "idle")}
+                  />
+                  <Button size="field" on:click={submit}>
+                    Subscribe
+                    <svelte:fragment slot="icon">
+                      {#if submitStatus === "done"}
+                        <Animated.CheckmarkFilled class="bx--btn__icon" play motion="expressive" />
+                      {:else if submitStatus === "invalid"}
+                        <Animated.ErrorFilled class="bx--btn__icon" play={attempts} trigger="none" motion="expressive" />
+                      {:else}
+                        <Animated.Send class="bx--btn__icon" />
+                      {/if}
+                    </svelte:fragment>
+                  </Button>
+                </div>
+              </div>
+              <Code code={submitCode} />
             </div>
-          </div>
-          <Code code={secretCode} />
-        </div>
-
-        <h3 id="animated-pattern-toggles">Favorite and bookmark</h3>
-        <p>
-          Each button swaps to the filled icon when pressed and plays it with expressive motion. <code>aria-pressed</code> gives screen readers the state.
-        </p>
-        <div class="example">
-          <div class="demo">
-            <div class="demo-row">
-              <Button
-                kind="ghost"
-                iconDescription={favorited ? "Remove from favorites" : "Add to favorites"}
-                aria-pressed={favorited}
-                on:click={() => (favorited = !favorited)}
-              >
-                <svelte:fragment slot="icon">
-                  {#if favorited}
-                    <Animated.FavoriteFilled class="bx--btn__icon" play motion="expressive" style="margin-left: 0" />
-                  {:else}
-                    <Animated.Favorite class="bx--btn__icon" style="margin-left: 0" />
-                  {/if}
-                </svelte:fragment>
-              </Button>
-              <Button
-                kind="ghost"
-                iconDescription={bookmarked ? "Remove bookmark" : "Bookmark"}
-                aria-pressed={bookmarked}
-                on:click={() => (bookmarked = !bookmarked)}
-              >
-                <svelte:fragment slot="icon">
-                  {#if bookmarked}
-                    <Animated.BookmarkFilled class="bx--btn__icon" play motion="expressive" style="margin-left: 0" />
-                  {:else}
-                    <Animated.Bookmark class="bx--btn__icon" style="margin-left: 0" />
-                  {/if}
-                </svelte:fragment>
-              </Button>
+              </div>
+            </TabContent>
+            <TabContent>
+              <div class="recipe">
+            <p>
+              The submit button's icon follows the request: <code>Send</code> before submitting, <code>InProgress</code> looping while the request runs, then <code>CheckmarkFilled</code>. An invalid email plays <code>ErrorFilled</code> instead.
+            </p>
+            <div class="example">
+              <div class="demo">
+                <FluidForm
+                  class="fluid-demo"
+                  on:submit={(event) => {
+                    event.preventDefault();
+                    signUp();
+                  }}
+                >
+                  <TextInput labelText="Name" />
+                  <TextInput
+                    labelText="Email"
+                    placeholder="name@example.com"
+                    bind:value={signupEmail}
+                    invalid={signupStatus === "invalid"}
+                    invalidText="Enter an email address, like name@example.com."
+                    on:input={() => (signupStatus = "idle")}
+                  />
+                  <TextInput labelText="Company" />
+                  <Button type="submit" disabled={signupStatus === "sending" || signupStatus === "done"}>
+                    {signupStatus === "done" ? "You're on the list" : "Join the waitlist"}
+                    <svelte:fragment slot="icon">
+                      {#if signupStatus === "sending"}
+                        <Animated.InProgress class="bx--btn__icon" loop />
+                      {:else if signupStatus === "done"}
+                        <Animated.CheckmarkFilled class="bx--btn__icon" play motion="expressive" />
+                      {:else if signupStatus === "invalid"}
+                        <Animated.ErrorFilled class="bx--btn__icon" play={signupAttempts} trigger="none" motion="expressive" />
+                      {:else}
+                        <Animated.Send class="bx--btn__icon" />
+                      {/if}
+                    </svelte:fragment>
+                  </Button>
+                </FluidForm>
+              </div>
+              <Code code={fluidCode} />
             </div>
-          </div>
-          <Code code={togglesCode} />
-        </div>
-
-        <h3 id="animated-pattern-theme">Theme switch</h3>
-        <p>
-          This button switches the page between light and dark themes. It shows the icon for the theme it switches to.
-        </p>
-        <div class="example">
-          <div class="demo">
-            <div class="demo-row">
-              <Button
-                kind="ghost"
-                iconDescription={dark ? "Switch to light theme" : "Switch to dark theme"}
-                on:click={() => {
-                  theme = dark ? "white" : "g100";
-                  themeSwitches++;
-                }}
-              >
-                <svelte:fragment slot="icon">
-                  {#if dark}
-                    <Animated.Sun class="bx--btn__icon" play={themeSwitches} style="margin-left: 0" />
-                  {:else}
-                    <Animated.Moon class="bx--btn__icon" play={themeSwitches} style="margin-left: 0" />
-                  {/if}
-                </svelte:fragment>
-              </Button>
+              </div>
+            </TabContent>
+            <TabContent>
+              <div class="recipe">
+            <p>
+              The button swaps <code>View</code> and <code>ViewOff</code> each time it's pressed, and the new icon plays.
+            </p>
+            <div class="example">
+              <div class="demo">
+                <div class="demo-row form-row">
+                  <TextInput labelText="API key" readonly value={secretVisible ? apiKey : maskedKey} />
+                  <Button
+                    kind="ghost"
+                    size="field"
+                    iconDescription={secretVisible ? "Hide API key" : "Show API key"}
+                    on:click={() => {
+                      secretVisible = !secretVisible;
+                      secretToggles++;
+                    }}
+                  >
+                    <svelte:fragment slot="icon">
+                      {#if secretVisible}
+                        <Animated.ViewOff class="bx--btn__icon" play={secretToggles} style="margin-left: 0" />
+                      {:else}
+                        <Animated.View class="bx--btn__icon" play={secretToggles} style="margin-left: 0" />
+                      {/if}
+                    </svelte:fragment>
+                  </Button>
+                </div>
+              </div>
+              <Code code={secretCode} />
             </div>
-          </div>
-          <Code code={themeCode} />
-        </div>
+              </div>
+            </TabContent>
+            <TabContent>
+              <div class="recipe">
+            <p>
+              Each button swaps to the filled icon when pressed and plays it with expressive motion. <code>aria-pressed</code> gives screen readers the state.
+            </p>
+            <div class="example">
+              <div class="demo">
+                <div class="demo-row">
+                  <Button
+                    kind="ghost"
+                    iconDescription={favorited ? "Remove from favorites" : "Add to favorites"}
+                    aria-pressed={favorited}
+                    on:click={() => (favorited = !favorited)}
+                  >
+                    <svelte:fragment slot="icon">
+                      {#if favorited}
+                        <Animated.FavoriteFilled class="bx--btn__icon" play motion="expressive" style="margin-left: 0" />
+                      {:else}
+                        <Animated.Favorite class="bx--btn__icon" style="margin-left: 0" />
+                      {/if}
+                    </svelte:fragment>
+                  </Button>
+                  <Button
+                    kind="ghost"
+                    iconDescription={bookmarked ? "Remove bookmark" : "Bookmark"}
+                    aria-pressed={bookmarked}
+                    on:click={() => (bookmarked = !bookmarked)}
+                  >
+                    <svelte:fragment slot="icon">
+                      {#if bookmarked}
+                        <Animated.BookmarkFilled class="bx--btn__icon" play motion="expressive" style="margin-left: 0" />
+                      {:else}
+                        <Animated.Bookmark class="bx--btn__icon" style="margin-left: 0" />
+                      {/if}
+                    </svelte:fragment>
+                  </Button>
+                </div>
+              </div>
+              <Code code={togglesCode} />
+            </div>
+              </div>
+            </TabContent>
+            <TabContent>
+              <div class="recipe">
+            <p>
+              This button switches the page between light and dark themes. It shows the icon for the theme it switches to.
+            </p>
+            <div class="example">
+              <div class="demo">
+                <div class="demo-row">
+                  <Button
+                    kind="ghost"
+                    iconDescription={dark ? "Switch to light theme" : "Switch to dark theme"}
+                    on:click={() => {
+                      theme = dark ? "white" : "g100";
+                      themeSwitches++;
+                    }}
+                  >
+                    <svelte:fragment slot="icon">
+                      {#if dark}
+                        <Animated.Sun class="bx--btn__icon" play={themeSwitches} style="margin-left: 0" />
+                      {:else}
+                        <Animated.Moon class="bx--btn__icon" play={themeSwitches} style="margin-left: 0" />
+                      {/if}
+                    </svelte:fragment>
+                  </Button>
+                </div>
+              </div>
+              <Code code={themeCode} />
+            </div>
+              </div>
+            </TabContent>
+          </svelte:fragment>
+        </Tabs>
       </section>
 
       <section id="animated-defaults">
@@ -1429,19 +1483,24 @@ ${explorerTag}`;
 
       <section id="animated-accessibility">
         <h2>Accessibility</h2>
-        <p>
-          Animated icons are hidden from screen readers by default, like the static icons. Give an icon a <code>title</code>, <code>aria-label</code> or <code>aria-labelledby</code> to make it an image with that name. Inside a button or link, label the button or link instead, for example with <code>iconDescription</code>.
-        </p>
-        <p>
-          Tabbing to a button or link plays its icon, the same as hovering it. Clicking it doesn't.
-        </p>
-        <p>
-          An icon's animation isn't announced. When an icon confirms a save or shows an error, announce the change too, with a notification or a live region.
-        </p>
+        <ul>
+          <li>
+            <strong>Hidden by default.</strong> Like the static icons, animated icons are hidden from screen readers. Give an icon a <code>title</code>, <code>aria-label</code> or <code>aria-labelledby</code> to make it an image with that name. Inside a button or link, label the button or link instead, for example with <code>iconDescription</code>.
+          </li>
+          <li>
+            <strong>Keyboard focus plays it.</strong> Tabbing to a button or link plays its icon, the same as hovering it. Clicking it doesn't.
+          </li>
+          <li>
+            <strong>Motion isn't announced.</strong> When an icon confirms a save or shows an error, announce the change too, with a notification or a live region.
+          </li>
+        </ul>
         <h3 id="animated-reduced-motion">Reduced motion</h3>
-        <p>
-          By default, icons don't play for users who prefer reduced motion. <code>reducedMotion</code> changes this: <code>"static"</code> plays nothing, <code>"fade"</code> dims and restores the icon without moving it, and <code>"full"</code> plays the normal animation. Use <code>"fade"</code> when an event still needs acknowledging. Use <code>"full"</code> only when the motion is needed to understand the change.
-        </p>
+        <p>By default, icons don't play for users who prefer reduced motion. <code>reducedMotion</code> changes this:</p>
+        <ul>
+          <li><strong>Static</strong> (<code>"static"</code>, the default): nothing plays.</li>
+          <li><strong>Fade</strong> (<code>"fade"</code>): the icon dims and comes back without moving. Use it when an event still needs acknowledging.</li>
+          <li><strong>Full</strong> (<code>"full"</code>): the normal animation plays. Use it only when the motion is needed to understand the change.</li>
+        </ul>
         <Code code={reducedCode} />
       </section>
 
@@ -1457,21 +1516,32 @@ ${explorerTag}`;
 
       <section id="animated-performance">
         <h2>Performance</h2>
-        <p>
-          Only the icons you import are bundled. The first animated icon adds about 1.6 kB gzipped, including the shared runtime. Each additional icon adds about 0.6 kB, mostly CSS. Importing from <code>carbon-icons-svelte/animated</code> produces the same bundle as importing each file directly, in both Vite and webpack.
-        </p>
-        <p>
-          In development, Vite bundles <code>carbon-icons-svelte/animated</code> once. Webpack and Rollup compile every icon it exports on each build, and <code>optimizeImports</code> doesn't rewrite this path yet. With those tools, import files directly, like <code>carbon-icons-svelte/lib/animated/Notification.svelte</code>.
-        </p>
-        <p>
-          An icon that isn't playing runs no timers, observers or animation frames. Animations last 700ms at most.
-        </p>
-        <p>
-          Filled icons whose glyph is a hole, like <code>CheckmarkFilled</code>, include two copies of their markup: Carbon's original for rest and a masked copy for animation. They take about twice as long to mount as a static icon, about 16µs each in Chrome.
-        </p>
-        <p>
-          Browsers animate SVG on the main thread. Twenty looping icons use about 2% of it. Loops pause while scrolled out of view.
-        </p>
+        <ul>
+          <li>
+            <strong>Bundle size.</strong> Only the icons you import are bundled.
+            <ul>
+              <li><strong>First icon:</strong> about 1.6 kB gzipped, including the shared runtime.</li>
+              <li><strong>Each icon after that:</strong> about 0.6 kB, mostly CSS.</li>
+              <li><strong>Importing from <code>carbon-icons-svelte/animated</code></strong> produces the same bundle as importing each file directly, in both Vite and webpack.</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Development builds.</strong>
+            <ul>
+              <li><strong>Vite</strong> bundles <code>carbon-icons-svelte/animated</code> once.</li>
+              <li><strong>Webpack and Rollup</strong> compile every icon it exports on each build, and <code>optimizeImports</code> doesn't rewrite this path yet. Import files directly instead, like <code>carbon-icons-svelte/lib/animated/Notification.svelte</code>.</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Nothing runs at rest.</strong> An icon that isn't playing runs no timers, observers or animation frames. Animations last 700ms at most.
+          </li>
+          <li>
+            <strong>Filled icons mount twice the markup.</strong> Icons whose glyph is a hole, like <code>CheckmarkFilled</code>, include Carbon's original for rest and a masked copy for animation. They take about twice as long to mount as a static icon, about 16µs each in Chrome.
+          </li>
+          <li>
+            <strong>Loops use the main thread.</strong> Browsers animate SVG there. Twenty looping icons use about 2% of it, and loops pause while scrolled out of view.
+          </li>
+        </ul>
       </section>
 
       <section id="animated-props">
@@ -1680,6 +1750,71 @@ ${explorerTag}`;
   section :global(:is(p, ul, h2)),
   section :global(.code) {
     max-width: 44rem;
+  }
+
+  /* Room between running copy and the example or code below it. */
+  section > .example,
+  section > :global(.code) {
+    margin-block-start: var(--cds-spacing-07);
+  }
+
+  section :global(li > ul) {
+    margin-block-start: var(--cds-spacing-02);
+  }
+
+  section :global(li + li) {
+    margin-block-start: var(--cds-spacing-03);
+  }
+
+  /* Controls that drive a preview, in the example's frame rather than in
+     the preview itself, so they don't read as part of the example. */
+  .demo-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cds-spacing-05);
+    min-height: 2rem;
+    padding-inline-start: var(--cds-spacing-05);
+    background: var(--cds-layer-01, var(--cds-ui-01));
+    border-block-end: 1px solid var(--cds-border-subtle-01, var(--cds-ui-03));
+  }
+
+  .demo-bar-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.32px;
+    color: var(--cds-text-secondary, var(--cds-text-02));
+  }
+
+  .demo-bar :global(.bx--form-item) {
+    flex: none;
+    padding-inline-end: var(--cds-spacing-05);
+  }
+
+  .demo-bar :global(.bx--toggle__text--off),
+  .demo-bar :global(.bx--toggle__text--on) {
+    font-size: 0.75rem;
+  }
+
+  /* Recipes: container tabs over one panel holding a recipe's copy and example. */
+  section :global(.recipes) {
+    margin-block-start: var(--cds-spacing-07);
+  }
+
+  #animated-recipes > :global(.bx--tab-content) {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* A recipe's copy sits on the selected tab's layer, above its example. */
+  .recipe > p {
+    max-width: none;
+    margin: 0;
+    padding: var(--cds-spacing-05);
+    background: var(--cds-layer-01, var(--cds-ui-01));
+  }
+
+  .recipe > p + .example {
+    margin-block-start: 0;
   }
 
   .demo {
