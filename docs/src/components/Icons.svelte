@@ -54,7 +54,7 @@
   import AnimatedZoomIn from "carbon-icons-svelte/lib/animated/ZoomIn.svelte";
   import fuzzy from "fuzzy";
   import { onMount, tick } from "svelte";
-  import { fitToolbar, revealResults, rovingFocus, scrollToHash, watchStuck } from "../gallery.js";
+  import { fitToolbar, focusInPlace, revealResults, rovingFocus, scrollToHash, watchStuck } from "../gallery.js";
   import { pageLinks } from "../page-links.js";
   import { FUZZY_RANK, matchingTerm, normalize, rankAliases, rankName } from "../search.js";
   import Code from "./Code.svelte";
@@ -601,6 +601,11 @@ export default {
             spellcheck="false"
             disabled={!data}
             bind:ref={searchInput}
+            on:shortcut={(event) => {
+              // Focus it without nudging the page; see focusInPlace.
+              event.preventDefault();
+              focusInPlace(searchInput);
+            }}
             bind:value={query}
           />
           {#if compactToolbar}

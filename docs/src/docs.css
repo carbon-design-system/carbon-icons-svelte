@@ -414,7 +414,8 @@ html {
 
 /* No underline, like Carbon's toolbar search in a DataTable, so the field
    doesn't draw a second line above the stuck toolbar's border. */
-:is(.docs-page, .docs-panel) .gallery-toolbar .bx--search-input {
+:is(.docs-page, .docs-panel) .gallery-toolbar .bx--search-input,
+:is(.docs-page, .docs-panel) .gallery-toolbar .bx--search-close:hover {
   border-block-end-color: transparent;
 }
 
