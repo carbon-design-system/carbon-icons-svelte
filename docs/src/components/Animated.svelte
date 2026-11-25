@@ -306,6 +306,73 @@
   };
   let motionPlay = 0;
 
+  // The reduced motion demo plays as if the user prefers reduced motion.
+  // Icons check the preference with matchMedia as they start, so it only
+  // needs to answer "reduce" during that one play.
+  let reducedPlay = 0;
+  let simulatingReduced = false;
+  const playReduced = async () => {
+    simulatingReduced = true;
+    reducedPlay++;
+    await tick();
+    simulatingReduced = false;
+  };
+  onMount(() => {
+    const matchMedia = window.matchMedia;
+    window.matchMedia = (query) =>
+      simulatingReduced && query === "(prefers-reduced-motion: reduce)"
+        ? { ...matchMedia.call(window, query), matches: true }
+        : matchMedia.call(window, query);
+    return () => (window.matchMedia = matchMedia);
+  });
+
+  // Each recipe tab has its own link, like #animated-recipes-fluid-form.
+  const recipes = [
+    ["toolbar", "Toolbar"],
+    ["form-submission", "Form submission"],
+    ["fluid-form", "Fluid form"],
+    ["show-secret", "Show secret"],
+    ["favorite", "Favorite"],
+    ["theme-switch", "Theme switch"],
+  ];
+  const RECIPE_HASH = "#animated-recipes-";
+  let recipeIndex = 0;
+
+  const selectRecipeFromHash = () => {
+    if (!location.hash.startsWith(RECIPE_HASH)) return false;
+    const index = recipes.findIndex(([slug]) => RECIPE_HASH + slug === location.hash);
+    if (index === -1) return false;
+    recipeIndex = index;
+    return true;
+  };
+
+  const linkRecipe = ({ detail: index }) => {
+    const hash = RECIPE_HASH + recipes[index][0];
+    if (location.hash !== hash) history.replaceState(history.state, "", hash);
+  };
+
+  // The page mounts after the browser has looked for the URL's target, so
+  // scroll to it here. Sections skipped by content-visibility take their
+  // real size as they come into view, which moves the target, so scroll
+  // again each frame until it stays put.
+  const scrollToHash = async () => {
+    const id = selectRecipeFromHash() ? "animated-recipes" : decodeURIComponent(location.hash.slice(1));
+    const target = id === "animated" ? null : document.getElementById(id);
+    if (!target) return;
+    let top;
+    for (let frame = 0; frame < 10; frame++) {
+      target.scrollIntoView({ behavior: "instant" });
+      await new Promise(requestAnimationFrame);
+      await new Promise(requestAnimationFrame);
+      const next = target.getBoundingClientRect().top;
+      if (next === top) return;
+      top = next;
+    }
+  };
+  onMount(() => {
+    tick().then(scrollToHash);
+  });
+
   let name = "Notification";
   let explorerOpen = false;
 
@@ -896,6 +963,8 @@ ${explorerTag}`;
   const reducedCode = `<Checkmark play={saved} trigger="none" reducedMotion="fade" />`;
 </script>
 
+<svelte:window on:hashchange={scrollToHash} />
+
 <Content>
 
 <!-- Gallery toolbar controls, shared by the full and compact toolbars. -->
@@ -1246,15 +1315,12 @@ ${explorerTag}`;
       <section id="animated-recipes">
         <h2>Recipes</h2>
         <p>Common patterns, built with Carbon components.</p>
-        <Tabs type="container" class="recipes" autoWidth>
-          <Tab label="Toolbar" />
-          <Tab label="Form submission" />
-          <Tab label="Fluid form" />
-          <Tab label="Show secret" />
-          <Tab label="Favorite" />
-          <Tab label="Theme switch" />
+        <Tabs type="container" class="recipes" autoWidth bind:selected={recipeIndex} on:change={linkRecipe}>
+          {#each recipes as [slug, label] (slug)}
+            <Tab {label} href="{RECIPE_HASH}{slug}" />
+          {/each}
           <svelte:fragment slot="content">
-            <TabContent>
+            <TabContent lazy>
               <div class="recipe">
             <p>
               Icon-only buttons in a toolbar. Moving the pointer across the toolbar plays nothing. Resting it on a button plays that button's icon.
@@ -1275,7 +1341,7 @@ ${explorerTag}`;
             </div>
               </div>
             </TabContent>
-            <TabContent>
+            <TabContent lazy>
               <div class="recipe">
             <p>
               The button's icon shows the result. An invalid email shakes the error icon, again on every failed attempt. A valid one plays the check.
@@ -1309,7 +1375,7 @@ ${explorerTag}`;
             </div>
               </div>
             </TabContent>
-            <TabContent>
+            <TabContent lazy>
               <div class="recipe">
             <p>
               The submit button's icon follows the request: a send icon before submitting, a progress icon that loops while the request runs, then a check. An invalid email shakes an error icon instead.
@@ -1353,7 +1419,7 @@ ${explorerTag}`;
             </div>
               </div>
             </TabContent>
-            <TabContent>
+            <TabContent lazy>
               <div class="recipe">
             <p>
               Each press swaps the show and hide icons, and the new icon plays.
@@ -1385,7 +1451,7 @@ ${explorerTag}`;
             </div>
               </div>
             </TabContent>
-            <TabContent>
+            <TabContent lazy>
               <div class="recipe">
             <p>
               Pressing a button swaps in the filled icon and plays it with expressive motion. The button's pressed state tells screen readers whether it's on.
@@ -1427,7 +1493,7 @@ ${explorerTag}`;
             </div>
               </div>
             </TabContent>
-            <TabContent>
+            <TabContent lazy>
               <div class="recipe">
             <p>
               This button switches the page between light and dark themes. It shows the icon for the theme it switches to.
@@ -1505,7 +1571,25 @@ ${explorerTag}`;
           <li><strong>Fade</strong> (<code>"fade"</code>): the icon dims and comes back, without moving. Use it for events people still need to notice.</li>
           <li><strong>Full</strong> (<code>"full"</code>): the icon plays as usual. Use it only when the change can't be understood without the motion.</li>
         </ul>
-        <Code code={reducedCode} />
+        <div class="example">
+          <div class="demo-bar">
+            <span class="demo-bar-label">Preview, as if reduced motion is on</span>
+            <Button kind="ghost" size="small" icon={Animated.Play} on:click={playReduced}>Play</Button>
+          </div>
+          <div class="demo motion-compare">
+            {#each [["static", "Static"], ["fade", "Fade"], ["full", "Full"]] as [mode, label] (mode)}
+              <div class="motion-mode">
+                <span class="motion-label">{label}</span>
+                <span class="motion-icons">
+                  {#each motionIcons as Icon}
+                    <Icon reducedMotion={mode} trigger="none" play={reducedPlay} />
+                  {/each}
+                </span>
+              </div>
+            {/each}
+          </div>
+          <Code code={reducedCode} />
+        </div>
       </section>
 
       <section id="animated-ssr">
@@ -1733,6 +1817,19 @@ ${explorerTag}`;
 
   section + section {
     margin-block-start: var(--cds-spacing-12);
+  }
+
+  /* Skip layout and paint for what's out of view: each gallery group and
+     every section after the gallery. The browser remembers each one's
+     size once it has rendered. */
+  section + section,
+  .gallery {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 40rem;
+  }
+
+  .gallery {
+    contain-intrinsic-size: auto 20rem;
   }
 
   section :global(h3) {

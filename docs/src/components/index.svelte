@@ -17,13 +17,20 @@
   import fuzzy from "fuzzy";
   import FocusKey from "./FocusKey.svelte";
   import Header from "./Header.svelte";
-  import Animated from "./Animated.svelte";
+  // The Animated page and its 257 icons load only when someone opens it,
+  // or once the Icons page is idle, so the first visit to either page is
+  // smaller.
+  const loadAnimated = () => import("./Animated.svelte");
   import { BUILD_INFO_URL } from "../constants";
 
   /** @typedef {{ byModuleName: Record<string, string>; bySize: { order: string[]; sizes: Record<string, string[]> }; total: number; renamedIcons?: Record<string, string> }} BuildInfo */
 
   /** @type {BuildInfo | null} */
   let data = null;
+
+  onMount(() => {
+    if (route !== "animated") (window.requestIdleCallback ?? setTimeout)(() => loadAnimated());
+  });
 
   onMount(async () => {
     const res = await fetch(BUILD_INFO_URL);
@@ -150,7 +157,9 @@
 {/if}
 
 {#if route === "animated"}
-  <Animated bind:iconSize />
+  {#await loadAnimated() then { default: Animated }}
+    <Animated bind:iconSize />
+  {/await}
 {:else}
 {#if data}
   <Modal
