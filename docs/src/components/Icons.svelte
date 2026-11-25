@@ -329,6 +329,11 @@
       return;
     }
     if (copyTarget?.name === tile.dataset.icon) return;
+    // A click leaves focus on the button; let it go before the button moves
+    // on, so the next tile doesn't show a focus ring it never got.
+    if (document.activeElement instanceof HTMLElement && document.activeElement.closest(".tile-copy")) {
+      document.activeElement.blur();
+    }
     const box = tile.getBoundingClientRect();
     const host = groupsElement.getBoundingClientRect();
     copyTarget = { name: tile.dataset.icon, top: box.top - host.top, left: box.right - host.left - 32 };
