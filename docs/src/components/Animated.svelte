@@ -546,15 +546,17 @@
   let lastFilter;
   // The empty state's icon plays once it has settled in, rather than while
   // it pops in under the cursor. Back to 0 when it goes, so it doesn't play
-  // straight away the next time it mounts.
+  // straight away the next time it mounts. In a function, so only
+  // `noResults` reruns it, not the timer and count it sets.
   let emptyPlay = 0;
   let emptyTimer;
-  $: noResults = visibleGroups.length === 0;
-  $: {
+  const scheduleEmptyPlay = (empty) => {
     clearTimeout(emptyTimer);
-    if (noResults) emptyTimer = setTimeout(() => emptyPlay++, 400);
+    if (empty) emptyTimer = setTimeout(() => emptyPlay++, 400);
     else emptyPlay = 0;
-  }
+  };
+  $: noResults = visibleGroups.length === 0;
+  $: scheduleEmptyPlay(noResults);
 
   const clearSearch = () => {
     galleryQuery = "";
@@ -1182,7 +1184,7 @@ ${explorerMarkup}`;
         {#if visibleGroups.length === 0}
           <div class="gallery-empty" bind:this={emptyElement}>
             <EmptyState size="sm" headingLevel={3} titleText="No icons match “{galleryQuery.trim()}”" subtitleText="Try a keyword like “heart” or “refresh”.">
-              <Animated.Search slot="illustration" size={32} play={emptyPlay} trigger="none" motion="expressive" />
+              <Animated.Idea slot="illustration" size={32} play={emptyPlay} trigger="none" motion="expressive" />
               <Button kind="tertiary" size="small" on:click={clearSearch}>Clear search</Button>
             </EmptyState>
           </div>
