@@ -91,11 +91,17 @@ export async function revealResults(results, toolbar, sticky) {
 export function rovingFocus(node) {
   let current = null;
   const all = () => [...node.querySelectorAll(".gallery button")];
-  // Tiles a search hides have no layout box.
-  const visible = () => all().filter((tile) => tile.offsetParent !== null);
+  // A search hides tiles with an inline display: none. Checked from the
+  // style, not the layout, so it doesn't force a layout of every tile.
+  const isShown = (tile) => tile.isConnected && tile.style.display !== "none";
+  const visible = () => all().filter(isShown);
   const sync = () => {
-    if (!visible().includes(current)) current = visible()[0] ?? null;
-    for (const tile of all()) tile.tabIndex = tile === current ? 0 : -1;
+    const tiles = all();
+    if (!current || !tiles.includes(current) || !isShown(current)) current = tiles.find(isShown) ?? null;
+    for (const tile of tiles) {
+      const tabIndex = tile === current ? 0 : -1;
+      if (tile.tabIndex !== tabIndex) tile.tabIndex = tabIndex;
+    }
   };
   const rowStep = (all, from, direction) => {
     const box = from.getBoundingClientRect();
@@ -156,4 +162,25 @@ export function rovingFocus(node) {
       node.removeEventListener("focusin", onFocusin);
     },
   };
+}
+
+/**
+ * Scrolls to the element the URL's hash names, for a page that renders
+ * after the browser has looked for it. Content that renders as it comes
+ * into view can move the target, so it scrolls again each frame until the
+ * target stays put.
+ */
+export async function scrollToHash() {
+  const id = decodeURIComponent(location.hash.slice(1));
+  const target = id ? document.getElementById(id) : null;
+  if (!target) return;
+  let top;
+  for (let frame = 0; frame < 10; frame++) {
+    target.scrollIntoView({ behavior: "instant" });
+    await new Promise(requestAnimationFrame);
+    await new Promise(requestAnimationFrame);
+    const next = target.getBoundingClientRect().top;
+    if (next === top) return;
+    top = next;
+  }
 }
