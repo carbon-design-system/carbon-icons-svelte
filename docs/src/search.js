@@ -59,19 +59,3 @@ export function rankAliases(query, keys) {
 
 /** The rank a typo-tolerant match gets, used only when nothing else matches. */
 export const FUZZY_RANK = 6;
-
-/**
- * The search term a normalized query matched, as Carbon wrote it, to show
- * why an icon is in the results: "heart" for Favorite. A whole term first,
- * then a term or one of its words that starts with the query.
- * @param {string} query
- * @param {string[] | undefined} terms
- */
-export function matchingTerm(query, terms) {
-  if (query.length < MIN_ALIAS_QUERY || terms === undefined) return undefined;
-  const keys = (term) => [normalize(term), ...term.split(/\s+/).map(normalize)];
-  return (
-    terms.find((term) => keys(term).includes(query)) ??
-    terms.find((term) => keys(term).some((key) => key.startsWith(query)))
-  );
-}

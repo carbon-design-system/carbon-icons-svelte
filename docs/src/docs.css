@@ -594,23 +594,9 @@ html {
   outline-offset: -2px;
 }
 
-/* The keyword a tile matched by, in its top padding so the tile keeps
-   its layout. */
+/* For the Deprecated tag in a tile's top padding. */
 :is(.docs-page, .docs-panel) .gallery button {
   position: relative;
-}
-
-:is(.docs-page, .docs-panel) .tile-match {
-  position: absolute;
-  inset-block-start: var(--cds-spacing-02);
-  inset-inline: var(--cds-spacing-03);
-  overflow: hidden;
-  font-size: 0.75rem;
-  line-height: 1.33;
-  letter-spacing: 0.32px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: var(--cds-text-helper, var(--cds-text-05));
 }
 
 :is(.docs-page, .docs-panel) .tile-icon {
@@ -653,11 +639,6 @@ html {
   contain-intrinsic-size: none;
 }
 
-/* Room for the animated mark in a dense tile's corner. */
-:is(.docs-page, .docs-panel) .gallery.dense .tile-match {
-  inset-inline-end: var(--cds-spacing-06);
-}
-
 /* Previous and next in a details panel's header, with the position. */
 .docs-panel .browse {
   display: flex;
@@ -690,9 +671,6 @@ html {
   transform: translateX(-50%);
 }
 
-:is(.docs-page, .docs-panel) .tile-match ~ .tile-flag {
-  visibility: hidden;
-}
 
 /* Carbon's Kbd shows letters in capitals; j and k are lowercase keys.
    Button tooltips are portaled to the body, out of reach of a scoped rule,
