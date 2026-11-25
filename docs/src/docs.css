@@ -245,15 +245,23 @@ html {
   border-block-start: 1px solid var(--cds-border-subtle-01, var(--cds-ui-03));
 }
 
-/* Play and copy-link sit in the preview's corner, like a code block's copy button. */
-/* Preview tabs on the left, Play and Copy URL on the right, over the
-   stage. The bar and the stage take the selected tab's layer, so the
-   three read as one surface. */
+/* Preview tabs and actions sit above the example, on the panel's own
+   background, so Play and Copy URL read as separate from the preview. The
+   selected tab joins the stage below it. */
 :is(.docs-page, .docs-panel) .preview-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--cds-layer, var(--cds-ui-01));
+}
+
+:is(.docs-page, .docs-panel) .preview-bar + .example {
+  border-block-start: 0;
+}
+
+/* The selected tab joins the preview: no space between, whatever spaces
+   the panel's other parts. */
+.docs-panel .explorer > .preview-bar {
+  margin-block-end: calc(-1 * var(--cds-spacing-06));
 }
 
 :is(.docs-page, .docs-panel) .stage-actions {
@@ -301,6 +309,23 @@ html {
   margin: 0;
   padding-block: var(--cds-spacing-04);
   border-block-end: 1px solid var(--cds-border-subtle-01, var(--cds-ui-03));
+}
+
+/* A label lines up with the first row of its value rather than centering
+   on a value that wraps: it sits where a single row's center would be,
+   and values that are text or tags start at the top, with labels to match. */
+:is(.docs-page, .docs-panel) .prop-list dt {
+  align-items: flex-start;
+  padding-block-start: calc(1.75rem - 0.5625rem);
+  line-height: 1.125rem;
+}
+
+:is(.docs-page, .docs-panel) .prop-list dd:is(.text-value, .tags-value) {
+  align-items: flex-start;
+}
+
+:is(.docs-page, .docs-panel) .prop-list dt:has(+ dd:is(.text-value, .tags-value)) {
+  padding-block-start: var(--cds-spacing-04);
 }
 
 :is(.docs-page, .docs-panel) .prop-list dt:last-of-type,
@@ -630,13 +655,23 @@ html {
   inset-inline-end: var(--cds-spacing-06);
 }
 
-/* A deprecated icon's tile: Carbon's small tag, in the top padding. */
-:is(.docs-page, .docs-panel) .tile-flag {
+/* A deprecated icon's tile says so in its top padding, like a matched
+   keyword, which takes the place when there is one. */
+:is(.docs-page, .docs-panel) .tile-note {
   position: absolute;
   inset-block-start: var(--cds-spacing-02);
-  inset-inline-start: 50%;
-  margin: 0;
-  transform: translateX(-50%);
+  inset-inline: var(--cds-spacing-03);
+  overflow: hidden;
+  font-size: 0.75rem;
+  line-height: 1.33;
+  letter-spacing: 0.32px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--cds-text-helper, var(--cds-text-05));
+}
+
+:is(.docs-page, .docs-panel) .tile-match ~ .tile-note {
+  visibility: hidden;
 }
 
 /* Previous and next in a details panel's header, with the position. */

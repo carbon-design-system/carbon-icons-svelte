@@ -1712,7 +1712,6 @@ ${explorerMarkup}`;
     {/if}
   </div>
   <div class="explorer">
-    <div class="example">
     <div class="preview-bar">
       <Tabs type="container" size="md" autoWidth bind:selected={previewIndex}>
         {#each previews as [id, label] (id)}
@@ -1739,6 +1738,7 @@ ${explorerMarkup}`;
         />
       </div>
     </div>
+    <div class="example">
     <div class="stage">
       {#if preview === "icon"}
         <svelte:component this={Animated[name]} {size} {motion} {trigger} {reducedMotion} {hoverDelay} {play} {loop} />
