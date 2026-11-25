@@ -30,6 +30,8 @@ export default defineConfig({
     // The docs use the animated icons built from this repo, imported the way an app would.
     alias: {
       "carbon-icons-svelte/animated": fileURLToPath(new URL("../lib/animated/index.js", import.meta.url)),
+      // The Icons page's examples use the static icons built from this repo too.
+      "carbon-icons-svelte/lib": fileURLToPath(new URL("../lib", import.meta.url)),
     },
   },
   define: {

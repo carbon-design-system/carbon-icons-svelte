@@ -177,6 +177,20 @@ type CarbonIcon = typeof import("svelte") extends { mount: any }
   // any that only repeat the icon's name.
   const aliases: Record<string, string[]> = {};
 
+  // Carbon's category and subcategory for each icon, for grouping the
+  // Icons page like Carbon's own icon library.
+  const categoryOf = new Map<string, [string, string]>();
+  for (const category of metadata.categories ?? []) {
+    for (const subcategory of category.subcategories ?? []) {
+      for (const member of subcategory.members ?? []) {
+        categoryOf.set(member, [category.name, subcategory.name]);
+      }
+    }
+  }
+  /** Category → subcategory → icon names, in Carbon's order. */
+  const grouped = new Map<string, Map<string, string[]>>();
+  const uncategorized: string[] = [];
+
   let names = new Set<string>();
   let glyphNames = new Set<string>();
   let iconNames = new Set<string>();
@@ -204,6 +218,17 @@ type CarbonIcon = typeof import("svelte") extends { mount: any }
 
     if (names.has(name)) return;
     names.add(name);
+
+    const place = categoryOf.get(icon.descriptor.name);
+    if (place) {
+      const [category, subcategory] = place;
+      if (!grouped.has(category)) grouped.set(category, new Map());
+      const subcategories = grouped.get(category)!;
+      if (!subcategories.has(subcategory)) subcategories.set(subcategory, []);
+      subcategories.get(subcategory)!.push(name);
+    } else {
+      uncategorized.push(name);
+    }
 
     const terms = [
       ...new Set((iconMetadata?.aliases ?? []).map((alias) => alias.trim().toLowerCase())),
@@ -289,10 +314,30 @@ ${Object.keys(byModuleName)
       .join("\n")}\n`
   );
 
+  // Groups in Carbon's order. Icons without a category go last.
+  const order = (metadata.categories ?? []).flatMap((category) => [
+    category.name,
+    ...(category.subcategories ?? []).map((subcategory) => `${category.name}/${subcategory.name}`),
+  ]);
+  const byOrder = (key: string) => order.indexOf(key);
+  const groups = [
+    ...[...grouped]
+      .sort(([a], [b]) => byOrder(a) - byOrder(b))
+      .map(([category, subcategories]) => ({
+        category,
+        subcategories: [...subcategories]
+          .sort(([a], [b]) => byOrder(`${category}/${a}`) - byOrder(`${category}/${b}`))
+          .map(([subcategory, icons]) => ({ name: subcategory, icons: icons.sort() })),
+      })),
+    ...(uncategorized.length > 0 ? [{ category: "Other", subcategories: [{ name: "Other", icons: uncategorized.sort() }] }] : []),
+  ];
+
   const buildInfoPayload: Record<string, unknown> = {
     total,
     bySize,
     byModuleName,
+    groups,
+    version: VERSION,
   };
 
   if (Object.keys(RENAMED_ICONS).length > 0) {
