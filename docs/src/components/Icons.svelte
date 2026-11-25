@@ -20,12 +20,12 @@
     TableOfContents,
     TableOfContentsItem,
     Tabs,
+    Tag,
     Theme,
   } from "carbon-components-svelte";
   import Add from "carbon-icons-svelte/lib/Add.svelte";
   import ArrowRight from "carbon-icons-svelte/lib/ArrowRight.svelte";
   import Download from "carbon-icons-svelte/lib/Download.svelte";
-  import Launch from "carbon-icons-svelte/lib/Launch.svelte";
   import Notification from "carbon-icons-svelte/lib/Notification.svelte";
   import Settings from "carbon-icons-svelte/lib/Settings.svelte";
   import TrashCan from "carbon-icons-svelte/lib/TrashCan.svelte";
@@ -152,15 +152,12 @@
   $: tiles = (names) =>
     names
       .map((name) => {
-        const animated = animatedNames.has(name);
         const formerly = canonicalToAliases[name];
         return `<button type="button" tabindex="-1" data-icon="${name}"${
           formerly ? ` title="${escapeHtml(`${name}, formerly ${formerly.join(", ")}`)}"` : ""
-        }>${animated ? '<span class="tile-badge" aria-hidden="true"></span>' : ""}<span class="tile-icon">${
+        }><span class="tile-icon">${
           data.byModuleName[name]
-        }</span><span class="tile-name">${nameHtml(name)}${
-          animated ? '<span class="visually-hidden">, also animated</span>' : ""
-        }</span></button>`;
+        }</span><span class="tile-name">${nameHtml(name)}</span></button>`;
       })
       .join("");
 
@@ -728,7 +725,7 @@ export default {
       <section id="icons-animated">
         <h2>Animated icons</h2>
         <p>
-          {animatedNames.size} icons also come animated, from <code>carbon-icons-svelte/animated</code>. They take the same props, and move on hover, focus or when you play them. In the gallery above, they have a small Renew mark in the corner.
+          {animatedNames.size} icons also come animated, from <code>carbon-icons-svelte/animated</code>. They take the same props, and move on hover, focus or when you play them. Open an icon above to see whether it has one.
         </p>
         <p><Link href="/animated">See the animated icons</Link></p>
       </section>
@@ -809,7 +806,7 @@ export default {
             </ContentSwitcher>
             {#if importStyle === "package"}
               <p class="import-tip">
-                Add <Link size="sm" icon={Launch} href="https://github.com/carbon-design-system/carbon-preprocess-svelte#optimizeimports" target="_blank">optimizeImports</Link>
+                Add <Link size="sm" href="https://github.com/carbon-design-system/carbon-preprocess-svelte#optimizeimports" target="_blank">optimizeImports</Link>
                 from carbon-preprocess-svelte. Without it, your bundler compiles all {data.total.toLocaleString()} icons on every
                 development build.
               </p>
@@ -821,7 +818,9 @@ export default {
           {/if}
           {#if aliasTerms[selected]}
             <dt>Keywords</dt>
-            <dd>{aliasTerms[selected].join(", ")}</dd>
+            <dd class="keywords">
+              {#each aliasTerms[selected] as term (term)}<Tag size="sm">{term}</Tag>{/each}
+            </dd>
           {/if}
           {#if canonicalToAliases[selected]}
             <dt>Formerly</dt>
@@ -889,6 +888,15 @@ export default {
   /* Its own line under the switch: the row wraps. */
   .prop-list dd:has(.import-tip) {
     flex-wrap: wrap;
+  }
+
+  .keywords {
+    flex-wrap: wrap;
+    gap: var(--cds-spacing-02);
+  }
+
+  .keywords :global(.bx--tag) {
+    margin: 0;
   }
 
   .import-tip {
