@@ -361,7 +361,7 @@
   // again each frame until it stays put.
   const scrollToHash = async () => {
     const id = selectRecipeFromHash() ? "animated-recipes" : decodeURIComponent(location.hash.slice(1));
-    const target = id === "animated" ? null : document.getElementById(id);
+    const target = id ? document.getElementById(id) : null;
     if (!target) return;
     let top;
     for (let frame = 0; frame < 10; frame++) {
@@ -458,7 +458,7 @@
   };
 
   $: query = explorerQuery(explorerOpen, { name, preview, size, motion, trigger, reducedMotion, hoverDelay, loop: loopChoice });
-  $: permalink = typeof location === "undefined" ? "" : `${location.origin}${location.pathname}${query}#animated`;
+  $: permalink = typeof location === "undefined" ? "" : `${location.origin}/animated${query}`;
   $: if (urlReady && query !== location.search) {
     history.replaceState(history.state, "", `${location.pathname}${query}${location.hash}`);
   }

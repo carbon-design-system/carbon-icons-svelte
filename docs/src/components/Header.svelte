@@ -41,8 +41,8 @@
   </span>
 
   <HeaderNav aria-label="Pages">
-    <HeaderNavItem href="#" text="Icons" isSelected={route === "icons"} />
-    <HeaderNavItem href="#animated" text="Animated" isSelected={route === "animated"} />
+    <HeaderNavItem href="/" text="Icons" isSelected={route === "icons"} />
+    <HeaderNavItem href="/animated" text="Animated" isSelected={route === "animated"} />
   </HeaderNav>
 
   <HeaderUtilities>
@@ -83,8 +83,8 @@
 
 <SideNav bind:isOpen={isSideNavOpen} ariaLabel="Pages">
   <SideNavItems>
-    <SideNavLink href="#" text="Icons" isSelected={route === "icons"} on:click={() => (isSideNavOpen = false)} />
-    <SideNavLink href="#animated" text="Animated" isSelected={route === "animated"} on:click={() => (isSideNavOpen = false)} />
+    <SideNavLink href="/" text="Icons" isSelected={route === "icons"} on:click={() => (isSideNavOpen = false)} />
+    <SideNavLink href="/animated" text="Animated" isSelected={route === "animated"} on:click={() => (isSideNavOpen = false)} />
     {#if route === "animated" && $pageLinks.length > 0}
       <SideNavDivider />
       <SideNavMenu text="On this page" expanded>
