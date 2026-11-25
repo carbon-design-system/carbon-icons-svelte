@@ -1762,15 +1762,6 @@ ${explorerTag}`;
     margin-block-start: var(--cds-spacing-07);
   }
 
-  /* Prose lists only, not the lists inside components like Tabs. */
-  section :global(li > ul:not([class])) {
-    margin-block-start: var(--cds-spacing-02);
-  }
-
-  section :global(ul:not([class]) > li + li) {
-    margin-block-start: var(--cds-spacing-03);
-  }
-
   /* Controls that drive a preview, in the example's frame rather than in
      the preview itself, so they don't read as part of the example. */
   .demo-bar {
