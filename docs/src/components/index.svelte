@@ -28,14 +28,28 @@
 
   const animatedNames = new Set(ANIMATED_NAMES);
 
-  // Opens the Animated page's explorer on an icon, without reloading.
-  const openAnimated = (event, name) => {
+  const ANIMATED_PATH = "/animated";
+
+  // Links between the two pages switch without reloading. A click with a
+  // modifier, or on a link to anywhere else, does what it normally does.
+  /** @param {MouseEvent} event */
+  function navigate(event) {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const link = event.target instanceof Element ? event.target.closest("a[href]") : null;
+    if (!link || link.target || link.hasAttribute("download")) return;
+    const url = new URL(link.href);
+    if (url.origin !== location.origin) return;
+    const path = url.pathname.replace(/\/$/, "") || "/";
+    if (path !== "/" && path !== ANIMATED_PATH) return;
+    // A link to a section of the current page scrolls there as usual.
+    const current = location.pathname.replace(/\/$/, "") || "/";
+    if (path === current && url.search === location.search && url.hash) return;
     event.preventDefault();
+    history.pushState(null, "", url);
     moduleName = null;
-    history.pushState(null, "", `?icon=${name}#animated`);
     route = getRoute();
-    scrollTo(0, 0);
-  };
+    if (!url.hash) scrollTo(0, 0);
+  }
 
   /** @typedef {{ byModuleName: Record<string, string>; bySize: { order: string[]; sizes: Record<string, string[]> }; total: number; renamedIcons?: Record<string, string> }} BuildInfo */
 
@@ -101,7 +115,16 @@
   }
 
   /** @returns {"icons" | "animated"} */
-  const getRoute = () => (location.hash.startsWith("#animated") ? "animated" : "icons");
+  // The Animated page lives at /animated. Links from when it was #animated
+  // still work: #animated opens the page, and #animated-… opens it at that
+  // section.
+  const getRoute = () => {
+    if (location.pathname === "/" && location.hash.startsWith("#animated")) {
+      const hash = location.hash === "#animated" ? "" : location.hash;
+      history.replaceState(history.state, "", `${ANIMATED_PATH}${location.search}${hash}`);
+    }
+    return location.pathname.replace(/\/$/, "") === ANIMATED_PATH ? "animated" : "icons";
+  };
 
   let route = getRoute();
 
@@ -176,7 +199,7 @@
   $: iconSizeClass = `icon-size--${iconSize}`;
 </script>
 
-<svelte:window on:hashchange={() => (route = getRoute())} on:popstate={() => (route = getRoute())} />
+<svelte:window on:hashchange={() => (route = getRoute())} on:popstate={() => (route = getRoute())} on:click={navigate} />
 
 <FocusKey element={ref} selectText />
 
@@ -209,7 +232,7 @@
     {/if}
     {#if moduleName && animatedNames.has(moduleName)}
       <p class="icon-animated">
-        <Link href="?icon={moduleName}#animated" on:click={(event) => openAnimated(event, moduleName)}>
+        <Link href="/animated?icon={moduleName}">
           Try the animated version
         </Link>
       </p>
