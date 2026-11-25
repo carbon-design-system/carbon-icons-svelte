@@ -1,4 +1,6 @@
 <script>
+  import { focusInPlace } from "../gallery.js";
+
   /**
    * Focuses a search field on "/", unless another field has focus, so a
    * "/" can still be typed there, or a dialog is open, since the field
@@ -31,7 +33,7 @@
     if (active?.closest('[role="dialog"], [aria-modal="true"]')) return;
 
     event.preventDefault();
-    element.focus();
+    focusInPlace(element);
     if (selectText) element.select();
   }
 </script>

@@ -56,7 +56,7 @@
   import AnimatedDefaults from "./AnimatedDefaults.svelte";
   import { pageLinks } from "../page-links.js";
   import Code from "./Code.svelte";
-  import { fitToolbar, revealResults, rovingFocus, watchStuck } from "../gallery.js";
+  import { fitToolbar, focusInPlace, revealResults, rovingFocus, watchStuck } from "../gallery.js";
   import FocusKey from "./FocusKey.svelte";
   import { ANIMATED_ALIASES } from "../generated/animated-aliases";
   import { indexAliases, matchingTerm, normalize, rankAliases, rankName } from "../search.js";
@@ -968,7 +968,7 @@ ${explorerMarkup}`;
 
 <!-- Gallery toolbar controls, shared by the full and compact toolbars. -->
 {#snippet searchControl(size)}
-  <SearchInput {size} labelText="Search animated icons" placeholder="Search {names.length} icons" shortcut="mod+k" selectTextOnFocus bind:ref={galleryInput} bind:value={galleryQuery} />
+  <SearchInput {size} labelText="Search animated icons" placeholder="Search {names.length} icons" shortcut="mod+k" selectTextOnFocus bind:ref={galleryInput} on:shortcut={(event) => { event.preventDefault(); focusInPlace(galleryInput); }} bind:value={galleryQuery} />
 {/snippet}
 
 {#snippet motionControl(labelledBy)}

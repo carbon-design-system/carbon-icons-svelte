@@ -10,7 +10,11 @@
   // The Animated page and its 257 icons load only when someone opens it,
   // or once the Icons page is idle, so the first visit to either page is
   // smaller.
-  const loadAnimated = () => import("./Animated.svelte");
+  // Kept once loaded, so switching to the page renders it in the same frame
+  // the Icons page goes, with no blank frame between them.
+  let AnimatedPage = null;
+  const loadAnimated = () =>
+    import("./Animated.svelte").then((module) => (AnimatedPage = module.default));
 
   const animatedNames = new Set(ANIMATED_NAMES);
 
@@ -32,8 +36,16 @@
 
   // Links between the two pages switch without reloading. A click with a
   // modifier, or on a link to anywhere else, does what it normally does.
+  // Switch pages once the Animated page's code is in, so the current page
+  // stays until the next one can replace it.
+  const showRoute = async () => {
+    const next = getRoute();
+    if (next === "animated" && !AnimatedPage) await loadAnimated();
+    route = next;
+  };
+
   /** @param {MouseEvent} event */
-  function navigate(event) {
+  async function navigate(event) {
     if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     const link = event.target instanceof Element ? event.target.closest("a[href]") : null;
     if (!link || link.target || link.hasAttribute("download")) return;
@@ -45,8 +57,9 @@
     const current = location.pathname.replace(/\/$/, "") || "/";
     if (path === current && url.search === location.search && url.hash) return;
     event.preventDefault();
+    if (path === ANIMATED_PATH && !AnimatedPage) await loadAnimated();
     history.pushState(null, "", url);
-    route = getRoute();
+    await showRoute();
     if (!url.hash) scrollTo(0, 0);
   }
 
@@ -99,16 +112,18 @@
   let iconSize = getStoredIconSize();
 </script>
 
-<svelte:window on:hashchange={() => (route = getRoute())} on:popstate={() => (route = getRoute())} on:click={navigate} />
+<svelte:window on:hashchange={showRoute} on:popstate={showRoute} on:click={navigate} />
 
 <Header {route} />
 
 <LocalStorage key={ICON_SIZE_KEY} bind:value={iconSize} />
 
 {#if route === "animated"}
-  {#await loadAnimated() then { default: Animated }}
-    <Animated bind:iconSize />
-  {/await}
+  {#if AnimatedPage}
+    <svelte:component this={AnimatedPage} bind:iconSize />
+  {:else}
+    {#await loadAnimated() then}{/await}
+  {/if}
 {:else}
   <Content>
     <Icons {data} {aliasTerms} {aliasIndex} {animatedNames} bind:iconSize />

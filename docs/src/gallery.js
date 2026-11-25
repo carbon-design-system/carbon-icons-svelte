@@ -184,3 +184,16 @@ export async function scrollToHash() {
     top = next;
   }
 }
+
+/**
+ * Focuses a field without scrolling when it's already on screen. A plain
+ * focus() scrolls a field in a sticky toolbar to clear the page's scroll
+ * padding, nudging the page even though the field was in view.
+ * @param {HTMLElement | null} element
+ */
+export function focusInPlace(element) {
+  if (!element) return;
+  const box = element.getBoundingClientRect();
+  const visible = box.top >= 0 && box.bottom <= window.innerHeight;
+  element.focus({ preventScroll: visible });
+}
