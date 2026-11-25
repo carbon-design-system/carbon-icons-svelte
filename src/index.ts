@@ -269,10 +269,12 @@ ${definitions}`
 
   // The animated gallery searches the same terms. Only its icons' terms
   // ship with it, rather than the whole build info.
+  const animatedNames = [...animatedFiles.keys()]
+    .filter((file) => file.endsWith(".svelte"))
+    .map((file) => file.slice(0, -".svelte".length))
+    .sort();
   const animatedAliases = Object.fromEntries(
-    [...animatedFiles.keys()]
-      .filter((file) => file.endsWith(".svelte"))
-      .map((file) => file.slice(0, -".svelte".length))
+    animatedNames
       .filter((name) => aliases[name])
       .map((name) => [name, aliases[name]])
   );
@@ -338,6 +340,9 @@ export const ALIASES_URL = "/${aliasesFileName}";
 // @see src/index.ts
 
 export const ANIMATED_ALIASES: Record<string, string[]> = ${JSON.stringify(animatedAliases)};
+
+/** Every icon with an animated version, so the Icons page can link to it. */
+export const ANIMATED_NAMES: string[] = ${JSON.stringify(animatedNames)};
 `
   );
 

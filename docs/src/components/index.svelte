@@ -13,6 +13,7 @@
     SelectItem,
     SelectSkeleton,
     LocalStorage,
+    Link,
   } from "carbon-components-svelte";
   import fuzzy from "fuzzy";
   import FocusKey from "./FocusKey.svelte";
@@ -23,6 +24,18 @@
   const loadAnimated = () => import("./Animated.svelte");
   import { ALIASES_URL, BUILD_INFO_URL } from "../constants";
   import { FUZZY_RANK, indexAliases, normalize, rankAliases, rankName } from "../search.js";
+  import { ANIMATED_NAMES } from "../generated/animated-aliases";
+
+  const animatedNames = new Set(ANIMATED_NAMES);
+
+  // Opens the Animated page's explorer on an icon, without reloading.
+  const openAnimated = (event, name) => {
+    event.preventDefault();
+    moduleName = null;
+    history.pushState(null, "", `?icon=${name}#animated`);
+    route = getRoute();
+    scrollTo(0, 0);
+  };
 
   /** @typedef {{ byModuleName: Record<string, string>; bySize: { order: string[]; sizes: Record<string, string[]> }; total: number; renamedIcons?: Record<string, string> }} BuildInfo */
 
@@ -39,7 +52,10 @@
     // Search terms come after the icons render. Until then, search matches names.
     fetch(ALIASES_URL)
       .then((response) => response.json())
-      .then((aliases) => (aliasIndex = indexAliases(aliases)))
+      .then((aliases) => {
+        aliasTerms = aliases;
+        aliasIndex = indexAliases(aliases);
+      })
       .catch(() => {});
   });
 
@@ -96,6 +112,9 @@
   $: aliasQuery = normalize(value);
   /** @type {Map<string, string[]>} */
   let aliasIndex = new Map();
+  /** Carbon's search terms as written, shown in an icon's details. */
+  /** @type {Record<string, string[]>} */
+  let aliasTerms = {};
   $: allIconsOrdered = data
     ? data.bySize.order
         .flatMap((size) => data.bySize.sizes[size])
@@ -157,7 +176,7 @@
   $: iconSizeClass = `icon-size--${iconSize}`;
 </script>
 
-<svelte:window on:hashchange={() => (route = getRoute())} />
+<svelte:window on:hashchange={() => (route = getRoute())} on:popstate={() => (route = getRoute())} />
 
 <FocusKey element={ref} selectText />
 
@@ -185,6 +204,16 @@
       {@html data.byModuleName[moduleName]}
     </div>
     <CodeSnippet light type="multi" {code} />
+    {#if moduleName && aliasTerms[moduleName]}
+      <p class="icon-keywords">Keywords: {aliasTerms[moduleName].join(", ")}</p>
+    {/if}
+    {#if moduleName && animatedNames.has(moduleName)}
+      <p class="icon-animated">
+        <Link href="?icon={moduleName}#animated" on:click={(event) => openAnimated(event, moduleName)}>
+          Try the animated version
+        </Link>
+      </p>
+    {/if}
   </Modal>
 {/if}
 
@@ -258,9 +287,9 @@
               {@const isFiltered = filteredModuleNamesSet.has(name)}
               <button
                 type="button"
-                title={canonicalToAliases[name]
+                title={(canonicalToAliases[name]
                   ? `${name} (aliases: ${canonicalToAliases[name].join(", ")})`
-                  : name}
+                  : name) + (animatedNames.has(name) ? ", also animated" : "")}
                 style:display={isFiltered ? "inline" : "none"}
                 style:order={ranks?.get(name)}
                 on:click={() => (moduleName = name)}
@@ -320,6 +349,18 @@
   }
 
   /* Flex so search results can be ordered by rank without moving any. */
+  .icon-keywords,
+  .icon-animated {
+    margin-block-start: var(--cds-spacing-05);
+    font-size: 0.875rem;
+    line-height: 1.29;
+    letter-spacing: 0.16px;
+  }
+
+  .icon-keywords {
+    color: var(--cds-text-secondary, var(--cds-text-02));
+  }
+
   .list {
     display: flex;
     flex-wrap: wrap;
