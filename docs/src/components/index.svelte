@@ -227,6 +227,8 @@
             spellcheck="false"
             labelText="Search"
             placeholder={`Search by name or keyword, like "heart"`}
+            shortcut="mod+k"
+            selectTextOnFocus
             bind:ref
             bind:value
             disabled={!data}

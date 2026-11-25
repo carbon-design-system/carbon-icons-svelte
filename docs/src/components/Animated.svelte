@@ -393,9 +393,18 @@
   let loopChoice = "false";
   $: loop = loopChoice === "true";
 
+  // Where the explorer shows the icon: on its own, or in a Carbon button.
+  const previews = [
+    ["icon", "Icon"],
+    ["button", "Button"],
+    ["icon-button", "Icon button"],
+  ];
+  let previewIndex = 0;
+  $: preview = previews[previewIndex][0];
+
   // The open panel and its non-default props live in the URL's query, so a
   // link reopens the explorer as it was. The hash stays the page route.
-  const PROP_DEFAULTS = { size: 16, motion: "productive", trigger: "hover", reducedMotion: "static", hoverDelay: 150, loop: "false" };
+  const PROP_DEFAULTS = { preview: "icon", size: 16, motion: "productive", trigger: "hover", reducedMotion: "static", hoverDelay: 150, loop: "false" };
   const oneOf = (value, options, fallback) => (options.includes(value) ? value : fallback);
   const iconSizes = [16, 20, 24, 32];
 
@@ -431,6 +440,7 @@
       reducedMotion = oneOf(params.get("reducedMotion"), ["static", "fade", "full"], PROP_DEFAULTS.reducedMotion);
       hoverDelay = oneOf(number("hoverDelay"), hoverDelays, PROP_DEFAULTS.hoverDelay);
       loopChoice = oneOf(params.get("loop"), ["true", "false"], PROP_DEFAULTS.loop);
+      previewIndex = Math.max(0, previews.findIndex(([id]) => id === params.get("preview")));
       explorerOpen = true;
     }
     urlReady = true;
@@ -446,7 +456,7 @@
     return `?${params}`;
   };
 
-  $: query = explorerQuery(explorerOpen, { name, size, motion, trigger, reducedMotion, hoverDelay, loop: loopChoice });
+  $: query = explorerQuery(explorerOpen, { name, preview, size, motion, trigger, reducedMotion, hoverDelay, loop: loopChoice });
   $: permalink = typeof location === "undefined" ? "" : `${location.origin}${location.pathname}${query}#animated`;
   $: if (urlReady && query !== location.search) {
     history.replaceState(history.state, "", `${location.pathname}${query}${location.hash}`);
@@ -849,8 +859,10 @@
   /** The icon size picked on either page, saved by the parent. */
   export let iconSize = 24;
 
+  // Props that differ from their defaults. In a button, the icon takes the
+  // button's size, so `size` is left out.
   $: explorerProps = [
-    size !== 16 && `size={${size}}`,
+    preview === "icon" && size !== 16 && `size={${size}}`,
     motion !== "productive" && `motion="${motion}"`,
     trigger !== "hover" && `trigger="${trigger}"`,
     reducedMotion !== "static" && `reducedMotion="${reducedMotion}"`,
@@ -859,19 +871,30 @@
     loop && "loop={loading}",
   ].filter(Boolean);
 
-  // The tag stays on one line if it fits Prettier's default 80 columns,
-  // which the panel shows without scrolling; otherwise one prop per line.
-  $: explorerLine = `<${name}${explorerProps.map((prop) => ` ${prop}`).join("")} />`;
-  $: explorerTag =
-    explorerLine.length <= 80
-      ? explorerLine
-      : `<${name}\n${explorerProps.map((prop) => `  ${prop}`).join("\n")}\n/>`;
+  // A tag stays on one line if it fits Prettier's default 80 columns, which
+  // the panel shows without scrolling; otherwise one prop per line.
+  const tag = (open, props, indent = "") => {
+    const line = `${indent}<${open}${props.map((prop) => ` ${prop}`).join("")} />`;
+    return line.length <= 80 ? line : `${indent}<${open}\n${props.map((prop) => `${indent}  ${prop}`).join("\n")}\n${indent}/>`;
+  };
 
-  $: explorerCode = `<script>
-  import { ${name} } from "carbon-icons-svelte/animated";${trigger === "none" ? "\n\n  let count = 0;" : ""}
+  const plays = (trigger) => trigger === "none";
+
+  $: explorerMarkup =
+    preview === "icon"
+      ? `${plays(trigger) ? "<button on:click={() => count++}>Play</button>\n\n" : ""}${tag(name, explorerProps)}`
+      : [
+          `<Button${preview === "icon-button" ? ` kind="ghost" iconDescription="${name}"` : ""}${plays(trigger) ? " on:click={() => count++}" : ""}>`,
+          ...(preview === "button" ? [`  ${name}`] : []),
+          tag(name, ['slot="icon"', 'class="bx--btn__icon"', ...explorerProps], "  "),
+          "</Button>",
+        ].join("\n");
+
+  $: explorerCode = `<script>${preview === "icon" ? "" : '\n  import { Button } from "carbon-components-svelte";'}
+  import { ${name} } from "carbon-icons-svelte/animated";${plays(trigger) ? "\n\n  let count = 0;" : ""}
 <\/script>
-${trigger === "none" ? '\n<button on:click={() => count++}>Play</button>\n' : ""}
-${explorerTag}`;
+
+${explorerMarkup}`;
 
   const importCode = `<script>
   import { Notification } from "carbon-icons-svelte/animated";
@@ -983,7 +1006,7 @@ ${explorerTag}`;
 
 <!-- Gallery toolbar controls, shared by the full and compact toolbars. -->
 {#snippet searchControl(size)}
-  <SearchInput {size} labelText="Search animated icons" placeholder="Search {names.length} icons" bind:ref={galleryInput} bind:value={galleryQuery} />
+  <SearchInput {size} labelText="Search animated icons" placeholder="Search {names.length} icons" shortcut="mod+k" selectTextOnFocus bind:ref={galleryInput} bind:value={galleryQuery} />
 {/snippet}
 
 {#snippet motionControl(labelledBy)}
@@ -1682,22 +1705,12 @@ ${explorerTag}`;
 >
   <div class="explorer">
     <div class="example">
-    <div class="stage">
-      <svelte:component this={Animated[name]} {size} {motion} {trigger} {reducedMotion} {hoverDelay} {play} {loop} />
-      <Button kind="ghost">
-        {name}
-        <svelte:component
-          this={Animated[name]}
-          slot="icon"
-          class="bx--btn__icon"
-          {motion}
-          {trigger}
-          {reducedMotion}
-          {hoverDelay}
-          {play}
-          {loop}
-        />
-      </Button>
+    <div class="preview-bar">
+      <Tabs type="container" autoWidth bind:selected={previewIndex}>
+        {#each previews as [id, label] (id)}
+          <Tab {label} />
+        {/each}
+      </Tabs>
       <div class="stage-actions">
         <Button
           kind="ghost"
@@ -1711,17 +1724,34 @@ ${explorerTag}`;
           kind="ghost"
           size="field"
           icon={linkCopied ? Animated.Checkmark : Animated.Link}
-          iconDescription={linkCopied ? "Link copied" : "Copy a link to these props"}
+          iconDescription={linkCopied ? "URL copied" : "Copy URL"}
           tooltipPosition="bottom"
           tooltipAlignment="end"
           on:click={copyLink}
         />
       </div>
     </div>
+    <div class="stage">
+      {#if preview === "icon"}
+        <svelte:component this={Animated[name]} {size} {motion} {trigger} {reducedMotion} {hoverDelay} {play} {loop} />
+      {:else if preview === "button"}
+        <Button on:click={() => trigger === "none" && play++}>
+          {name}
+          <svelte:component this={Animated[name]} slot="icon" class="bx--btn__icon" {motion} {trigger} {reducedMotion} {hoverDelay} {play} {loop} />
+        </Button>
+      {:else}
+        <!-- No default slot content, so Button lays it out as icon-only. -->
+        <Button kind="ghost" iconDescription={name} on:click={() => trigger === "none" && play++}>
+          <svelte:component this={Animated[name]} slot="icon" class="bx--btn__icon" {motion} {trigger} {reducedMotion} {hoverDelay} {play} {loop} />
+        </Button>
+      {/if}
+    </div>
     <Code code={explorerCode} wrapText />
     </div>
     <Layer class="controls">
       <dl class="prop-list">
+        <!-- In a button, the icon takes the button's size. -->
+        {#if preview === "icon"}
         <dt>
           size <span class="unit">(px)</span>
           <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
@@ -1736,6 +1766,7 @@ ${explorerTag}`;
             <RadioButton labelText="32" value={32} />
           </RadioButtonGroup>
         </dd>
+        {/if}
         <dt>
           motion
           <TooltipIcon icon={Animated.Information} direction="top" align="start" portalTooltip>
@@ -2047,15 +2078,21 @@ ${explorerTag}`;
   }
 
   /* Play and copy-link sit in the preview's corner, like a code block's copy button. */
-  .stage {
-    position: relative;
+  /* Preview tabs on the left, Play and Copy URL on the right, over the
+     stage. The stage takes the selected tab's layer so they join. */
+  .preview-bar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    background: var(--cds-background, var(--cds-ui-background));
   }
 
   .stage-actions {
-    position: absolute;
-    inset-block-start: 0;
-    inset-inline-end: 0;
     display: flex;
+  }
+
+  .explorer .stage {
+    background: var(--cds-layer-01, var(--cds-ui-01));
   }
 
   .explorer :global(.controls) {
