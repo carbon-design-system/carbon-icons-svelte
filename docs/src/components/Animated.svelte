@@ -1743,7 +1743,7 @@ ${explorerMarkup}`;
           kind="ghost"
           size="field"
           icon={linkCopied ? Animated.Checkmark : Animated.Link}
-          iconDescription={linkCopied ? "URL copied" : "Copy URL"}
+          iconDescription={linkCopied ? "Copied!" : "Copy URL"}
           tooltipPosition="bottom"
           tooltipAlignment="end"
           on:click={copyLink}
