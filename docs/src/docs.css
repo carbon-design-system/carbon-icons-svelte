@@ -1,0 +1,608 @@
+/* Shared by the docs pages: the page frame and table of contents, the
+ gallery and its toolbar, example frames and the details panel. Rules
+ apply inside a page (.docs-page) or a side panel (.docs-panel), which is
+ portaled outside it. */
+html {
+  scroll-padding-top: 4rem;
+}
+
+:is(.docs-page, .docs-panel) section .page-title {
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.29;
+  margin: 0;
+}
+
+/* A caption under the title, like Carbon's page header subtitle. */
+:is(.docs-page, .docs-panel) section .page-description {
+  margin-block: var(--cds-spacing-02) 0;
+  font-size: 0.875rem;
+  line-height: 1.29;
+  letter-spacing: 0.16px;
+  color: var(--cds-text-secondary, var(--cds-text-02));
+}
+
+.page {
+  padding-block: var(--cds-spacing-07) var(--cds-spacing-10);
+}
+
+:is(.docs-page, .docs-panel) section + section {
+  margin-block-start: var(--cds-spacing-12);
+}
+
+/* Skip layout and paint for what's out of view: each gallery group and
+   every section after the gallery. The browser remembers each one's
+   size once it has rendered. */
+:is(.docs-page, .docs-panel) section + section,
+:is(.docs-page, .docs-panel) .gallery {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 40rem;
+}
+
+:is(.docs-page, .docs-panel) .gallery {
+  contain-intrinsic-size: auto 20rem;
+}
+
+/* The page's own subheadings, not headings inside components like
+   EmptyState. */
+:is(.docs-page, .docs-panel) section h3:not([class*="bx--"]) {
+  margin-block-start: var(--cds-spacing-09);
+}
+
+:is(.docs-page, .docs-panel) .toc {
+  position: sticky;
+  top: 4rem;
+}
+
+
+@media (max-width: 65.98rem) {
+  :is(.docs-page, .docs-panel) .toc {
+    display: none;
+  }
+}
+
+:is(.docs-page, .docs-panel) section :is(p, ul, h2),
+:is(.docs-page, .docs-panel) section .code {
+  max-width: 44rem;
+}
+
+/* Room between running copy and the example or code below it. */
+:is(.docs-page, .docs-panel) section > .example,
+:is(.docs-page, .docs-panel) section > .code {
+  margin-block-start: var(--cds-spacing-07);
+}
+
+/* Controls that drive a preview, in the example's frame rather than in
+   the preview itself, so they don't read as part of the example. */
+:is(.docs-page, .docs-panel) .demo-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cds-spacing-05);
+  min-height: 2rem;
+  padding-inline-start: var(--cds-spacing-05);
+  background: var(--cds-layer-01, var(--cds-ui-01));
+  border-block-end: 1px solid var(--cds-border-subtle-01, var(--cds-ui-03));
+}
+
+:is(.docs-page, .docs-panel) .demo-bar-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.32px;
+  color: var(--cds-text-secondary, var(--cds-text-02));
+}
+
+:is(.docs-page, .docs-panel) .demo-bar .bx--form-item {
+  flex: none;
+  padding-inline-end: var(--cds-spacing-05);
+}
+
+:is(.docs-page, .docs-panel) .demo-bar .bx--toggle__text--off,
+:is(.docs-page, .docs-panel) .demo-bar .bx--toggle__text--on {
+  font-size: 0.75rem;
+}
+
+/* Recipes: container tabs over one panel holding a recipe's copy and example. */
+:is(.docs-page, .docs-panel) section .recipes {
+  margin-block-start: var(--cds-spacing-07);
+}
+
+:is(.docs-page, .docs-panel) #animated-recipes > .bx--tab-content {
+  margin: 0;
+  padding: 0;
+}
+
+/* A recipe's copy sits on the selected tab's layer, above its example. */
+/* Carbon's body-compact-01, a step below the page's running copy. */
+:is(.docs-page, .docs-panel) .recipe {
+  background: var(--cds-layer-01, var(--cds-ui-01));
+}
+
+:is(.docs-page, .docs-panel) .recipe > p {
+  max-width: 40rem;
+  margin: 0;
+  padding: var(--cds-spacing-05);
+  font-size: 0.875rem;
+  line-height: 1.29;
+  letter-spacing: 0.16px;
+  color: var(--cds-text-secondary, var(--cds-text-02));
+}
+
+:is(.docs-page, .docs-panel) .recipe > p + .example {
+  margin-block-start: 0;
+}
+
+:is(.docs-page, .docs-panel) .demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cds-spacing-05);
+  padding: var(--cds-spacing-07) var(--cds-spacing-06);
+  background: var(--cds-layer-01, var(--cds-ui-01));
+}
+
+/* A field and its button: the button lines up with the field, below the
+   field's label, whatever the field's helper or error text does. */
+:is(.docs-page, .docs-panel) .demo-row.form-row {
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  gap: 1px;
+}
+
+:is(.docs-page, .docs-panel) .form-row .bx--form-item {
+  flex: 0 1 20rem;
+}
+
+:is(.docs-page, .docs-panel) .form-row .bx--btn {
+  flex: none;
+  margin-block-start: 1.5rem;
+}
+
+:is(.docs-page, .docs-panel) .demo .fluid-demo {
+  max-width: 24rem;
+}
+
+:is(.docs-page, .docs-panel) .demo .fluid-demo > .bx--btn {
+  width: 100%;
+  max-width: none;
+}
+
+:is(.docs-page, .docs-panel) .demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cds-spacing-03);
+}
+
+:is(.docs-page, .docs-panel) .divider {
+  width: 1px;
+  height: 2rem;
+  margin: 0 var(--cds-spacing-03);
+  background: var(--cds-border-subtle-01, var(--cds-ui-03));
+}
+
+:is(.docs-page, .docs-panel) .motion-compare {
+  align-items: flex-start;
+}
+
+:is(.docs-page, .docs-panel) .motion-mode {
+  display: flex;
+  align-items: center;
+  gap: var(--cds-spacing-07);
+}
+
+:is(.docs-page, .docs-panel) .motion-label {
+  width: 6rem;
+  color: var(--cds-text-secondary, var(--cds-text-02));
+}
+
+:is(.docs-page, .docs-panel) .motion-icons {
+  display: flex;
+  gap: var(--cds-spacing-07);
+}
+
+:is(.docs-page, .docs-panel) .explorer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cds-spacing-06);
+}
+
+/* The panel and its overlay appear and leave at once. Without an
+   animation, SidePanel closes without waiting for one. */
+.bx--side-panel.explorer-panel,
+.bx--side-panel__overlay {
+  animation: none;
+}
+
+/* Between lg and xl: wide enough for the longest icon's import line. */
+.bx--side-panel.explorer-panel {
+  width: min(46rem, 100%);
+}
+
+/* A preview and its code read as one example, like Carbon's docs: one
+   frame, one width, no gap between them. */
+:is(.docs-page, .docs-panel) .example {
+  border: 1px solid var(--cds-border-subtle-01, var(--cds-ui-03));
+}
+
+:is(.docs-page, .docs-panel) section .example .code {
+  max-width: none;
+}
+
+:is(.docs-page, .docs-panel) .example .demo {
+  background: var(--cds-background, var(--cds-ui-background));
+}
+
+:is(.docs-page, .docs-panel) .stage {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cds-spacing-07);
+  min-height: 6rem;
+  padding: var(--cds-spacing-05) var(--cds-spacing-06);
+  background: var(--cds-background, var(--cds-ui-background));
+}
+
+:is(.docs-page, .docs-panel) .example .bx--snippet {
+  border-block-start: 1px solid var(--cds-border-subtle-01, var(--cds-ui-03));
+}
+
+/* Play and copy-link sit in the preview's corner, like a code block's copy button. */
+/* Preview tabs on the left, Play and Copy URL on the right, over the
+   stage. The bar and the stage take the selected tab's layer, so the
+   three read as one surface. */
+:is(.docs-page, .docs-panel) .preview-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--cds-layer, var(--cds-ui-01));
+}
+
+:is(.docs-page, .docs-panel) .stage-actions {
+  display: flex;
+}
+
+/* The selected tab's own token, which differs by layer: white inside
+   the side panel. */
+:is(.docs-page, .docs-panel) .explorer .stage {
+  background: var(--cds-layer, var(--cds-ui-01));
+}
+
+:is(.docs-page, .docs-panel) .explorer .controls {
+  padding: 0 var(--cds-spacing-05);
+  background: var(--cds-layer-01, var(--cds-ui-01));
+}
+
+/* One row per prop: its name, then its control. */
+:is(.docs-page, .docs-panel) .prop-list {
+  display: grid;
+  grid-template-columns: 10.5rem minmax(0, 1fr);
+  margin: 0;
+}
+
+:is(.docs-page, .docs-panel) .prop-list dt {
+  gap: var(--cds-spacing-02);
+  font-size: 0.875rem;
+  color: var(--cds-text-secondary, var(--cds-text-02));
+}
+
+:is(.docs-page, .docs-panel) .tooltip-default {
+  display: block;
+  margin-block-start: var(--cds-spacing-03);
+}
+
+:is(.docs-page, .docs-panel) .unit {
+  color: var(--cds-text-helper, var(--cds-text-05));
+}
+
+:is(.docs-page, .docs-panel) .prop-list dt,
+:is(.docs-page, .docs-panel) .prop-list dd {
+  min-height: 3.5rem;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding-block: var(--cds-spacing-04);
+  border-block-end: 1px solid var(--cds-border-subtle-01, var(--cds-ui-03));
+}
+
+:is(.docs-page, .docs-panel) .prop-list dt:last-of-type,
+:is(.docs-page, .docs-panel) .prop-list dd:last-of-type {
+  border-block-end: 0;
+}
+
+:is(.docs-page, .docs-panel) .prop-list dd {
+  min-width: 0;
+}
+
+:is(.docs-page, .docs-panel) .prop-list dd .bx--form-item,
+:is(.docs-page, .docs-panel) .prop-list dd .bx--slider-container {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+}
+
+/* On narrow screens each prop's name sits above its control. */
+@media (max-width: 41.98rem) {
+  :is(.docs-page, .docs-panel) .prop-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  :is(.docs-page, .docs-panel) .prop-list dt {
+    min-height: 0;
+    padding-block: var(--cds-spacing-04) 0;
+    border-block-end: 0;
+  }
+
+  :is(.docs-page, .docs-panel) .prop-list dd {
+    min-height: 0;
+    padding-block-start: var(--cds-spacing-03);
+  }
+}
+
+:is(.docs-page, .docs-panel) .prop-list dd fieldset {
+  margin: 0;
+}
+
+:is(.docs-page, .docs-panel) .explorer .code {
+  max-width: none;
+}
+
+/* The table of contents sits on the right on wide screens, and stays
+   above the content on narrow ones. */
+@media (min-width: 66rem) {
+  .toc-column {
+    order: 2;
+  }
+}
+
+:is(.docs-page, .docs-panel) .gallery-toolbar {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--cds-spacing-03) var(--cds-spacing-05);
+  padding-block: var(--cds-spacing-03);
+  background: var(--cds-background, var(--cds-ui-background));
+  /* Always 1px, so the border appearing doesn't shift the page. */
+  border-block-end: 1px solid transparent;
+}
+
+:is(.docs-page, .docs-panel) .toolbar-sentinel {
+  height: 0;
+  margin-block-start: var(--cds-spacing-06);
+}
+
+:is(.docs-page, .docs-panel) .gallery-toolbar.stuck {
+  border-block-end-color: var(--cds-border-subtle-01, var(--cds-ui-03));
+}
+
+/* Narrow, and shrinks to 12rem before the controls give up and move
+   into the popover. */
+:is(.docs-page, .docs-panel) .gallery-toolbar .bx--search {
+  flex: 1 1 12rem;
+  min-width: 12rem;
+  max-width: 18rem;
+}
+
+:is(.docs-page, .docs-panel) .gallery-toolbar .toolbar-controls {
+  margin-inline-start: auto;
+}
+
+/* No underline, like Carbon's toolbar search in a DataTable, so the field
+   doesn't draw a second line above the stuck toolbar's border. */
+:is(.docs-page, .docs-panel) .gallery-toolbar .bx--search-input {
+  border-block-end-color: transparent;
+}
+
+:is(.docs-page, .docs-panel) .gallery-toolbar.compact {
+  flex-wrap: nowrap;
+  gap: var(--cds-spacing-02);
+}
+
+:is(.docs-page, .docs-panel) .gallery-toolbar.compact .bx--search {
+  flex: 1 1 auto;
+  max-width: none;
+}
+
+:is(.docs-page, .docs-panel) .toolbar-options {
+  position: relative;
+}
+
+:is(.docs-page, .docs-panel) .options-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cds-spacing-03);
+}
+
+:is(.docs-page, .docs-panel) .options-field .bx--label {
+  margin: 0;
+}
+
+/* Sticky while it's the full, one-row toolbar. */
+:is(.docs-page, .docs-panel) .gallery-toolbar:not(.compact) {
+  position: sticky;
+  top: 3rem;
+  z-index: 2;
+}
+
+:is(.docs-page, .docs-panel) .options-panel .bx--form-item {
+  flex: none;
+  margin: 0;
+}
+
+:is(.docs-page, .docs-panel) .options-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--cds-spacing-04);
+  padding: var(--cds-spacing-05);
+  min-width: 14rem;
+}
+
+:is(.docs-page, .docs-panel) .options-panel .bx--label {
+  margin: 0;
+}
+
+:is(.docs-page, .docs-panel) .toolbar-field,
+:is(.docs-page, .docs-panel) .toolbar-theme {
+  display: flex;
+  align-items: center;
+}
+
+/* 12px from label to control, matching Theme, whose dropdown pads its
+   4px gap with 8px of its own. */
+:is(.docs-page, .docs-panel) .toolbar-field {
+  gap: var(--cds-spacing-04);
+}
+
+:is(.docs-page, .docs-panel) .toolbar-theme {
+  gap: var(--cds-spacing-02);
+}
+
+/* Carbon's inline dropdown menu is at least 18rem; fit it to the names. */
+:is(.docs-page, .docs-panel) .toolbar-theme .bx--list-box__menu {
+  min-width: 8rem;
+  width: max-content;
+}
+
+:is(.docs-page, .docs-panel) .toolbar-field .bx--label,
+:is(.docs-page, .docs-panel) .toolbar-theme .bx--label {
+  margin: 0;
+}
+
+:is(.docs-page, .docs-panel) .toolbar-field .bx--form-item {
+  flex: none;
+  margin: 0;
+}
+
+:is(.docs-page, .docs-panel) .toolbar-controls {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--cds-spacing-05);
+}
+
+:is(.docs-page, .docs-panel) .toolbar-controls .bx--form-item {
+  flex: none;
+  margin: 0;
+}
+
+/* Controls keep their size, so a toolbar that's too narrow overflows,
+   which switches it to the compact toolbar, instead of squeezing them. */
+:is(.docs-page, .docs-panel) .toolbar-controls > *,
+:is(.docs-page, .docs-panel) .gallery-toolbar > .toolbar-controls {
+  flex: none;
+}
+
+:is(.docs-page, .docs-panel) .toolbar-field .bx--label,
+:is(.docs-page, .docs-panel) .toolbar-theme .bx--label {
+  white-space: nowrap;
+}
+
+/* A category heading sits closer to its own tiles than to the grid above. */
+:is(.docs-page, .docs-panel) .gallery {
+  margin-block-start: var(--cds-spacing-05);
+}
+
+/* Nested links line up with their parent's text, past its icon. */
+:is(.docs-page, .docs-panel) .toc .bx--toc__item--nested .bx--toc__link {
+  padding-inline-start: calc(1rem + 16px + var(--cds-spacing-03));
+}
+
+/* Counts sit on their label's baseline, not centered against it. */
+:is(.docs-page, .docs-panel) .toc .bx--toc__item--nested .bx--toc__link-content {
+  align-items: baseline;
+}
+
+:is(.docs-page, .docs-panel) .toc-count {
+  font-size: 0.6875rem;
+  color: var(--cds-text-helper, var(--cds-text-05));
+}
+
+:is(.docs-page, .docs-panel) .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+:is(.docs-page, .docs-panel) .gallery-empty {
+  margin-block-start: var(--cds-spacing-07);
+}
+
+:is(.docs-page, .docs-panel) .gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
+  gap: 1px;
+}
+
+@media (max-width: 41.98rem) {
+  :is(.docs-page, .docs-panel) .gallery {
+    grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
+  }
+}
+
+/* Square tiles, with room for the icon at 32px, so changing the size or a
+   long name never changes a tile's shape. */
+:is(.docs-page, .docs-panel) .gallery button {
+  aspect-ratio: 1;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  justify-items: center;
+  align-items: center;
+  gap: var(--cds-spacing-03);
+  padding: var(--cds-spacing-05) var(--cds-spacing-03) var(--cds-spacing-04);
+  background: var(--cds-layer-01, var(--cds-ui-01));
+  border: 0;
+  color: var(--cds-text-primary, var(--cds-text-01));
+  cursor: pointer;
+}
+
+:is(.docs-page, .docs-panel) .gallery button:hover {
+  background: var(--cds-layer-hover-01, var(--cds-hover-ui));
+}
+
+:is(.docs-page, .docs-panel) .gallery button:focus {
+  outline: 2px solid var(--cds-focus);
+  outline-offset: -2px;
+}
+
+/* The keyword a tile matched by, in its top padding so the tile keeps
+   its layout. */
+:is(.docs-page, .docs-panel) .gallery button {
+  position: relative;
+}
+
+:is(.docs-page, .docs-panel) .tile-match {
+  position: absolute;
+  inset-block-start: var(--cds-spacing-02);
+  inset-inline: var(--cds-spacing-03);
+  overflow: hidden;
+  font-size: 0.75rem;
+  line-height: 1.33;
+  letter-spacing: 0.32px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--cds-text-helper, var(--cds-text-05));
+}
+
+:is(.docs-page, .docs-panel) .tile-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+}
+
+:is(.docs-page, .docs-panel) .tile-name {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  max-width: 100%;
+  min-height: 2lh;
+  text-align: center;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--cds-text-secondary, var(--cds-text-02));
+}
