@@ -544,6 +544,18 @@
   let groupsElement = null;
   let emptyElement = null;
   let lastFilter;
+  // The empty state's icon plays once it has settled in, rather than while
+  // it pops in under the cursor. Back to 0 when it goes, so it doesn't play
+  // straight away the next time it mounts.
+  let emptyPlay = 0;
+  let emptyTimer;
+  $: noResults = visibleGroups.length === 0;
+  $: {
+    clearTimeout(emptyTimer);
+    if (noResults) emptyTimer = setTimeout(() => emptyPlay++, 400);
+    else emptyPlay = 0;
+  }
+
   const clearSearch = () => {
     galleryQuery = "";
     galleryInput?.focus();
@@ -1180,7 +1192,7 @@ ${explorerMarkup}`;
         {#if visibleGroups.length === 0}
           <div class="gallery-empty" bind:this={emptyElement}>
             <EmptyState size="sm" headingLevel={3} titleText="No icons match “{galleryQuery.trim()}”" subtitleText="Try a keyword like “heart” or “refresh”.">
-              <Animated.Search slot="illustration" size={32} play trigger="none" motion="expressive" />
+              <Animated.Search slot="illustration" size={32} play={emptyPlay} trigger="none" motion="expressive" />
               <Button kind="tertiary" size="small" on:click={clearSearch}>Clear search</Button>
             </EmptyState>
           </div>
@@ -1929,7 +1941,9 @@ ${explorerMarkup}`;
     contain-intrinsic-size: auto 20rem;
   }
 
-  section :global(h3) {
+  /* The page's own subheadings, not headings inside components like
+     EmptyState. */
+  section :global(h3:not([class*="bx--"])) {
     margin-block-start: var(--cds-spacing-09);
   }
 
