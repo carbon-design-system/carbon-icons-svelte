@@ -1725,7 +1725,7 @@ ${explorerMarkup}`;
   <div class="explorer">
     <div class="example">
     <div class="preview-bar">
-      <Tabs type="container" autoWidth bind:selected={previewIndex}>
+      <Tabs type="container" size="md" autoWidth bind:selected={previewIndex}>
         {#each previews as [id, label] (id)}
           <Tab {label} />
         {/each}
@@ -2098,20 +2098,23 @@ ${explorerMarkup}`;
 
   /* Play and copy-link sit in the preview's corner, like a code block's copy button. */
   /* Preview tabs on the left, Play and Copy URL on the right, over the
-     stage. The stage takes the selected tab's layer so they join. */
+     stage. The bar and the stage take the selected tab's layer, so the
+     three read as one surface. */
   .preview-bar {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: space-between;
-    background: var(--cds-background, var(--cds-ui-background));
+    background: var(--cds-layer, var(--cds-ui-01));
   }
 
   .stage-actions {
     display: flex;
   }
 
+  /* The selected tab's own token, which differs by layer: white inside
+     the side panel. */
   .explorer .stage {
-    background: var(--cds-layer-01, var(--cds-ui-01));
+    background: var(--cds-layer, var(--cds-ui-01));
   }
 
   .explorer :global(.controls) {
