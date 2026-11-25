@@ -58,7 +58,7 @@
   import Code from "./Code.svelte";
   import FocusKey from "./FocusKey.svelte";
   import { ANIMATED_ALIASES } from "../generated/animated-aliases";
-  import { indexAliases, normalize, rankAliases, rankName } from "../search.js";
+  import { indexAliases, matchingTerm, normalize, rankAliases, rankName } from "../search.js";
 
   const names = Object.keys(Animated)
     // Icons are the capitalized exports; the rest are functions like setAnimatedIconDefaults.
@@ -582,6 +582,11 @@
 
   // Carbon's search terms for each icon, so "heart" finds Favorite.
   const aliasIndex = indexAliases(ANIMATED_ALIASES);
+  // The keyword an icon matched by, when its name didn't match, shown on
+  // its tile so the result makes sense.
+  const matchedBy = (query, name) =>
+    query && rankName(query, name) < 0 ? matchingTerm(query, ANIMATED_ALIASES[name]) : undefined;
+
   // A name match first, then a search term. See `rankName`.
   const rankFor = (query, name) => {
     const byName = rankName(query, name);
@@ -1196,7 +1201,9 @@ ${explorerMarkup}`;
           <h3 id={group.id}>{group.title}</h3>
           <div class="gallery">
             {#each group.names as option (option)}
+              {@const term = matchedBy(queryKey, option)}
               <button type="button" on:click={() => explore(option)}>
+                {#if term}<span class="tile-match" aria-hidden="true">{term}</span>{/if}
                 <span class="tile-icon">
                   <svelte:component this={Animated[option]} size={iconSize} motion={galleryMotion} play={galleryPlay} loop={galleryLoop} />
                 </span>
@@ -2445,6 +2452,25 @@ ${explorerMarkup}`;
   .gallery button:focus {
     outline: 2px solid var(--cds-focus);
     outline-offset: -2px;
+  }
+
+  /* The keyword a tile matched by, in its top padding so the tile keeps
+     its layout. */
+  .gallery button {
+    position: relative;
+  }
+
+  .tile-match {
+    position: absolute;
+    inset-block-start: var(--cds-spacing-02);
+    inset-inline: var(--cds-spacing-03);
+    overflow: hidden;
+    font-size: 0.75rem;
+    line-height: 1.33;
+    letter-spacing: 0.32px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--cds-text-helper, var(--cds-text-05));
   }
 
   .tile-icon {
