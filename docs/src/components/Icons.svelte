@@ -31,8 +31,11 @@
   import Add from "carbon-icons-svelte/lib/Add.svelte";
   import ArrowRight from "carbon-icons-svelte/lib/ArrowRight.svelte";
   import Checkmark from "carbon-icons-svelte/lib/Checkmark.svelte";
+  import CodeIcon from "carbon-icons-svelte/lib/Code.svelte";
   import Copy from "carbon-icons-svelte/lib/Copy.svelte";
   import Download from "carbon-icons-svelte/lib/Download.svelte";
+  import OverflowMenuVertical from "carbon-icons-svelte/lib/OverflowMenuVertical.svelte";
+  import TextFont from "carbon-icons-svelte/lib/TextFont.svelte";
   import Notification from "carbon-icons-svelte/lib/Notification.svelte";
   import Settings from "carbon-icons-svelte/lib/Settings.svelte";
   import TrashCan from "carbon-icons-svelte/lib/TrashCan.svelte";
@@ -322,7 +325,7 @@
   let svgCopied = false;
   let svgCopiedTimer;
   const pointAt = (target) => {
-    if (!(target instanceof Element) || target.closest(".tile-copy")) return;
+    if (tileMenuOpen || !(target instanceof Element) || target.closest(".tile-copy")) return;
     const tile = target.closest("button[data-icon]");
     if (!(tile instanceof HTMLElement) || !groupsElement) {
       copyTarget = null;
@@ -340,12 +343,38 @@
     svgCopied = false;
   };
   // The SVG at the size the gallery shows.
+  const svgOf = (name) => sized(data.byModuleName[name], iconSize);
   const copySvg = async () => {
     if (!copyTarget || !data) return;
-    await navigator.clipboard.writeText(sized(data.byModuleName[copyTarget.name], iconSize));
+    await navigator.clipboard.writeText(svgOf(copyTarget.name));
     svgCopied = true;
     clearTimeout(svgCopiedTimer);
     svgCopiedTimer = setTimeout(() => (svgCopied = false), 2000);
+  };
+
+  // The tile's other actions, in its overflow menu. While the menu is open
+  // the buttons stay on that tile, though the pointer has left it.
+  let tileMenuOpen = false;
+  let tileActionDone = false;
+  let tileActionTimer;
+  let actionStatus = "";
+  const confirmAction = (text) => {
+    actionStatus = text;
+    tileActionDone = true;
+    clearTimeout(tileActionTimer);
+    tileActionTimer = setTimeout(() => (tileActionDone = false), 2000);
+  };
+  const copyText = async (text, status) => {
+    await navigator.clipboard.writeText(text);
+    confirmAction(status);
+  };
+  // A file name from the icon's name: AddAlt → add-alt.svg.
+  const fileName = (name) => `${name.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase()}.svg`;
+  const downloadSvg = (name, svg) => {
+    const url = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }));
+    const link = Object.assign(document.createElement("a"), { href: url, download: fileName(name) });
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 0);
   };
 
   // The tile of the icon the panel shows is marked as current, so it's
@@ -402,11 +431,11 @@
     return line.length <= 80 ? line : `${indent}<${name}\n${props.map((prop) => `${indent}  ${prop}`).join("\n")}\n${indent}/>`;
   };
 
-  $: importLine = selected
-    ? importStyle === "direct"
-      ? `import ${selected} from "carbon-icons-svelte/lib/${selected}.svelte";`
-      : `import { ${selected} } from "carbon-icons-svelte";`
-    : "";
+  const importFor = (name, style) =>
+    style === "direct"
+      ? `import ${name} from "carbon-icons-svelte/lib/${name}.svelte";`
+      : `import { ${name} } from "carbon-icons-svelte";`;
+  $: importLine = selected ? importFor(selected, importStyle) : "";
   $: detailsCode = !selected
     ? ""
     : preview === "icon"
@@ -452,6 +481,13 @@
   $: if (urlReady && search !== location.search) {
     history.replaceState(history.state, "", `${location.pathname}${search}${location.hash}`);
   }
+
+  let panelSvgCopied = false;
+  const copyPanelSvg = async () => {
+    await navigator.clipboard.writeText(svgOf(selected));
+    panelSvgCopied = true;
+    setTimeout(() => (panelSvgCopied = false), 2000);
+  };
 
   let urlCopied = false;
   const copyUrl = async () => {
@@ -688,6 +724,7 @@ export default {
           </div>
         {/if}
         <p class="visually-hidden" aria-live="polite">{searchStatus}</p>
+        <p class="visually-hidden" aria-live="polite">{actionStatus}</p>
         <p id="icons-gallery-keys" class="visually-hidden">Use the arrow keys to move between icons.</p>
 
         {#if data}
@@ -709,8 +746,9 @@ export default {
             }}
             on:mouseover={(event) => pointAt(event.target)}
             on:focusin={(event) => pointAt(event.target)}
-            on:mouseleave={() => (copyTarget = null)}
+            on:mouseleave={() => !tileMenuOpen && (copyTarget = null)}
             on:focusout={(event) => {
+              if (tileMenuOpen) return;
               if (!(event.relatedTarget instanceof Node && groupsElement.contains(event.relatedTarget))) copyTarget = null;
             }}
           >
@@ -718,6 +756,7 @@ export default {
               focused: a button per tile would double the gallery's
               elements, and a tile, itself a button, can't hold one. -->
             {#if copyTarget}
+              {@const name = copyTarget.name}
               <span class="tile-copy" style:top="{copyTarget.top}px" style:left="{copyTarget.left}px">
                 <Button
                   kind="ghost"
@@ -727,6 +766,18 @@ export default {
                   tooltipPosition="bottom"
                   on:click={copySvg}
                 />
+                <OverflowMenu
+                  size="sm"
+                  flipped
+                  icon={tileActionDone ? Checkmark : OverflowMenuVertical}
+                  iconDescription={tileActionDone ? "Done" : "More actions"}
+                  tooltipPosition="bottom"
+                  bind:open={tileMenuOpen}
+                >
+                  <OverflowMenuItem icon={CodeIcon} text="Copy import" on:click={() => copyText(importFor(name, importStyle), `Copied the import for ${name}`)} />
+                  <OverflowMenuItem icon={TextFont} text="Copy name" on:click={() => copyText(name, `Copied ${name}`)} />
+                  <OverflowMenuItem icon={Download} text="Download SVG" on:click={() => { downloadSvg(name, svgOf(name)); confirmAction(`Downloaded ${fileName(name)}`); }} />
+                </OverflowMenu>
               </span>
             {/if}
             <!-- Every group stays mounted: while searching, the groups merge
@@ -924,6 +975,22 @@ export default {
             <Button
               kind="ghost"
               size="field"
+              icon={panelSvgCopied ? Checkmark : Copy}
+              iconDescription={panelSvgCopied ? "Copied!" : "Copy SVG"}
+              tooltipPosition="bottom"
+              on:click={copyPanelSvg}
+            />
+            <Button
+              kind="ghost"
+              size="field"
+              icon={Download}
+              iconDescription="Download SVG"
+              tooltipPosition="bottom"
+              on:click={() => downloadSvg(selected, svgOf(selected))}
+            />
+            <Button
+              kind="ghost"
+              size="field"
               icon={urlCopied ? AnimatedCheckmark : AnimatedLink}
               iconDescription={urlCopied ? "Copied!" : "Copy URL"}
               tooltipPosition="bottom"
@@ -1062,11 +1129,13 @@ export default {
     position: relative;
   }
 
-  /* Over the hovered or focused tile's top-right corner. */
+  /* Stacked down the hovered or focused tile's right edge, clear of its
+     centered icon. */
   .tile-copy {
     position: absolute;
     z-index: 1;
     display: flex;
+    flex-direction: column;
   }
 
   .gallery-groups.searching {
@@ -1178,11 +1247,6 @@ export default {
     font-size: 0.875rem;
     line-height: 1.125rem;
     color: var(--cds-text-secondary, var(--cds-text-02));
-  }
-
-  .status strong {
-    font-weight: 600;
-    color: var(--cds-text-primary, var(--cds-text-01));
   }
 
   /* The barrel import's tip: Carbon's informative indicator labelled
