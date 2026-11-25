@@ -55,6 +55,7 @@
   import AnimatedDefaults from "./AnimatedDefaults.svelte";
   import { pageLinks } from "../page-links.js";
   import Code from "./Code.svelte";
+  import FocusKey from "./FocusKey.svelte";
   import { ANIMATED_ALIASES } from "../generated/animated-aliases";
   import { indexAliases, normalize, rankAliases, rankName } from "../search.js";
 
@@ -524,6 +525,8 @@
     play++;
   };
   let galleryQuery = "";
+  /** The search field, which "/" and Cmd+K focus. */
+  let galleryInput = null;
   let galleryPlay = 0;
   let galleryLoop = false;
 
@@ -984,11 +987,13 @@ ${explorerTag}`;
 
 <svelte:window on:hashchange={scrollToHash} />
 
+<FocusKey element={galleryInput} selectText />
+
 <Content>
 
 <!-- Gallery toolbar controls, shared by the full and compact toolbars. -->
 {#snippet searchControl(size)}
-  <SearchInput {size} labelText="Search animated icons" placeholder="Search {names.length} icons" bind:value={galleryQuery} />
+  <SearchInput {size} labelText="Search animated icons" placeholder="Search {names.length} icons" bind:ref={galleryInput} bind:value={galleryQuery} />
 {/snippet}
 
 {#snippet motionControl(labelledBy)}
