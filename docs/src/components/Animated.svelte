@@ -901,6 +901,16 @@ ${explorerTag}`;
   setAnimatedIconDefaults({ motion: "expressive", hoverDelay: 0 });
 <\/script>`;
 
+  const pageDefaultsCode = `<script>
+  import { configureAnimatedIcons } from "carbon-icons-svelte/animated";
+
+  configureAnimatedIcons({ reducedMotion: "fade" });
+<\/script>
+
+<nav data-animated-motion="expressive" data-animated-hover-delay="0">
+  <!-- Icons in here use expressive motion and no hover delay. -->
+</nav>`;
+
   const loopCode = `<script>
   import { Button } from "carbon-components-svelte";
   import { Renew } from "carbon-icons-svelte/animated";
@@ -1546,6 +1556,15 @@ ${explorerTag}`;
         </div>
         <Code code={defaultsCode} />
         </div>
+        <p>Two more ways reach icons outside any component that sets defaults, like icons mounted on their own:</p>
+        <ul>
+          <li><strong>The whole page:</strong> call <code>configureAnimatedIcons</code> once.</li>
+          <li><strong>Part of the page:</strong> put data attributes like <code>data-animated-motion</code> on an element, and the icons inside it use them.</li>
+        </ul>
+        <p>
+          An icon's own props win, then <code>setAnimatedIconDefaults</code>, then the nearest data attribute, then <code>configureAnimatedIcons</code>. Data attributes and page defaults are read each time an icon plays, so a change applies to its next play.
+        </p>
+        <Code code={pageDefaultsCode} />
       </section>
 
       <section id="animated-accessibility">
