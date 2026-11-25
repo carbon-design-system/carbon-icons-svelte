@@ -387,7 +387,8 @@
     explorerOpen = true;
   };
 
-  // j and k step through the gallery as shown, search and Loop included.
+  // j and k step through the gallery as shown, search and Loop included,
+  // through the previous and next buttons' shortcuts.
   $: browseOrder = visibleGroups.flatMap((group) => group.names);
   $: browseIndex = browseOrder.indexOf(name);
   const step = (delta) => {
@@ -404,16 +405,6 @@
     if (wasOpen && !explorerOpen) requestAnimationFrame(() => tileOf(name)?.focus({ preventScroll: true }));
     wasOpen = explorerOpen;
   }
-  /** @param {KeyboardEvent} event */
-  const onPanelKeydown = (event) => {
-    if (!explorerOpen || event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) return;
-    const target = event.target;
-    if (target instanceof HTMLElement && (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName))) return;
-    if (event.key === "j") step(1);
-    else if (event.key === "k") step(-1);
-    else return;
-    event.preventDefault();
-  };
   let motion = "productive";
   let trigger = "hover";
   let reducedMotion = "static";
@@ -969,7 +960,7 @@ ${explorerMarkup}`;
   const reducedCode = `<Checkmark play={saved} trigger="none" reducedMotion="fade" />`;
 </script>
 
-<svelte:window on:hashchange={scrollToHash} on:keydown={onPanelKeydown} />
+<svelte:window on:hashchange={scrollToHash} />
 
 <FocusKey element={galleryInput} selectText />
 
@@ -1692,7 +1683,8 @@ ${explorerMarkup}`;
       kind="ghost"
       size="small"
       icon={Animated.ChevronLeft}
-      iconDescription="Previous (K)"
+      iconDescription="Previous"
+      shortcut="k"
       tooltipPosition="bottom"
       tooltipAlignment="start"
       disabled={browseIndex <= 0}
@@ -1702,7 +1694,8 @@ ${explorerMarkup}`;
       kind="ghost"
       size="small"
       icon={Animated.ChevronRight}
-      iconDescription="Next (J)"
+      iconDescription="Next"
+      shortcut="j"
       tooltipPosition="bottom"
       disabled={browseIndex === -1 || browseIndex >= browseOrder.length - 1}
       on:click={() => step(1)}

@@ -30,6 +30,7 @@
   import Add from "carbon-icons-svelte/lib/Add.svelte";
   import ArrowRight from "carbon-icons-svelte/lib/ArrowRight.svelte";
   import Download from "carbon-icons-svelte/lib/Download.svelte";
+  import Information from "carbon-icons-svelte/lib/Information.svelte";
   import Notification from "carbon-icons-svelte/lib/Notification.svelte";
   import Settings from "carbon-icons-svelte/lib/Settings.svelte";
   import TrashCan from "carbon-icons-svelte/lib/TrashCan.svelte";
@@ -169,7 +170,7 @@
         return `<button type="button" tabindex="-1" data-icon="${name}"${
           formerly ? ` title="${escapeHtml(`${name}, formerly ${formerly.join(", ")}`)}"` : ""
         }>${
-          data.deprecated?.[name] !== undefined ? '<span class="tile-note">Deprecated</span>' : ""
+          data.deprecated?.[name] !== undefined ? '<span class="bx--tag bx--tag--sm bx--tag--red tile-flag">Deprecated</span>' : ""
         }<span class="tile-icon">${
           data.byModuleName[name]
         }</span><span class="tile-name">${nameHtml(name)}</span></button>`;
@@ -285,9 +286,9 @@
   ];
   let previewIndex = 0;
   $: preview = previews[previewIndex][0];
-  // "file" imports the icon's own file; "package" imports from the package,
-  // which needs optimizeImports.
-  const importStyles = ["file", "package"];
+  // "direct" imports the icon's own file; "barrel" imports from the
+  // package's index, which needs optimizeImports.
+  const importStyles = ["direct", "barrel"];
   let importIndex = 0;
   $: importStyle = importStyles[importIndex];
 
@@ -340,16 +341,6 @@
     wasOpen = detailsOpen;
   }
 
-  /** @param {KeyboardEvent} event */
-  const onPanelKeydown = (event) => {
-    if (!detailsOpen || event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) return;
-    const target = event.target;
-    if (target instanceof HTMLElement && (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName))) return;
-    if (event.key === "j") step(1);
-    else if (event.key === "k") step(-1);
-    else return;
-    event.preventDefault();
-  };
 
   // The same icon's other styles, found by name: Add, AddAlt, AddFilled,
   // AddLarge. Suffixes come off the end until only the stem is left.
@@ -382,7 +373,7 @@
   };
 
   $: importLine = selected
-    ? importStyle === "file"
+    ? importStyle === "direct"
       ? `import ${selected} from "carbon-icons-svelte/lib/${selected}.svelte";`
       : `import { ${selected} } from "carbon-icons-svelte";`
     : "";
@@ -409,7 +400,7 @@
     animatedOnly = params.get("animated") === "1";
     const icon = params.get("icon");
     previewIndex = Math.max(0, previews.findIndex(([id]) => id === params.get("preview")));
-    importIndex = params.get("import") === "package" ? 1 : 0;
+    importIndex = ["barrel", "package"].includes(params.get("import") ?? "") ? 1 : 0;
     if (icon) {
       selected = icon;
       detailsOpen = true;
@@ -423,7 +414,7 @@
     if (detailsOpen && selected) {
       params.set("icon", selected);
       if (preview !== "icon") params.set("preview", preview);
-      if (importStyle !== "file") params.set("import", importStyle);
+      if (importStyle !== "direct") params.set("import", importStyle);
     }
     const text = params.toString();
     return text ? `?${text}` : "";
@@ -522,7 +513,6 @@ export default {
 
 <FocusKey element={searchInput} selectText />
 
-<svelte:window on:keydown={onPanelKeydown} />
 
 <Theme bind:theme persist persistKey="theme" />
 
@@ -844,7 +834,8 @@ export default {
       kind="ghost"
       size="small"
       icon={AnimatedChevronLeft}
-      iconDescription="Previous (K)"
+      iconDescription="Previous"
+      shortcut="k"
       tooltipPosition="bottom"
       tooltipAlignment="start"
       disabled={browseIndex <= 0}
@@ -854,7 +845,8 @@ export default {
       kind="ghost"
       size="small"
       icon={AnimatedChevronRight}
-      iconDescription="Next (J)"
+      iconDescription="Next"
+      shortcut="j"
       tooltipPosition="bottom"
       disabled={browseIndex === -1 || browseIndex >= browseOrder.length - 1}
       on:click={() => step(1)}
@@ -914,34 +906,24 @@ export default {
           {#if data.deprecated?.[selected] !== undefined}
             <dt>Status</dt>
             <dd class="status text-value">
-              <span><strong>Deprecated.</strong> {data.deprecated[selected] || "Carbon no longer recommends this icon."}</span>
+              <span><Tag type="red" size="sm">Deprecated</Tag> {data.deprecated[selected] || "Carbon no longer recommends this icon."}</span>
             </dd>
           {/if}
-          <dt>Import from</dt>
+          <dt>Import</dt>
           <dd>
-            <ContentSwitcher size="sm" autoWidth lowContrast aria-label="Import from" bind:selectedIndex={importIndex}>
-              <Switch text="Its file" />
-              <Switch text="The package" />
+            <ContentSwitcher size="sm" autoWidth lowContrast aria-label="Import" bind:selectedIndex={importIndex}>
+              <Switch text="Direct" />
+              <Switch text="Barrel" />
             </ContentSwitcher>
-            {#if importStyle === "package"}
+            {#if importStyle === "barrel"}
               <p class="import-tip">
-                Add <Link size="sm" href="https://github.com/carbon-design-system/carbon-preprocess-svelte#optimizeimports" target="_blank">optimizeImports</Link>
+                <Information class="import-tip-icon" />
+                <span>Add <Link size="sm" href="https://github.com/carbon-design-system/carbon-preprocess-svelte#optimizeimports" target="_blank">optimizeImports</Link>
                 from carbon-preprocess-svelte. Without it, your bundler compiles all {data.total.toLocaleString()} icons on every
-                development build.
+                development build.</span>
               </p>
             {/if}
           </dd>
-          {#if variants.length > 0}
-            <dt>Variants</dt>
-            <dd class="variants">
-              {#each variants as name (name)}
-                <button type="button" class="variant" title={name} on:click={() => (selected = name)}>
-                  {@html data.byModuleName[name]}
-                  <span>{name}</span>
-                </button>
-              {/each}
-            </dd>
-          {/if}
           {#if categoryOf.get(selected)}
             <dt>Category</dt>
             {@const [category, subcategory] = categoryOf.get(selected)}
@@ -976,6 +958,20 @@ export default {
             <dd><Link href="/animated?icon={selected}">Try the animated version</Link></dd>
           {/if}
         </dl>
+        {#if variants.length > 0}
+          <!-- The same icon's other styles, as tiles like the gallery's. -->
+          <section class="variants" aria-labelledby="icon-variants-heading">
+            <p id="icon-variants-heading" class="variants-heading">Variants</p>
+            <div class="gallery dense">
+              {#each variants as name (name)}
+                <button type="button" data-icon={name} on:click={() => (selected = name)}>
+                  <span class="tile-icon">{@html data.byModuleName[name]}</span>
+                  <span class="tile-name">{@html nameHtml(name)}</span>
+                </button>
+              {/each}
+            </div>
+          </section>
+        {/if}
       </Layer>
     </div>
   {/if}
@@ -1041,8 +1037,7 @@ export default {
     gap: var(--cds-spacing-03);
   }
 
-  .size-option,
-  .variant {
+  .size-option {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
@@ -1055,15 +1050,13 @@ export default {
     font: inherit;
   }
 
-  .size-option span,
-  .variant span {
+  .size-option span {
     font-size: 0.75rem;
     letter-spacing: 0.32px;
     color: var(--cds-text-secondary, var(--cds-text-02));
   }
 
-  .size-option:hover,
-  .variant:hover {
+  .size-option:hover {
     background: var(--cds-layer-hover, var(--cds-hover-ui));
   }
 
@@ -1075,31 +1068,37 @@ export default {
     color: var(--cds-text-primary, var(--cds-text-01));
   }
 
-  .size-option:focus-visible,
-  .variant:focus-visible {
+  .size-option:focus-visible {
     outline: 2px solid var(--cds-focus, var(--cds-interactive-01));
     outline-offset: -2px;
   }
 
   .variants {
-    flex-wrap: wrap;
-    gap: var(--cds-spacing-02);
+    padding-block-end: var(--cds-spacing-05);
+    border-block-start: 1px solid var(--cds-border-subtle, var(--cds-ui-03));
   }
 
-  .variant {
-    max-width: 8rem;
+  /* Tiles on the panel's own layer, so they stand out like the gallery's. */
+  .variants :global(.gallery button) {
+    background: var(--cds-layer-02, var(--cds-ui-02));
   }
 
-  .variant :global(svg) {
+  .variants :global(.gallery button:hover) {
+    background: var(--cds-layer-hover, var(--cds-hover-ui));
+  }
+
+  .variants-heading {
+    margin: 0 0 var(--cds-spacing-04);
+    padding-block-start: var(--cds-spacing-04);
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.125rem;
+    color: var(--cds-text-secondary, var(--cds-text-02));
+  }
+
+  .variants :global(.tile-icon svg) {
     width: 24px;
     height: 24px;
-  }
-
-  .variant span {
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   .status {
@@ -1113,14 +1112,23 @@ export default {
     color: var(--cds-text-primary, var(--cds-text-01));
   }
 
+  /* The barrel import's tip, marked with an info icon in Carbon's info
+     color so it reads as advice, not small print. */
   .import-tip {
+    display: flex;
+    gap: var(--cds-spacing-03);
     flex-basis: 100%;
-    max-width: 28rem;
+    max-width: 30rem;
     margin: var(--cds-spacing-03) 0 0;
     font-size: 0.75rem;
-    line-height: 1.33;
+    line-height: 1rem;
     letter-spacing: 0.32px;
-    color: var(--cds-text-helper, var(--cds-text-05));
+    color: var(--cds-text-secondary, var(--cds-text-02));
+  }
+
+  .import-tip :global(.import-tip-icon) {
+    flex: none;
+    fill: var(--cds-support-info, var(--cds-support-04));
   }
 
   .size-row {
