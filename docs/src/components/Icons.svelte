@@ -42,6 +42,7 @@
   import AnimatedChevronLeft from "carbon-icons-svelte/lib/animated/ChevronLeft.svelte";
   import AnimatedChevronRight from "carbon-icons-svelte/lib/animated/ChevronRight.svelte";
   import AnimatedCode from "carbon-icons-svelte/lib/animated/Code.svelte";
+  import AnimatedCopy from "carbon-icons-svelte/lib/animated/Copy.svelte";
   import AnimatedDashboard from "carbon-icons-svelte/lib/animated/Dashboard.svelte";
   import AnimatedEdit from "carbon-icons-svelte/lib/animated/Edit.svelte";
   import AnimatedIdea from "carbon-icons-svelte/lib/animated/Idea.svelte";
@@ -310,6 +311,35 @@
     const next = browseOrder[browseIndex + delta];
     if (browseIndex === -1 || !next) return;
     selected = next;
+  };
+
+  // ---- Copy SVG ----
+
+  /** The tile the Copy SVG button sits on, and where, in the gallery. */
+  /** @type {{ name: string, top: number, left: number } | null} */
+  let copyTarget = null;
+  let svgCopied = false;
+  let svgCopiedTimer;
+  const pointAt = (target) => {
+    if (!(target instanceof Element) || target.closest(".tile-copy")) return;
+    const tile = target.closest("button[data-icon]");
+    if (!(tile instanceof HTMLElement) || !groupsElement) {
+      copyTarget = null;
+      return;
+    }
+    if (copyTarget?.name === tile.dataset.icon) return;
+    const box = tile.getBoundingClientRect();
+    const host = groupsElement.getBoundingClientRect();
+    copyTarget = { name: tile.dataset.icon, top: box.top - host.top, left: box.right - host.left - 32 };
+    svgCopied = false;
+  };
+  // The SVG at the size the gallery shows.
+  const copySvg = async () => {
+    if (!copyTarget || !data) return;
+    await navigator.clipboard.writeText(sized(data.byModuleName[copyTarget.name], iconSize));
+    svgCopied = true;
+    clearTimeout(svgCopiedTimer);
+    svgCopiedTimer = setTimeout(() => (svgCopied = false), 2000);
   };
 
   // The tile of the icon the panel shows is marked as current, so it's
@@ -671,7 +701,29 @@ export default {
               const tile = event.target instanceof Element ? event.target.closest("button[data-icon]") : null;
               if (tile instanceof HTMLElement && tile.dataset.icon) open(tile.dataset.icon);
             }}
+            on:mouseover={(event) => pointAt(event.target)}
+            on:focusin={(event) => pointAt(event.target)}
+            on:mouseleave={() => (copyTarget = null)}
+            on:focusout={(event) => {
+              if (!(event.relatedTarget instanceof Node && groupsElement.contains(event.relatedTarget))) copyTarget = null;
+            }}
           >
+            <!-- One Copy SVG button, moved to the tile that's hovered or
+              focused: a button per tile would double the gallery's
+              elements, and a tile, itself a button, can't hold one. -->
+            {#if copyTarget}
+              <span class="tile-copy" style:top="{copyTarget.top}px" style:left="{copyTarget.left}px">
+                <Button
+                  kind="ghost"
+                  size="small"
+                  icon={svgCopied ? AnimatedCheckmark : AnimatedCopy}
+                  iconDescription={svgCopied ? "Copied!" : "Copy SVG"}
+                  tooltipPosition="bottom"
+                  shortcut="c"
+                  on:click={copySvg}
+                />
+              </span>
+            {/if}
             <!-- Every group stays mounted: while searching, the groups merge
               and their headings are hidden, so a group with no matches
               shows nothing, and its tiles aren't rebuilt when matches return. -->
@@ -1001,6 +1053,17 @@ export default {
 
   /* One ranked grid while searching: the groups' headings go, and their
      grids' tiles join this one, so CSS order ranks them across groups. */
+  .gallery-groups {
+    position: relative;
+  }
+
+  /* Over the hovered or focused tile's top-right corner. */
+  .tile-copy {
+    position: absolute;
+    z-index: 1;
+    display: flex;
+  }
+
   .gallery-groups.searching {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
