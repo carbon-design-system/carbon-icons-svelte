@@ -197,3 +197,25 @@ export function focusInPlace(element) {
   const visible = box.top >= 0 && box.bottom <= window.innerHeight;
   element.focus({ preventScroll: visible });
 }
+
+/**
+ * Scrolls a tile into view, checking again over a few frames, since
+ * groups skipped by content-visibility take their real size as the page
+ * scrolls past them and move the tile.
+ * @param {Element | null | undefined} tile
+ */
+export async function revealTile(tile) {
+  let last;
+  let still = 0;
+  for (let frame = 0; frame < 60 && tile?.isConnected; frame++) {
+    const box = tile.getBoundingClientRect();
+    const inView = box.top >= 112 && box.bottom <= window.innerHeight;
+    // Done once it's in view and has stayed put for several frames: groups
+    // above can take their real size a few frames after it comes into view.
+    still = inView && box.top === last ? still + 1 : 0;
+    if (still >= 8) return;
+    if (!inView) tile.scrollIntoView({ block: "center", behavior: "instant" });
+    last = tile.getBoundingClientRect().top;
+    await new Promise(requestAnimationFrame);
+  }
+}

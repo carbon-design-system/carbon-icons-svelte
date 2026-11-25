@@ -8,6 +8,7 @@
     CssGrid,
     Dropdown,
     EmptyState,
+    IconIndicator,
     Layer,
     Link,
     OverflowMenu,
@@ -30,7 +31,6 @@
   import Add from "carbon-icons-svelte/lib/Add.svelte";
   import ArrowRight from "carbon-icons-svelte/lib/ArrowRight.svelte";
   import Download from "carbon-icons-svelte/lib/Download.svelte";
-  import Information from "carbon-icons-svelte/lib/Information.svelte";
   import Notification from "carbon-icons-svelte/lib/Notification.svelte";
   import Settings from "carbon-icons-svelte/lib/Settings.svelte";
   import TrashCan from "carbon-icons-svelte/lib/TrashCan.svelte";
@@ -54,7 +54,7 @@
   import AnimatedZoomIn from "carbon-icons-svelte/lib/animated/ZoomIn.svelte";
   import fuzzy from "fuzzy";
   import { onMount, tick } from "svelte";
-  import { fitToolbar, focusInPlace, revealResults, rovingFocus, scrollToHash, watchStuck } from "../gallery.js";
+  import { fitToolbar, focusInPlace, revealResults, revealTile, rovingFocus, scrollToHash, watchStuck } from "../gallery.js";
   import { pageLinks } from "../page-links.js";
   import { FUZZY_RANK, matchingTerm, normalize, rankAliases, rankName } from "../search.js";
   import Code from "./Code.svelte";
@@ -328,10 +328,20 @@
     selected = next;
   };
 
+  // The tile of the icon the panel shows is marked as current, so it's
+  // clear which one is open. Tiles are static HTML, so it's set directly.
+  let currentTile = null;
+  const markCurrent = (name) => {
+    currentTile?.removeAttribute("aria-current");
+    currentTile = name ? tileOf(name) : null;
+    currentTile?.setAttribute("aria-current", "true");
+  };
+  $: if (groupsElement) markCurrent(detailsOpen ? selected : null);
+
   // Keep the gallery behind the panel on the icon shown, so closing the
   // panel lands where browsing ended.
   const tileOf = (name) => groupsElement?.querySelector(`button[data-icon="${name}"]`);
-  $: if (detailsOpen && selected) tileOf(selected)?.scrollIntoView({ block: "nearest" });
+  $: if (groupsElement && detailsOpen && selected) revealTile(tileOf(selected));
   let wasOpen = false;
   $: {
     if (wasOpen && !detailsOpen && selected) {
@@ -921,12 +931,12 @@ export default {
               <Switch text="Barrel" />
             </ContentSwitcher>
             {#if importStyle === "barrel"}
-              <p class="import-tip">
-                <Information class="import-tip-icon" />
-                <span>Add <Link size="sm" href="https://github.com/carbon-design-system/carbon-preprocess-svelte#optimizeimports" target="_blank">optimizeImports</Link>
+              <div class="import-tip">
+                <IconIndicator kind="informative" label="Tip" />
+                <p>Add <Link size="sm" href="https://github.com/carbon-design-system/carbon-preprocess-svelte#optimizeimports" target="_blank">optimizeImports</Link>
                 from carbon-preprocess-svelte. Without it, your bundler compiles all {data.total.toLocaleString()} icons on every
-                development build.</span>
-              </p>
+                development build.</p>
+              </div>
             {/if}
           </dd>
           {#if categoryOf.get(selected)}
@@ -1123,23 +1133,23 @@ export default {
     color: var(--cds-text-primary, var(--cds-text-01));
   }
 
-  /* The barrel import's tip, marked with an info icon in Carbon's info
-     color so it reads as advice, not small print. */
+  /* The barrel import's tip: Carbon's informative indicator labelled
+     "Tip", then the advice, so it reads as advice, not small print. */
   .import-tip {
     display: flex;
-    gap: var(--cds-spacing-03);
+    flex-direction: column;
+    gap: var(--cds-spacing-02);
     flex-basis: 100%;
     max-width: 30rem;
-    margin: var(--cds-spacing-03) 0 0;
+    margin-block-start: var(--cds-spacing-04);
+  }
+
+  .import-tip p {
+    margin: 0;
     font-size: 0.75rem;
     line-height: 1rem;
     letter-spacing: 0.32px;
     color: var(--cds-text-secondary, var(--cds-text-02));
-  }
-
-  .import-tip :global(.import-tip-icon) {
-    flex: none;
-    fill: var(--cds-support-info, var(--cds-support-04));
   }
 
   .size-row {

@@ -56,7 +56,7 @@
   import AnimatedDefaults from "./AnimatedDefaults.svelte";
   import { pageLinks } from "../page-links.js";
   import Code from "./Code.svelte";
-  import { fitToolbar, focusInPlace, revealResults, rovingFocus, watchStuck } from "../gallery.js";
+  import { fitToolbar, focusInPlace, revealResults, revealTile, rovingFocus, watchStuck } from "../gallery.js";
   import FocusKey from "./FocusKey.svelte";
   import { ANIMATED_ALIASES } from "../generated/animated-aliases";
   import { indexAliases, matchingTerm, normalize, rankAliases, rankName } from "../search.js";
@@ -399,7 +399,7 @@
   // Keep the gallery behind the panel on the icon shown, and focus its tile
   // when the panel closes, after SidePanel returns focus to the opener.
   const tileOf = (option) => groupsElement?.querySelector(`button[data-icon="${option}"]`);
-  $: if (explorerOpen && name) tileOf(name)?.scrollIntoView({ block: "nearest" });
+  $: if (groupsElement && explorerOpen && name) revealTile(tileOf(name));
   let wasOpen = false;
   $: {
     if (wasOpen && !explorerOpen) requestAnimationFrame(() => tileOf(name)?.focus({ preventScroll: true }));
@@ -1123,7 +1123,12 @@ ${explorerMarkup}`;
           <div class="gallery">
             {#each group.names as option (option)}
               {@const term = matchedBy(queryKey, option)}
-              <button type="button" data-icon={option} on:click={() => explore(option)}>
+              <button
+                type="button"
+                data-icon={option}
+                aria-current={explorerOpen && name === option ? "true" : undefined}
+                on:click={() => explore(option)}
+              >
                 {#if term}<span class="tile-match" aria-hidden="true">{term}</span>{/if}
                 <span class="tile-icon">
                   <svelte:component this={Animated[option]} size={iconSize} motion={galleryMotion} play={galleryPlay} loop={galleryLoop} />
