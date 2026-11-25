@@ -268,7 +268,7 @@
     ["animated-loop", "Loop", "Renew"],
     ["animated-states", "Icons for each state", "CheckmarkOutline"],
     ["animated-recipes", "Recipes", "Idea"],
-    ["animated-defaults", "Defaults", "Settings"],
+    ["animated-defaults", "Shared defaults", "Settings"],
     ["animated-accessibility", "Accessibility", "ViewOff"],
     ["animated-ssr", "Server rendering", "Terminal"],
     ["animated-performance", "Performance", "Dashboard"],
@@ -1257,7 +1257,7 @@ ${explorerTag}`;
             <TabContent>
               <div class="recipe">
             <p>
-              Icon-only buttons in a <code>Toolbar</code>. Moving the pointer across the toolbar plays nothing. Resting it on a button plays that button's icon.
+              Icon-only buttons in a toolbar. Moving the pointer across the toolbar plays nothing. Resting it on a button plays that button's icon.
             </p>
             <div class="example">
               <div class="demo">
@@ -1278,7 +1278,7 @@ ${explorerTag}`;
             <TabContent>
               <div class="recipe">
             <p>
-              The button's icon shows the result. If the email is invalid, the error icon shakes, and it shakes again on each failed attempt because <code>play</code> gets the attempt count. If the email is valid, the check plays.
+              The button's icon shows the result. An invalid email shakes the error icon, again on every failed attempt. A valid one plays the check.
             </p>
             <div class="example">
               <div class="demo">
@@ -1312,7 +1312,7 @@ ${explorerTag}`;
             <TabContent>
               <div class="recipe">
             <p>
-              The submit button's icon follows the request: <code>Send</code> before submitting, <code>InProgress</code> looping while the request runs, then <code>CheckmarkFilled</code>. An invalid email plays <code>ErrorFilled</code> instead.
+              The submit button's icon follows the request: a send icon before submitting, a progress icon that loops while the request runs, then a check. An invalid email shakes an error icon instead.
             </p>
             <div class="example">
               <div class="demo">
@@ -1356,7 +1356,7 @@ ${explorerTag}`;
             <TabContent>
               <div class="recipe">
             <p>
-              The button swaps <code>View</code> and <code>ViewOff</code> each time it's pressed, and the new icon plays.
+              Each press swaps the show and hide icons, and the new icon plays.
             </p>
             <div class="example">
               <div class="demo">
@@ -1388,7 +1388,7 @@ ${explorerTag}`;
             <TabContent>
               <div class="recipe">
             <p>
-              Each button swaps to the filled icon when pressed and plays it with expressive motion. <code>aria-pressed</code> gives screen readers the state.
+              Pressing a button swaps in the filled icon and plays it with expressive motion. The button's pressed state tells screen readers whether it's on.
             </p>
             <div class="example">
               <div class="demo">
@@ -1462,10 +1462,11 @@ ${explorerTag}`;
       </section>
 
       <section id="animated-defaults">
-        <h2>Defaults</h2>
+        <h2>Shared defaults</h2>
         <p>
-          An icon passed to a component's <code>icon</code> prop can't take props of its own. Instead, call <code>setAnimatedIconDefaults</code> in a parent component to set defaults for everything inside it. Props set on an icon override the defaults. The buttons below use expressive motion with no hover delay.
+          Call <code>setAnimatedIconDefaults</code> in a parent component to set props for every animated icon inside it. In your root layout, that's the whole app. It's also how to set props on an icon passed to a component's <code>icon</code> prop, which can't take props of its own.
         </p>
+        <p>Props set on an icon override the defaults. The buttons below use expressive motion with no hover delay.</p>
         <div class="example">
         <div class="demo">
           <AnimatedDefaults defaults={{ motion: "expressive", hoverDelay: 0 }}>
@@ -1483,23 +1484,26 @@ ${explorerTag}`;
 
       <section id="animated-accessibility">
         <h2>Accessibility</h2>
+        <p>
+          Screen readers don't see animation, so an animated icon needs the same text as a static one. Motion also needs care for people who find it distracting.
+        </p>
         <ul>
           <li>
-            <strong>Hidden by default.</strong> Like the static icons, animated icons are hidden from screen readers. Give an icon a <code>title</code>, <code>aria-label</code> or <code>aria-labelledby</code> to make it an image with that name. Inside a button or link, label the button or link instead, for example with <code>iconDescription</code>.
+            <strong>Labels.</strong> An icon is hidden from screen readers unless it has a <code>title</code>, <code>aria-label</code> or <code>aria-labelledby</code>. In a button or link, label the button or link instead, for example with <code>iconDescription</code>.
           </li>
           <li>
-            <strong>Keyboard focus plays it.</strong> Tabbing to a button or link plays its icon, the same as hovering it. Clicking it doesn't.
+            <strong>Keyboard.</strong> Focusing a button or link with the keyboard plays its icon, like hovering does. Clicking doesn't.
           </li>
           <li>
-            <strong>Motion isn't announced.</strong> When an icon confirms a save or shows an error, announce the change too, with a notification or a live region.
+            <strong>Announcements.</strong> If an icon confirms a save or shows an error, say so in text too, with a notification or a live region.
           </li>
         </ul>
         <h3 id="animated-reduced-motion">Reduced motion</h3>
         <p>By default, icons don't play for users who prefer reduced motion. <code>reducedMotion</code> changes this:</p>
         <ul>
           <li><strong>Static</strong> (<code>"static"</code>, the default): nothing plays.</li>
-          <li><strong>Fade</strong> (<code>"fade"</code>): the icon dims and comes back without moving. Use it when an event still needs acknowledging.</li>
-          <li><strong>Full</strong> (<code>"full"</code>): the normal animation plays. Use it only when the motion is needed to understand the change.</li>
+          <li><strong>Fade</strong> (<code>"fade"</code>): the icon dims and comes back, without moving. Use it for events people still need to notice.</li>
+          <li><strong>Full</strong> (<code>"full"</code>): the icon plays as usual. Use it only when the change can't be understood without the motion.</li>
         </ul>
         <Code code={reducedCode} />
       </section>
@@ -1758,11 +1762,12 @@ ${explorerTag}`;
     margin-block-start: var(--cds-spacing-07);
   }
 
-  section :global(li > ul) {
+  /* Prose lists only, not the lists inside components like Tabs. */
+  section :global(li > ul:not([class])) {
     margin-block-start: var(--cds-spacing-02);
   }
 
-  section :global(li + li) {
+  section :global(ul:not([class]) > li + li) {
     margin-block-start: var(--cds-spacing-03);
   }
 
@@ -1806,11 +1811,19 @@ ${explorerTag}`;
   }
 
   /* A recipe's copy sits on the selected tab's layer, above its example. */
+  /* Carbon's body-compact-01, a step below the page's running copy. */
+  .recipe {
+    background: var(--cds-layer-01, var(--cds-ui-01));
+  }
+
   .recipe > p {
-    max-width: none;
+    max-width: 40rem;
     margin: 0;
     padding: var(--cds-spacing-05);
-    background: var(--cds-layer-01, var(--cds-ui-01));
+    font-size: 0.875rem;
+    line-height: 1.29;
+    letter-spacing: 0.16px;
+    color: var(--cds-text-secondary, var(--cds-text-02));
   }
 
   .recipe > p + .example {
