@@ -173,6 +173,10 @@ type CarbonIcon = typeof import("svelte") extends { mount: any }
     },
   };
 
+  // Search terms from Carbon's metadata, like "heart" for Favorite, minus
+  // any that only repeat the icon's name.
+  const aliases: Record<string, string[]> = {};
+
   let names = new Set<string>();
   let glyphNames = new Set<string>();
   let iconNames = new Set<string>();
@@ -200,6 +204,11 @@ type CarbonIcon = typeof import("svelte") extends { mount: any }
 
     if (names.has(name)) return;
     names.add(name);
+
+    const terms = [
+      ...new Set((iconMetadata?.aliases ?? []).map((alias) => alias.trim().toLowerCase())),
+    ].filter((term) => term && term.replace(/\s+/g, "") !== name.toLowerCase());
+    if (terms.length > 0) aliases[name] = terms;
 
     const inner = renderContent(icon.descriptor);
 
@@ -255,7 +264,18 @@ ${definitions}`
   );
 
   await syncDir("lib", libFiles, ["animated"]);
-  await syncDir("lib/animated", await buildAnimated((name) => iconMap.get(name)));
+  const animatedFiles = await buildAnimated((name) => iconMap.get(name));
+  await syncDir("lib/animated", animatedFiles);
+
+  // The animated gallery searches the same terms. Only its icons' terms
+  // ship with it, rather than the whole build info.
+  const animatedAliases = Object.fromEntries(
+    [...animatedFiles.keys()]
+      .filter((file) => file.endsWith(".svelte"))
+      .map((file) => file.slice(0, -".svelte".length))
+      .filter((name) => aliases[name])
+      .map((name) => [name, aliases[name]])
+  );
 
   await Bun.write(
     "ICON_INDEX.md",
@@ -282,18 +302,25 @@ ${Object.keys(byModuleName)
     .digest("hex")
     .slice(0, 12);
   const buildInfoFileName = `build-info.${buildInfoHash}.json`;
+
+  // Search terms are a separate file, so the icons render without waiting
+  // for them.
+  const aliasesContent = JSON.stringify(aliases);
+  const aliasesHash = createHash("sha256").update(aliasesContent).digest("hex").slice(0, 12);
+  const aliasesFileName = `aliases.${aliasesHash}.json`;
   const docsPublicDir = "docs/public";
 
   for (const file of await readdir(docsPublicDir)) {
     if (
       file === "build-info.json" ||
-      (file.startsWith("build-info.") && file.endsWith(".json"))
+      ((file.startsWith("build-info.") || file.startsWith("aliases.")) && file.endsWith(".json"))
     ) {
       await unlink(`${docsPublicDir}/${file}`);
     }
   }
 
   await Bun.write(`${docsPublicDir}/${buildInfoFileName}`, buildInfoContent);
+  await Bun.write(`${docsPublicDir}/${aliasesFileName}`, aliasesContent);
   await Bun.write(
     "docs/src/generated/build-info-url.ts",
     `// @generated
@@ -301,6 +328,16 @@ ${Object.keys(byModuleName)
 // @see src/index.ts
 
 export const BUILD_INFO_URL = "/${buildInfoFileName}";
+export const ALIASES_URL = "/${aliasesFileName}";
+`
+  );
+  await Bun.write(
+    "docs/src/generated/animated-aliases.ts",
+    `// @generated
+// This file was automatically generated and should not be edited.
+// @see src/index.ts
+
+export const ANIMATED_ALIASES: Record<string, string[]> = ${JSON.stringify(animatedAliases)};
 `
   );
 

@@ -21,7 +21,8 @@
   // or once the Icons page is idle, so the first visit to either page is
   // smaller.
   const loadAnimated = () => import("./Animated.svelte");
-  import { BUILD_INFO_URL } from "../constants";
+  import { ALIASES_URL, BUILD_INFO_URL } from "../constants";
+  import { FUZZY_RANK, indexAliases, normalize, rankAliases, rankName } from "../search.js";
 
   /** @typedef {{ byModuleName: Record<string, string>; bySize: { order: string[]; sizes: Record<string, string[]> }; total: number; renamedIcons?: Record<string, string> }} BuildInfo */
 
@@ -35,6 +36,11 @@
   onMount(async () => {
     const res = await fetch(BUILD_INFO_URL);
     data = await res.json();
+    // Search terms come after the icons render. Until then, search matches names.
+    fetch(ALIASES_URL)
+      .then((response) => response.json())
+      .then((aliases) => (aliasIndex = indexAliases(aliases)))
+      .catch(() => {});
   });
 
   const { match } = fuzzy;
@@ -87,6 +93,9 @@
   let value = "";
 
   $: searchTerm = value.trim().replace(WHITESPACE_REGEX, "");
+  $: aliasQuery = normalize(value);
+  /** @type {Map<string, string[]>} */
+  let aliasIndex = new Map();
   $: allIconsOrdered = data
     ? data.bySize.order
         .flatMap((size) => data.bySize.sizes[size])
@@ -112,25 +121,27 @@
     }
     return result;
   })();
-  $: filteredModuleNamesSet =
-    !data || searchTerm === ""
-      ? allIconsSet
-      : new Set(
-          searchModuleNames
-            .filter((name) => match(searchTerm, name))
-            .map((name) => {
-              if (aliasToCanonical[name]) {
-                return aliasToCanonical[name];
-              }
-
-              // Map Glyph variants to their base names
-              if (name.endsWith("Glyph")) {
-                return name.replace(GLYPH_SUFFIX_REGEX, "");
-              }
-              return name;
-            })
-            .filter((name) => allIconsSet.has(name))
-        );
+  // Each matching icon's rank, best first (see `rankName`). Old names and
+  // Glyph variants count toward the icon they belong to. Typo-tolerant
+  // matching only runs when nothing else matches, since it matches any
+  // letters in order, like "bell" in "BatteryFull".
+  $: ranks = (() => {
+    if (!data || aliasQuery === "") return null;
+    /** @type {Map<string, number>} */
+    const best = new Map();
+    const consider = (name, rank) => {
+      if (rank < 0 || !allIconsSet.has(name)) return;
+      if (!best.has(name) || rank < best.get(name)) best.set(name, rank);
+    };
+    const canonical = (name) => aliasToCanonical[name] ?? name.replace(GLYPH_SUFFIX_REGEX, "");
+    for (const name of searchModuleNames) consider(canonical(name), rankName(aliasQuery, name));
+    for (const name of allIcons) consider(name, rankAliases(aliasQuery, aliasIndex.get(name)));
+    if (best.size === 0) {
+      for (const name of searchModuleNames) if (match(searchTerm, name)) consider(canonical(name), FUZZY_RANK);
+    }
+    return best;
+  })();
+  $: filteredModuleNamesSet = ranks ? new Set(ranks.keys()) : allIconsSet;
 
   /** @type {import("svelte").ComponentProps<Theme>["theme"]} */
   let theme = getStoredTheme();
@@ -215,7 +226,7 @@
             autocapitalize="off"
             spellcheck="false"
             labelText="Search"
-            placeholder={`Search icons (e.g. "Add")`}
+            placeholder={`Search by name or keyword, like "heart"`}
             bind:ref
             bind:value
             disabled={!data}
@@ -249,6 +260,7 @@
                   ? `${name} (aliases: ${canonicalToAliases[name].join(", ")})`
                   : name}
                 style:display={isFiltered ? "inline" : "none"}
+                style:order={ranks?.get(name)}
                 on:click={() => (moduleName = name)}
               >
                 {@html data.byModuleName[name]}
@@ -305,7 +317,10 @@
     }
   }
 
+  /* Flex so search results can be ordered by rank without moving any. */
   .list {
+    display: flex;
+    flex-wrap: wrap;
     margin-bottom: var(--cds-spacing-09);
   }
 
