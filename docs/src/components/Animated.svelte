@@ -535,6 +535,24 @@
     play++;
   };
   let galleryQuery = "";
+
+  // Narrowing the gallery while scrolled into it would leave the results
+  // above the viewport, so bring their start back under the toolbar, or
+  // under the header when the toolbar isn't sticky.
+  let toolbarElement = null;
+  let groupsElement = null;
+  let emptyElement = null;
+  let lastFilter;
+  const revealResults = async () => {
+    await tick();
+    const results = emptyElement ?? groupsElement;
+    if (!results || !toolbarElement) return;
+    const header = 48;
+    const toolbar = toolbarElement.getBoundingClientRect();
+    const below = compactToolbar ? header : Math.max(header, toolbar.bottom);
+    const top = results.getBoundingClientRect().top;
+    if (top < below) window.scrollBy({ top: top - below - 16, behavior: "instant" });
+  };
   /** The search field, which "/" and Cmd+K focus. */
   let galleryInput = null;
   let galleryPlay = 0;
@@ -551,6 +569,11 @@
     return byName >= 0 ? byName : rankAliases(query, aliasIndex.get(name));
   };
   $: queryKey = normalize(galleryQuery);
+  $: {
+    const filter = `${queryKey}|${galleryLoop}`;
+    if (lastFilter !== undefined && filter !== lastFilter) revealResults();
+    lastFilter = filter;
+  }
   // Announce the number of matches once typing pauses, so a screen reader
   // isn't interrupted on every keystroke.
   let searchStatus = "";
@@ -1086,7 +1109,7 @@ ${explorerMarkup}`;
         <Theme bind:theme persist persistKey="theme" />
         <!-- One toolbar row, every control 32px, sticky while scrolling the gallery. -->
         <div class="toolbar-sentinel" use:watchStuck></div>
-        <div class="gallery-toolbar" class:stuck={toolbarStuck} class:compact={compactToolbar} use:fitToolbar>
+        <div class="gallery-toolbar" class:stuck={toolbarStuck} class:compact={compactToolbar} use:fitToolbar bind:this={toolbarElement}>
           {@render searchControl("sm")}
           {#if compactToolbar}
             <!-- Where the controls don't fit on one row: search, play, and the rest in a popover. -->
@@ -1140,11 +1163,11 @@ ${explorerMarkup}`;
           {/if}
         </div>
         {#if visibleGroups.length === 0}
-          <p class="gallery-empty">No animated icons match “{galleryQuery.trim()}”.</p>
+          <p class="gallery-empty" bind:this={emptyElement}>No animated icons match “{galleryQuery.trim()}”.</p>
         {/if}
         <p class="visually-hidden" aria-live="polite">{searchStatus}</p>
         <p id="gallery-keys" class="visually-hidden">Use the arrow keys to move between icons.</p>
-        <div class="gallery-groups" role="group" aria-label="Animated icons" aria-describedby="gallery-keys" use:rovingFocus={visibleGroups}>
+        <div class="gallery-groups" bind:this={groupsElement} role="group" aria-label="Animated icons" aria-describedby="gallery-keys" use:rovingFocus={visibleGroups}>
         {#each visibleGroups as group (group.id)}
           <h3 id={group.id}>{group.title}</h3>
           <div class="gallery">
