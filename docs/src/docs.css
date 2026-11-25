@@ -254,8 +254,10 @@ html {
   justify-content: space-between;
 }
 
+/* Under container tabs, the preview and code need no frame: the selected
+   tab and the stage's layer already set them apart. */
 :is(.docs-page, .docs-panel) .preview-bar + .example {
-  border-block-start: 0;
+  border: 0;
 }
 
 /* The selected tab joins the preview: no space between, whatever spaces
