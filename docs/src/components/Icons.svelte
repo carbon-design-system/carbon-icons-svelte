@@ -25,6 +25,7 @@
   import Add from "carbon-icons-svelte/lib/Add.svelte";
   import ArrowRight from "carbon-icons-svelte/lib/ArrowRight.svelte";
   import Download from "carbon-icons-svelte/lib/Download.svelte";
+  import Launch from "carbon-icons-svelte/lib/Launch.svelte";
   import Notification from "carbon-icons-svelte/lib/Notification.svelte";
   import Settings from "carbon-icons-svelte/lib/Settings.svelte";
   import TrashCan from "carbon-icons-svelte/lib/TrashCan.svelte";
@@ -808,7 +809,7 @@ export default {
             </ContentSwitcher>
             {#if importStyle === "package"}
               <p class="import-tip">
-                Add <Link href="https://github.com/carbon-design-system/carbon-preprocess-svelte#optimizeimports" target="_blank">optimizeImports</Link>
+                Add <Link size="sm" icon={Launch} href="https://github.com/carbon-design-system/carbon-preprocess-svelte#optimizeimports" target="_blank">optimizeImports</Link>
                 from carbon-preprocess-svelte. Without it, your bundler compiles all {data.total.toLocaleString()} icons on every
                 development build.
               </p>
