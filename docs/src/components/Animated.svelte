@@ -55,6 +55,8 @@
   import AnimatedDefaults from "./AnimatedDefaults.svelte";
   import { pageLinks } from "../page-links.js";
   import Code from "./Code.svelte";
+  import { ANIMATED_ALIASES } from "../generated/animated-aliases";
+  import { indexAliases, normalize, rankAliases, rankName } from "../search.js";
 
   const names = Object.keys(Animated)
     // Icons are the capitalized exports; the rest are functions like setAnimatedIconDefaults.
@@ -528,7 +530,13 @@
   // The icons that loop. The components don't expose it, so it's listed here.
   const looping = new Set(["CircleDash", "Hourglass", "InProgress", "Incomplete", "Pending", "PendingFilled", "Renew", "RenewAlt", "Restart", "Reset", "Repeat", "Recycle", "Settings", "Terminal", "Time", "TimeFilled", "Timer"]);
 
-  const normalize = (text) => text.toLowerCase().replace(/[\s_-]+/g, "");
+  // Carbon's search terms for each icon, so "heart" finds Favorite.
+  const aliasIndex = indexAliases(ANIMATED_ALIASES);
+  // A name match first, then a search term. See `rankName`.
+  const rankFor = (query, name) => {
+    const byName = rankName(query, name);
+    return byName >= 0 ? byName : rankAliases(query, aliasIndex.get(name));
+  };
   $: queryKey = normalize(galleryQuery);
   // Announce the number of matches once typing pauses, so a screen reader
   // isn't interrupted on every keystroke.
@@ -615,7 +623,8 @@
   $: visibleGroups = groups
     .map((group) => ({
       ...group,
-      names: group.names.filter((option) => (!galleryLoop || looping.has(option)) && normalize(option).includes(queryKey)),
+      names: group.names.filter((option) => (!galleryLoop || looping.has(option)) && (!queryKey || rankFor(queryKey, option) >= 0))
+        .sort((a, b) => (queryKey ? rankFor(queryKey, a) - rankFor(queryKey, b) : 0)),
     }))
     .filter((group) => group.names.length > 0);
 

@@ -4,5 +4,6 @@ lib
 node_modules
 dist
 docs/public/build-info*.json
+docs/public/aliases*.json
 docs/src/generated/
 tests/*.tgz
