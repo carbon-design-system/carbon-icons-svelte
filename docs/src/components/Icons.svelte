@@ -30,6 +30,8 @@
   } from "carbon-components-svelte";
   import Add from "carbon-icons-svelte/lib/Add.svelte";
   import ArrowRight from "carbon-icons-svelte/lib/ArrowRight.svelte";
+  import Checkmark from "carbon-icons-svelte/lib/Checkmark.svelte";
+  import Copy from "carbon-icons-svelte/lib/Copy.svelte";
   import Download from "carbon-icons-svelte/lib/Download.svelte";
   import Notification from "carbon-icons-svelte/lib/Notification.svelte";
   import Settings from "carbon-icons-svelte/lib/Settings.svelte";
@@ -42,7 +44,6 @@
   import AnimatedChevronLeft from "carbon-icons-svelte/lib/animated/ChevronLeft.svelte";
   import AnimatedChevronRight from "carbon-icons-svelte/lib/animated/ChevronRight.svelte";
   import AnimatedCode from "carbon-icons-svelte/lib/animated/Code.svelte";
-  import AnimatedCopy from "carbon-icons-svelte/lib/animated/Copy.svelte";
   import AnimatedDashboard from "carbon-icons-svelte/lib/animated/Dashboard.svelte";
   import AnimatedEdit from "carbon-icons-svelte/lib/animated/Edit.svelte";
   import AnimatedIdea from "carbon-icons-svelte/lib/animated/Idea.svelte";
@@ -716,10 +717,9 @@ export default {
                 <Button
                   kind="ghost"
                   size="small"
-                  icon={svgCopied ? AnimatedCheckmark : AnimatedCopy}
+                  icon={svgCopied ? Checkmark : Copy}
                   iconDescription={svgCopied ? "Copied!" : "Copy SVG"}
                   tooltipPosition="bottom"
-                  shortcut="c"
                   on:click={copySvg}
                 />
               </span>
