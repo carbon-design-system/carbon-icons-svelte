@@ -655,25 +655,6 @@ html {
   inset-inline-end: var(--cds-spacing-06);
 }
 
-/* A deprecated icon's tile says so in its top padding, like a matched
-   keyword, which takes the place when there is one. */
-:is(.docs-page, .docs-panel) .tile-note {
-  position: absolute;
-  inset-block-start: var(--cds-spacing-02);
-  inset-inline: var(--cds-spacing-03);
-  overflow: hidden;
-  font-size: 0.75rem;
-  line-height: 1.33;
-  letter-spacing: 0.32px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: var(--cds-text-helper, var(--cds-text-05));
-}
-
-:is(.docs-page, .docs-panel) .tile-match ~ .tile-note {
-  visibility: hidden;
-}
-
 /* Previous and next in a details panel's header, with the position. */
 .docs-panel .browse {
   display: flex;
@@ -686,4 +667,33 @@ html {
   font-size: 0.75rem;
   letter-spacing: 0.32px;
   color: var(--cds-text-secondary, var(--cds-text-02));
+}
+
+/* Group headings clear the sticky toolbar when a link scrolls to them,
+   on top of the page's scroll padding for the header. */
+:is(.docs-page, .docs-panel) .gallery-groups :is(h3, h4) {
+  scroll-margin-top: 3rem;
+}
+
+/* A deprecated icon's tile: a small tag in the top padding, on one line
+   so it never covers the icon. */
+:is(.docs-page, .docs-panel) .tile-flag {
+  position: absolute;
+  inset-block-start: var(--cds-spacing-02);
+  inset-inline-start: 50%;
+  max-width: none;
+  margin: 0;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+:is(.docs-page, .docs-panel) .tile-match ~ .tile-flag {
+  visibility: hidden;
+}
+
+/* Carbon's Kbd shows letters in capitals; j and k are lowercase keys.
+   Button tooltips are portaled to the body, out of reach of a scoped rule,
+   and j and k are the only shortcuts the docs show in one. */
+.bx--btn__tooltip-shortcut .bx--kbd__key {
+  text-transform: lowercase;
 }
