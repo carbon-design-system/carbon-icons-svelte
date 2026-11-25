@@ -56,7 +56,7 @@
   import { onMount, tick } from "svelte";
   import { fitToolbar, focusInPlace, revealResults, revealTile, rovingFocus, scrollToHash, watchStuck } from "../gallery.js";
   import { pageLinks } from "../page-links.js";
-  import { FUZZY_RANK, matchingTerm, normalize, rankAliases, rankName } from "../search.js";
+  import { FUZZY_RANK, normalize, rankAliases, rankName } from "../search.js";
   import Code from "./Code.svelte";
   import FocusKey from "./FocusKey.svelte";
 
@@ -178,18 +178,17 @@
       .join("");
 
   /**
-   * Shows, hides and ranks the tiles for a search, and labels each tile
-   * found by a keyword with it.
+   * Shows, hides and ranks the tiles for a search.
    * @param {HTMLElement} node
-   * @param {{ ranks: Map<string, number> | null, matchFor: (name: string) => string | undefined }} params
+   * @param {Map<string, number> | null} ranks
    */
-  function filterTiles(node, params) {
+  function filterTiles(node, ranks) {
     let filtered = false;
     // What each tile shows now, so a keystroke only touches the tiles that
     // change: rewriting every tile's style makes the browser restyle them all.
-    /** @type {WeakMap<HTMLElement, { shown: boolean, order: string, term: string | undefined }>} */
+    /** @type {WeakMap<HTMLElement, { shown: boolean, order: string }>} */
     const state = new WeakMap();
-    const apply = ({ ranks, matchFor }) => {
+    const apply = (ranks) => {
       // Nothing to undo when there was no search and still isn't.
       if (!ranks && !filtered) return;
       filtered = Boolean(ranks);
@@ -197,30 +196,15 @@
         const name = tile.dataset.icon;
         const shown = !ranks || ranks.has(name);
         const order = ranks?.has(name) ? String(ranks.get(name)) : "";
-        const term = shown && ranks ? matchFor(name) : undefined;
-        const before = state.get(tile) ?? { shown: true, order: "", term: undefined };
+        const before = state.get(tile) ?? { shown: true, order: "" };
         if (before.shown !== shown) tile.style.display = shown ? "" : "none";
         if (before.order !== order) tile.style.order = order;
-        if (before.term !== term) {
-          tile.querySelector(".tile-match")?.remove();
-          if (term) {
-            const label = document.createElement("span");
-            label.className = "tile-match";
-            label.setAttribute("aria-hidden", "true");
-            label.textContent = term;
-            tile.prepend(label);
-          }
-        }
-        state.set(tile, { shown, order, term });
+        state.set(tile, { shown, order });
       }
     };
-    apply(params);
+    apply(ranks);
     return { update: apply };
   }
-
-  // The keyword an icon matched by, when its name didn't match.
-  const matchedBy = (key, name) =>
-    key && rankName(key, name) < 0 ? matchingTerm(key, aliasTerms[name]) : undefined;
 
   // Announce the number of matches once typing pauses, so a screen reader
   // isn't interrupted on every keystroke.
@@ -681,7 +665,7 @@ export default {
             role="group"
             aria-label="Icons"
             aria-describedby="icons-gallery-keys"
-            use:filterTiles={{ ranks: filter, matchFor: (name) => matchedBy(queryKey, name) }}
+            use:filterTiles={filter}
             use:rovingFocus={filter}
             on:click={(event) => {
               const tile = event.target instanceof Element ? event.target.closest("button[data-icon]") : null;
