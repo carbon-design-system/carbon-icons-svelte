@@ -700,3 +700,14 @@ html {
 .bx--btn__tooltip-shortcut .bx--kbd__key {
   text-transform: lowercase;
 }
+
+/* Carbon draws a tooltip's keys "muted": text only, so a key reads as
+   part of the label. A tint of the tooltip's own text color makes it a
+   keycap that adapts to light and dark tooltips. */
+.bx--btn__tooltip-shortcut .bx--kbd__key {
+  min-width: 1.125rem;
+  padding: 0 0.25rem;
+  border-radius: 0.125rem;
+  background-color: color-mix(in srgb, currentColor 20%, transparent);
+  text-align: center;
+}
