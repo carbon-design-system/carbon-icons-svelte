@@ -882,7 +882,7 @@ export default {
           </div>
         </div>
       <div class="example">
-        <div class="stage">
+        <div class="stage stage-static">
           {#if preview === "icon"}
             <!-- Every size at once; picking one sets the size in the code. -->
             <div class="size-strip" role="group" aria-label="Size">
@@ -1034,6 +1034,12 @@ export default {
   /* Its own line under the switch: the row wraps. */
   .prop-list dd:has(.import-tip) {
     flex-wrap: wrap;
+  }
+
+  /* Tall enough for the size strip, so switching to a button preview
+     doesn't change the preview's height. */
+  .explorer .stage.stage-static {
+    min-height: 6.5rem;
   }
 
   .size-strip {
