@@ -1,12 +1,13 @@
 <script>
   import {
+    Breadcrumb,
+    BreadcrumbItem,
     Button,
     ContentSwitcher,
     CssColumn,
     CssGrid,
     Dropdown,
     EmptyState,
-    InlineNotification,
     Layer,
     Link,
     OverflowMenu,
@@ -168,7 +169,7 @@
         return `<button type="button" tabindex="-1" data-icon="${name}"${
           formerly ? ` title="${escapeHtml(`${name}, formerly ${formerly.join(", ")}`)}"` : ""
         }>${
-          data.deprecated?.[name] ? '<span class="bx--tag bx--tag--sm bx--tag--warm-gray tile-flag">Deprecated</span>' : ""
+          data.deprecated?.[name] !== undefined ? '<span class="tile-note">Deprecated</span>' : ""
         }<span class="tile-icon">${
           data.byModuleName[name]
         }</span><span class="tile-name">${nameHtml(name)}</span></button>`;
@@ -289,6 +290,24 @@
   const importStyles = ["file", "package"];
   let importIndex = 0;
   $: importStyle = importStyles[importIndex];
+
+  // A subcategory has its own heading only when its category has others.
+  const subcategoryOrCategoryId = (category, subcategory) =>
+    (data?.groups.find((group) => group.category === category)?.subcategories.length ?? 0) > 1
+      ? subcategoryId(category, subcategory)
+      : categoryId(category);
+
+  // A category link in the details: clear the search, which merges the
+  // groups, close the panel and go to the group.
+  const goToGroup = async (event, id) => {
+    event.preventDefault();
+    query = "";
+    animatedOnly = false;
+    detailsOpen = false;
+    history.replaceState(history.state, "", `${location.pathname}#${id}`);
+    await tick();
+    scrollToHash();
+  };
 
   const open = (name) => {
     selected = name;
@@ -847,17 +866,6 @@ export default {
   {#if selected && data?.byModuleName[selected]}
     {@const svg = data.byModuleName[selected]}
     <div class="explorer">
-      {#if data.deprecated?.[selected] !== undefined}
-        <InlineNotification
-          kind="warning"
-          lowContrast
-          hideCloseButton
-          fullWidth
-          title="Deprecated"
-          subtitle={data.deprecated[selected] || "Carbon has deprecated this icon."}
-        />
-      {/if}
-      <div class="example">
         <div class="preview-bar">
           <Tabs type="container" size="md" autoWidth bind:selected={previewIndex}>
             {#each previews as [id, label] (id)}
@@ -876,6 +884,7 @@ export default {
             />
           </div>
         </div>
+      <div class="example">
         <div class="stage">
           {#if preview === "icon"}
             <!-- Every size at once; picking one sets the size in the code. -->
@@ -902,6 +911,12 @@ export default {
       </div>
       <Layer class="controls">
         <dl class="prop-list">
+          {#if data.deprecated?.[selected] !== undefined}
+            <dt>Status</dt>
+            <dd class="status text-value">
+              <span><strong>Deprecated.</strong> {data.deprecated[selected] || "Carbon no longer recommends this icon."}</span>
+            </dd>
+          {/if}
           <dt>Import from</dt>
           <dd>
             <ContentSwitcher size="sm" autoWidth lowContrast aria-label="Import from" bind:selectedIndex={importIndex}>
@@ -929,11 +944,24 @@ export default {
           {/if}
           {#if categoryOf.get(selected)}
             <dt>Category</dt>
-            <dd>{categoryOf.get(selected).join(" › ")}</dd>
+            {@const [category, subcategory] = categoryOf.get(selected)}
+            <dd>
+              <Breadcrumb noTrailingSlash labelText="Category">
+                <BreadcrumbItem href="#{categoryId(category)}" on:click={(event) => goToGroup(event, categoryId(category))}>
+                  {category}
+                </BreadcrumbItem>
+                <BreadcrumbItem
+                  href="#{subcategoryOrCategoryId(category, subcategory)}"
+                  on:click={(event) => goToGroup(event, subcategoryOrCategoryId(category, subcategory))}
+                >
+                  {subcategory}
+                </BreadcrumbItem>
+              </Breadcrumb>
+            </dd>
           {/if}
           {#if aliasTerms[selected]}
             <dt>Keywords</dt>
-            <dd>
+            <dd class="tags-value">
               <TagSet size="sm" multiline>
                 {#each aliasTerms[selected] as term (term)}<Tag>{term}</Tag>{/each}
               </TagSet>
@@ -1074,9 +1102,15 @@ export default {
     white-space: nowrap;
   }
 
-  /* The explorer's gap spaces it; its own margins would add to that. */
-  .explorer :global(.bx--inline-notification) {
-    margin: 0;
+  .status {
+    font-size: 0.875rem;
+    line-height: 1.125rem;
+    color: var(--cds-text-secondary, var(--cds-text-02));
+  }
+
+  .status strong {
+    font-weight: 600;
+    color: var(--cds-text-primary, var(--cds-text-01));
   }
 
   .import-tip {
