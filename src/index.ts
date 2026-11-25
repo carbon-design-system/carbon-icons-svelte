@@ -176,6 +176,8 @@ type CarbonIcon = typeof import("svelte") extends { mount: any }
   // Search terms from Carbon's metadata, like "heart" for Favorite, minus
   // any that only repeat the icon's name.
   const aliases: Record<string, string[]> = {};
+  // Icons Carbon has deprecated, with its reason, so the docs can warn.
+  const deprecated: Record<string, string> = {};
 
   // Carbon's category and subcategory for each icon, for grouping the
   // Icons page like Carbon's own icon library.
@@ -234,6 +236,8 @@ type CarbonIcon = typeof import("svelte") extends { mount: any }
       ...new Set((iconMetadata?.aliases ?? []).map((alias) => alias.trim().toLowerCase())),
     ].filter((term) => term && term.replace(/\s+/g, "") !== name.toLowerCase());
     if (terms.length > 0) aliases[name] = terms;
+    const status = iconMetadata as { deprecated?: boolean; reason?: string } | undefined;
+    if (status?.deprecated) deprecated[name] = status.reason ?? "";
 
     const inner = renderContent(icon.descriptor);
 
@@ -337,6 +341,7 @@ ${Object.keys(byModuleName)
     bySize,
     byModuleName,
     groups,
+    deprecated,
     version: VERSION,
   };
 

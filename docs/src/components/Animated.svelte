@@ -386,6 +386,34 @@
     size = iconSize;
     explorerOpen = true;
   };
+
+  // j and k step through the gallery as shown, search and Loop included.
+  $: browseOrder = visibleGroups.flatMap((group) => group.names);
+  $: browseIndex = browseOrder.indexOf(name);
+  const step = (delta) => {
+    const next = browseOrder[browseIndex + delta];
+    if (browseIndex === -1 || !next) return;
+    name = next;
+  };
+  // Keep the gallery behind the panel on the icon shown, and focus its tile
+  // when the panel closes, after SidePanel returns focus to the opener.
+  const tileOf = (option) => groupsElement?.querySelector(`button[data-icon="${option}"]`);
+  $: if (explorerOpen && name) tileOf(name)?.scrollIntoView({ block: "nearest" });
+  let wasOpen = false;
+  $: {
+    if (wasOpen && !explorerOpen) requestAnimationFrame(() => tileOf(name)?.focus({ preventScroll: true }));
+    wasOpen = explorerOpen;
+  }
+  /** @param {KeyboardEvent} event */
+  const onPanelKeydown = (event) => {
+    if (!explorerOpen || event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) return;
+    const target = event.target;
+    if (target instanceof HTMLElement && (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName))) return;
+    if (event.key === "j") step(1);
+    else if (event.key === "k") step(-1);
+    else return;
+    event.preventDefault();
+  };
   let motion = "productive";
   let trigger = "hover";
   let reducedMotion = "static";
@@ -941,7 +969,7 @@ ${explorerMarkup}`;
   const reducedCode = `<Checkmark play={saved} trigger="none" reducedMotion="fade" />`;
 </script>
 
-<svelte:window on:hashchange={scrollToHash} />
+<svelte:window on:hashchange={scrollToHash} on:keydown={onPanelKeydown} />
 
 <FocusKey element={galleryInput} selectText />
 
@@ -1104,7 +1132,7 @@ ${explorerMarkup}`;
           <div class="gallery">
             {#each group.names as option (option)}
               {@const term = matchedBy(queryKey, option)}
-              <button type="button" on:click={() => explore(option)}>
+              <button type="button" data-icon={option} on:click={() => explore(option)}>
                 {#if term}<span class="tile-match" aria-hidden="true">{term}</span>{/if}
                 <span class="tile-icon">
                   <svelte:component this={Animated[option]} size={iconSize} motion={galleryMotion} play={galleryPlay} loop={galleryLoop} />
@@ -1659,6 +1687,30 @@ ${explorerMarkup}`;
   selectorPrimaryFocus=".bx--side-panel__close"
   class="explorer-panel docs-panel"
 >
+  <div slot="toolbar" class="browse">
+    <Button
+      kind="ghost"
+      size="small"
+      icon={Animated.ChevronLeft}
+      iconDescription="Previous (K)"
+      tooltipPosition="bottom"
+      tooltipAlignment="start"
+      disabled={browseIndex <= 0}
+      on:click={() => step(-1)}
+    />
+    <Button
+      kind="ghost"
+      size="small"
+      icon={Animated.ChevronRight}
+      iconDescription="Next (J)"
+      tooltipPosition="bottom"
+      disabled={browseIndex === -1 || browseIndex >= browseOrder.length - 1}
+      on:click={() => step(1)}
+    />
+    {#if browseIndex !== -1}
+      <span class="browse-position">{browseIndex + 1} of {browseOrder.length}</span>
+    {/if}
+  </div>
   <div class="explorer">
     <div class="example">
     <div class="preview-bar">

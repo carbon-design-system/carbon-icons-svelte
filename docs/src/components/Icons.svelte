@@ -6,6 +6,7 @@
     CssGrid,
     Dropdown,
     EmptyState,
+    InlineNotification,
     Layer,
     Link,
     OverflowMenu,
@@ -21,7 +22,9 @@
     TableOfContentsItem,
     Tabs,
     Tag,
+    TagSet,
     Theme,
+    Toggle,
   } from "carbon-components-svelte";
   import Add from "carbon-icons-svelte/lib/Add.svelte";
   import ArrowRight from "carbon-icons-svelte/lib/ArrowRight.svelte";
@@ -34,6 +37,8 @@
   // loads them all.
   import AnimatedAdd from "carbon-icons-svelte/lib/animated/Add.svelte";
   import AnimatedCheckmark from "carbon-icons-svelte/lib/animated/Checkmark.svelte";
+  import AnimatedChevronLeft from "carbon-icons-svelte/lib/animated/ChevronLeft.svelte";
+  import AnimatedChevronRight from "carbon-icons-svelte/lib/animated/ChevronRight.svelte";
   import AnimatedCode from "carbon-icons-svelte/lib/animated/Code.svelte";
   import AnimatedDashboard from "carbon-icons-svelte/lib/animated/Dashboard.svelte";
   import AnimatedEdit from "carbon-icons-svelte/lib/animated/Edit.svelte";
@@ -136,8 +141,15 @@
     }
     return best;
   })();
-  $: count = (icons) => (ranks ? icons.filter((name) => ranks.has(name)).length : icons.length);
-  $: matches = ranks ? ranks.size : allIcons.length;
+  // Only icons with an animated version, with or without a search.
+  let animatedOnly = false;
+  // What the gallery shows: the search's ranks, narrowed to animated icons
+  // when that's on. null when nothing is filtered.
+  $: filter = animatedOnly
+    ? new Map((ranks ? [...ranks] : allIcons.map((name) => [name, 0])).filter(([name]) => animatedNames.has(name)))
+    : ranks;
+  $: count = (icons) => (filter ? icons.filter((name) => filter.has(name)).length : icons.length);
+  $: matches = filter ? filter.size : allIcons.length;
 
   // ---- Tiles ----
 
@@ -155,7 +167,9 @@
         const formerly = canonicalToAliases[name];
         return `<button type="button" tabindex="-1" data-icon="${name}"${
           formerly ? ` title="${escapeHtml(`${name}, formerly ${formerly.join(", ")}`)}"` : ""
-        }><span class="tile-icon">${
+        }>${
+          data.deprecated?.[name] ? '<span class="bx--tag bx--tag--sm bx--tag--warm-gray tile-flag">Deprecated</span>' : ""
+        }<span class="tile-icon">${
           data.byModuleName[name]
         }</span><span class="tile-name">${nameHtml(name)}</span></button>`;
       })
@@ -214,7 +228,7 @@
     clearTimeout(statusTimer);
     const text = queryKey
       ? matches === 0
-        ? `No icons match ${query.trim()}`
+        ? `No icons match ${query.trim()}${animatedOnly ? " with an animated version" : ""}`
         : `${matches.toLocaleString()} ${matches === 1 ? "icon matches" : "icons match"} ${query.trim()}`
       : "";
     statusTimer = setTimeout(() => (searchStatus = text), 500);
@@ -235,10 +249,11 @@
   let emptyElement = null;
   let lastQuery;
   $: {
-    if (lastQuery !== undefined && queryKey !== lastQuery) {
+    const key = `${queryKey}|${animatedOnly}`;
+    if (lastQuery !== undefined && key !== lastQuery) {
       tick().then(() => revealResults(emptyElement ?? groupsElement, toolbarElement, !compactToolbar));
     }
-    lastQuery = queryKey;
+    lastQuery = key;
   }
 
   // The empty state's icon plays once it has settled in. In a function, so
@@ -280,6 +295,58 @@
     detailsOpen = true;
   };
 
+  // The gallery's order as shown: every icon by category, or the filtered
+  // ones best match first, ties in category order. j and k step through it.
+  $: position = new Map(allIcons.map((name, index) => [name, index]));
+  $: browseOrder = filter
+    ? [...filter.keys()].sort((a, b) => filter.get(a) - filter.get(b) || position.get(a) - position.get(b))
+    : allIcons;
+  $: browseIndex = selected ? browseOrder.indexOf(selected) : -1;
+  const step = (delta) => {
+    const next = browseOrder[browseIndex + delta];
+    if (browseIndex === -1 || !next) return;
+    selected = next;
+  };
+
+  // Keep the gallery behind the panel on the icon shown, so closing the
+  // panel lands where browsing ended.
+  const tileOf = (name) => groupsElement?.querySelector(`button[data-icon="${name}"]`);
+  $: if (detailsOpen && selected) tileOf(selected)?.scrollIntoView({ block: "nearest" });
+  let wasOpen = false;
+  $: {
+    if (wasOpen && !detailsOpen && selected) {
+      // After SidePanel returns focus to the tile that opened it.
+      requestAnimationFrame(() => tileOf(selected)?.focus({ preventScroll: true }));
+    }
+    wasOpen = detailsOpen;
+  }
+
+  /** @param {KeyboardEvent} event */
+  const onPanelKeydown = (event) => {
+    if (!detailsOpen || event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) return;
+    const target = event.target;
+    if (target instanceof HTMLElement && (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName))) return;
+    if (event.key === "j") step(1);
+    else if (event.key === "k") step(-1);
+    else return;
+    event.preventDefault();
+  };
+
+  // The same icon's other styles, found by name: Add, AddAlt, AddFilled,
+  // AddLarge. Suffixes come off the end until only the stem is left.
+  const VARIANT_SUFFIX = /(Filled|Outline|Alt|Large|Solid|Half|Fill|Stroke|Inverted|Mirror|_\d+)$/;
+  const stem = (name) => {
+    let base = name;
+    while (VARIANT_SUFFIX.test(base) && base.replace(VARIANT_SUFFIX, "")) base = base.replace(VARIANT_SUFFIX, "");
+    return base;
+  };
+  $: families = allIcons.reduce((result, name) => {
+    const key = stem(name);
+    (result.get(key) ?? result.set(key, []).get(key)).push(name);
+    return result;
+  }, new Map());
+  $: variants = selected ? (families.get(stem(selected)) ?? []).filter((name) => name !== selected) : [];
+
   $: categoryOf = (() => {
     /** @type {Map<string, [string, string]>} */
     const result = new Map();
@@ -320,6 +387,7 @@
   onMount(() => {
     const params = new URLSearchParams(location.search);
     query = params.get("q") ?? "";
+    animatedOnly = params.get("animated") === "1";
     const icon = params.get("icon");
     previewIndex = Math.max(0, previews.findIndex(([id]) => id === params.get("preview")));
     importIndex = params.get("import") === "package" ? 1 : 0;
@@ -332,6 +400,7 @@
   $: search = (() => {
     const params = new URLSearchParams();
     if (query.trim()) params.set("q", query.trim());
+    if (animatedOnly) params.set("animated", "1");
     if (detailsOpen && selected) {
       params.set("icon", selected);
       if (preview !== "icon") params.set("preview", preview);
@@ -434,6 +503,8 @@ export default {
 
 <FocusKey element={searchInput} selectText />
 
+<svelte:window on:keydown={onPanelKeydown} />
+
 <Theme bind:theme persist persistKey="theme" />
 
 {#snippet sizeControl(labelledBy)}
@@ -476,7 +547,7 @@ export default {
             <svelte:component this={icon} />
             {text}
           </TableOfContentsItem>
-          {#if id === "icons-gallery" && data && !ranks}
+          {#if id === "icons-gallery" && data && !filter}
             {#each data.groups as group (group.category)}
               {@const total = count(group.subcategories.flatMap((sub) => sub.icons))}
               {#if total > 0}
@@ -542,6 +613,10 @@ export default {
                     {@render sizeControl("icons-compact-size-label")}
                   </div>
                   {@render themeControl("icons-compact-theme-label")}
+                  <div class="toolbar-field">
+                    <span id="icons-compact-animated-label" class="bx--label">Animated</span>
+                    <Toggle size="sm" labelText="Animated" hideLabel labelA="" labelB="" aria-labelledby="icons-compact-animated-label" bind:toggled={animatedOnly} />
+                  </div>
                 </div>
               </Popover>
             </div>
@@ -552,6 +627,10 @@ export default {
                 {@render sizeControl("icons-size-label")}
               </div>
               {@render themeControl("icons-theme-label")}
+              <div class="toolbar-field">
+                <span id="icons-animated-label" class="bx--label">Animated</span>
+                <Toggle size="sm" labelText="Animated" hideLabel labelA="" labelB="" aria-labelledby="icons-animated-label" bind:toggled={animatedOnly} />
+              </div>
             </div>
           {/if}
         </div>
@@ -573,13 +652,13 @@ export default {
           <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
           <div
             class="gallery-groups icon-size--{iconSize}"
-            class:searching={Boolean(ranks)}
+            class:searching={Boolean(filter)}
             bind:this={groupsElement}
             role="group"
             aria-label="Icons"
             aria-describedby="icons-gallery-keys"
-            use:filterTiles={{ ranks, matchFor: (name) => matchedBy(queryKey, name) }}
-            use:rovingFocus={ranks}
+            use:filterTiles={{ ranks: filter, matchFor: (name) => matchedBy(queryKey, name) }}
+            use:rovingFocus={filter}
             on:click={(event) => {
               const tile = event.target instanceof Element ? event.target.closest("button[data-icon]") : null;
               if (tile instanceof HTMLElement && tile.dataset.icon) open(tile.dataset.icon);
@@ -741,9 +820,43 @@ export default {
   selectorPrimaryFocus=".bx--side-panel__close"
   class="explorer-panel docs-panel"
 >
+  <div slot="toolbar" class="browse">
+    <Button
+      kind="ghost"
+      size="small"
+      icon={AnimatedChevronLeft}
+      iconDescription="Previous (K)"
+      tooltipPosition="bottom"
+      tooltipAlignment="start"
+      disabled={browseIndex <= 0}
+      on:click={() => step(-1)}
+    />
+    <Button
+      kind="ghost"
+      size="small"
+      icon={AnimatedChevronRight}
+      iconDescription="Next (J)"
+      tooltipPosition="bottom"
+      disabled={browseIndex === -1 || browseIndex >= browseOrder.length - 1}
+      on:click={() => step(1)}
+    />
+    {#if browseIndex !== -1}
+      <span class="browse-position">{(browseIndex + 1).toLocaleString()} of {browseOrder.length.toLocaleString()}</span>
+    {/if}
+  </div>
   {#if selected && data?.byModuleName[selected]}
     {@const svg = data.byModuleName[selected]}
     <div class="explorer">
+      {#if data.deprecated?.[selected] !== undefined}
+        <InlineNotification
+          kind="warning"
+          lowContrast
+          hideCloseButton
+          fullWidth
+          title="Deprecated"
+          subtitle={data.deprecated[selected] || "Carbon has deprecated this icon."}
+        />
+      {/if}
       <div class="example">
         <div class="preview-bar">
           <Tabs type="container" size="md" autoWidth bind:selected={previewIndex}>
@@ -765,7 +878,15 @@ export default {
         </div>
         <div class="stage">
           {#if preview === "icon"}
-            {@html sized(svg, iconSize)}
+            <!-- Every size at once; picking one sets the size in the code. -->
+            <div class="size-strip" role="group" aria-label="Size">
+              {#each iconSizes as option (option)}
+                <button type="button" class="size-option" aria-pressed={iconSize === option} on:click={() => (iconSize = option)}>
+                  {@html sized(svg, option)}
+                  <span>{option}</span>
+                </button>
+              {/each}
+            </div>
           {:else if preview === "button"}
             <Button>
               {selected}
@@ -781,23 +902,6 @@ export default {
       </div>
       <Layer class="controls">
         <dl class="prop-list">
-          {#if preview === "icon"}
-            <dt>size <span class="unit">(px)</span></dt>
-            <dd>
-              <ContentSwitcher
-                size="sm"
-                autoWidth
-                lowContrast
-                aria-label="Size"
-                selectedIndex={Math.max(0, iconSizes.indexOf(iconSize))}
-                on:change={({ detail }) => (iconSize = iconSizes[detail])}
-              >
-                {#each iconSizes as option (option)}
-                  <Switch text="{option}" />
-                {/each}
-              </ContentSwitcher>
-            </dd>
-          {/if}
           <dt>Import from</dt>
           <dd>
             <ContentSwitcher size="sm" autoWidth lowContrast aria-label="Import from" bind:selectedIndex={importIndex}>
@@ -812,14 +916,27 @@ export default {
               </p>
             {/if}
           </dd>
+          {#if variants.length > 0}
+            <dt>Variants</dt>
+            <dd class="variants">
+              {#each variants as name (name)}
+                <button type="button" class="variant" title={name} on:click={() => (selected = name)}>
+                  {@html data.byModuleName[name]}
+                  <span>{name}</span>
+                </button>
+              {/each}
+            </dd>
+          {/if}
           {#if categoryOf.get(selected)}
             <dt>Category</dt>
             <dd>{categoryOf.get(selected).join(" › ")}</dd>
           {/if}
           {#if aliasTerms[selected]}
             <dt>Keywords</dt>
-            <dd class="keywords">
-              {#each aliasTerms[selected] as term (term)}<Tag size="sm">{term}</Tag>{/each}
+            <dd>
+              <TagSet size="sm" multiline>
+                {#each aliasTerms[selected] as term (term)}<Tag>{term}</Tag>{/each}
+              </TagSet>
             </dd>
           {/if}
           {#if canonicalToAliases[selected]}
@@ -890,12 +1007,75 @@ export default {
     flex-wrap: wrap;
   }
 
-  .keywords {
+  .size-strip {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--cds-spacing-03);
+  }
+
+  .size-option,
+  .variant {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--cds-spacing-03);
+    padding: var(--cds-spacing-03) var(--cds-spacing-04);
+    border: 1px solid transparent;
+    background: none;
+    color: var(--cds-text-primary, var(--cds-text-01));
+    cursor: pointer;
+    font: inherit;
+  }
+
+  .size-option span,
+  .variant span {
+    font-size: 0.75rem;
+    letter-spacing: 0.32px;
+    color: var(--cds-text-secondary, var(--cds-text-02));
+  }
+
+  .size-option:hover,
+  .variant:hover {
+    background: var(--cds-layer-hover, var(--cds-hover-ui));
+  }
+
+  .size-option[aria-pressed="true"] {
+    border-color: var(--cds-border-strong, var(--cds-ui-04));
+  }
+
+  .size-option[aria-pressed="true"] span {
+    color: var(--cds-text-primary, var(--cds-text-01));
+  }
+
+  .size-option:focus-visible,
+  .variant:focus-visible {
+    outline: 2px solid var(--cds-focus, var(--cds-interactive-01));
+    outline-offset: -2px;
+  }
+
+  .variants {
     flex-wrap: wrap;
     gap: var(--cds-spacing-02);
   }
 
-  .keywords :global(.bx--tag) {
+  .variant {
+    max-width: 8rem;
+  }
+
+  .variant :global(svg) {
+    width: 24px;
+    height: 24px;
+  }
+
+  .variant span {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* The explorer's gap spaces it; its own margins would add to that. */
+  .explorer :global(.bx--inline-notification) {
     margin: 0;
   }
 
