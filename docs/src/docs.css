@@ -629,16 +629,3 @@ html {
 :is(.docs-page, .docs-panel) .gallery.dense .tile-match {
   inset-inline-end: var(--cds-spacing-06);
 }
-
-/* An icon that's also animated: a small Renew mark in the tile's corner,
-   drawn with a mask so it costs no extra elements. */
-:is(.docs-page, .docs-panel) .tile-badge {
-  position: absolute;
-  inset-block-start: var(--cds-spacing-02);
-  inset-inline-end: var(--cds-spacing-02);
-  width: 1rem;
-  height: 1rem;
-  background: var(--cds-icon-secondary, var(--cds-icon-02));
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M12,10H6.78A11,11,0,0,1,27,16h2A13,13,0,0,0,6,7.68V4H4v8h8Z'/%3E%3Cpath d='M20,22h5.22A11,11,0,0,1,5,16H3a13,13,0,0,0,23,8.32V28h2V20H20Z'/%3E%3C/svg%3E") center / contain no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M12,10H6.78A11,11,0,0,1,27,16h2A13,13,0,0,0,6,7.68V4H4v8h8Z'/%3E%3Cpath d='M20,22h5.22A11,11,0,0,1,5,16H3a13,13,0,0,0,23,8.32V28h2V20H20Z'/%3E%3C/svg%3E") center / contain no-repeat;
-}
