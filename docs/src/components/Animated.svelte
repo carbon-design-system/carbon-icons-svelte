@@ -2172,6 +2172,12 @@ ${explorerTag}`;
     margin-inline-start: auto;
   }
 
+  /* No underline, like Carbon's toolbar search in a DataTable, so the field
+     doesn't draw a second line above the stuck toolbar's border. */
+  .gallery-toolbar :global(.bx--search-input) {
+    border-block-end-color: transparent;
+  }
+
   .gallery-toolbar.compact {
     flex-wrap: nowrap;
     gap: var(--cds-spacing-02);
