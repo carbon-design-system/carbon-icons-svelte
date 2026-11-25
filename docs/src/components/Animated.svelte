@@ -6,6 +6,7 @@
     Dropdown,
     FluidForm,
     CssColumn,
+    EmptyState,
     CssGrid,
     Layer,
     Link,
@@ -543,6 +544,10 @@
   let groupsElement = null;
   let emptyElement = null;
   let lastFilter;
+  const clearSearch = () => {
+    galleryQuery = "";
+    galleryInput?.focus();
+  };
   const revealResults = async () => {
     await tick();
     const results = emptyElement ?? groupsElement;
@@ -1173,7 +1178,12 @@ ${explorerMarkup}`;
           {/if}
         </div>
         {#if visibleGroups.length === 0}
-          <p class="gallery-empty" bind:this={emptyElement}>No animated icons match “{galleryQuery.trim()}”.</p>
+          <div class="gallery-empty" bind:this={emptyElement}>
+            <EmptyState size="sm" headingLevel={3} titleText="No icons match “{galleryQuery.trim()}”" subtitleText="Try a keyword like “heart” or “refresh”.">
+              <Animated.Search slot="illustration" size={32} play trigger="none" motion="expressive" />
+              <Button kind="tertiary" size="small" on:click={clearSearch}>Clear search</Button>
+            </EmptyState>
+          </div>
         {/if}
         <p class="visually-hidden" aria-live="polite">{searchStatus}</p>
         <p id="gallery-keys" class="visually-hidden">Use the arrow keys to move between icons.</p>
@@ -2401,7 +2411,6 @@ ${explorerMarkup}`;
 
   .gallery-empty {
     margin-block-start: var(--cds-spacing-07);
-    color: var(--cds-text-secondary, var(--cds-text-02));
   }
 
   .gallery {
