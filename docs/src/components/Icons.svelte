@@ -806,6 +806,13 @@ export default {
               <Switch text="Its file" />
               <Switch text="The package" />
             </ContentSwitcher>
+            {#if importStyle === "package"}
+              <p class="import-tip">
+                Add <Link href="https://github.com/carbon-design-system/carbon-preprocess-svelte#optimizeimports" target="_blank">optimizeImports</Link>
+                from carbon-preprocess-svelte. Without it, your bundler compiles all {data.total.toLocaleString()} icons on every
+                development build.
+              </p>
+            {/if}
           </dd>
           {#if categoryOf.get(selected)}
             <dt>Category</dt>
@@ -876,6 +883,21 @@ export default {
     line-height: 1.33;
     letter-spacing: 0.32px;
     color: var(--cds-text-secondary, var(--cds-text-02));
+  }
+
+  /* Its own line under the switch: the row wraps. */
+  .prop-list dd:has(.import-tip) {
+    flex-wrap: wrap;
+  }
+
+  .import-tip {
+    flex-basis: 100%;
+    max-width: 28rem;
+    margin: var(--cds-spacing-03) 0 0;
+    font-size: 0.75rem;
+    line-height: 1.33;
+    letter-spacing: 0.32px;
+    color: var(--cds-text-helper, var(--cds-text-05));
   }
 
   .size-row {
