@@ -57,7 +57,7 @@
   import AnimatedDefaults from "./AnimatedDefaults.svelte";
   import { pageLinks } from "../page-links.js";
   import Code from "./Code.svelte";
-  import { fitToolbar, focusInPlace, revealResults, revealTile, rovingFocus, watchStuck } from "../gallery.js";
+  import { fitToolbar, revealResults, revealTile, rovingFocus, watchStuck } from "../gallery.js";
   import FocusKey from "./FocusKey.svelte";
   import TileActions from "./TileActions.svelte";
   import StaticCheckmark from "carbon-icons-svelte/lib/Checkmark.svelte";
@@ -989,7 +989,7 @@ ${explorerMarkup}`;
 
 <!-- Gallery toolbar controls, shared by the full and compact toolbars. -->
 {#snippet searchControl(size)}
-  <SearchInput {size} labelText="Search animated icons" placeholder="Search {names.length} icons" shortcut="mod+k" selectTextOnFocus bind:ref={galleryInput} on:shortcut={(event) => { event.preventDefault(); focusInPlace(galleryInput); }} bind:value={galleryQuery} />
+  <SearchInput {size} labelText="Search animated icons" placeholder="Search {names.length} icons" shortcut="mod+k" selectTextOnFocus bind:ref={galleryInput} bind:value={galleryQuery} />
 {/snippet}
 
 {#snippet motionControl(labelledBy)}
