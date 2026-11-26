@@ -412,10 +412,11 @@ html {
   margin-inline-start: auto;
 }
 
-/* No underline, like Carbon's toolbar search in a DataTable, so the field
-   doesn't draw a second line above the stuck toolbar's border. */
-:is(.docs-page, .docs-panel) .gallery-toolbar .bx--search-input,
-:is(.docs-page, .docs-panel) .gallery-toolbar .bx--search-close:hover {
+/* The field keeps Carbon's underline until the toolbar sticks; then the
+   toolbar's own border takes over, so there's one line, not two. The
+   underline stays 1px, only its color changes, so nothing moves. */
+:is(.docs-page, .docs-panel) .gallery-toolbar.stuck .bx--search-input,
+:is(.docs-page, .docs-panel) .gallery-toolbar.stuck .bx--search-close:hover {
   border-block-end-color: transparent;
 }
 
