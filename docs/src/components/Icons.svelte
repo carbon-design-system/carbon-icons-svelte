@@ -27,6 +27,7 @@
     Theme,
     TextInput,
     Toggle,
+    TooltipIcon,
   } from "carbon-components-svelte";
   import Add from "carbon-icons-svelte/lib/Add.svelte";
   import ArrowRight from "carbon-icons-svelte/lib/ArrowRight.svelte";
@@ -34,6 +35,7 @@
   import CodeIcon from "carbon-icons-svelte/lib/Code.svelte";
   import Copy from "carbon-icons-svelte/lib/Copy.svelte";
   import Download from "carbon-icons-svelte/lib/Download.svelte";
+  import Information from "carbon-icons-svelte/lib/Information.svelte";
   import Pin from "carbon-icons-svelte/lib/Pin.svelte";
   import PinFilled from "carbon-icons-svelte/lib/PinFilled.svelte";
   import TextFont from "carbon-icons-svelte/lib/TextFont.svelte";
@@ -1088,32 +1090,46 @@ export default {
             </dd>
           {/if}
           {#if standalone}
-            <dt>Title</dt>
+            <dt>
+              title
+              <TooltipIcon icon={Information} direction="top" align="start" portalTooltip>
+                <span slot="tooltipText">
+                  Without a title, screen readers skip the icon, which suits an icon beside text that says the same. With
+                  one, it's an image with that name. In a button or link, label the button or link instead.
+                  <span class="tooltip-default">Default: none</span>
+                </span>
+              </TooltipIcon>
+            </dt>
             <dd>
-              <TextInput size="sm" labelText="Title" hideLabel placeholder="None" bind:value={iconTitle} />
+              <TextInput size="sm" labelText="title" hideLabel placeholder="None" bind:value={iconTitle} />
             </dd>
             <dt>Color</dt>
             <dd>
-              <Dropdown
-                size="sm"
-                type="inline"
-                titleText="Color"
-                hideLabel
-                items={colors.map(([id, text]) => ({ id, text }))}
-                selectedId={colorToken}
-                on:select={({ detail }) => (colorToken = detail.selectedId)}
-              />
-            </dd>
-            <dt>Accessibility</dt>
-            <dd class="text-value a11y-note">
-              {#if iconTitle.trim()}
-                An image named “{iconTitle.trim()}”.
-              {:else}
-                Hidden from screen readers. Give it a title when it stands alone; in a button, label the button.
-              {/if}
+              <!-- Swatches of Carbon's icon and support tokens, as radios: the
+                arrow keys move between them, and the name shows beside. -->
+              <fieldset class="swatches">
+                <legend class="visually-hidden">Color</legend>
+                {#each colors as [token, label] (token)}
+                  <label class="swatch" title={label}>
+                    <input type="radio" name="icon-color" value={token} bind:group={colorToken} />
+                    <span class="swatch-dot" style:background="var({token})"></span>
+                    <span class="visually-hidden">{label}</span>
+                  </label>
+                {/each}
+                <span class="swatch-name" aria-hidden="true">{colors.find(([token]) => token === colorToken)?.[1]}</span>
+              </fieldset>
             </dd>
           {/if}
-          <dt>Import</dt>
+          <dt>
+            Import
+            <TooltipIcon icon={Information} direction="top" align="start" portalTooltip>
+              <span slot="tooltipText">
+                Direct imports the icon's own file, which every bundler handles quickly. Barrel imports from the package,
+                which needs optimizeImports from carbon-preprocess-svelte, or development builds compile every icon.
+                <span class="tooltip-default">Default: Direct</span>
+              </span>
+            </TooltipIcon>
+          </dt>
           <dd>
             <ContentSwitcher size="sm" autoWidth lowContrast aria-label="Import" bind:selectedIndex={importIndex}>
               <Switch text="Direct" />
@@ -1306,7 +1322,56 @@ export default {
     background: var(--cds-layer-hover, var(--cds-hover-ui));
   }
 
-  .a11y-note,
+  .swatches {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cds-spacing-02);
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .swatch {
+    position: relative;
+    display: flex;
+    padding: var(--cds-spacing-02);
+    cursor: pointer;
+  }
+
+  .swatch input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .swatch-dot {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px var(--cds-border-subtle-01, var(--cds-ui-03));
+  }
+
+  /* The chosen color: a ring around its swatch. */
+  .swatch:has(input:checked) .swatch-dot {
+    box-shadow:
+      0 0 0 2px var(--cds-layer-01, var(--cds-ui-01)),
+      0 0 0 3px var(--cds-text-primary, var(--cds-text-01));
+  }
+
+  .swatch:has(input:focus-visible) {
+    outline: 2px solid var(--cds-focus, var(--cds-interactive-01));
+    outline-offset: -2px;
+  }
+
+  .swatch-name {
+    margin-inline-start: var(--cds-spacing-03);
+    font-size: 0.875rem;
+    color: var(--cds-text-secondary, var(--cds-text-02));
+  }
+
   .cost {
     font-size: 0.875rem;
     line-height: 1.125rem;

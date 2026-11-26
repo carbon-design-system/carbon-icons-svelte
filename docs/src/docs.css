@@ -294,7 +294,8 @@ html {
   color: var(--cds-text-secondary, var(--cds-text-02));
 }
 
-:is(.docs-page, .docs-panel) .tooltip-default {
+/* Tooltips are portaled to the body, so this one isn't scoped. */
+.tooltip-default {
   display: block;
   margin-block-start: var(--cds-spacing-03);
 }
