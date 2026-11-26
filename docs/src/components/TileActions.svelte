@@ -1,13 +1,16 @@
 <script>
   /**
-   * One actions menu for a whole gallery, moved to the tile that's hovered
-   * or focused. A menu per tile would double the gallery's elements, and a
-   * tile, itself a button, can't hold one. Put it inside the element that
-   * holds the tiles (`host`), which it's positioned against.
+   * An actions menu that follows the hovered or focused tile, instead of
+   * one per tile: that would double the gallery's elements, and a tile,
+   * itself a button, can't hold one. Put it inside the element that holds
+   * the tiles (`host`), which it's positioned against.
+   *
+   * A menu that's open stays on its tile while another tile is hovered,
+   * which gets its own menu button, so there can be two at once.
    *
    * The menu's items go in the default slot, with the tile's `icon` name
-   * and a `done(status)` to call after an action: the menu button shows a
-   * checkmark for a moment, and screen readers hear `status`.
+   * and a `done(status)` to call after an action: that menu's button shows
+   * a checkmark for a moment, and screen readers hear `status`.
    */
   import { OverflowMenu } from "carbon-components-svelte";
   import Checkmark from "carbon-icons-svelte/lib/Checkmark.svelte";
@@ -17,45 +20,59 @@
   /** @type {HTMLElement | null} */
   export let host = null;
 
-  /** The tile the menu sits on, and where, in `host`. */
-  /** @type {{ name: string, top: number, left: number } | null} */
-  let target = null;
-  // While the menu is open it stays on its tile, though the pointer left.
-  let open = false;
-  let didAct = false;
+  /** @typedef {{ name: string, top: number, left: number }} Target */
+
+  /** The tile under the pointer or focus. */
+  /** @type {Target | null} */
+  let hovered = null;
+  /** The tile whose menu is open, which stays put. */
+  /** @type {Target | null} */
+  let pinned = null;
+  /** Each shown menu's open state, by icon name. */
+  /** @type {Record<string, boolean>} */
+  let openState = {};
+  $: openName = Object.keys(openState).find((name) => openState[name]) ?? null;
+  // A menu that opens pins its tile; one that closes lets it go.
+  $: if (openName && openName !== pinned?.name && hovered?.name === openName) pinned = hovered;
+  $: if (!openName && pinned) pinned = null;
+  $: targets = [pinned, hovered && hovered.name !== pinned?.name ? hovered : null].filter(Boolean);
+
+  let doneName = null;
   let timer;
   let status = "";
-
-  const done = (text) => {
+  const doneFor = (name) => (text) => {
     status = text;
-    didAct = true;
+    doneName = name;
     clearTimeout(timer);
-    timer = setTimeout(() => (didAct = false), 2000);
+    timer = setTimeout(() => (doneName = null), 2000);
+  };
+
+  const place = (tile) => {
+    const box = tile.getBoundingClientRect();
+    const hostBox = host.getBoundingClientRect();
+    return { name: tile.dataset.icon, top: box.top - hostBox.top, left: box.right - hostBox.left - 32 };
   };
 
   const pointAt = (element) => {
-    if (open || !(element instanceof Element) || element.closest(".tile-actions")) return;
+    if (!(element instanceof Element) || element.closest(".tile-actions")) return;
     const tile = element.closest("button[data-icon]");
     if (!(tile instanceof HTMLElement) || !host) {
-      target = null;
+      hovered = null;
       return;
     }
-    if (target?.name === tile.dataset.icon) return;
-    // A click leaves focus on the menu button; let it go before the menu
+    if (hovered?.name === tile.dataset.icon) return;
+    // A click leaves focus on a menu button; let it go before the button
     // moves on, so the next tile doesn't show a focus ring it never got.
-    if (document.activeElement instanceof HTMLElement && document.activeElement.closest(".tile-actions")) {
+    if (!openName && document.activeElement instanceof HTMLElement && document.activeElement.closest(".tile-actions")) {
       document.activeElement.blur();
     }
-    const box = tile.getBoundingClientRect();
-    const hostBox = host.getBoundingClientRect();
-    target = { name: tile.dataset.icon, top: box.top - hostBox.top, left: box.right - hostBox.left - 32 };
+    hovered = place(tile);
   };
 
   const onOver = (event) => pointAt(event.target);
-  const onLeave = () => !open && (target = null);
+  const onLeave = () => (hovered = null);
   const onFocusOut = (event) => {
-    if (open) return;
-    if (!(event.relatedTarget instanceof Node && host?.contains(event.relatedTarget))) target = null;
+    if (!(event.relatedTarget instanceof Node && host?.contains(event.relatedTarget))) hovered = null;
   };
 
   let listening = null;
@@ -74,22 +91,21 @@
 
 <p class="tile-actions-status" aria-live="polite">{status}</p>
 
-{#if target}
-  {@const name = target.name}
+{#each targets as target (target.name)}
   <span class="tile-actions" style:top="{target.top}px" style:left="{target.left}px">
     <OverflowMenu
       size="sm"
       flipped
-      icon={didAct ? Checkmark : OverflowMenuVertical}
-      iconDescription={didAct ? "Done" : "Actions"}
+      icon={doneName === target.name ? Checkmark : OverflowMenuVertical}
+      iconDescription={doneName === target.name ? "Done" : "Actions"}
       tooltipPosition="bottom"
-      bind:open
+      bind:open={openState[target.name]}
     >
       <!-- "icon", not "name", which names a slot. -->
-      <slot icon={name} {done} />
+      <slot icon={target.name} done={doneFor(target.name)} />
     </OverflowMenu>
   </span>
-{/if}
+{/each}
 
 <style>
   /* In the tile's top-right corner, clear of its centered icon and name. */
