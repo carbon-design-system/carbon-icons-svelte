@@ -25,6 +25,7 @@
     Tabs,
     Tag,
     Theme,
+    TextInput,
     Toggle,
   } from "carbon-components-svelte";
   import Add from "carbon-icons-svelte/lib/Add.svelte";
@@ -33,6 +34,8 @@
   import CodeIcon from "carbon-icons-svelte/lib/Code.svelte";
   import Copy from "carbon-icons-svelte/lib/Copy.svelte";
   import Download from "carbon-icons-svelte/lib/Download.svelte";
+  import Pin from "carbon-icons-svelte/lib/Pin.svelte";
+  import PinFilled from "carbon-icons-svelte/lib/PinFilled.svelte";
   import TextFont from "carbon-icons-svelte/lib/TextFont.svelte";
   import Notification from "carbon-icons-svelte/lib/Notification.svelte";
   import Settings from "carbon-icons-svelte/lib/Settings.svelte";
@@ -61,7 +64,10 @@
   import { pageLinks } from "../page-links.js";
   import { FUZZY_RANK, normalize, rankAliases, rankName } from "../search.js";
   import Code from "./Code.svelte";
+  import CompareTray from "./CompareTray.svelte";
   import FocusKey from "./FocusKey.svelte";
+  import PixelGrid from "./PixelGrid.svelte";
+  import ThemeMatrix from "./ThemeMatrix.svelte";
   import TileActions from "./TileActions.svelte";
 
   /**
@@ -271,7 +277,65 @@
     ["icon", "Icon"],
     ["button", "Button"],
     ["icon-button", "Icon button"],
+    ["themes", "Themes"],
+    ["pixels", "Pixels"],
   ];
+  // Tabs that show the icon on its own, with its props in the code.
+  $: standalone = ["icon", "themes", "pixels"].includes(preview);
+
+  // ---- Props playground ----
+
+  // A name for screen readers, and a color from Carbon's tokens.
+  let iconTitle = "";
+  const colors = [
+    ["--cds-icon-primary", "Primary"],
+    ["--cds-icon-secondary", "Secondary"],
+    ["--cds-icon-interactive", "Interactive"],
+    ["--cds-support-error", "Error"],
+    ["--cds-support-warning", "Warning"],
+    ["--cds-support-success", "Success"],
+    ["--cds-support-info", "Info"],
+  ];
+  let colorToken = colors[0][0];
+  $: iconProps = [
+    iconSize !== 16 && `size={${iconSize}}`,
+    iconTitle.trim() && `title="${iconTitle.trim().replace(/"/g, "&quot;")}"`,
+    colorToken !== colors[0][0] && `style="fill: var(${colorToken})"`,
+  ].filter(Boolean);
+
+  // ---- Cost ----
+
+  // The icon's SVG gzipped, as browsers download it, and its paths.
+  let cost = null;
+  const measure = async (name) => {
+    const markup = data?.byModuleName[name];
+    if (!markup || typeof CompressionStream === "undefined") return;
+    const stream = new Blob([markup]).stream().pipeThrough(new CompressionStream("gzip"));
+    const bytes = (await new Response(stream).arrayBuffer()).byteLength;
+    const shapes = (markup.match(/<(path|circle|rect|polygon|ellipse|line|polyline)\b/g) ?? []).length;
+    if (name === selected) cost = { bytes, shapes };
+  };
+  $: if (selected && data) measure(selected);
+
+  // ---- Compare ----
+
+  /** Icons pinned to compare, kept across visits. */
+  let compared = [];
+  // Saved only once read, so the empty list on load doesn't overwrite it.
+  let comparedLoaded = false;
+  onMount(() => {
+    try {
+      compared = JSON.parse(localStorage.getItem("compare-icons") ?? "[]").filter((name) => typeof name === "string");
+    } catch {}
+    comparedLoaded = true;
+  });
+  $: if (comparedLoaded) {
+    try {
+      localStorage.setItem("compare-icons", JSON.stringify(compared));
+    } catch {}
+  }
+  const toggleCompare = (name) =>
+    (compared = compared.includes(name) ? compared.filter((other) => other !== name) : [...compared, name]);
   let previewIndex = 0;
   $: preview = previews[previewIndex][0];
   // "direct" imports the icon's own file; "barrel" imports from the
@@ -395,8 +459,8 @@
   $: importLine = selected ? importFor(selected, importStyle) : "";
   $: detailsCode = !selected
     ? ""
-    : preview === "icon"
-      ? `<script>\n  ${importLine}\n<\/script>\n\n${tag(selected, iconSize === 16 ? [] : [`size={${iconSize}}`])}`
+    : standalone
+      ? `<script>\n  ${importLine}\n<\/script>\n\n${tag(selected, iconProps)}`
       : `<script>\n  import { Button } from "carbon-components-svelte";\n  ${importLine}\n<\/script>\n\n${
           preview === "button"
             ? `<Button icon={${selected}}>${selected}</Button>`
@@ -570,7 +634,17 @@ export default {
   </div>
 {/snippet}
 
-<CssGrid class="page docs-page icons-page" fullWidth>
+{#if data}
+  <CompareTray
+    bind:names={compared}
+    svgs={data.byModuleName}
+    size={iconSize}
+    importFor={(name) => importFor(name, importStyle)}
+    on:open={({ detail }) => open(detail)}
+  />
+{/if}
+
+<CssGrid class="page docs-page icons-page{compared.length > 0 ? ' with-tray' : ''}" fullWidth>
   <CssColumn sm={4} md={8} lg={4} xlg={3} class="toc-column">
     <div class="toc">
       <TableOfContents labelText="On this page" size="sm" scrollOffset={64}>
@@ -738,6 +812,14 @@ export default {
                 on:click={() => {
                   downloadSvg(name, svgOf(name));
                   done(`Downloaded ${fileName(name)}`);
+                }}
+              />
+              <OverflowMenuItem
+                icon={compared.includes(name) ? PinFilled : Pin}
+                text={compared.includes(name) ? "Unpin from compare" : "Pin to compare"}
+                on:click={() => {
+                  toggleCompare(name);
+                  done(compared.includes(name) ? `Pinned ${name} to compare` : `Unpinned ${name}`);
                 }}
               />
             </TileActions>
@@ -936,6 +1018,14 @@ export default {
             <Button
               kind="ghost"
               size="field"
+              icon={compared.includes(selected) ? PinFilled : Pin}
+              iconDescription={compared.includes(selected) ? "Unpin from compare" : "Pin to compare"}
+              tooltipPosition="bottom"
+              on:click={() => toggleCompare(selected)}
+            />
+            <Button
+              kind="ghost"
+              size="field"
               icon={panelSvgCopied ? Checkmark : Copy}
               iconDescription={panelSvgCopied ? "Copied!" : "Copy SVG"}
               tooltipPosition="bottom"
@@ -964,7 +1054,7 @@ export default {
         <div class="stage stage-static">
           {#if preview === "icon"}
             <!-- Every size at once; picking one sets the size in the code. -->
-            <div class="size-strip" role="group" aria-label="Size">
+            <div class="size-strip" role="group" aria-label="Size" style:color="var({colorToken})">
               {#each iconSizes as option (option)}
                 <button type="button" class="size-option" aria-pressed={iconSize === option} on:click={() => (iconSize = option)}>
                   {@html sized(svg, option)}
@@ -972,6 +1062,10 @@ export default {
                 </button>
               {/each}
             </div>
+          {:else if preview === "themes"}
+            <ThemeMatrix {svg} token={colorToken} size={iconSize} />
+          {:else if preview === "pixels"}
+            <PixelGrid {svg} />
           {:else if preview === "button"}
             <Button>
               {selected}
@@ -993,6 +1087,32 @@ export default {
               <span><Tag type="red" size="sm">Deprecated</Tag> {data.deprecated[selected] || "Carbon no longer recommends this icon."}</span>
             </dd>
           {/if}
+          {#if standalone}
+            <dt>Title</dt>
+            <dd>
+              <TextInput size="sm" labelText="Title" hideLabel placeholder="None" bind:value={iconTitle} />
+            </dd>
+            <dt>Color</dt>
+            <dd>
+              <Dropdown
+                size="sm"
+                type="inline"
+                titleText="Color"
+                hideLabel
+                items={colors.map(([id, text]) => ({ id, text }))}
+                selectedId={colorToken}
+                on:select={({ detail }) => (colorToken = detail.selectedId)}
+              />
+            </dd>
+            <dt>Accessibility</dt>
+            <dd class="text-value a11y-note">
+              {#if iconTitle.trim()}
+                An image named “{iconTitle.trim()}”.
+              {:else}
+                Hidden from screen readers. Give it a title when it stands alone; in a button, label the button.
+              {/if}
+            </dd>
+          {/if}
           <dt>Import</dt>
           <dd>
             <ContentSwitcher size="sm" autoWidth lowContrast aria-label="Import" bind:selectedIndex={importIndex}>
@@ -1008,6 +1128,12 @@ export default {
               </div>
             {/if}
           </dd>
+          {#if cost}
+            <dt>Cost</dt>
+            <dd class="text-value cost">
+              {cost.bytes.toLocaleString()} B of SVG, gzipped · {cost.shapes} {cost.shapes === 1 ? "shape" : "shapes"}
+            </dd>
+          {/if}
           {#if categoryOf.get(selected)}
             <dt>Category</dt>
             {@const [category, subcategory] = categoryOf.get(selected)}
@@ -1137,7 +1263,8 @@ export default {
     padding: var(--cds-spacing-03) var(--cds-spacing-04);
     border: 1px solid transparent;
     background: none;
-    color: var(--cds-text-primary, var(--cds-text-01));
+    /* The strip's color, the chosen token, reaches the icons. */
+    color: inherit;
     cursor: pointer;
     font: inherit;
   }
@@ -1177,6 +1304,18 @@ export default {
 
   .variants :global(.gallery button:hover) {
     background: var(--cds-layer-hover, var(--cds-hover-ui));
+  }
+
+  .a11y-note,
+  .cost {
+    font-size: 0.875rem;
+    line-height: 1.125rem;
+    color: var(--cds-text-secondary, var(--cds-text-02));
+  }
+
+  /* Room for the compare tray, so it doesn't cover the end of the page. */
+  :global(.icons-page.with-tray) {
+    padding-block-end: 14rem;
   }
 
   .keywords {
