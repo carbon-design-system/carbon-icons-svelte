@@ -5,7 +5,7 @@
   import Icons from "./Icons.svelte";
   import { ALIASES_URL, BUILD_INFO_URL } from "../constants";
   import { indexAliases } from "../search.js";
-  import { ANIMATED_NAMES } from "../generated/animated-aliases";
+  import { ANIMATED_NAMES } from "../generated/animated-names";
 
   // The Animated page and its 257 icons load only when someone opens it,
   // or once the Icons page is idle, so the first visit to either page is
@@ -69,22 +69,26 @@
   let aliasTerms = {};
   let aliasIndex = new Map();
 
-  onMount(() => {
-    if (route !== "animated") (window.requestIdleCallback ?? setTimeout)(() => loadAnimated());
-  });
-
-  onMount(async () => {
+  // The Icons page's data loads only for the Icons page: the Animated page
+  // doesn't use it, and at 430 kB it would compete with that page's own
+  // code. The Icons page's HTML preloads it (see vite.config.ts).
+  let dataRequested = false;
+  const loadData = async () => {
+    dataRequested = true;
     const response = await fetch(BUILD_INFO_URL);
     data = await response.json();
-    // Search terms come after the icons render. Until then, search matches names.
+    // Search terms come after the icons render. Until then, search matches
+    // names. Then, once the network is free, the Animated page's code.
     fetch(ALIASES_URL)
       .then((response) => response.json())
       .then((aliases) => {
         aliasTerms = aliases;
         aliasIndex = indexAliases(aliases);
       })
-      .catch(() => {});
-  });
+      .catch(() => {})
+      .finally(() => (window.requestIdleCallback ?? setTimeout)(() => loadAnimated()));
+  };
+  $: if (route === "icons" && !dataRequested) loadData();
 
   const ICON_SIZE_KEY = "icon-size";
   const VALID_ICON_SIZES = [16, 20, 24, 32];
