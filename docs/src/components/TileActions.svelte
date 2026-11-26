@@ -97,11 +97,12 @@
       size="sm"
       flipped
       icon={doneName === target.name ? Checkmark : OverflowMenuVertical}
-      iconDescription={doneName === target.name ? "Done" : "Actions"}
-      tooltipPosition="bottom"
+      iconDescription=""
+      aria-label={doneName === target.name ? "Done" : "Actions"}
       bind:open={openState[target.name]}
     >
-      <!-- "icon", not "name", which names a slot. -->
+      <!-- No tooltip: an empty iconDescription turns it off, and
+        aria-label names the button. "icon", not "name", which names a slot. -->
       <slot icon={target.name} done={doneFor(target.name)} />
     </OverflowMenu>
   </span>
