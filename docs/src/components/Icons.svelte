@@ -1133,7 +1133,7 @@ export default {
             </Button>
           {/if}
         </div>
-        <Code code={detailsCode} wrapText />
+        <Code code={detailsCode} />
       </div>
       <Layer class="controls">
         <dl class="prop-list">

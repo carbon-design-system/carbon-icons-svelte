@@ -1796,7 +1796,7 @@ ${explorerMarkup}`;
         </Button>
       {/if}
     </div>
-    <Code code={explorerCode} wrapText />
+    <Code code={explorerCode} />
     </div>
     <Layer class="controls">
       <dl class="prop-list">
