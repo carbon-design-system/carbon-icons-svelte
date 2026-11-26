@@ -1459,17 +1459,6 @@ export default {
     padding-block-end: 14rem;
   }
 
-  .keywords {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--cds-spacing-02);
-  }
-
-  /* Tag's own margin would add to the gap. */
-  .keywords :global(.bx--tag) {
-    margin: 0;
-  }
-
   .variants-heading {
     margin: 0 0 var(--cds-spacing-04);
     padding-block-start: var(--cds-spacing-04);
