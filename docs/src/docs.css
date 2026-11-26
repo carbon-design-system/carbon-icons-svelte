@@ -203,6 +203,8 @@ html {
   display: flex;
   flex-direction: column;
   gap: var(--cds-spacing-06);
+  /* Room under the panel header's divider before the preview's tabs. */
+  padding-block-start: var(--cds-spacing-05);
 }
 
 /* The panel and its overlay appear and leave at once. Without an
