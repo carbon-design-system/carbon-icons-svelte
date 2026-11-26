@@ -12,8 +12,8 @@
    * a `done(status, key)` to call after an action, and `doneKey`, the key
    * of the action just done on that tile, for a checkmark on its item. The
    * menu's button shows a checkmark too once the menu closes, and screen
-   * readers hear `status`. The menu is portaled, out of the page's Prose
-   * styles.
+   * readers hear `status`. The menu stays in place, not portaled: a
+   * portaled menu flips above its button as the page scrolls.
    */
   import { OverflowMenu } from "carbon-components-svelte";
   import Checkmark from "carbon-icons-svelte/lib/Checkmark.svelte";
@@ -111,7 +111,6 @@
       size="sm"
       flipped={target.flipped}
       icon={doneName === target.name && !openState[target.name] ? Checkmark : OverflowMenuVertical}
-      portalMenu
       menuOptionsClass="tile-actions-menu"
       iconDescription=""
       aria-label={doneName === target.name ? "Done" : "Actions"}
@@ -132,13 +131,14 @@
     display: flex;
   }
 
-  /* Room for a label and its checkmark. Portaled, so global. */
+  /* Room for a label and its checkmark. Carbon renders the menu, so global. */
   :global(.tile-actions-menu) {
     min-width: 12rem;
   }
 
   /* A link item, like Open static icon, keeps the browser's underline
-     otherwise; Carbon doesn't reset it. */
+     otherwise, and the page's Prose styles links too; Carbon doesn't reset
+     it. */
   :global(.tile-actions-menu a.bx--overflow-menu-options__btn) {
     text-decoration: none;
   }
