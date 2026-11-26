@@ -24,7 +24,6 @@
     TableOfContentsItem,
     Tabs,
     Tag,
-    TagSet,
     Theme,
     Toggle,
   } from "carbon-components-svelte";
@@ -1002,9 +1001,11 @@ export default {
           {#if aliasTerms[selected]}
             <dt>Keywords</dt>
             <dd class="tags-value">
-              <TagSet size="sm" multiline>
-                {#each aliasTerms[selected] as term (term)}<Tag>{term}</Tag>{/each}
-              </TagSet>
+              <!-- Plain tags: TagSet brings a modal for its "all tags" view,
+                which a few keywords never need. -->
+              <span class="keywords">
+                {#each aliasTerms[selected] as term (term)}<Tag size="sm">{term}</Tag>{/each}
+              </span>
             </dd>
           {/if}
           {#if canonicalToAliases[selected]}
@@ -1149,6 +1150,17 @@ export default {
 
   .variants :global(.gallery button:hover) {
     background: var(--cds-layer-hover, var(--cds-hover-ui));
+  }
+
+  .keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cds-spacing-02);
+  }
+
+  /* Tag's own margin would add to the gap. */
+  .keywords :global(.bx--tag) {
+    margin: 0;
   }
 
   .variants-heading {

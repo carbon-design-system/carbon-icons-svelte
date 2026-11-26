@@ -390,6 +390,15 @@ export const ALIASES_URL = "/${aliasesFileName}";
 // @see src/index.ts
 
 export const ANIMATED_ALIASES: Record<string, string[]> = ${JSON.stringify(animatedAliases)};
+`
+  );
+  // Apart from the search terms, which only the Animated page loads, so the
+  // Icons page's bundle doesn't carry them.
+  await Bun.write(
+    "docs/src/generated/animated-names.ts",
+    `// @generated
+// This file was automatically generated and should not be edited.
+// @see src/index.ts
 
 /** Every icon with an animated version, so the Icons page can link to it. */
 export const ANIMATED_NAMES: string[] = ${JSON.stringify(animatedNames)};
