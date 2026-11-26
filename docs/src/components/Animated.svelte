@@ -59,6 +59,7 @@
   import { fitToolbar, focusInPlace, revealResults, revealTile, rovingFocus, watchStuck } from "../gallery.js";
   import FocusKey from "./FocusKey.svelte";
   import TileActions from "./TileActions.svelte";
+  import StaticCheckmark from "carbon-icons-svelte/lib/Checkmark.svelte";
   import StaticCode from "carbon-icons-svelte/lib/Code.svelte";
   import StaticLaunch from "carbon-icons-svelte/lib/Launch.svelte";
   import StaticTextFont from "carbon-icons-svelte/lib/TextFont.svelte";
@@ -1117,26 +1118,31 @@ ${explorerMarkup}`;
         <p class="visually-hidden" aria-live="polite">{searchStatus}</p>
         <p id="gallery-keys" class="visually-hidden">Use the arrow keys to move between icons.</p>
         <div class="gallery-groups" bind:this={groupsElement} role="group" aria-label="Animated icons" aria-describedby="gallery-keys" use:rovingFocus={visibleGroups}>
-        <TileActions host={groupsElement} let:icon={name} let:done>
+        <!-- Copying keeps the menu open, with a checkmark on the item. -->
+        <TileActions host={groupsElement} let:icon={name} let:done let:doneKey>
           <OverflowMenuItem
             icon={StaticCode}
+            iconEnd={doneKey === "import" ? StaticCheckmark : undefined}
             text="Copy import"
-            on:click={async () => {
+            on:click={async (event) => {
+              event.preventDefault();
               await navigator.clipboard.writeText(`import { ${name} } from "carbon-icons-svelte/animated";`);
-              done(`Copied the import for ${name}`);
+              done(`Copied the import for ${name}`, "import");
             }}
           />
           <OverflowMenuItem
             icon={StaticTextFont}
+            iconEnd={doneKey === "name" ? StaticCheckmark : undefined}
             text="Copy name"
-            on:click={async () => {
+            on:click={async (event) => {
+              event.preventDefault();
               await navigator.clipboard.writeText(name);
-              done(`Copied ${name}`);
+              done(`Copied ${name}`, "name");
             }}
           />
           <!-- A raw SVG of an animated icon wouldn't animate: it needs the
             component's CSS. The static icon has the SVG. -->
-          <OverflowMenuItem icon={StaticLaunch} text="Open static icon" href="/?icon={name}" />
+          <OverflowMenuItem hasDivider icon={StaticLaunch} text="Open static icon" href="/?icon={name}" />
         </TileActions>
         {#each visibleGroups as group (group.id)}
           <h3 id={group.id}>{group.title}</h3>
