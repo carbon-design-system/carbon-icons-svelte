@@ -393,10 +393,7 @@
     return parts;
   };
 
-  const open = (name) => {
-    selected = name;
-    detailsOpen = true;
-  };
+  const open = (name) => showIcon(name);
 
   // The gallery's order as shown: every icon by category, or the filtered
   // ones best match first, ties in category order. j and k step through it.
@@ -504,20 +501,34 @@
 
   // The open panel and its options live in the URL's query, with the search,
   // so a link reopens the page as it was.
+  //
+  // History follows what people do: opening an icon, or going to another
+  // one from the details (a variant, a replacement), adds an entry, so Back
+  // returns to where they were. Browsing with j and k, searching and the
+  // panel's options replace the current entry. Closing a panel opened that
+  // way goes back to the entry before it.
   let urlReady = false;
-  onMount(() => {
+  const applyUrl = () => {
     const params = new URLSearchParams(location.search);
     query = params.get("q") ?? "";
     animatedOnly = params.get("animated") === "1";
     const icon = params.get("icon");
     previewIndex = Math.max(0, previews.findIndex(([id]) => id === params.get("preview")));
     importIndex = ["barrel", "package"].includes(params.get("import") ?? "") ? 1 : 0;
-    if (icon) {
-      selected = icon;
-      detailsOpen = true;
-    }
+    if (icon) selected = icon;
+    detailsOpen = Boolean(icon);
+  };
+  onMount(() => {
+    applyUrl();
     urlReady = true;
   });
+  // Set while a change should add a history entry rather than replace one.
+  let pushNext = false;
+  const showIcon = (name) => {
+    pushNext = true;
+    selected = name;
+    detailsOpen = true;
+  };
   $: search = (() => {
     const params = new URLSearchParams();
     if (query.trim()) params.set("q", query.trim());
@@ -531,7 +542,18 @@
     return text ? `?${text}` : "";
   })();
   $: if (urlReady && search !== location.search) {
-    history.replaceState(history.state, "", `${location.pathname}${search}${location.hash}`);
+    const url = `${location.pathname}${search}${location.hash}`;
+    // `iconsPanel` counts the entries the open panel has added.
+    const depth = history.state?.iconsPanel ?? 0;
+    if (pushNext) {
+      history.pushState({ iconsPanel: detailsOpen && new URLSearchParams(location.search).has("icon") ? depth + 1 : 1 }, "", url);
+    } else if (!detailsOpen && depth > 0 && new URLSearchParams(location.search).has("icon")) {
+      // Closing a panel that added entries: step back to before them all.
+      history.go(-depth);
+    } else {
+      history.replaceState(history.state, "", url);
+    }
+    pushNext = false;
   }
 
   let panelSvgCopied = false;
@@ -630,6 +652,9 @@ export default {
 </script>
 
 <FocusKey element={searchInput} selectText />
+
+<!-- Back and Forward within the page show the icon and options in the URL. -->
+<svelte:window on:popstate={() => urlReady && applyUrl()} />
 
 
 <Theme bind:theme persist persistKey="theme" />
@@ -1119,7 +1144,7 @@ export default {
               <!-- Icons the reason names are links that open them here. -->
               <p>
                 {#each reasonParts(data.deprecated[selected] || "Carbon no longer recommends this icon") as part, i (i)}
-                  {#if part.icon}<Link href="?icon={part.icon}" on:click={(event) => { event.preventDefault(); selected = part.icon; }}>{part.icon}</Link>{:else}{part.text}{/if}
+                  {#if part.icon}<Link href="?icon={part.icon}" on:click={(event) => { event.preventDefault(); showIcon(part.icon); }}>{part.icon}</Link>{:else}{part.text}{/if}
                 {/each}
               </p>
             </dd>
@@ -1227,7 +1252,7 @@ export default {
             <p id="icon-variants-heading" class="variants-heading">Variants</p>
             <div class="gallery dense">
               {#each variants as name (name)}
-                <button type="button" data-icon={name} on:click={() => (selected = name)}>
+                <button type="button" data-icon={name} on:click={() => showIcon(name)}>
                   <span class="tile-icon">{@html data.byModuleName[name]}</span>
                   <span class="tile-name">{@html nameHtml(name)}</span>
                 </button>
