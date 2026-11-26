@@ -713,7 +713,10 @@ html {
 }
 
 /* In Gray 80, the panel, the stage and the selected tab share one layer
-   color, so the preview needs a frame to stand apart. */
-:root[theme="g80"] .docs-panel .preview-bar + .example {
-  border: 1px solid var(--cds-border-subtle-01, var(--cds-ui-03));
+   color. The selected tab and the stage take the theme's background
+   instead, so together they stand apart from the panel as one surface. */
+:root[theme="g80"] .docs-panel .explorer .stage,
+:root[theme="g80"] .docs-panel .preview-bar .bx--tabs__nav-item--selected,
+:root[theme="g80"] .docs-panel .preview-bar .bx--tabs__nav-item--selected:hover {
+  background-color: var(--cds-background, var(--cds-ui-background));
 }
