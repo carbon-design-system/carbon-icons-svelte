@@ -58,7 +58,7 @@ When iterating locally, scope test runs to what you changed. The full suite rege
    - `lib/index.js` and `lib/index.d.ts`, barrel export and `CarbonIconProps` type
    - `lib/animated/`, the animated icons (see [Animated icons](#animated-icons))
    - [`ICON_INDEX.md`](ICON_INDEX.md), committed icon list
-   - `docs/public/build-info.<hash>.json` and [`docs/src/generated/build-info-url.ts`](docs/src/generated/build-info-url.ts), hashed preview data for the docs site (gitignored, regenerated each build)
+   - `docs/public/build-info.<hash>.json`, `docs/public/icons/<subcategory>.<hash>.json` and [`docs/src/generated/build-info-url.ts`](docs/src/generated/build-info-url.ts), hashed preview data for the docs site: the icon index, and each subcategory's SVG (gitignored, regenerated each build)
 
 [`buildIcons()`](src/index.ts) is the only entry point. Tests call it directly. `prepack` runs those tests. `build:docs-assets` calls it for the docs app. [`src/global.d.ts`](src/global.d.ts) holds local type declarations for `@carbon/icons` metadata JSON imports.
 
@@ -219,7 +219,7 @@ No repo-wide linter. Match what's already in `src/` and `tests/`.
 - ESM only. [`package.json`](package.json) has `"type": "module"`. Import JSON with `import … with { type: "json" }`.
 - Hoist regexes to module scope as named `const` values with a short comment (`SIZE_PATTERN`, `GLYPH_SUFFIX_PATTERN` in [`src/index.ts`](src/index.ts)).
 - Batch file writes with `Promise.all` in `buildIcons`, not sequential awaits.
-- Don't hand-edit generated output. Never commit `lib/`, `docs/public/build-info*.json`, or `docs/src/generated/`. Change the generator and re-run `bun test`.
+- Don't hand-edit generated output. Never commit `lib/`, `docs/public/build-info*.json`, `docs/public/icons/`, or `docs/src/generated/`. Change the generator and re-run `bun test`.
 - A change to [`src/template.ts`](src/template.ts) changes every emitted icon. Treat it like a public API change.
 
 ## Testing
@@ -319,7 +319,7 @@ git push -u origin upgrade-11.82
 | [`tests/index.test.ts`](tests/index.test.ts) | `expect(icons.length)` matches the new total (includes rename aliases) |
 | [`tests/__snapshots__/index.test.ts.snap`](tests/__snapshots__/index.test.ts.snap) | New or removed export names |
 
-**Files that should not be committed:** `lib/` (gitignored build output), `docs/public/build-info*.json`, `docs/src/generated/`. `bun run prepack` writes them locally; CI and the docs deploy hook regenerate them.
+**Files that should not be committed:** `lib/` (gitignored build output), `docs/public/build-info*.json`, `docs/public/icons/`, `docs/src/generated/`. `bun run prepack` writes them locally; CI and the docs deploy hook regenerate them.
 
 **Title.** Match the commit:
 
@@ -363,7 +363,7 @@ bun install
 bun dev
 ```
 
-`predev` and `prebuild` call `bun run --cwd .. build:docs-assets` to regenerate preview data. The site loads `BUILD_INFO_URL`, a content-hashed JSON file, for the icon grid, search, and rename aliases. Icon-only dependency bumps usually don't need docs changes. Changes to `build-info` shape or preview behavior do.
+`predev` and `prebuild` call `bun run --cwd .. build:docs-assets` to regenerate preview data. The site loads `BUILD_INFO_URL`, a content-hashed JSON file, for the icon grid's groups, search, and rename aliases, then each subcategory's SVG from `docs/public/icons/` as it scrolls into view. Icon-only dependency bumps usually don't need docs changes. Changes to `build-info` shape or preview behavior do.
 
 ## Continuous integration
 

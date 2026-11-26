@@ -70,8 +70,10 @@
   let aliasIndex = new Map();
 
   // The Icons page's data loads only for the Icons page: the Animated page
-  // doesn't use it, and at 430 kB it would compete with that page's own
-  // code. The Icons page's HTML preloads it (see vite.config.ts).
+  // doesn't use it, and it would compete with that page's own code. It
+  // holds the groups and names; each group's SVG loads as it comes into
+  // view (see Icons.svelte). The Icons page's HTML preloads it and the
+  // first group (see vite.config.ts).
   let dataRequested = false;
   const loadData = async () => {
     dataRequested = true;

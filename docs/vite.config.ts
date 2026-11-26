@@ -20,16 +20,19 @@ export default defineConfig({
         root = config.root;
         outDir = path.resolve(config.root, config.build.outDir);
       },
-      // The Icons page preloads its data, so it downloads alongside the
-      // app's code instead of after it runs. The Animated page doesn't use it.
+      // The Icons page preloads its data and the first group's SVG, so they
+      // download alongside the app's code instead of after it runs. The
+      // first group is skipped for a link to a section further down. The
+      // Animated page uses neither.
       async transformIndexHtml(html) {
         const generated = await readFile(path.resolve(root, "src/generated/build-info-url.ts"), "utf8");
         const url = generated.match(/BUILD_INFO_URL = "([^"]+)"/)?.[1];
-        if (!url) return html;
-        // Added from a script, so only the Icons page gets it, whatever
+        const firstIcons = generated.match(/FIRST_ICONS_URL = "([^"]+)"/)?.[1];
+        if (!url || !firstIcons) return html;
+        // Added from a script, so only the Icons page gets them, whatever
         // HTML the host serves for /animated, and at low priority, so the
         // app's code and CSS get the bandwidth first.
-        const preload = `if (!location.pathname.startsWith("/animated") && !location.hash.startsWith("#animated")) document.head.append(Object.assign(document.createElement("link"), { rel: "preload", as: "fetch", crossOrigin: "anonymous", fetchPriority: "low", href: ${JSON.stringify(url)} }));`;
+        const preload = `if (!location.pathname.startsWith("/animated") && !location.hash.startsWith("#animated")) for (const href of location.hash ? [${JSON.stringify(url)}] : [${JSON.stringify(url)}, ${JSON.stringify(firstIcons)}]) document.head.append(Object.assign(document.createElement("link"), { rel: "preload", as: "fetch", crossOrigin: "anonymous", fetchPriority: "low", href }));`;
         return html.replace("</head>", `    <script>${preload}</script>\n  </head>`);
       },
       async closeBundle() {

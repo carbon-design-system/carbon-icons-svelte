@@ -73,9 +73,9 @@
   import TileActions from "./TileActions.svelte";
 
   /**
-   * @typedef {{ name: string, icons: string[] }} Subcategory
+   * @typedef {{ name: string, icons: string[], file: string }} Subcategory
    * @typedef {{ category: string, subcategories: Subcategory[] }} Group
-   * @typedef {{ byModuleName: Record<string, string>, bySize: { order: string[], sizes: Record<string, string[]> }, total: number, groups: Group[], version: string, renamedIcons?: Record<string, string> }} BuildInfo
+   * @typedef {{ indicatorSvg: string, bySize: { order: string[], sizes: Record<string, string[]> }, total: number, groups: Group[], version: string, renamedIcons?: Record<string, string> }} BuildInfo
    */
 
   /** @type {BuildInfo | null} */
@@ -176,7 +176,7 @@
   // Carbon's caution-minor IconIndicator, as static HTML for the tiles: the
   // WarningAltFilled icon with the indicator's classes, which color it.
   $: deprecatedIndicator = data
-    ? `<span class="bx--icon-indicator bx--icon-indicator--hide-label tile-status">${data.byModuleName.WarningAltFilled.replace(
+    ? `<span class="bx--icon-indicator bx--icon-indicator--hide-label tile-status">${data.indicatorSvg.replace(
         "<svg ",
         '<svg class="bx--icon-indicator--caution-minor" aria-hidden="true" '
       )}<span class="bx--visually-hidden">, deprecated</span></span>`
@@ -190,12 +190,73 @@
         const formerly = canonicalToAliases[name];
         return `<button type="button" tabindex="-1" data-icon="${name}"${
           formerly ? ` title="${escapeHtml(`${name}, formerly ${formerly.join(", ")}`)}"` : ""
-        }><span class="tile-icon">${data.byModuleName[name]}</span><span class="tile-name">${nameHtml(name)}</span>${
+        }><span class="tile-icon">${loaded[name] ?? ""}</span><span class="tile-name">${nameHtml(name)}</span>${
           // After the name, so a screen reader hears "Watson, deprecated".
           data.deprecated?.[name] !== undefined ? deprecatedIndicator : ""
         }</button>`;
       })
       .join("");
+
+  // ---- SVG ----
+
+  // Each subcategory's SVG is its own file (see src/index.ts), loaded when
+  // its tiles come near the screen, or when the panel or the compare tray
+  // shows one of its icons. The tiles read `loaded`, which isn't reactive,
+  // so a group loading doesn't rebuild every tile; `svgs` is the same
+  // object for everything else.
+  /** @type {Record<string, string>} */
+  const loaded = {};
+  let svgs = loaded;
+  /** @type {Map<string, Promise<void>>} */
+  const svgRequests = new Map();
+  $: fileOf = new Map(
+    data ? data.groups.flatMap((group) => group.subcategories.flatMap((sub) => sub.icons.map((name) => [name, sub.file]))) : []
+  );
+
+  /** Loads a subcategory's SVG and puts it in its tiles. */
+  const loadSvgs = (file) => {
+    if (!svgRequests.has(file)) {
+      const request = fetch(file)
+        .then((response) => response.json())
+        .then((chunk) => {
+          Object.assign(loaded, chunk);
+          svgs = loaded;
+          for (const tile of groupsElement?.querySelectorAll(`[data-file="${file}"] button[data-icon]`) ?? []) {
+            const slot = tile.firstElementChild;
+            if (slot && !slot.firstElementChild) slot.innerHTML = chunk[tile.dataset.icon] ?? "";
+          }
+        })
+        .catch(() => svgRequests.delete(file));
+      svgRequests.set(file, request);
+    }
+    return svgRequests.get(file);
+  };
+  /** @param {string[]} names */
+  const loadSvgsFor = (names) =>
+    Promise.all([...new Set(names.map((name) => fileOf.get(name)).filter(Boolean))].map(loadSvgs));
+
+  /**
+   * Loads each group's SVG as its tiles come within a screen of view. It
+   * watches tiles rather than groups: while searching, the groups' grids
+   * are display: contents and have no box of their own.
+   * @param {HTMLElement} node
+   */
+  function loadVisibleSvgs(node) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const group = entry.target.closest("[data-file]");
+          if (!(group instanceof HTMLElement)) continue;
+          for (const tile of group.querySelectorAll("button[data-icon]")) observer.unobserve(tile);
+          loadSvgs(group.dataset.file);
+        }
+      },
+      { rootMargin: "100% 0px" }
+    );
+    for (const tile of node.querySelectorAll("[data-file] button[data-icon]")) observer.observe(tile);
+    return { destroy: () => observer.disconnect() };
+  }
 
   /**
    * Shows, hides and ranks the tiles for a search.
@@ -318,8 +379,10 @@
   // The icon's SVG gzipped, as browsers download it, and its paths.
   let cost = null;
   const measure = async (name) => {
-    const markup = data?.byModuleName[name];
-    if (!markup || typeof CompressionStream === "undefined") return;
+    if (typeof CompressionStream === "undefined") return;
+    await loadSvgsFor([name]);
+    const markup = loaded[name];
+    if (!markup) return;
     const stream = new Blob([markup]).stream().pipeThrough(new CompressionStream("gzip"));
     const bytes = (await new Response(stream).arrayBuffer()).byteLength;
     const shapes = (markup.match(/<(path|circle|rect|polygon|ellipse|line|polyline)\b/g) ?? []).length;
@@ -339,6 +402,8 @@
     } catch {}
     comparedLoaded = true;
   });
+  // The tray shows pinned icons from any group.
+  $: if (data && compared.length > 0) loadSvgsFor(compared);
   $: if (comparedLoaded) {
     try {
       localStorage.setItem("compare-icons", JSON.stringify(compared));
@@ -411,7 +476,10 @@
   // ---- Tile actions ----
 
   // The SVG at the size the gallery shows.
-  const svgOf = (name) => sized(data.byModuleName[name], iconSize);
+  const svgOf = async (name) => {
+    await loadSvgsFor([name]);
+    return sized(loaded[name] ?? "", iconSize);
+  };
 
   const copyText = async (text, status, done, key) => {
     await navigator.clipboard.writeText(text);
@@ -464,6 +532,8 @@
     return result;
   }, new Map());
   $: variants = selected ? (families.get(stem(selected)) ?? []).filter((name) => name !== selected) : [];
+  // The open icon's SVG, and its variants', whichever groups they're in.
+  $: if (data && selected) loadSvgsFor([selected, ...variants]);
 
   $: categoryOf = (() => {
     /** @type {Map<string, [string, string]>} */
@@ -558,7 +628,7 @@
 
   let panelSvgCopied = false;
   const copyPanelSvg = async () => {
-    await navigator.clipboard.writeText(svgOf(selected));
+    await navigator.clipboard.writeText(await svgOf(selected));
     panelSvgCopied = true;
     setTimeout(() => (panelSvgCopied = false), 2000);
   };
@@ -693,7 +763,7 @@ export default {
 {#if data}
   <CompareTray
     bind:names={compared}
-    svgs={data.byModuleName}
+    {svgs}
     size={iconSize}
     importFor={(name) => importFor(name, importStyle)}
     on:open={({ detail }) => open(detail)}
@@ -820,6 +890,7 @@ export default {
             aria-label="Icons"
             aria-describedby="icons-gallery-keys"
             use:filterTiles={filter}
+            use:loadVisibleSvgs
             use:rovingFocus={filter}
             on:click={(event) => {
               const tile = event.target instanceof Element ? event.target.closest("button[data-icon]") : null;
@@ -833,9 +904,9 @@ export default {
                 icon={Copy}
                 iconEnd={doneKey === "svg" ? Checkmark : undefined}
                 text="Copy SVG"
-                on:click={(event) => {
+                on:click={async (event) => {
                   event.preventDefault();
-                  copyText(svgOf(name), `Copied the SVG for ${name}`, done, "svg");
+                  copyText(await svgOf(name), `Copied the SVG for ${name}`, done, "svg");
                 }}
               />
               <OverflowMenuItem
@@ -860,8 +931,8 @@ export default {
                 hasDivider
                 icon={Download}
                 text="Download SVG"
-                on:click={() => {
-                  downloadSvg(name, svgOf(name));
+                on:click={async () => {
+                  downloadSvg(name, await svgOf(name));
                   done(`Downloaded ${fileName(name)}`);
                 }}
               />
@@ -883,7 +954,7 @@ export default {
                 {#if group.subcategories.length > 1}
                   <h4 id={subcategoryId(group.category, sub.name)} class="gallery-subheading">{sub.name}</h4>
                 {/if}
-                <div class="gallery dense">{@html tiles(sub.icons)}</div>
+                <div class="gallery dense" data-file={sub.file}>{@html tiles(sub.icons)}</div>
               {/each}
             {/each}
           </div>
@@ -1056,8 +1127,8 @@ export default {
       <span class="browse-position">{(browseIndex + 1).toLocaleString()} of {browseOrder.length.toLocaleString()}</span>
     {/if}
   </div>
-  {#if selected && data?.byModuleName[selected]}
-    {@const svg = data.byModuleName[selected]}
+  {#if selected && svgs[selected]}
+    {@const svg = svgs[selected]}
     <div class="explorer">
         <div class="preview-bar">
           <Tabs type="container" size="md" autoWidth bind:selected={previewIndex}>
@@ -1088,7 +1159,7 @@ export default {
               icon={Download}
               iconDescription="Download SVG"
               tooltipPosition="bottom"
-              on:click={() => downloadSvg(selected, svgOf(selected))}
+              on:click={async () => downloadSvg(selected, await svgOf(selected))}
             />
             <Button
               kind="ghost"
@@ -1248,7 +1319,7 @@ export default {
             <div class="gallery dense">
               {#each variants as name (name)}
                 <button type="button" data-icon={name} on:click={() => showIcon(name)}>
-                  <span class="tile-icon">{@html data.byModuleName[name]}</span>
+                  <span class="tile-icon">{@html svgs[name] ?? ""}</span>
                   <span class="tile-name">{@html nameHtml(name)}</span>
                 </button>
               {/each}
