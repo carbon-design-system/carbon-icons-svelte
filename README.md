@@ -178,6 +178,8 @@ To set defaults for icons outside any component that calls it, like icons mounte
 
 Use `play` to run the animation yourself. It plays when the icon mounts with a truthy `play`, and each time `play` changes to a new truthy value, so increment a number to replay it. Set `trigger="none"` to turn off hover and focus.
 
+In a carbon-components-svelte `Button`, put the icon in the `icon` slot. Before carbon-components-svelte 0.114.9, give it `class="bx--btn__icon"` too.
+
 ```svelte
 <script>
   import { Button } from "carbon-components-svelte";
@@ -188,7 +190,7 @@ Use `play` to run the animation yourself. It plays when the icon mounts with a t
 
 <Button on:click={() => saved++}>
   Save
-  <Checkmark slot="icon" class="bx--btn__icon" play={saved} trigger="none" motion="expressive" />
+  <Checkmark slot="icon" play={saved} trigger="none" motion="expressive" />
 </Button>
 ```
 
@@ -212,7 +214,7 @@ Progress, refresh and waiting icons can loop while something is in progress. Whe
 
 <Button disabled={refreshing} on:click={refresh}>
   Refresh
-  <Renew slot="icon" class="bx--btn__icon" loop={refreshing} />
+  <Renew slot="icon" loop={refreshing} />
 </Button>
 ```
 

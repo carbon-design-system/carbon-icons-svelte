@@ -336,12 +336,29 @@ ${Object.keys(byModuleName)
     ...(uncategorized.length > 0 ? [{ category: "Other", subcategories: [{ name: "Other", icons: uncategorized.sort() }] }] : []),
   ];
 
+  // Each subcategory's SVG is its own hashed file, so the page loads only
+  // the icons coming into view instead of all of them (about 430 kB
+  // gzipped) before it shows any.
+  const hashOf = (content: string) => createHash("sha256").update(content).digest("hex").slice(0, 12);
+  const svgFiles = new Map<string, string>();
+  const groupsWithFiles = groups.map((group) => ({
+    ...group,
+    subcategories: group.subcategories.map((subcategory) => {
+      const content = JSON.stringify(Object.fromEntries(subcategory.icons.map((name) => [name, byModuleName[name]])));
+      const slug = `${group.category}-${subcategory.name}`.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      const fileName = `${slug}.${hashOf(content)}.json`;
+      svgFiles.set(fileName, content);
+      return { ...subcategory, file: `/icons/${fileName}` };
+    }),
+  }));
+
   const buildInfoPayload: Record<string, unknown> = {
     total,
     bySize,
-    byModuleName,
-    groups,
+    groups: groupsWithFiles,
     deprecated,
+    // The tiles' deprecation indicator, needed before any group loads.
+    indicatorSvg: byModuleName.WarningAltFilled,
     version: VERSION,
   };
 
@@ -371,6 +388,11 @@ ${Object.keys(byModuleName)
     }
   }
 
+  await rm(`${docsPublicDir}/icons`, { recursive: true, force: true });
+  await mkdir(`${docsPublicDir}/icons`, { recursive: true });
+  for (const [fileName, content] of svgFiles) {
+    await Bun.write(`${docsPublicDir}/icons/${fileName}`, content);
+  }
   await Bun.write(`${docsPublicDir}/${buildInfoFileName}`, buildInfoContent);
   await Bun.write(`${docsPublicDir}/${aliasesFileName}`, aliasesContent);
   await Bun.write(
@@ -381,6 +403,8 @@ ${Object.keys(byModuleName)
 
 export const BUILD_INFO_URL = "/${buildInfoFileName}";
 export const ALIASES_URL = "/${aliasesFileName}";
+// The first group's icons, at the top of the gallery.
+export const FIRST_ICONS_URL = "${groupsWithFiles[0].subcategories[0].file}";
 `
   );
   await Bun.write(
