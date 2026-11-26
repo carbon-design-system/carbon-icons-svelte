@@ -34,7 +34,6 @@
   import CodeIcon from "carbon-icons-svelte/lib/Code.svelte";
   import Copy from "carbon-icons-svelte/lib/Copy.svelte";
   import Download from "carbon-icons-svelte/lib/Download.svelte";
-  import OverflowMenuVertical from "carbon-icons-svelte/lib/OverflowMenuVertical.svelte";
   import TextFont from "carbon-icons-svelte/lib/TextFont.svelte";
   import Notification from "carbon-icons-svelte/lib/Notification.svelte";
   import Settings from "carbon-icons-svelte/lib/Settings.svelte";
@@ -64,6 +63,7 @@
   import { FUZZY_RANK, normalize, rankAliases, rankName } from "../search.js";
   import Code from "./Code.svelte";
   import FocusKey from "./FocusKey.svelte";
+  import TileActions from "./TileActions.svelte";
 
   /**
    * @typedef {{ name: string, icons: string[] }} Subcategory
@@ -319,44 +319,12 @@
 
   // ---- Tile actions ----
 
-  /** The tile the actions menu sits on, and where, in the gallery. */
-  /** @type {{ name: string, top: number, left: number } | null} */
-  let copyTarget = null;
-  const pointAt = (target) => {
-    if (tileMenuOpen || !(target instanceof Element) || target.closest(".tile-copy")) return;
-    const tile = target.closest("button[data-icon]");
-    if (!(tile instanceof HTMLElement) || !groupsElement) {
-      copyTarget = null;
-      return;
-    }
-    if (copyTarget?.name === tile.dataset.icon) return;
-    // A click leaves focus on the button; let it go before the button moves
-    // on, so the next tile doesn't show a focus ring it never got.
-    if (document.activeElement instanceof HTMLElement && document.activeElement.closest(".tile-copy")) {
-      document.activeElement.blur();
-    }
-    const box = tile.getBoundingClientRect();
-    const host = groupsElement.getBoundingClientRect();
-    copyTarget = { name: tile.dataset.icon, top: box.top - host.top, left: box.right - host.left - 32 };
-  };
   // The SVG at the size the gallery shows.
   const svgOf = (name) => sized(data.byModuleName[name], iconSize);
 
-  // A tile's actions, in one overflow menu in its corner. While it's open
-  // the buttons stay on that tile, though the pointer has left it.
-  let tileMenuOpen = false;
-  let tileActionDone = false;
-  let tileActionTimer;
-  let actionStatus = "";
-  const confirmAction = (text) => {
-    actionStatus = text;
-    tileActionDone = true;
-    clearTimeout(tileActionTimer);
-    tileActionTimer = setTimeout(() => (tileActionDone = false), 2000);
-  };
-  const copyText = async (text, status) => {
+  const copyText = async (text, status, done) => {
     await navigator.clipboard.writeText(text);
-    confirmAction(status);
+    done(status);
   };
   // A file name from the icon's name: AddAlt → add-alt.svg.
   const fileName = (name) => `${name.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase()}.svg`;
@@ -714,13 +682,12 @@ export default {
           </div>
         {/if}
         <p class="visually-hidden" aria-live="polite">{searchStatus}</p>
-        <p class="visually-hidden" aria-live="polite">{actionStatus}</p>
         <p id="icons-gallery-keys" class="visually-hidden">Use the arrow keys to move between icons.</p>
 
         {#if data}
           <!-- While searching, the groups merge into one grid ranked best
             first, by turning their own grids into display: contents. -->
-          <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions, a11y_mouse_events_have_key_events -->
+          <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
           <div
             class="gallery-groups icon-size--{iconSize}"
             class:searching={Boolean(filter)}
@@ -734,35 +701,20 @@ export default {
               const tile = event.target instanceof Element ? event.target.closest("button[data-icon]") : null;
               if (tile instanceof HTMLElement && tile.dataset.icon) open(tile.dataset.icon);
             }}
-            on:mouseover={(event) => pointAt(event.target)}
-            on:focusin={(event) => pointAt(event.target)}
-            on:mouseleave={() => !tileMenuOpen && (copyTarget = null)}
-            on:focusout={(event) => {
-              if (tileMenuOpen) return;
-              if (!(event.relatedTarget instanceof Node && groupsElement.contains(event.relatedTarget))) copyTarget = null;
-            }}
           >
-            <!-- One actions menu, moved to the tile that's hovered or
-              focused: a menu per tile would double the gallery's elements,
-              and a tile, itself a button, can't hold one. -->
-            {#if copyTarget}
-              {@const name = copyTarget.name}
-              <span class="tile-copy" style:top="{copyTarget.top}px" style:left="{copyTarget.left}px">
-                <OverflowMenu
-                  size="sm"
-                  flipped
-                  icon={tileActionDone ? Checkmark : OverflowMenuVertical}
-                  iconDescription={tileActionDone ? "Done" : "Actions"}
-                  tooltipPosition="bottom"
-                  bind:open={tileMenuOpen}
-                >
-                  <OverflowMenuItem icon={Copy} text="Copy SVG" on:click={() => copyText(svgOf(name), `Copied the SVG for ${name}`)} />
-                  <OverflowMenuItem icon={CodeIcon} text="Copy import" on:click={() => copyText(importFor(name, importStyle), `Copied the import for ${name}`)} />
-                  <OverflowMenuItem icon={TextFont} text="Copy name" on:click={() => copyText(name, `Copied ${name}`)} />
-                  <OverflowMenuItem icon={Download} text="Download SVG" on:click={() => { downloadSvg(name, svgOf(name)); confirmAction(`Downloaded ${fileName(name)}`); }} />
-                </OverflowMenu>
-              </span>
-            {/if}
+            <TileActions host={groupsElement} let:icon={name} let:done>
+              <OverflowMenuItem icon={Copy} text="Copy SVG" on:click={() => copyText(svgOf(name), `Copied the SVG for ${name}`, done)} />
+              <OverflowMenuItem icon={CodeIcon} text="Copy import" on:click={() => copyText(importFor(name, importStyle), `Copied the import for ${name}`, done)} />
+              <OverflowMenuItem icon={TextFont} text="Copy name" on:click={() => copyText(name, `Copied ${name}`, done)} />
+              <OverflowMenuItem
+                icon={Download}
+                text="Download SVG"
+                on:click={() => {
+                  downloadSvg(name, svgOf(name));
+                  done(`Downloaded ${fileName(name)}`);
+                }}
+              />
+            </TileActions>
             <!-- Every group stays mounted: while searching, the groups merge
               and their headings are hidden, so a group with no matches
               shows nothing, and its tiles aren't rebuilt when matches return. -->
@@ -1108,18 +1060,6 @@ export default {
 
   /* One ranked grid while searching: the groups' headings go, and their
      grids' tiles join this one, so CSS order ranks them across groups. */
-  .gallery-groups {
-    position: relative;
-  }
-
-  /* In the hovered or focused tile's top-right corner, clear of its
-     centered icon and name. */
-  .tile-copy {
-    position: absolute;
-    z-index: 1;
-    display: flex;
-  }
-
   .gallery-groups.searching {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
