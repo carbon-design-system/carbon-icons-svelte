@@ -387,6 +387,7 @@
   let explorerOpen = false;
 
   const explore = (option) => {
+    pushNext = true;
     name = option;
     size = iconSize;
     explorerOpen = true;
@@ -453,7 +454,10 @@
     setTimeout(() => (linkCopied = false), 2000);
   };
 
-  onMount(() => {
+  // Reads the explorer's state from the URL: on load, and on Back and
+  // Forward. Opening an icon adds a history entry; its props and j/k
+  // replace it; closing goes back to before the entries it added.
+  const applyUrl = () => {
     const params = new URLSearchParams(location.search);
     const icon = params.get("icon");
     // A missing number reads as NaN, not 0, which is a valid hoverDelay.
@@ -468,9 +472,15 @@
       loopChoice = oneOf(params.get("loop"), ["true", "false"], PROP_DEFAULTS.loop);
       previewIndex = Math.max(0, previews.findIndex(([id]) => id === params.get("preview")));
       explorerOpen = true;
+    } else {
+      explorerOpen = false;
     }
+  };
+  onMount(() => {
+    applyUrl();
     urlReady = true;
   });
+  let pushNext = false;
 
   /** The query for the explorer's state: the icon, then every prop that isn't its default. */
   const explorerQuery = (open, state) => {
@@ -485,7 +495,17 @@
   $: query = explorerQuery(explorerOpen, { name, preview, size, motion, trigger, reducedMotion, hoverDelay, loop: loopChoice });
   $: permalink = typeof location === "undefined" ? "" : `${location.origin}/animated${query}`;
   $: if (urlReady && query !== location.search) {
-    history.replaceState(history.state, "", `${location.pathname}${query}${location.hash}`);
+    const url = `${location.pathname}${query}${location.hash}`;
+    // `explorerPanel` counts the entries the open explorer has added.
+    const depth = history.state?.explorerPanel ?? 0;
+    if (pushNext) {
+      history.pushState({ explorerPanel: depth + 1 }, "", url);
+    } else if (!explorerOpen && depth > 0 && new URLSearchParams(location.search).has("icon")) {
+      history.go(-depth);
+    } else {
+      history.replaceState(history.state, "", url);
+    }
+    pushNext = false;
   }
   let galleryMotionIndex = 0;
 
@@ -970,7 +990,7 @@ ${explorerMarkup}`;
   const reducedCode = `<Checkmark play={saved} trigger="none" reducedMotion="fade" />`;
 </script>
 
-<svelte:window on:hashchange={scrollToHash} />
+<svelte:window on:hashchange={scrollToHash} on:popstate={() => urlReady && applyUrl()} />
 
 <FocusKey element={galleryInput} selectText />
 
