@@ -10,6 +10,7 @@
     CssGrid,
     Layer,
     Link,
+    Tag,
     OverflowMenu,
     OverflowMenuItem,
     Prose,
@@ -1899,6 +1900,16 @@ ${explorerMarkup}`;
             <RadioButton labelText="true" value="true" />
           </RadioButtonGroup>
         </dd>
+        {#if ANIMATED_ALIASES[name]}
+          <dt>Keywords</dt>
+          <dd class="tags-value">
+            <span class="keywords">
+              {#each ANIMATED_ALIASES[name] as term (term)}<Tag size="sm">{term}</Tag>{/each}
+            </span>
+          </dd>
+        {/if}
+        <dt>Static</dt>
+        <dd><Link href="/?icon={name}">Open the static icon</Link></dd>
       </dl>
     </Layer>
   </div>

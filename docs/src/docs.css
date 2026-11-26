@@ -333,6 +333,18 @@ html {
   padding-block-start: var(--cds-spacing-04);
 }
 
+/* Keywords, as small tags. */
+:is(.docs-page, .docs-panel) .keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cds-spacing-02);
+}
+
+/* Tag's own margin would add to the gap. */
+:is(.docs-page, .docs-panel) .keywords .bx--tag {
+  margin: 0;
+}
+
 :is(.docs-page, .docs-panel) .prop-list dt:last-of-type,
 :is(.docs-page, .docs-panel) .prop-list dd:last-of-type {
   border-block-end: 0;
