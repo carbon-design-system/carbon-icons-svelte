@@ -663,16 +663,12 @@ html {
   scroll-margin-top: 3rem;
 }
 
-/* A deprecated icon's tile: a small tag in the top padding, on one line
-   so it never covers the icon. */
-:is(.docs-page, .docs-panel) .tile-flag {
+/* A deprecated icon's tile: Carbon's caution indicator in the top-left
+   corner, clear of the actions menu's top-right. */
+:is(.docs-page, .docs-panel) .tile-status {
   position: absolute;
-  inset-block-start: var(--cds-spacing-02);
-  inset-inline-start: 50%;
-  max-width: none;
-  margin: 0;
-  white-space: nowrap;
-  transform: translateX(-50%);
+  inset-block-start: var(--cds-spacing-03);
+  inset-inline-start: var(--cds-spacing-03);
 }
 
 

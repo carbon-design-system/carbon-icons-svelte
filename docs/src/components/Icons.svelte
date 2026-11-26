@@ -173,6 +173,15 @@
   // on the gallery, and a search updates the tiles directly.
   const escapeHtml = (text) =>
     text.replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[char]);
+  // Carbon's caution-minor IconIndicator, as static HTML for the tiles: the
+  // WarningAltFilled icon with the indicator's classes, which color it.
+  $: deprecatedIndicator = data
+    ? `<span class="bx--icon-indicator bx--icon-indicator--hide-label tile-status">${data.byModuleName.WarningAltFilled.replace(
+        "<svg ",
+        '<svg class="bx--icon-indicator--caution-minor" aria-hidden="true" '
+      )}<span class="bx--visually-hidden">, deprecated</span></span>`
+    : "";
+
   // A line break may fall between the words of a name: "BottomPanel<wbr>Close".
   const nameHtml = (name) => name.split(/(?=[A-Z_])/).map(escapeHtml).join("<wbr>");
   $: tiles = (names) =>
@@ -181,11 +190,10 @@
         const formerly = canonicalToAliases[name];
         return `<button type="button" tabindex="-1" data-icon="${name}"${
           formerly ? ` title="${escapeHtml(`${name}, formerly ${formerly.join(", ")}`)}"` : ""
-        }>${
-          data.deprecated?.[name] !== undefined ? '<span class="bx--tag bx--tag--sm bx--tag--red tile-flag">Deprecated</span>' : ""
-        }<span class="tile-icon">${
-          data.byModuleName[name]
-        }</span><span class="tile-name">${nameHtml(name)}</span></button>`;
+        }><span class="tile-icon">${data.byModuleName[name]}</span><span class="tile-name">${nameHtml(name)}</span>${
+          // After the name, so a screen reader hears "Watson, deprecated".
+          data.deprecated?.[name] !== undefined ? deprecatedIndicator : ""
+        }</button>`;
       })
       .join("");
 
@@ -362,6 +370,27 @@
     history.replaceState(history.state, "", `${location.pathname}#${id}`);
     await tick();
     scrollToHash();
+  };
+
+  // A deprecation reason with the icons it names as links: Carbon writes
+  // them in kebab case ("logo--x"), or after "icon" ("the icon watsonx").
+  $: iconByKey = new Map(allIcons.map((name) => [name.toLowerCase(), name]));
+  const reasonParts = (reason) => {
+    const parts = [];
+    let last = 0;
+    for (const match of reason.matchAll(/(icon\s+)?\b([a-z0-9]+(?:-{1,2}[a-z0-9]+)*)\b/gi)) {
+      const [, afterIcon, token] = match;
+      const name = iconByKey.get(token.replace(/-/g, "").toLowerCase());
+      const isName = name && name !== selected && (token.includes("-") || (afterIcon && /^[a-z0-9]+$/.test(token)));
+      if (!isName) continue;
+      const start = match.index + (afterIcon?.length ?? 0);
+      parts.push({ text: reason.slice(last, start) }, { icon: name });
+      last = start + token.length;
+    }
+    // Carbon's reasons don't all end in a period.
+    const rest = reason.slice(last).trimEnd();
+    parts.push({ text: /[.!?]$/.test(rest) ? rest : `${rest}.` });
+    return parts;
   };
 
   const open = (name) => {
@@ -1086,7 +1115,13 @@ export default {
           {#if data.deprecated?.[selected] !== undefined}
             <dt>Status</dt>
             <dd class="status text-value">
-              <span><Tag type="red" size="sm">Deprecated</Tag> {data.deprecated[selected] || "Carbon no longer recommends this icon."}</span>
+              <IconIndicator kind="caution-minor" label="Deprecated" />
+              <!-- Icons the reason names are links that open them here. -->
+              <p>
+                {#each reasonParts(data.deprecated[selected] || "Carbon no longer recommends this icon") as part, i (i)}
+                  {#if part.icon}<Link href="?icon={part.icon}" on:click={(event) => { event.preventDefault(); selected = part.icon; }}>{part.icon}</Link>{:else}{part.text}{/if}
+                {/each}
+              </p>
             </dd>
           {/if}
           {#if standalone}
@@ -1369,6 +1404,22 @@ export default {
   .swatch-name {
     margin-inline-start: var(--cds-spacing-03);
     font-size: 0.875rem;
+    color: var(--cds-text-secondary, var(--cds-text-02));
+  }
+
+  .status {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--cds-spacing-03);
+    font-size: 0.875rem;
+    line-height: 1.125rem;
+    color: var(--cds-text-secondary, var(--cds-text-02));
+  }
+
+  .status p {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.125rem;
     color: var(--cds-text-secondary, var(--cds-text-02));
   }
 
