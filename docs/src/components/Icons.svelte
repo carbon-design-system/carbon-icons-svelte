@@ -317,13 +317,11 @@
     selected = next;
   };
 
-  // ---- Copy SVG ----
+  // ---- Tile actions ----
 
-  /** The tile the Copy SVG button sits on, and where, in the gallery. */
+  /** The tile the actions menu sits on, and where, in the gallery. */
   /** @type {{ name: string, top: number, left: number } | null} */
   let copyTarget = null;
-  let svgCopied = false;
-  let svgCopiedTimer;
   const pointAt = (target) => {
     if (tileMenuOpen || !(target instanceof Element) || target.closest(".tile-copy")) return;
     const tile = target.closest("button[data-icon]");
@@ -340,19 +338,11 @@
     const box = tile.getBoundingClientRect();
     const host = groupsElement.getBoundingClientRect();
     copyTarget = { name: tile.dataset.icon, top: box.top - host.top, left: box.right - host.left - 32 };
-    svgCopied = false;
   };
   // The SVG at the size the gallery shows.
   const svgOf = (name) => sized(data.byModuleName[name], iconSize);
-  const copySvg = async () => {
-    if (!copyTarget || !data) return;
-    await navigator.clipboard.writeText(svgOf(copyTarget.name));
-    svgCopied = true;
-    clearTimeout(svgCopiedTimer);
-    svgCopiedTimer = setTimeout(() => (svgCopied = false), 2000);
-  };
 
-  // The tile's other actions, in its overflow menu. While the menu is open
+  // A tile's actions, in one overflow menu in its corner. While it's open
   // the buttons stay on that tile, though the pointer has left it.
   let tileMenuOpen = false;
   let tileActionDone = false;
@@ -730,7 +720,7 @@ export default {
         {#if data}
           <!-- While searching, the groups merge into one grid ranked best
             first, by turning their own grids into display: contents. -->
-          <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
+          <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions, a11y_mouse_events_have_key_events -->
           <div
             class="gallery-groups icon-size--{iconSize}"
             class:searching={Boolean(filter)}
@@ -752,28 +742,21 @@ export default {
               if (!(event.relatedTarget instanceof Node && groupsElement.contains(event.relatedTarget))) copyTarget = null;
             }}
           >
-            <!-- One Copy SVG button, moved to the tile that's hovered or
-              focused: a button per tile would double the gallery's
-              elements, and a tile, itself a button, can't hold one. -->
+            <!-- One actions menu, moved to the tile that's hovered or
+              focused: a menu per tile would double the gallery's elements,
+              and a tile, itself a button, can't hold one. -->
             {#if copyTarget}
               {@const name = copyTarget.name}
               <span class="tile-copy" style:top="{copyTarget.top}px" style:left="{copyTarget.left}px">
-                <Button
-                  kind="ghost"
-                  size="small"
-                  icon={svgCopied ? Checkmark : Copy}
-                  iconDescription={svgCopied ? "Copied!" : "Copy SVG"}
-                  tooltipPosition="bottom"
-                  on:click={copySvg}
-                />
                 <OverflowMenu
                   size="sm"
                   flipped
                   icon={tileActionDone ? Checkmark : OverflowMenuVertical}
-                  iconDescription={tileActionDone ? "Done" : "More actions"}
+                  iconDescription={tileActionDone ? "Done" : "Actions"}
                   tooltipPosition="bottom"
                   bind:open={tileMenuOpen}
                 >
+                  <OverflowMenuItem icon={Copy} text="Copy SVG" on:click={() => copyText(svgOf(name), `Copied the SVG for ${name}`)} />
                   <OverflowMenuItem icon={CodeIcon} text="Copy import" on:click={() => copyText(importFor(name, importStyle), `Copied the import for ${name}`)} />
                   <OverflowMenuItem icon={TextFont} text="Copy name" on:click={() => copyText(name, `Copied ${name}`)} />
                   <OverflowMenuItem icon={Download} text="Download SVG" on:click={() => { downloadSvg(name, svgOf(name)); confirmAction(`Downloaded ${fileName(name)}`); }} />
@@ -1129,13 +1112,12 @@ export default {
     position: relative;
   }
 
-  /* Stacked down the hovered or focused tile's right edge, clear of its
-     centered icon. */
+  /* In the hovered or focused tile's top-right corner, clear of its
+     centered icon and name. */
   .tile-copy {
     position: absolute;
     z-index: 1;
     display: flex;
-    flex-direction: column;
   }
 
   .gallery-groups.searching {
