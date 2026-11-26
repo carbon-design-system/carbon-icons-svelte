@@ -8,9 +8,12 @@
    * A menu that's open stays on its tile while another tile is hovered,
    * which gets its own menu button, so there can be two at once.
    *
-   * The menu's items go in the default slot, with the tile's `icon` name
-   * and a `done(status)` to call after an action: that menu's button shows
-   * a checkmark for a moment, and screen readers hear `status`.
+   * The menu's items go in the default slot, with the tile's `icon` name,
+   * a `done(status, key)` to call after an action, and `doneKey`, the key
+   * of the action just done on that tile, for a checkmark on its item. The
+   * menu's button shows a checkmark too once the menu closes, and screen
+   * readers hear `status`. The menu is portaled, out of the page's Prose
+   * styles.
    */
   import { OverflowMenu } from "carbon-components-svelte";
   import Checkmark from "carbon-icons-svelte/lib/Checkmark.svelte";
@@ -20,7 +23,10 @@
   /** @type {HTMLElement | null} */
   export let host = null;
 
-  /** @typedef {{ name: string, top: number, left: number }} Target */
+  /** @typedef {{ name: string, top: number, left: number, flipped: boolean }} Target */
+
+  // The menu's width, 12rem, as set below.
+  const MENU_WIDTH = 192;
 
   /** The tile under the pointer or focus. */
   /** @type {Target | null} */
@@ -38,19 +44,27 @@
   $: targets = [pinned, hovered && hovered.name !== pinned?.name ? hovered : null].filter(Boolean);
 
   let doneName = null;
+  let doneKey = null;
   let timer;
   let status = "";
-  const doneFor = (name) => (text) => {
+  const doneFor = (name) => (text, key = null) => {
     status = text;
     doneName = name;
+    doneKey = key;
     clearTimeout(timer);
-    timer = setTimeout(() => (doneName = null), 2000);
+    timer = setTimeout(() => {
+      doneName = null;
+      doneKey = null;
+    }, 2000);
   };
 
   const place = (tile) => {
     const box = tile.getBoundingClientRect();
     const hostBox = host.getBoundingClientRect();
-    return { name: tile.dataset.icon, top: box.top - hostBox.top, left: box.right - hostBox.left - 32 };
+    // The menu opens leftward, aligned to the tile's right edge, unless
+    // that would run past the window's left edge.
+    const flipped = box.right - MENU_WIDTH >= 0;
+    return { name: tile.dataset.icon, top: box.top - hostBox.top, left: box.right - hostBox.left - 32, flipped };
   };
 
   const pointAt = (element) => {
@@ -95,15 +109,17 @@
   <span class="tile-actions" style:top="{target.top}px" style:left="{target.left}px">
     <OverflowMenu
       size="sm"
-      flipped
-      icon={doneName === target.name ? Checkmark : OverflowMenuVertical}
+      flipped={target.flipped}
+      icon={doneName === target.name && !openState[target.name] ? Checkmark : OverflowMenuVertical}
+      portalMenu
+      menuOptionsClass="tile-actions-menu"
       iconDescription=""
       aria-label={doneName === target.name ? "Done" : "Actions"}
       bind:open={openState[target.name]}
     >
       <!-- No tooltip: an empty iconDescription turns it off, and
         aria-label names the button. "icon", not "name", which names a slot. -->
-      <slot icon={target.name} done={doneFor(target.name)} />
+      <slot icon={target.name} done={doneFor(target.name)} doneKey={doneName === target.name ? doneKey : null} />
     </OverflowMenu>
   </span>
 {/each}
@@ -114,6 +130,17 @@
     position: absolute;
     z-index: 1;
     display: flex;
+  }
+
+  /* Room for a label and its checkmark. Portaled, so global. */
+  :global(.tile-actions-menu) {
+    min-width: 12rem;
+  }
+
+  /* A link item, like Open static icon, keeps the browser's underline
+     otherwise; Carbon doesn't reset it. */
+  :global(.tile-actions-menu a.bx--overflow-menu-options__btn) {
+    text-decoration: none;
   }
 
   .tile-actions-status {

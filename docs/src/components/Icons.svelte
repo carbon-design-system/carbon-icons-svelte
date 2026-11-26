@@ -321,9 +321,9 @@
   // The SVG at the size the gallery shows.
   const svgOf = (name) => sized(data.byModuleName[name], iconSize);
 
-  const copyText = async (text, status, done) => {
+  const copyText = async (text, status, done, key) => {
     await navigator.clipboard.writeText(text);
-    done(status);
+    done(status, key);
   };
   // A file name from the icon's name: AddAlt → add-alt.svg.
   const fileName = (name) => `${name.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase()}.svg`;
@@ -701,11 +701,38 @@ export default {
               if (tile instanceof HTMLElement && tile.dataset.icon) open(tile.dataset.icon);
             }}
           >
-            <TileActions host={groupsElement} let:icon={name} let:done>
-              <OverflowMenuItem icon={Copy} text="Copy SVG" on:click={() => copyText(svgOf(name), `Copied the SVG for ${name}`, done)} />
-              <OverflowMenuItem icon={CodeIcon} text="Copy import" on:click={() => copyText(importFor(name, importStyle), `Copied the import for ${name}`, done)} />
-              <OverflowMenuItem icon={TextFont} text="Copy name" on:click={() => copyText(name, `Copied ${name}`, done)} />
+            <!-- Copying keeps the menu open, with a checkmark on the item,
+              so several things can be copied in a row. -->
+            <TileActions host={groupsElement} let:icon={name} let:done let:doneKey>
               <OverflowMenuItem
+                icon={Copy}
+                iconEnd={doneKey === "svg" ? Checkmark : undefined}
+                text="Copy SVG"
+                on:click={(event) => {
+                  event.preventDefault();
+                  copyText(svgOf(name), `Copied the SVG for ${name}`, done, "svg");
+                }}
+              />
+              <OverflowMenuItem
+                icon={CodeIcon}
+                iconEnd={doneKey === "import" ? Checkmark : undefined}
+                text="Copy import"
+                on:click={(event) => {
+                  event.preventDefault();
+                  copyText(importFor(name, importStyle), `Copied the import for ${name}`, done, "import");
+                }}
+              />
+              <OverflowMenuItem
+                icon={TextFont}
+                iconEnd={doneKey === "name" ? Checkmark : undefined}
+                text="Copy name"
+                on:click={(event) => {
+                  event.preventDefault();
+                  copyText(name, `Copied ${name}`, done, "name");
+                }}
+              />
+              <OverflowMenuItem
+                hasDivider
                 icon={Download}
                 text="Download SVG"
                 on:click={() => {
