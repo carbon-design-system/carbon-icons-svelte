@@ -705,3 +705,15 @@ html {
 :is(.docs-page, .docs-panel) .gallery-groups {
   position: relative;
 }
+
+/* As wide as the longest theme name, "Gray 100", so picking a theme
+   doesn't change the toolbar's layout. */
+:is(.docs-page, .docs-panel) .toolbar-theme .bx--dropdown {
+  min-width: 6.25rem;
+}
+
+/* In Gray 80, the panel, the stage and the selected tab share one layer
+   color, so the preview needs a frame to stand apart. */
+:root[theme="g80"] .docs-panel .preview-bar + .example {
+  border: 1px solid var(--cds-border-subtle-01, var(--cds-ui-03));
+}
