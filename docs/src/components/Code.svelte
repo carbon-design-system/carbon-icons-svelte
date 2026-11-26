@@ -8,10 +8,8 @@
   export let wrapText = false;
 </script>
 
-<!-- Always the whole code, with no row limit or show more. Measuring for
-  show more fires a ResizeObserver loop error for short code passed
-  `expanded` (carbon-components-svelte#5791), and clips code of 14 or 15
-  rows by its bottom padding (#5782). -->
+<!-- Always the whole code, with no row limit or show more: examples are
+  short, and a toggle would hide part of one. -->
 <div class="code" use:highlightCode={language}>
   <CodeSnippet
     type={code.includes("\n") ? "multi" : "single"}

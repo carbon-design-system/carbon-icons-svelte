@@ -107,7 +107,6 @@ html {
 }
 
 :is(.docs-page, .docs-panel) #animated-recipes > .bx--tab-content {
-  margin: 0;
   padding: 0;
 }
 
@@ -338,11 +337,6 @@ html {
   display: flex;
   flex-wrap: wrap;
   gap: var(--cds-spacing-02);
-}
-
-/* Tag's own margin would add to the gap. */
-:is(.docs-page, .docs-panel) .keywords .bx--tag {
-  margin: 0;
 }
 
 :is(.docs-page, .docs-panel) .prop-list dt:last-of-type,
@@ -683,13 +677,6 @@ html {
   inset-inline-start: var(--cds-spacing-03);
 }
 
-
-/* Carbon's Kbd shows letters in capitals; j and k are lowercase keys.
-   Button tooltips are portaled to the body, out of reach of a scoped rule,
-   and j and k are the only shortcuts the docs show in one. */
-.bx--btn__tooltip-shortcut .bx--kbd__key {
-  text-transform: lowercase;
-}
 
 /* Carbon draws a tooltip's keys "muted": text only, so a key reads as
    part of the label. A tint of the tooltip's own text color makes it a
