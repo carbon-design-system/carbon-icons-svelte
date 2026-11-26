@@ -136,6 +136,11 @@
     min-width: 12rem;
   }
 
+  /* Carbon caps each option at 11.25rem, short of a wider menu's edge. */
+  :global(.tile-actions-menu .bx--overflow-menu-options__btn) {
+    max-width: none;
+  }
+
   /* A link item, like Open static icon, keeps the browser's underline
      otherwise, and the page's Prose styles links too; Carbon doesn't reset
      it. */
