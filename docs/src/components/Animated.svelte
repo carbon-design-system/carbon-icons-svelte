@@ -688,13 +688,13 @@
     {status === "done" ? "You're on the list" : "Join the waitlist"}
     <svelte:fragment slot="icon">
       {#if status === "sending"}
-        <InProgress class="bx--btn__icon" loop />
+        <InProgress loop />
       {:else if status === "done"}
-        <CheckmarkFilled class="bx--btn__icon" play motion="expressive" />
+        <CheckmarkFilled play motion="expressive" />
       {:else if status === "invalid"}
-        <ErrorFilled class="bx--btn__icon" play={attempts} trigger="none" motion="expressive" />
+        <ErrorFilled play={attempts} trigger="none" motion="expressive" />
       {:else}
-        <Send class="bx--btn__icon" />
+        <Send />
       {/if}
     </svelte:fragment>
   </Button>
@@ -749,11 +749,11 @@
   Subscribe
   <svelte:fragment slot="icon">
     {#if status === "done"}
-      <CheckmarkFilled class="bx--btn__icon" play motion="expressive" />
+      <CheckmarkFilled play motion="expressive" />
     {:else if status === "invalid"}
-      <ErrorFilled class="bx--btn__icon" play={attempts} trigger="none" motion="expressive" />
+      <ErrorFilled play={attempts} trigger="none" motion="expressive" />
     {:else}
-      <Send class="bx--btn__icon" />
+      <Send />
     {/if}
   </svelte:fragment>
 </Button>`;
@@ -782,9 +782,9 @@
 >
   <svelte:fragment slot="icon">
     {#if visible}
-      <ViewOff class="bx--btn__icon" play={toggles} />
+      <ViewOff play={toggles} />
     {:else}
-      <View class="bx--btn__icon" play={toggles} />
+      <View play={toggles} />
     {/if}
   </svelte:fragment>
 </Button>`;
@@ -804,9 +804,9 @@
 >
   <svelte:fragment slot="icon">
     {#if favorited}
-      <FavoriteFilled class="bx--btn__icon" play motion="expressive" />
+      <FavoriteFilled play motion="expressive" />
     {:else}
-      <Favorite class="bx--btn__icon" />
+      <Favorite />
     {/if}
   </svelte:fragment>
 </Button>`;
@@ -832,9 +832,9 @@
 >
   <svelte:fragment slot="icon">
     {#if dark}
-      <Sun class="bx--btn__icon" play={switches} />
+      <Sun play={switches} />
     {:else}
-      <Moon class="bx--btn__icon" play={switches} />
+      <Moon play={switches} />
     {/if}
   </svelte:fragment>
 </Button>`;
@@ -869,7 +869,7 @@
       : [
           `<Button${preview === "icon-button" ? ` kind="ghost" iconDescription="${name}"` : ""}${plays(trigger) ? " on:click={() => count++}" : ""}>`,
           ...(preview === "button" ? [`  ${name}`] : []),
-          tag(name, ['slot="icon"', 'class="bx--btn__icon"', ...explorerProps], "  "),
+          tag(name, ['slot="icon"', ...explorerProps], "  "),
           "</Button>",
         ].join("\n");
 
@@ -909,7 +909,7 @@ ${explorerMarkup}`;
 
 <Button on:click={() => saved++}>
   Save
-  <Checkmark slot="icon" class="bx--btn__icon"
+  <Checkmark slot="icon"
     play={saved} trigger="none" motion="expressive" />
 </Button>`;
 
@@ -944,7 +944,7 @@ ${explorerMarkup}`;
 
 <Button kind="tertiary" disabled={refreshing} on:click={refresh}>
   Refresh
-  <Renew slot="icon" class="bx--btn__icon" loop={refreshing} />
+  <Renew slot="icon" loop={refreshing} />
 </Button>`;
 
   const statesCode = `<script>
@@ -971,11 +971,11 @@ ${explorerMarkup}`;
   Download
   <svelte:fragment slot="icon">
     {#if status === "active"}
-      <InProgress class="bx--btn__icon" loop />
+      <InProgress loop />
     {:else if status === "done"}
-      <CheckmarkFilled class="bx--btn__icon" play motion="expressive" />
+      <CheckmarkFilled play motion="expressive" />
     {:else}
-      <Download class="bx--btn__icon" />
+      <Download />
     {/if}
   </svelte:fragment>
 </Button>
@@ -983,7 +983,7 @@ ${explorerMarkup}`;
 <Button kind="ghost" iconDescription={copied ? "Copied" : "Copy"} on:click={copy}>
   <svelte:fragment slot="icon">
     {#key copied}
-      <svelte:component this={copied ? Checkmark : Copy} class="bx--btn__icon" play={copied} />
+      <svelte:component this={copied ? Checkmark : Copy} play={copied} />
     {/key}
   </svelte:fragment>
 </Button>`;
@@ -1299,7 +1299,7 @@ ${explorerMarkup}`;
       <section id="animated-events">
         <h2>Play on an event</h2>
         <p>
-          To play an icon from your own state, pass a number to <code>play</code> and increment it. The icon plays each time the value changes to something truthy. To give props to an icon in a <code>Button</code>, put it in the button's <code>icon</code> slot with the <code>bx--btn__icon</code> class.
+          To play an icon from your own state, pass a number to <code>play</code> and increment it. The icon plays each time the value changes to something truthy. To give props to an icon in a <code>Button</code>, put it in the button's <code>icon</code> slot. Before carbon-components-svelte 0.114.9, give it the <code>bx--btn__icon</code> class too.
         </p>
         <div class="example">
         <div class="demo-bar">
@@ -1310,10 +1310,10 @@ ${explorerMarkup}`;
           <div class="demo-row">
             <Button on:click={() => saved++}>
               Save
-              <Checkmark slot="icon" class="bx--btn__icon" play={saved} trigger="none" motion="expressive" />
+              <Checkmark slot="icon" play={saved} trigger="none" motion="expressive" />
             </Button>
             <Button kind="ghost" iconDescription="Notifications ({unread} unread)">
-              <Notification slot="icon" class="bx--btn__icon" play={unread} trigger="none" motion="expressive" />
+              <Notification slot="icon" play={unread} trigger="none" motion="expressive" />
             </Button>
           </div>
         </div>
@@ -1335,7 +1335,7 @@ ${explorerMarkup}`;
           <div class="demo-row">
             <Button kind="tertiary" disabled={refreshing} on:click={refresh}>
               Refresh
-              <Renew slot="icon" class="bx--btn__icon" loop={refreshing} />
+              <Renew slot="icon" loop={refreshing} />
             </Button>
           </div>
           <div class="demo-row">
@@ -1363,18 +1363,18 @@ ${explorerMarkup}`;
               Download
               <svelte:fragment slot="icon">
                 {#if status === "active"}
-                  <InProgress class="bx--btn__icon" loop />
+                  <InProgress loop />
                 {:else if status === "done"}
-                  <CheckmarkFilled class="bx--btn__icon" play motion="expressive" />
+                  <CheckmarkFilled play motion="expressive" />
                 {:else}
-                  <Download class="bx--btn__icon" />
+                  <Download />
                 {/if}
               </svelte:fragment>
             </Button>
             <Button kind="ghost" iconDescription={copied ? "Copied" : "Copy"} on:click={copy}>
               <svelte:fragment slot="icon">
                 {#key copied}
-                  <svelte:component this={copied ? Checkmark : Copy} class="bx--btn__icon" play={copied} style="margin-left: 0" />
+                  <svelte:component this={copied ? Checkmark : Copy} play={copied} />
                 {/key}
               </svelte:fragment>
             </Button>
@@ -1433,11 +1433,11 @@ ${explorerMarkup}`;
                     Subscribe
                     <svelte:fragment slot="icon">
                       {#if submitStatus === "done"}
-                        <Animated.CheckmarkFilled class="bx--btn__icon" play motion="expressive" />
+                        <Animated.CheckmarkFilled play motion="expressive" />
                       {:else if submitStatus === "invalid"}
-                        <Animated.ErrorFilled class="bx--btn__icon" play={attempts} trigger="none" motion="expressive" />
+                        <Animated.ErrorFilled play={attempts} trigger="none" motion="expressive" />
                       {:else}
-                        <Animated.Send class="bx--btn__icon" />
+                        <Animated.Send />
                       {/if}
                     </svelte:fragment>
                   </Button>
@@ -1475,13 +1475,13 @@ ${explorerMarkup}`;
                     {signupStatus === "done" ? "You're on the list" : "Join the waitlist"}
                     <svelte:fragment slot="icon">
                       {#if signupStatus === "sending"}
-                        <Animated.InProgress class="bx--btn__icon" loop />
+                        <Animated.InProgress loop />
                       {:else if signupStatus === "done"}
-                        <Animated.CheckmarkFilled class="bx--btn__icon" play motion="expressive" />
+                        <Animated.CheckmarkFilled play motion="expressive" />
                       {:else if signupStatus === "invalid"}
-                        <Animated.ErrorFilled class="bx--btn__icon" play={signupAttempts} trigger="none" motion="expressive" />
+                        <Animated.ErrorFilled play={signupAttempts} trigger="none" motion="expressive" />
                       {:else}
-                        <Animated.Send class="bx--btn__icon" />
+                        <Animated.Send />
                       {/if}
                     </svelte:fragment>
                   </Button>
@@ -1511,9 +1511,9 @@ ${explorerMarkup}`;
                   >
                     <svelte:fragment slot="icon">
                       {#if secretVisible}
-                        <Animated.ViewOff class="bx--btn__icon" play={secretToggles} style="margin-left: 0" />
+                        <Animated.ViewOff play={secretToggles} />
                       {:else}
-                        <Animated.View class="bx--btn__icon" play={secretToggles} style="margin-left: 0" />
+                        <Animated.View play={secretToggles} />
                       {/if}
                     </svelte:fragment>
                   </Button>
@@ -1539,9 +1539,9 @@ ${explorerMarkup}`;
                   >
                     <svelte:fragment slot="icon">
                       {#if favorited}
-                        <Animated.FavoriteFilled class="bx--btn__icon" play motion="expressive" style="margin-left: 0" />
+                        <Animated.FavoriteFilled play motion="expressive" />
                       {:else}
-                        <Animated.Favorite class="bx--btn__icon" style="margin-left: 0" />
+                        <Animated.Favorite />
                       {/if}
                     </svelte:fragment>
                   </Button>
@@ -1553,9 +1553,9 @@ ${explorerMarkup}`;
                   >
                     <svelte:fragment slot="icon">
                       {#if bookmarked}
-                        <Animated.BookmarkFilled class="bx--btn__icon" play motion="expressive" style="margin-left: 0" />
+                        <Animated.BookmarkFilled play motion="expressive" />
                       {:else}
-                        <Animated.Bookmark class="bx--btn__icon" style="margin-left: 0" />
+                        <Animated.Bookmark />
                       {/if}
                     </svelte:fragment>
                   </Button>
@@ -1583,9 +1583,9 @@ ${explorerMarkup}`;
                   >
                     <svelte:fragment slot="icon">
                       {#if dark}
-                        <Animated.Sun class="bx--btn__icon" play={themeSwitches} style="margin-left: 0" />
+                        <Animated.Sun play={themeSwitches} />
                       {:else}
-                        <Animated.Moon class="bx--btn__icon" play={themeSwitches} style="margin-left: 0" />
+                        <Animated.Moon play={themeSwitches} />
                       {/if}
                     </svelte:fragment>
                   </Button>
@@ -1807,12 +1807,12 @@ ${explorerMarkup}`;
       {:else if preview === "button"}
         <Button on:click={() => trigger === "none" && play++}>
           {name}
-          <svelte:component this={Animated[name]} slot="icon" class="bx--btn__icon" {motion} {trigger} {reducedMotion} {hoverDelay} {play} {loop} />
+          <svelte:component this={Animated[name]} slot="icon" {motion} {trigger} {reducedMotion} {hoverDelay} {play} {loop} />
         </Button>
       {:else}
         <!-- No default slot content, so Button lays it out as icon-only. -->
         <Button kind="ghost" iconDescription={name} on:click={() => trigger === "none" && play++}>
-          <svelte:component this={Animated[name]} slot="icon" class="bx--btn__icon" {motion} {trigger} {reducedMotion} {hoverDelay} {play} {loop} />
+          <svelte:component this={Animated[name]} slot="icon" {motion} {trigger} {reducedMotion} {hoverDelay} {play} {loop} />
         </Button>
       {/if}
     </div>

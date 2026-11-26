@@ -497,7 +497,7 @@
 
   // Inline SVG for the previews: the icon at a size, or in a button.
   const sized = (svg, size) => svg.replace(/width="\d+" height="\d+"/, `width="${size}" height="${size}"`);
-  const inButton = (svg) => svg.replace("<svg ", '<svg class="bx--btn__icon" aria-hidden="true" ');
+  const inButton = (svg) => svg.replace("<svg ", '<svg aria-hidden="true" ');
 
   // The open panel and its options live in the URL's query, with the search,
   // so a link reopens the page as it was.
