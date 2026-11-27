@@ -2,73 +2,462 @@
 
 import type { IconOutput } from "@carbon/icons";
 import { RULES, ruleIcons } from "./rules.js";
-import { DURATION, EASING, type AnimatedIcon } from "./shared.js";
-import Add from "./icons/Add.js";
-import Checkmark from "./icons/Checkmark.js";
-import ChevronRight from "./icons/ChevronRight.js";
-import Copy from "./icons/Copy.js";
-import Download from "./icons/Download.js";
-import Edit from "./icons/Edit.js";
-import Favorite from "./icons/Favorite.js";
-import Light from "./icons/Light.js";
-import Location from "./icons/Location.js";
-import Locked from "./icons/Locked.js";
-import Notification from "./icons/Notification.js";
-import Renew from "./icons/Renew.js";
-import RotateClockwise from "./icons/RotateClockwise.js";
-import RotateClockwiseAlt from "./icons/RotateClockwiseAlt.js";
-import RotateClockwiseAltFilled from "./icons/RotateClockwiseAltFilled.js";
-import RotateClockwiseFilled from "./icons/RotateClockwiseFilled.js";
-import RotateCounterclockwise from "./icons/RotateCounterclockwise.js";
-import RotateCounterclockwiseAlt from "./icons/RotateCounterclockwiseAlt.js";
-import RotateCounterclockwiseAltFilled from "./icons/RotateCounterclockwiseAltFilled.js";
-import RotateCounterclockwiseFilled from "./icons/RotateCounterclockwiseFilled.js";
-import Search from "./icons/Search.js";
-import Send from "./icons/Send.js";
-import Settings from "./icons/Settings.js";
-import Star from "./icons/Star.js";
-import Time from "./icons/Time.js";
-import TrashCan from "./icons/TrashCan.js";
-import Upload from "./icons/Upload.js";
-import View from "./icons/View.js";
-import VolumeUp from "./icons/VolumeUp.js";
-import WarningAlt from "./icons/WarningAlt.js";
-import Wifi from "./icons/Wifi.js";
+import { DURATION, EASING, withLoop, type AnimatedIcon } from "./shared.js";
+import ActivityIcon from "./icons/Activity.js";
+import AddIcon from "./icons/Add.js";
+import AddAltIcon from "./icons/AddAlt.js";
+import AddFilledIcon from "./icons/AddFilled.js";
+import AlarmIcon from "./icons/Alarm.js";
+import AnalyticsIcon from "./icons/Analytics.js";
+import ArrowsHorizontalIcon from "./icons/ArrowsHorizontal.js";
+import ArrowsVerticalIcon from "./icons/ArrowsVertical.js";
+import AsleepIcon from "./icons/Asleep.js";
+import AsleepFilledIcon from "./icons/AsleepFilled.js";
+import AttachmentIcon from "./icons/Attachment.js";
+import BatteryChargingIcon from "./icons/BatteryCharging.js";
+import BluetoothOffIcon from "./icons/BluetoothOff.js";
+import BookmarkIcon from "./icons/Bookmark.js";
+import BookmarkAddIcon from "./icons/BookmarkAdd.js";
+import BookmarkFilledIcon from "./icons/BookmarkFilled.js";
+import BotIcon from "./icons/Bot.js";
+import BullhornIcon from "./icons/Bullhorn.js";
+import CalendarIcon from "./icons/Calendar.js";
+import CameraIcon from "./icons/Camera.js";
+import ChartBarIcon from "./icons/ChartBar.js";
+import ChatIcon from "./icons/Chat.js";
+import ChatOffIcon from "./icons/ChatOff.js";
+import CheckboxCheckedIcon from "./icons/CheckboxChecked.js";
+import CheckboxCheckedFilledIcon from "./icons/CheckboxCheckedFilled.js";
+import CheckmarkIcon from "./icons/Checkmark.js";
+import CheckmarkFilledIcon from "./icons/CheckmarkFilled.js";
+import CheckmarkFilledErrorIcon from "./icons/CheckmarkFilledError.js";
+import CheckmarkFilledWarningIcon from "./icons/CheckmarkFilledWarning.js";
+import CheckmarkOutlineIcon from "./icons/CheckmarkOutline.js";
+import CheckmarkOutlineErrorIcon from "./icons/CheckmarkOutlineError.js";
+import CheckmarkOutlineWarningIcon from "./icons/CheckmarkOutlineWarning.js";
+import ChevronRightIcon from "./icons/ChevronRight.js";
+import CircleDashIcon from "./icons/CircleDash.js";
+import CloseIcon from "./icons/Close.js";
+import CloseFilledIcon from "./icons/CloseFilled.js";
+import CloseLargeIcon from "./icons/CloseLarge.js";
+import CloseOutlineIcon from "./icons/CloseOutline.js";
+import CloudDownloadIcon from "./icons/CloudDownload.js";
+import CloudOfflineIcon from "./icons/CloudOffline.js";
+import CloudUploadIcon from "./icons/CloudUpload.js";
+import CodeIcon from "./icons/Code.js";
+import CopyIcon from "./icons/Copy.js";
+import CopyFileIcon from "./icons/CopyFile.js";
+import CopyLinkIcon from "./icons/CopyLink.js";
+import Cursor_1Icon from "./icons/Cursor_1.js";
+import CutIcon from "./icons/Cut.js";
+import DashboardIcon from "./icons/Dashboard.js";
+import DocumentAddIcon from "./icons/DocumentAdd.js";
+import DocumentDownloadIcon from "./icons/DocumentDownload.js";
+import DocumentExportIcon from "./icons/DocumentExport.js";
+import DocumentSubtractIcon from "./icons/DocumentSubtract.js";
+import DownToBottomIcon from "./icons/DownToBottom.js";
+import DownloadIcon from "./icons/Download.js";
+import DraggableIcon from "./icons/Draggable.js";
+import EditIcon from "./icons/Edit.js";
+import EditOffIcon from "./icons/EditOff.js";
+import EmailIcon from "./icons/Email.js";
+import EmailNewIcon from "./icons/EmailNew.js";
+import ErrorIcon from "./icons/Error.js";
+import ErrorFilledIcon from "./icons/ErrorFilled.js";
+import ErrorOutlineIcon from "./icons/ErrorOutline.js";
+import FavoriteIcon from "./icons/Favorite.js";
+import FavoriteFilledIcon from "./icons/FavoriteFilled.js";
+import FavoriteHalfIcon from "./icons/FavoriteHalf.js";
+import FireIcon from "./icons/Fire.js";
+import FlagIcon from "./icons/Flag.js";
+import FlagFilledIcon from "./icons/FlagFilled.js";
+import FlashIcon from "./icons/Flash.js";
+import FlashFilledIcon from "./icons/FlashFilled.js";
+import FlashOffIcon from "./icons/FlashOff.js";
+import FlashOffFilledIcon from "./icons/FlashOffFilled.js";
+import FolderAddIcon from "./icons/FolderAdd.js";
+import GiftIcon from "./icons/Gift.js";
+import HelpIcon from "./icons/Help.js";
+import HelpFilledIcon from "./icons/HelpFilled.js";
+import HourglassIcon from "./icons/Hourglass.js";
+import IdeaIcon from "./icons/Idea.js";
+import ImageIcon from "./icons/Image.js";
+import InProgressIcon from "./icons/InProgress.js";
+import InProgressErrorIcon from "./icons/InProgressError.js";
+import InProgressWarningIcon from "./icons/InProgressWarning.js";
+import IncompleteIcon from "./icons/Incomplete.js";
+import IncompleteCancelIcon from "./icons/IncompleteCancel.js";
+import IncompleteErrorIcon from "./icons/IncompleteError.js";
+import IncompleteWarningIcon from "./icons/IncompleteWarning.js";
+import InformationIcon from "./icons/Information.js";
+import InformationFilledIcon from "./icons/InformationFilled.js";
+import InformationSquareIcon from "./icons/InformationSquare.js";
+import InformationSquareFilledIcon from "./icons/InformationSquareFilled.js";
+import KeyboardIcon from "./icons/Keyboard.js";
+import LaunchIcon from "./icons/Launch.js";
+import LightIcon from "./icons/Light.js";
+import LightFilledIcon from "./icons/LightFilled.js";
+import LinkIcon from "./icons/Link.js";
+import LocationIcon from "./icons/Location.js";
+import LocationFilledIcon from "./icons/LocationFilled.js";
+import LockedIcon from "./icons/Locked.js";
+import LockedFilledIcon from "./icons/LockedFilled.js";
+import LoginIcon from "./icons/Login.js";
+import LogoutIcon from "./icons/Logout.js";
+import MaximizeIcon from "./icons/Maximize.js";
+import MenuIcon from "./icons/Menu.js";
+import MicrophoneOffIcon from "./icons/MicrophoneOff.js";
+import MicrophoneOffFilledIcon from "./icons/MicrophoneOffFilled.js";
+import MinimizeIcon from "./icons/Minimize.js";
+import MisuseIcon from "./icons/Misuse.js";
+import MisuseOutlineIcon from "./icons/MisuseOutline.js";
+import MoonIcon from "./icons/Moon.js";
+import NotificationIcon from "./icons/Notification.js";
+import NotificationCounterIcon from "./icons/NotificationCounter.js";
+import NotificationFilledIcon from "./icons/NotificationFilled.js";
+import NotificationNewIcon from "./icons/NotificationNew.js";
+import NotificationOffIcon from "./icons/NotificationOff.js";
+import NotificationOffFilledIcon from "./icons/NotificationOffFilled.js";
+import OverflowMenuHorizontalIcon from "./icons/OverflowMenuHorizontal.js";
+import OverflowMenuVerticalIcon from "./icons/OverflowMenuVertical.js";
+import PauseIcon from "./icons/Pause.js";
+import PauseFilledIcon from "./icons/PauseFilled.js";
+import PauseOutlineIcon from "./icons/PauseOutline.js";
+import PauseOutlineFilledIcon from "./icons/PauseOutlineFilled.js";
+import PendingIcon from "./icons/Pending.js";
+import PendingFilledIcon from "./icons/PendingFilled.js";
+import PhoneIcon from "./icons/Phone.js";
+import PhoneFilledIcon from "./icons/PhoneFilled.js";
+import PhoneIncomingIcon from "./icons/PhoneIncoming.js";
+import PhoneOffIcon from "./icons/PhoneOff.js";
+import PhoneOffFilledIcon from "./icons/PhoneOffFilled.js";
+import PhoneOutgoingIcon from "./icons/PhoneOutgoing.js";
+import PinIcon from "./icons/Pin.js";
+import PinFilledIcon from "./icons/PinFilled.js";
+import PlayIcon from "./icons/Play.js";
+import PlayFilledIcon from "./icons/PlayFilled.js";
+import PlayOutlineIcon from "./icons/PlayOutline.js";
+import PlayOutlineFilledIcon from "./icons/PlayOutlineFilled.js";
+import PlugIcon from "./icons/Plug.js";
+import PowerIcon from "./icons/Power.js";
+import PrinterIcon from "./icons/Printer.js";
+import RadioButtonCheckedIcon from "./icons/RadioButtonChecked.js";
+import RenewIcon from "./icons/Renew.js";
+import RocketIcon from "./icons/Rocket.js";
+import RotateClockwiseIcon from "./icons/RotateClockwise.js";
+import RotateClockwiseAltIcon from "./icons/RotateClockwiseAlt.js";
+import RotateClockwiseAltFilledIcon from "./icons/RotateClockwiseAltFilled.js";
+import RotateClockwiseFilledIcon from "./icons/RotateClockwiseFilled.js";
+import RotateCounterclockwiseIcon from "./icons/RotateCounterclockwise.js";
+import RotateCounterclockwiseAltIcon from "./icons/RotateCounterclockwiseAlt.js";
+import RotateCounterclockwiseAltFilledIcon from "./icons/RotateCounterclockwiseAltFilled.js";
+import RotateCounterclockwiseFilledIcon from "./icons/RotateCounterclockwiseFilled.js";
+import RssIcon from "./icons/Rss.js";
+import SaveIcon from "./icons/Save.js";
+import SearchIcon from "./icons/Search.js";
+import SendIcon from "./icons/Send.js";
+import SendAltIcon from "./icons/SendAlt.js";
+import SendAltFilledIcon from "./icons/SendAltFilled.js";
+import SendFilledIcon from "./icons/SendFilled.js";
+import SettingsIcon from "./icons/Settings.js";
+import ShareIcon from "./icons/Share.js";
+import ShoppingCartIcon from "./icons/ShoppingCart.js";
+import ShoppingCartClearIcon from "./icons/ShoppingCartClear.js";
+import ShoppingCartMinusIcon from "./icons/ShoppingCartMinus.js";
+import ShoppingCartPlusIcon from "./icons/ShoppingCartPlus.js";
+import SortAscendingIcon from "./icons/SortAscending.js";
+import SortDescendingIcon from "./icons/SortDescending.js";
+import StarIcon from "./icons/Star.js";
+import StarFilledIcon from "./icons/StarFilled.js";
+import StopIcon from "./icons/Stop.js";
+import StopFilledIcon from "./icons/StopFilled.js";
+import StopOutlineIcon from "./icons/StopOutline.js";
+import StopOutlineFilledIcon from "./icons/StopOutlineFilled.js";
+import SubtractIcon from "./icons/Subtract.js";
+import SubtractAltIcon from "./icons/SubtractAlt.js";
+import SubtractFilledIcon from "./icons/SubtractFilled.js";
+import SubtractLargeIcon from "./icons/SubtractLarge.js";
+import SunIcon from "./icons/Sun.js";
+import TagIcon from "./icons/Tag.js";
+import TerminalIcon from "./icons/Terminal.js";
+import ThumbsDownIcon from "./icons/ThumbsDown.js";
+import ThumbsDownFilledIcon from "./icons/ThumbsDownFilled.js";
+import ThumbsUpIcon from "./icons/ThumbsUp.js";
+import ThumbsUpDoubleIcon from "./icons/ThumbsUpDouble.js";
+import ThumbsUpFilledIcon from "./icons/ThumbsUpFilled.js";
+import TimeIcon from "./icons/Time.js";
+import TimeFilledIcon from "./icons/TimeFilled.js";
+import TimerIcon from "./icons/Timer.js";
+import TrashCanIcon from "./icons/TrashCan.js";
+import UnlinkIcon from "./icons/Unlink.js";
+import UnlockedIcon from "./icons/Unlocked.js";
+import UnlockedFilledIcon from "./icons/UnlockedFilled.js";
+import UpToTopIcon from "./icons/UpToTop.js";
+import UploadIcon from "./icons/Upload.js";
+import UserIcon from "./icons/User.js";
+import UserAvatarIcon from "./icons/UserAvatar.js";
+import UserAvatarFilledAltIcon from "./icons/UserAvatarFilledAlt.js";
+import UserFilledIcon from "./icons/UserFilled.js";
+import UserFollowIcon from "./icons/UserFollow.js";
+import VideoOffIcon from "./icons/VideoOff.js";
+import VideoOffFilledIcon from "./icons/VideoOffFilled.js";
+import ViewIcon from "./icons/View.js";
+import ViewOffIcon from "./icons/ViewOff.js";
+import ViewOffFilledIcon from "./icons/ViewOffFilled.js";
+import VolumeDownIcon from "./icons/VolumeDown.js";
+import VolumeDownAltIcon from "./icons/VolumeDownAlt.js";
+import VolumeDownFilledIcon from "./icons/VolumeDownFilled.js";
+import VolumeMuteIcon from "./icons/VolumeMute.js";
+import VolumeMuteFilledIcon from "./icons/VolumeMuteFilled.js";
+import VolumeUpIcon from "./icons/VolumeUp.js";
+import VolumeUpAltIcon from "./icons/VolumeUpAlt.js";
+import VolumeUpFilledIcon from "./icons/VolumeUpFilled.js";
+import WarningIcon from "./icons/Warning.js";
+import WarningAltIcon from "./icons/WarningAlt.js";
+import WarningAltFilledIcon from "./icons/WarningAltFilled.js";
+import WarningAltInvertedIcon from "./icons/WarningAltInverted.js";
+import WarningAltInvertedFilledIcon from "./icons/WarningAltInvertedFilled.js";
+import WarningDiamondIcon from "./icons/WarningDiamond.js";
+import WarningFilledIcon from "./icons/WarningFilled.js";
+import WarningHexIcon from "./icons/WarningHex.js";
+import WarningHexFilledIcon from "./icons/WarningHexFilled.js";
+import WarningSquareIcon from "./icons/WarningSquare.js";
+import WarningSquareFilledIcon from "./icons/WarningSquareFilled.js";
+import WifiIcon from "./icons/Wifi.js";
+import WifiOffIcon from "./icons/WifiOff.js";
+import ZoomInIcon from "./icons/ZoomIn.js";
+import ZoomOutIcon from "./icons/ZoomOut.js";
+import ZoomResetIcon from "./icons/ZoomReset.js";
 
 export type { AnimatedIcon } from "./shared.js";
 
+// Suffixed so icon names like `Error` don't shadow globals.
 export const ANIMATED_ICONS: AnimatedIcon[] = [
-  Add,
-  Checkmark,
-  ChevronRight,
-  Copy,
-  Download,
-  Edit,
-  Favorite,
-  Light,
-  Location,
-  Locked,
-  Notification,
-  Renew,
-  RotateClockwise,
-  RotateClockwiseAlt,
-  RotateClockwiseAltFilled,
-  RotateClockwiseFilled,
-  RotateCounterclockwise,
-  RotateCounterclockwiseAlt,
-  RotateCounterclockwiseAltFilled,
-  RotateCounterclockwiseFilled,
-  Search,
-  Send,
-  Settings,
-  Star,
-  Time,
-  TrashCan,
-  Upload,
-  View,
-  VolumeUp,
-  WarningAlt,
-  Wifi,
+  ActivityIcon,
+  AddIcon,
+  AddAltIcon,
+  AddFilledIcon,
+  AlarmIcon,
+  AnalyticsIcon,
+  ArrowsHorizontalIcon,
+  ArrowsVerticalIcon,
+  AsleepIcon,
+  AsleepFilledIcon,
+  AttachmentIcon,
+  BatteryChargingIcon,
+  BluetoothOffIcon,
+  BookmarkIcon,
+  BookmarkAddIcon,
+  BookmarkFilledIcon,
+  BotIcon,
+  BullhornIcon,
+  CalendarIcon,
+  CameraIcon,
+  ChartBarIcon,
+  ChatIcon,
+  ChatOffIcon,
+  CheckboxCheckedIcon,
+  CheckboxCheckedFilledIcon,
+  CheckmarkIcon,
+  CheckmarkFilledIcon,
+  CheckmarkFilledErrorIcon,
+  CheckmarkFilledWarningIcon,
+  CheckmarkOutlineIcon,
+  CheckmarkOutlineErrorIcon,
+  CheckmarkOutlineWarningIcon,
+  ChevronRightIcon,
+  CircleDashIcon,
+  CloseIcon,
+  CloseFilledIcon,
+  CloseLargeIcon,
+  CloseOutlineIcon,
+  CloudDownloadIcon,
+  CloudOfflineIcon,
+  CloudUploadIcon,
+  CodeIcon,
+  CopyIcon,
+  CopyFileIcon,
+  CopyLinkIcon,
+  Cursor_1Icon,
+  CutIcon,
+  DashboardIcon,
+  DocumentAddIcon,
+  DocumentDownloadIcon,
+  DocumentExportIcon,
+  DocumentSubtractIcon,
+  DownToBottomIcon,
+  DownloadIcon,
+  DraggableIcon,
+  EditIcon,
+  EditOffIcon,
+  EmailIcon,
+  EmailNewIcon,
+  ErrorIcon,
+  ErrorFilledIcon,
+  ErrorOutlineIcon,
+  FavoriteIcon,
+  FavoriteFilledIcon,
+  FavoriteHalfIcon,
+  FireIcon,
+  FlagIcon,
+  FlagFilledIcon,
+  FlashIcon,
+  FlashFilledIcon,
+  FlashOffIcon,
+  FlashOffFilledIcon,
+  FolderAddIcon,
+  GiftIcon,
+  HelpIcon,
+  HelpFilledIcon,
+  HourglassIcon,
+  IdeaIcon,
+  ImageIcon,
+  InProgressIcon,
+  InProgressErrorIcon,
+  InProgressWarningIcon,
+  IncompleteIcon,
+  IncompleteCancelIcon,
+  IncompleteErrorIcon,
+  IncompleteWarningIcon,
+  InformationIcon,
+  InformationFilledIcon,
+  InformationSquareIcon,
+  InformationSquareFilledIcon,
+  KeyboardIcon,
+  LaunchIcon,
+  LightIcon,
+  LightFilledIcon,
+  LinkIcon,
+  LocationIcon,
+  LocationFilledIcon,
+  LockedIcon,
+  LockedFilledIcon,
+  LoginIcon,
+  LogoutIcon,
+  MaximizeIcon,
+  MenuIcon,
+  MicrophoneOffIcon,
+  MicrophoneOffFilledIcon,
+  MinimizeIcon,
+  MisuseIcon,
+  MisuseOutlineIcon,
+  MoonIcon,
+  NotificationIcon,
+  NotificationCounterIcon,
+  NotificationFilledIcon,
+  NotificationNewIcon,
+  NotificationOffIcon,
+  NotificationOffFilledIcon,
+  OverflowMenuHorizontalIcon,
+  OverflowMenuVerticalIcon,
+  PauseIcon,
+  PauseFilledIcon,
+  PauseOutlineIcon,
+  PauseOutlineFilledIcon,
+  PendingIcon,
+  PendingFilledIcon,
+  PhoneIcon,
+  PhoneFilledIcon,
+  PhoneIncomingIcon,
+  PhoneOffIcon,
+  PhoneOffFilledIcon,
+  PhoneOutgoingIcon,
+  PinIcon,
+  PinFilledIcon,
+  PlayIcon,
+  PlayFilledIcon,
+  PlayOutlineIcon,
+  PlayOutlineFilledIcon,
+  PlugIcon,
+  PowerIcon,
+  PrinterIcon,
+  RadioButtonCheckedIcon,
+  RenewIcon,
+  RocketIcon,
+  RotateClockwiseIcon,
+  RotateClockwiseAltIcon,
+  RotateClockwiseAltFilledIcon,
+  RotateClockwiseFilledIcon,
+  RotateCounterclockwiseIcon,
+  RotateCounterclockwiseAltIcon,
+  RotateCounterclockwiseAltFilledIcon,
+  RotateCounterclockwiseFilledIcon,
+  RssIcon,
+  SaveIcon,
+  SearchIcon,
+  SendIcon,
+  SendAltIcon,
+  SendAltFilledIcon,
+  SendFilledIcon,
+  SettingsIcon,
+  ShareIcon,
+  ShoppingCartIcon,
+  ShoppingCartClearIcon,
+  ShoppingCartMinusIcon,
+  ShoppingCartPlusIcon,
+  SortAscendingIcon,
+  SortDescendingIcon,
+  StarIcon,
+  StarFilledIcon,
+  StopIcon,
+  StopFilledIcon,
+  StopOutlineIcon,
+  StopOutlineFilledIcon,
+  SubtractIcon,
+  SubtractAltIcon,
+  SubtractFilledIcon,
+  SubtractLargeIcon,
+  SunIcon,
+  TagIcon,
+  TerminalIcon,
+  ThumbsDownIcon,
+  ThumbsDownFilledIcon,
+  ThumbsUpIcon,
+  ThumbsUpDoubleIcon,
+  ThumbsUpFilledIcon,
+  TimeIcon,
+  TimeFilledIcon,
+  TimerIcon,
+  TrashCanIcon,
+  UnlinkIcon,
+  UnlockedIcon,
+  UnlockedFilledIcon,
+  UpToTopIcon,
+  UploadIcon,
+  UserIcon,
+  UserAvatarIcon,
+  UserAvatarFilledAltIcon,
+  UserFilledIcon,
+  UserFollowIcon,
+  VideoOffIcon,
+  VideoOffFilledIcon,
+  ViewIcon,
+  ViewOffIcon,
+  ViewOffFilledIcon,
+  VolumeDownIcon,
+  VolumeDownAltIcon,
+  VolumeDownFilledIcon,
+  VolumeMuteIcon,
+  VolumeMuteFilledIcon,
+  VolumeUpIcon,
+  VolumeUpAltIcon,
+  VolumeUpFilledIcon,
+  WarningIcon,
+  WarningAltIcon,
+  WarningAltFilledIcon,
+  WarningAltInvertedIcon,
+  WarningAltInvertedFilledIcon,
+  WarningDiamondIcon,
+  WarningFilledIcon,
+  WarningHexIcon,
+  WarningHexFilledIcon,
+  WarningSquareIcon,
+  WarningSquareFilledIcon,
+  WifiIcon,
+  WifiOffIcon,
+  ZoomInIcon,
+  ZoomOutIcon,
+  ZoomResetIcon,
 ];
 
 /** Content that references `{id}` gets a unique id prefix per instance. */
@@ -84,7 +473,7 @@ export const fillTokens = (source: string) =>
     .replace("__EASING_STANDARD_PRODUCTIVE__", JSON.stringify(EASING.standard.productive))
     .replace("__EASING_STANDARD_EXPRESSIVE__", JSON.stringify(EASING.standard.expressive));
 
-export const templateAnimated = ({ content, css }: AnimatedIcon) => {
+export const templateAnimated = ({ content, css, loop }: AnimatedIcon) => {
   const usesId = ID_PATTERN.test(content);
 
   return `<script>
@@ -95,6 +484,8 @@ export const templateAnimated = ({ content, css }: AnimatedIcon) => {
   export let title = undefined;
 
   export let play = false;
+
+  export let loop = false;
 
   export let trigger = undefined;
 
@@ -122,7 +513,7 @@ ${usesId ? "\n  const id = uid();\n" : ""}
   width={size}
   height={size}
   data-motion={motion ?? defaults.motion ?? "productive"}
-  use:animate={{ play, trigger, reducedMotion, hoverDelay, defaults }}
+  use:animate={{ play, loop, loops: ${loop ? "true" : "false"}, trigger, reducedMotion, hoverDelay, defaults }}
   {...attributes}
   {...$$restProps}>
   {#if title}<title>{title}</title>{/if}
@@ -130,7 +521,7 @@ ${usesId ? "\n  const id = uid();\n" : ""}
 </svg>
 
 <style>
-${css}
+${loop ? withLoop(css) : css}
 </style>
 `;
 };
@@ -181,6 +572,18 @@ export type CarbonAnimatedIconProps = CarbonIconProps &
      * @default false
      */
     play?: boolean | number;
+
+    /**
+     * Repeats the animation while \`true\`, for progress. When it turns
+     * \`false\`, the current cycle finishes and the icon stops at rest. Only
+     * icons with a loop respond: the progress icons (\`CircleDash\`, \`Hourglass\`,
+     * \`InProgress\`, \`Incomplete\`, \`Pending\`, \`PendingFilled\`) and the
+     * refresh and processing icons (\`Renew\`, \`RenewAlt\`, \`Restart\`,
+     * \`Reset\`, \`Repeat\`, \`Recycle\`, \`Settings\`, \`Terminal\`, \`Time\`,
+     * \`TimeFilled\`, \`Timer\`).
+     * @default false
+     */
+    loop?: boolean;
   };
 
 /** See \`CarbonIcon\` in \`../index.d.ts\`. */

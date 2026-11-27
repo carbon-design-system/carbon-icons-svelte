@@ -4,8 +4,12 @@
  *
  * - Nothing leaves the 32×32 canvas, except deliberate exits. Points are
  *   sampled along every path, since bounding boxes overstate rotations.
- *   Parts inside a `<clipPath>` wrapper are clipped on purpose.
+ * - Parts inside a `<clipPath>` wrapper may pass through the clip in
+ *   expressive mode, but not in productive mode, where getting clipped
+ *   means getting cut off. A clip that splits a part at rest, like
+ *   `View`'s, is measured from where the part sits at rest.
  * - Productive motion ends within 400ms, expressive within 700ms.
+ * - Icons that loop repeat forever, with a cycle of 700ms at most.
  *
  * Run `bun run prepack` first so `lib/animated/` exists. Uses an installed
  * Chrome by default; pass `--browser firefox` or `--browser webkit` to use
@@ -19,7 +23,7 @@ import { render } from "svelte/server";
 import { DURATION } from "../src/animated/shared.js";
 
 /** Icons whose motion leaves the canvas on purpose, through the viewBox edge. */
-const EXITS = new Set(["Send/expressive"]);
+const EXITS = new Set(["Send", "SendFilled", "SendAlt", "SendAltFilled", "Rocket"].map((name) => `${name}/expressive`));
 
 /** How far a part may stray past the canvas, in user units, before it counts. */
 const TOLERANCE = 0.5;
@@ -54,16 +58,26 @@ for (const name of names) {
   await Bun.write(`${out}/${name}.js`, js.code);
   const { default: Icon } = await import(`${process.cwd()}/${out}/${name}.js`);
 
+  const states = source.includes('data-playing="loop"') ? ["motion", "loop"] : ["motion"];
   for (const motion of ["productive", "expressive"]) {
-    const result = render(Icon, { props: { size: 32, motion, "data-playing": "motion", "data-key": `${name}/${motion}` } });
-    heads.add(result.head);
-    body += result.body;
+    for (const state of states) {
+      const key = `${name}/${motion}${state === "loop" ? "/loop" : ""}`;
+      const result = render(Icon, { props: { size: 32, motion, "data-playing": state, "data-key": key } });
+      heads.add(result.head);
+      body += result.body;
+    }
   }
 }
 
 const browser = await launch();
 const page = await browser.newPage();
-await page.setContent(`<!doctype html><html><head>${[...heads].join("")}</head><body>${body}</body></html>`);
+// Start every animation paused: on a slow machine, one-shots would finish,
+// and drop out of `getAnimations()`, before they're read.
+const paused = "<style>* { animation-play-state: paused !important; }</style>";
+await page.setContent(`<!doctype html><html><head>${[...heads].join("")}${paused}</head><body>${body}</body></html>`);
+
+// Let every engine create the animations before reading them.
+await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
 
 const results = await page.evaluate(
   ({ limits, step }) => {
@@ -71,11 +85,36 @@ const results = await page.evaluate(
     const animations = svgs.flatMap((svg) => svg.getAnimations({ subtree: true }));
     animations.forEach((animation) => animation.pause());
 
-    const report: Record<string, { overflow: number; end: number }> = {};
+    const report: Record<string, { overflow: number; end: number; cycle: number; forever: boolean }> = {};
     for (const svg of svgs) {
-      const end = Math.max(0, ...svg.getAnimations({ subtree: true }).map((a) => Number(a.effect?.getComputedTiming().endTime)));
-      report[svg.dataset.key!] = { overflow: 0, end };
+      const timings = svg.getAnimations({ subtree: true }).map((a) => a.effect!.getComputedTiming());
+      report[svg.dataset.key!] = {
+        overflow: 0,
+        end: Math.max(0, ...timings.map((t) => Number(t.endTime))),
+        cycle: Math.max(0, ...timings.map((t) => Number(t.duration))),
+        forever: timings.length > 0 && timings.every((t) => t.iterations === Infinity),
+      };
     }
+
+    // How far each clipped part already sits outside its clip at rest.
+    const atRest = new Map<Element, number>();
+    // Animations move parts but never change their paths, so each path's
+    // points are sampled once, in its own coordinates, and only transformed
+    // at each frame. Sampling is most of the cost.
+    const points = new Map<SVGGeometryElement, { x: number; y: number }[]>();
+    const pointsOf = (shape: SVGGeometryElement) => {
+      let list = points.get(shape);
+      if (!list) {
+        list = [];
+        const length = shape.getTotalLength();
+        for (let at = 0; at <= length; at += 1) {
+          const { x, y } = shape.getPointAtLength(at);
+          list.push({ x, y });
+        }
+        points.set(shape, list);
+      }
+      return list;
+    };
 
     for (let time = 0; time <= limits.expressive; time += step) {
       animations.forEach((animation) => (animation.currentTime = time));
@@ -83,16 +122,31 @@ const results = await page.evaluate(
       for (const svg of svgs) {
         const toUser = svg.getScreenCTM()!.inverse();
         const entry = report[svg.dataset.key!]!;
+        const productive = svg.dataset.key!.endsWith("/productive");
 
         for (const shape of svg.querySelectorAll<SVGGeometryElement>("path, circle, ellipse, rect, line, polyline, polygon")) {
-          if (shape.closest("clipPath, mask, [clip-path]")) continue;
-          const matrix = toUser.multiply(shape.getScreenCTM()!);
-          const length = shape.getTotalLength();
+          if (shape.closest("clipPath, mask") || !shape.checkVisibility()) continue;
+          // A clipped part counts against its clip rect, and only in productive mode.
+          const clipped = shape.closest("[clip-path]");
+          if (clipped && !productive) continue;
+          const id = clipped?.getAttribute("clip-path")?.match(/#([^)]+)/)?.[1];
+          const clip = id ? svg.querySelector<SVGRectElement>(`[id="${id}"] rect`)! : null;
+          const size = (name: string, fallback: number) => Number(clip?.getAttribute(name) ?? fallback);
+          const rect = { x: size("x", 0), y: size("y", 0), width: size("width", 32), height: size("height", 32) };
+          // Firefox has no matrix for a part squashed flat, which can't be seen anyway.
+          const ctm = shape.getScreenCTM();
+          if (!ctm) continue;
+          const { a, b, c, d, e, f } = toUser.multiply(ctm);
+          let overflow = -Infinity;
 
-          for (let at = 0; at <= length; at += 1) {
-            const { x, y } = shape.getPointAtLength(at).matrixTransform(matrix);
-            entry.overflow = Math.max(entry.overflow, -x, x - 32, -y, y - 32);
+          for (const point of pointsOf(shape)) {
+            const x = a * point.x + c * point.y + e;
+            const y = b * point.x + d * point.y + f;
+            overflow = Math.max(overflow, rect.x - x, x - rect.x - rect.width, rect.y - y, y - rect.y - rect.height);
           }
+
+          if (clipped && !atRest.has(shape)) atRest.set(shape, Math.max(0, overflow));
+          entry.overflow = Math.max(entry.overflow, overflow - (atRest.get(shape) ?? 0));
         }
       }
     }
@@ -106,17 +160,20 @@ await browser.close();
 
 const failures: string[] = [];
 
-for (const [key, { overflow, end }] of Object.entries(results)) {
-  const motion = key.split("/")[1] as keyof typeof LIMITS;
+for (const [key, { overflow, end, cycle, forever }] of Object.entries(results)) {
+  const [, motion, loop] = key.split("/") as [string, keyof typeof LIMITS, string | undefined];
 
   if (end === 0) failures.push(`${key}: doesn't animate`);
-  if (end > LIMITS[motion]) failures.push(`${key}: runs ${end}ms, over ${LIMITS[motion]}ms`);
+  if (loop && !forever) failures.push(`${key}: doesn't repeat forever`);
+  if (loop && cycle > LIMITS.expressive) failures.push(`${key}: has a ${cycle}ms cycle, over ${LIMITS.expressive}ms`);
+  if (!loop && end > LIMITS[motion]) failures.push(`${key}: runs ${end}ms, over ${LIMITS[motion]}ms`);
   if (overflow > TOLERANCE && !EXITS.has(key)) {
     failures.push(`${key}: leaves the canvas by ${overflow.toFixed(2)} units`);
   }
 }
 
-console.log(`Checked ${names.length} animated icons in both modes in ${browserName}.`);
+const loops = Object.keys(results).filter((key) => key.endsWith("/loop")).length / 2;
+console.log(`Checked ${names.length} animated icons in both modes, ${loops} of them looping, in ${browserName}.`);
 
 if (failures.length > 0) {
   console.error(failures.join("\n"));

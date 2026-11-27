@@ -119,7 +119,7 @@ You can use `fill` to customize the color or pass any other valid `svg` attribut
 
 Some icons have animated versions, in `carbon-icons-svelte/animated`. They take the same props as the static icons, plus the ones [below](#animated-icon-props). See them all, in Carbon components, on the [preview site](https://carbon-icons-svelte.onrender.com/#animated).
 
-- **Hand-built**, with parts that move on their own: `Add`, `Checkmark`, `ChevronRight`, `Copy`, `Download`, `Edit`, `Favorite`, `Light`, `Location`, `Locked`, `Notification`, `Renew`, `RotateClockwise*`, `RotateCounterclockwise*`, `Search`, `Send`, `Settings`, `Star`, `Time`, `TrashCan`, `Upload`, `View`, `VolumeUp`, `WarningAlt` and `Wifi`.
+- **Hand-built**, with parts that move on their own: `Activity`, `Add`, `AddAlt`, `AddFilled`, `Alarm`, `Analytics`, `ArrowsHorizontal`, `ArrowsVertical`, `Asleep`, `AsleepFilled`, `Attachment`, `BatteryCharging`, `BluetoothOff`, `Bookmark`, `BookmarkAdd`, `BookmarkFilled`, `Bot`, `Bullhorn`, `Calendar`, `Camera`, `ChartBar`, `Chat`, `ChatOff`, `CheckboxChecked`, `CheckboxCheckedFilled`, `Checkmark`, `CheckmarkFilled`, `CheckmarkFilledError`, `CheckmarkFilledWarning`, `CheckmarkOutline`, `CheckmarkOutlineError`, `CheckmarkOutlineWarning`, `ChevronRight`, `CircleDash`, `Close`, `CloseFilled`, `CloseLarge`, `CloseOutline`, `CloudDownload`, `CloudOffline`, `CloudUpload`, `Code`, `Copy`, `CopyFile`, `CopyLink`, `Cursor_1`, `Cut`, `Dashboard`, `DocumentAdd`, `DocumentDownload`, `DocumentExport`, `DocumentSubtract`, `DownToBottom`, `Download`, `Draggable`, `Edit`, `EditOff`, `Email`, `EmailNew`, `Error`, `ErrorFilled`, `ErrorOutline`, `Favorite`, `FavoriteFilled`, `FavoriteHalf`, `Fire`, `Flag`, `FlagFilled`, `Flash`, `FlashFilled`, `FlashOff`, `FlashOffFilled`, `FolderAdd`, `Gift`, `Help`, `HelpFilled`, `Hourglass`, `Idea`, `Image`, `InProgress`, `InProgressError`, `InProgressWarning`, `Incomplete`, `IncompleteCancel`, `IncompleteError`, `IncompleteWarning`, `Information`, `InformationFilled`, `InformationSquare`, `InformationSquareFilled`, `Keyboard`, `Launch`, `Light`, `LightFilled`, `Link`, `Location`, `LocationFilled`, `Locked`, `LockedFilled`, `Login`, `Logout`, `Maximize`, `Menu`, `MicrophoneOff`, `MicrophoneOffFilled`, `Minimize`, `Misuse`, `MisuseOutline`, `Moon`, `Notification`, `NotificationCounter`, `NotificationFilled`, `NotificationNew`, `NotificationOff`, `NotificationOffFilled`, `OverflowMenuHorizontal`, `OverflowMenuVertical`, `Pause`, `PauseFilled`, `PauseOutline`, `PauseOutlineFilled`, `Pending`, `PendingFilled`, `Phone`, `PhoneFilled`, `PhoneIncoming`, `PhoneOff`, `PhoneOffFilled`, `PhoneOutgoing`, `Pin`, `PinFilled`, `Play`, `PlayFilled`, `PlayOutline`, `PlayOutlineFilled`, `Plug`, `Power`, `Printer`, `RadioButtonChecked`, `Renew`, `Rocket`, `RotateClockwise*`, `RotateCounterclockwise*`, `Rss`, `Save`, `Search`, `Send`, `SendAlt`, `SendAltFilled`, `SendFilled`, `Settings`, `Share`, `ShoppingCart`, `ShoppingCartClear`, `ShoppingCartMinus`, `ShoppingCartPlus`, `SortAscending`, `SortDescending`, `Star`, `StarFilled`, `Stop`, `StopFilled`, `StopOutline`, `StopOutlineFilled`, `Subtract`, `SubtractAlt`, `SubtractFilled`, `SubtractLarge`, `Sun`, `Tag`, `Terminal`, `ThumbsDown`, `ThumbsDownFilled`, `ThumbsUp`, `ThumbsUpDouble`, `ThumbsUpFilled`, `Time`, `TimeFilled`, `Timer`, `TrashCan`, `Unlink`, `Unlocked`, `UnlockedFilled`, `UpToTop`, `Upload`, `User`, `UserAvatar`, `UserAvatarFilledAlt`, `UserFilled`, `UserFollow`, `VideoOff`, `VideoOffFilled`, `View`, `ViewOff`, `ViewOffFilled`, `VolumeDown`, `VolumeDownAlt`, `VolumeDownFilled`, `VolumeMute`, `VolumeMuteFilled`, `VolumeUp`, `VolumeUpAlt`, `VolumeUpFilled`, `Warning`, `WarningAlt`, `WarningAltFilled`, `WarningAltInverted`, `WarningAltInvertedFilled`, `WarningDiamond`, `WarningFilled`, `WarningHex`, `WarningHexFilled`, `WarningSquare`, `WarningSquareFilled`, `Wifi`, `WifiOff`, `ZoomIn`, `ZoomOut` and `ZoomReset`.
 - **Whole-icon motion**: arrows, carets, chevrons, paging, skip, undo and redo icons nudge the way they point, and `Recycle`, `RenewAlt`, `Repeat`, `Reset` and `Restart` turn. See [`src/animated/rules.ts`](src/animated/rules.ts) for the full list.
 
 ```svelte
@@ -164,6 +164,8 @@ An `icon` prop can't take props. Use `Button`'s `icon` slot to pass them, or set
 
 Use `play` to run the animation yourself. It plays when the icon mounts with a truthy `play`, and each time `play` changes to a new truthy value, so increment a number to replay it. Set `trigger="none"` to turn off hover and focus.
 
+In a carbon-components-svelte `Button`, put the icon in the `icon` slot. Before carbon-components-svelte 0.114.9, give it `class="bx--btn__icon"` too.
+
 ```svelte
 <script>
   import { Button } from "carbon-components-svelte";
@@ -174,14 +176,39 @@ Use `play` to run the animation yourself. It plays when the icon mounts with a t
 
 <Button on:click={() => saved++}>
   Save
-  <Checkmark slot="icon" class="bx--btn__icon" aria-hidden="true"
-    play={saved} trigger="none" motion="expressive" />
+  <Checkmark slot="icon" play={saved} trigger="none" motion="expressive" />
 </Button>
 ```
 
+### Loop
+
+Progress, refresh and waiting icons can loop while something is in progress. When `loop` turns `false`, the current cycle finishes and the icon stops at rest instead of snapping. Hover and `play` don't interrupt a loop, and a loop pauses while its icon is scrolled out of view.
+
+```svelte
+<script>
+  import { Button } from "carbon-components-svelte";
+  import { Renew } from "carbon-icons-svelte/animated";
+
+  let refreshing = false;
+
+  async function refresh() {
+    refreshing = true;
+    await reload(); // your request
+    refreshing = false;
+  }
+</script>
+
+<Button disabled={refreshing} on:click={refresh}>
+  Refresh
+  <Renew slot="icon" loop={refreshing} />
+</Button>
+```
+
+These icons loop: `CircleDash`, `Hourglass`, `InProgress`, `Incomplete`, `Pending`, `PendingFilled`, `Renew`, `RenewAlt`, `Restart`, `Reset`, `Repeat`, `Recycle`, `Settings`, `Terminal`, `Time`, `TimeFilled` and `Timer`. Others ignore `loop`.
+
 ### Motion
 
-`motion` picks one of Carbon's two motion styles. `"productive"` (the default) is one short, subtle move, for routine UI like toolbars and menus. `"expressive"` is larger and livelier, for moments that matter, like a saved state or a new notification. Both use Carbon's motion durations and easings.
+`motion` picks one of Carbon's two motion styles. `"productive"` (the default) is one short, subtle move, for routine UI like toolbars and menus. `"expressive"` is larger and livelier, for events people should notice, like a save or a new notification. Both use Carbon's motion durations and easings.
 
 ### Reduced motion
 
@@ -196,12 +223,13 @@ By default, nothing plays for users who prefer reduced motion (`prefers-reduced-
 | Name          | Type                                                   | Default value  |
 | :------------ | :----------------------------------------------------- | :------------- |
 | play          | <code>boolean &#124; number</code>                     | `false`        |
+| loop          | `boolean`                                              | `false`        |
 | trigger       | <code>"hover" &#124; "none"</code>                     | `"hover"`      |
 | motion        | <code>"productive" &#124; "expressive"</code>          | `"productive"` |
 | reducedMotion | <code>"static" &#124; "fade" &#124; "full"</code>      | `"static"`     |
 | hoverDelay    | `number` (ms)                                          | `150`          |
 
-Every prop except `play` can also be set with `setAnimatedIconDefaults`.
+Every prop except `play` and `loop` can also be set with `setAnimatedIconDefaults`.
 
 ## TypeScript
 

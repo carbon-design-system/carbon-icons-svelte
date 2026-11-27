@@ -173,6 +173,26 @@ type CarbonIcon = typeof import("svelte") extends { mount: any }
     },
   };
 
+  // Search terms from Carbon's metadata, like "heart" for Favorite, minus
+  // any that only repeat the icon's name.
+  const aliases: Record<string, string[]> = {};
+  // Icons Carbon has deprecated, with its reason, so the docs can warn.
+  const deprecated: Record<string, string> = {};
+
+  // Carbon's category and subcategory for each icon, for grouping the
+  // Icons page like Carbon's own icon library.
+  const categoryOf = new Map<string, [string, string]>();
+  for (const category of metadata.categories ?? []) {
+    for (const subcategory of category.subcategories ?? []) {
+      for (const member of subcategory.members ?? []) {
+        categoryOf.set(member, [category.name, subcategory.name]);
+      }
+    }
+  }
+  /** Category → subcategory → icon names, in Carbon's order. */
+  const grouped = new Map<string, Map<string, string[]>>();
+  const uncategorized: string[] = [];
+
   let names = new Set<string>();
   let glyphNames = new Set<string>();
   let iconNames = new Set<string>();
@@ -200,6 +220,24 @@ type CarbonIcon = typeof import("svelte") extends { mount: any }
 
     if (names.has(name)) return;
     names.add(name);
+
+    const place = categoryOf.get(icon.descriptor.name);
+    if (place) {
+      const [category, subcategory] = place;
+      if (!grouped.has(category)) grouped.set(category, new Map());
+      const subcategories = grouped.get(category)!;
+      if (!subcategories.has(subcategory)) subcategories.set(subcategory, []);
+      subcategories.get(subcategory)!.push(name);
+    } else {
+      uncategorized.push(name);
+    }
+
+    const terms = [
+      ...new Set((iconMetadata?.aliases ?? []).map((alias) => alias.trim().toLowerCase())),
+    ].filter((term) => term && term.replace(/\s+/g, "") !== name.toLowerCase());
+    if (terms.length > 0) aliases[name] = terms;
+    const status = iconMetadata as { deprecated?: boolean; reason?: string } | undefined;
+    if (status?.deprecated) deprecated[name] = status.reason ?? "";
 
     const inner = renderContent(icon.descriptor);
 
@@ -255,7 +293,20 @@ ${definitions}`
   );
 
   await syncDir("lib", libFiles, ["animated"]);
-  await syncDir("lib/animated", await buildAnimated((name) => iconMap.get(name)));
+  const animatedFiles = await buildAnimated((name) => iconMap.get(name));
+  await syncDir("lib/animated", animatedFiles);
+
+  // The animated gallery searches the same terms. Only its icons' terms
+  // ship with it, rather than the whole build info.
+  const animatedNames = [...animatedFiles.keys()]
+    .filter((file) => file.endsWith(".svelte"))
+    .map((file) => file.slice(0, -".svelte".length))
+    .sort();
+  const animatedAliases = Object.fromEntries(
+    animatedNames
+      .filter((name) => aliases[name])
+      .map((name) => [name, aliases[name]])
+  );
 
   await Bun.write(
     "ICON_INDEX.md",
@@ -267,10 +318,48 @@ ${Object.keys(byModuleName)
       .join("\n")}\n`
   );
 
+  // Groups in Carbon's order. Icons without a category go last.
+  const order = (metadata.categories ?? []).flatMap((category) => [
+    category.name,
+    ...(category.subcategories ?? []).map((subcategory) => `${category.name}/${subcategory.name}`),
+  ]);
+  const byOrder = (key: string) => order.indexOf(key);
+  const groups = [
+    ...[...grouped]
+      .sort(([a], [b]) => byOrder(a) - byOrder(b))
+      .map(([category, subcategories]) => ({
+        category,
+        subcategories: [...subcategories]
+          .sort(([a], [b]) => byOrder(`${category}/${a}`) - byOrder(`${category}/${b}`))
+          .map(([subcategory, icons]) => ({ name: subcategory, icons: icons.sort() })),
+      })),
+    ...(uncategorized.length > 0 ? [{ category: "Other", subcategories: [{ name: "Other", icons: uncategorized.sort() }] }] : []),
+  ];
+
+  // Each subcategory's SVG is its own hashed file, so the page loads only
+  // the icons coming into view instead of all of them (about 430 kB
+  // gzipped) before it shows any.
+  const hashOf = (content: string) => createHash("sha256").update(content).digest("hex").slice(0, 12);
+  const svgFiles = new Map<string, string>();
+  const groupsWithFiles = groups.map((group) => ({
+    ...group,
+    subcategories: group.subcategories.map((subcategory) => {
+      const content = JSON.stringify(Object.fromEntries(subcategory.icons.map((name) => [name, byModuleName[name]])));
+      const slug = `${group.category}-${subcategory.name}`.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      const fileName = `${slug}.${hashOf(content)}.json`;
+      svgFiles.set(fileName, content);
+      return { ...subcategory, file: `/icons/${fileName}` };
+    }),
+  }));
+
   const buildInfoPayload: Record<string, unknown> = {
     total,
     bySize,
-    byModuleName,
+    groups: groupsWithFiles,
+    deprecated,
+    // The tiles' deprecation indicator, needed before any group loads.
+    indicatorSvg: byModuleName.WarningAltFilled,
+    version: VERSION,
   };
 
   if (Object.keys(RENAMED_ICONS).length > 0) {
@@ -282,18 +371,30 @@ ${Object.keys(byModuleName)
     .digest("hex")
     .slice(0, 12);
   const buildInfoFileName = `build-info.${buildInfoHash}.json`;
+
+  // Search terms are a separate file, so the icons render without waiting
+  // for them.
+  const aliasesContent = JSON.stringify(aliases);
+  const aliasesHash = createHash("sha256").update(aliasesContent).digest("hex").slice(0, 12);
+  const aliasesFileName = `aliases.${aliasesHash}.json`;
   const docsPublicDir = "docs/public";
 
   for (const file of await readdir(docsPublicDir)) {
     if (
       file === "build-info.json" ||
-      (file.startsWith("build-info.") && file.endsWith(".json"))
+      ((file.startsWith("build-info.") || file.startsWith("aliases.")) && file.endsWith(".json"))
     ) {
       await unlink(`${docsPublicDir}/${file}`);
     }
   }
 
+  await rm(`${docsPublicDir}/icons`, { recursive: true, force: true });
+  await mkdir(`${docsPublicDir}/icons`, { recursive: true });
+  for (const [fileName, content] of svgFiles) {
+    await Bun.write(`${docsPublicDir}/icons/${fileName}`, content);
+  }
   await Bun.write(`${docsPublicDir}/${buildInfoFileName}`, buildInfoContent);
+  await Bun.write(`${docsPublicDir}/${aliasesFileName}`, aliasesContent);
   await Bun.write(
     "docs/src/generated/build-info-url.ts",
     `// @generated
@@ -301,6 +402,30 @@ ${Object.keys(byModuleName)
 // @see src/index.ts
 
 export const BUILD_INFO_URL = "/${buildInfoFileName}";
+export const ALIASES_URL = "/${aliasesFileName}";
+// The first group's icons, at the top of the gallery.
+export const FIRST_ICONS_URL = "${groupsWithFiles[0].subcategories[0].file}";
+`
+  );
+  await Bun.write(
+    "docs/src/generated/animated-aliases.ts",
+    `// @generated
+// This file was automatically generated and should not be edited.
+// @see src/index.ts
+
+export const ANIMATED_ALIASES: Record<string, string[]> = ${JSON.stringify(animatedAliases)};
+`
+  );
+  // Apart from the search terms, which only the Animated page loads, so the
+  // Icons page's bundle doesn't carry them.
+  await Bun.write(
+    "docs/src/generated/animated-names.ts",
+    `// @generated
+// This file was automatically generated and should not be edited.
+// @see src/index.ts
+
+/** Every icon with an animated version, so the Icons page can link to it. */
+export const ANIMATED_NAMES: string[] = ${JSON.stringify(animatedNames)};
 `
   );
 

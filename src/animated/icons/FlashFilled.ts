@@ -1,0 +1,7 @@
+import { flicker } from "../families.js";
+
+export default flicker({
+  name: "FlashFilled",
+  sourceHash: "aa3e701e79cb",
+  content: `<path class="glow" d="M11.61,29.92a1,1,0,0,1-.6-1.07L12.83,17H8a1,1,0,0,1-1-1.23l3-13A1,1,0,0,1,11,2H21a1,1,0,0,1,.78.37,1,1,0,0,1,.2.85L20.25,11H25a1,1,0,0,1,.9.56,1,1,0,0,1-.11,1l-13,17A1,1,0,0,1,12,30,1.09,1.09,0,0,1,11.61,29.92Z" />`,
+});

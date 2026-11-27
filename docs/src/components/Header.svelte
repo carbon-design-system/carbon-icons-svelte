@@ -9,16 +9,28 @@
     HeaderPanelLinks,
     HeaderPanelLink,
     HeaderPanelDivider,
+    SideNav,
+    SideNavDivider,
+    SideNavItems,
+    SideNavLink,
+    SideNavMenu,
+    SideNavMenuItem,
     SkipToContent,
   } from "carbon-components-svelte";
   import LogoGithub from "./LogoGithub.svelte";
   import { VERSION } from "../constants";
+  import { pageLinks } from "../page-links.js";
 
   /** @type {"icons" | "animated"} */
   export let route = "icons";
+
+  // Below the header's breakpoint the page links move into a side nav,
+  // opened by the header's menu button. Closed by default on wide screens,
+  // where the header shows the links.
+  let isSideNavOpen = false;
 </script>
 
-<Header aria-label="Navigation" href="/">
+<Header aria-label="Navigation" href="/" expandedByDefault={false} bind:isSideNavOpen>
   <svelte:fragment slot="skipToContent">
     <SkipToContent />
   </svelte:fragment>
@@ -29,8 +41,8 @@
   </span>
 
   <HeaderNav aria-label="Pages">
-    <HeaderNavItem href="#" text="Icons" isSelected={route === "icons"} />
-    <HeaderNavItem href="#animated" text="Animated" isSelected={route === "animated"} />
+    <HeaderNavItem href="/" text="Icons" isSelected={route === "icons"} />
+    <HeaderNavItem href="/animated" text="Animated" isSelected={route === "animated"} />
   </HeaderNav>
 
   <HeaderUtilities>
@@ -69,6 +81,26 @@
   </HeaderUtilities>
 </Header>
 
+<SideNav bind:isOpen={isSideNavOpen} ariaLabel="Pages">
+  <SideNavItems>
+    <SideNavLink href="/" text="Icons" isSelected={route === "icons"} on:click={() => (isSideNavOpen = false)} />
+    <SideNavLink href="/animated" text="Animated" isSelected={route === "animated"} on:click={() => (isSideNavOpen = false)} />
+    {#if route === "animated" && $pageLinks.length > 0}
+      <SideNavDivider />
+      <SideNavMenu text="On this page" expanded>
+        {#each $pageLinks as link (link.href)}
+          <SideNavMenuItem
+            href={link.href}
+            text={link.text}
+            class={link.nested ? "nav-nested" : undefined}
+            on:click={() => (isSideNavOpen = false)}
+          />
+        {/each}
+      </SideNavMenu>
+    {/if}
+  </SideNavItems>
+</SideNav>
+
 <style>
   .platform-name {
     display: flex;
@@ -81,5 +113,17 @@
     font-weight: var(--cds-code-01-font-weight);
     letter-spacing: var(--cds-code-01-letter-spacing);
     line-height: var(--cds-code-01-line-height);
+  }
+
+  /* Icon groups sit under their section. */
+  :global(.bx--side-nav__link.nav-nested) {
+    padding-inline-start: 3rem;
+  }
+
+  /* Next to the menu button, the name and version don't fit on one line. */
+  @media (max-width: 41.98rem) {
+    .platform-name code {
+      display: none;
+    }
   }
 </style>

@@ -1,0 +1,19 @@
+import { drawIn, slash } from "../families.js";
+
+export default drawIn({
+  name: "MicrophoneOffFilled",
+  sourceHash: "313604ee0735",
+  rest: `<path d="M23,17a7,7,0,0,1-11.73,5.14l1.42-1.41A5,5,0,0,0,21,17V12.42l9-9L28.59,2,2,28.59,3.41,30l6.44-6.44A8.91,8.91,0,0,0,15,25.94V28H11v2H21V28H17V25.94A9,9,0,0,0,25,17V14H23Z" />
+    <path d="M9,17.32c0-.11,0-.21,0-.32V14H7v3a9,9,0,0,0,.25,2.09Z" />
+    <path d="M20.76,5.58A5,5,0,0,0,11,7v8.34Z" />`,
+  content: `<mask id="{id}-slash" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+    <rect width="32" height="32" fill="#fff" />
+    ${slash("M31 1 1 31")}
+  </mask>
+  <g class="accent">
+    <path mask="url(#{id}-slash)" d="M23,17a7,7,0,0,1-11.73,5.14l1.42-1.41A5,5,0,0,0,21,17V12.42l9-9L28.59,2,2,28.59,3.41,30l6.44-6.44A8.91,8.91,0,0,0,15,25.94V28H11v2H21V28H17V25.94A9,9,0,0,0,25,17V14H23Z" />
+    <path d="M9,17.32c0-.11,0-.21,0-.32V14H7v3a9,9,0,0,0,.25,2.09Z" />
+    <path d="M20.76,5.58A5,5,0,0,0,11,7v8.34Z" />
+  </g>`,
+  accent: "flinch",
+});

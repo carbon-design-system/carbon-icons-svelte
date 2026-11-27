@@ -193,5 +193,6 @@ export const ruleIcons = (lookup: (name: string) => IconOutput | undefined): Ani
       sourceHash: hashSource(descriptor),
       content: `<g class="icon">${renderContent(descriptor)}</g>`,
       css: rule.kind === "nudge" ? nudgeCss(rule) : turnCss(rule),
+      loop: rule.kind === "turn",
     };
   });

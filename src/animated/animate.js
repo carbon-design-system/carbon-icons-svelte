@@ -25,15 +25,18 @@ export const setAnimatedIconDefaults = (defaults) =>
 export const getAnimatedIconDefaults = () => getContext(DEFAULTS) ?? {};
 
 const restart = (node) => {
-  node.removeAttribute(PLAYING);
-  // Flush styles so that adding the attribute back starts a new animation.
-  node.getBoundingClientRect();
+  // Mid-animation, flush styles so that adding the attribute back starts a
+  // new one. Only then: a flush per icon is slow when many start at once.
+  if (node.hasAttribute(PLAYING)) {
+    node.removeAttribute(PLAYING);
+    node.getBoundingClientRect();
+  }
   node.setAttribute(PLAYING, "motion");
 };
 
-const fade = (node) => {
+const fade = (node, iterations = 1) => {
   const { duration, easing } = FADE[node.dataset.motion] ?? FADE.productive;
-  return node.animate([{ opacity: 1, easing }, { opacity: 0.4, easing }, { opacity: 1 }], duration);
+  return node.animate([{ opacity: 1, easing }, { opacity: 0.4, easing }, { opacity: 1 }], { duration, iterations });
 };
 
 /**
@@ -41,12 +44,17 @@ const fade = (node) => {
  * CSS `:hover` would snap back to rest when the pointer leaves.
  */
 export function animate(node, options) {
-  let play, trigger, reducedMotion, hoverDelay;
+  let play, loop, loops, trigger, reducedMotion, hoverDelay;
   let timer;
   let fading;
+  let observer;
+  let hidden = false;
+  let paused = [];
 
   const resolve = ({ defaults = {}, ...props }) => {
+    loops = props.loops;
     play = props.play;
+    loop = loops && props.loop;
     trigger = props.trigger ?? defaults.trigger ?? "hover";
     reducedMotion = props.reducedMotion ?? defaults.reducedMotion ?? "static";
     hoverDelay = props.hoverDelay ?? defaults.hoverDelay ?? HOVER_DELAY;
@@ -56,9 +64,73 @@ export function animate(node, options) {
 
   const target = node.closest(TRIGGER) ?? node;
 
+  const moves = () => !matchMedia(REDUCED_MOTION).matches || reducedMotion === "full";
+
   const start = () => {
-    if (!matchMedia(REDUCED_MOTION).matches || reducedMotion === "full") restart(node);
+    if (moves()) restart(node);
     else if (reducedMotion === "fade") fading = fade(node);
+  };
+
+  // Browsers keep animating an SVG that's scrolled out of view, on the main
+  // thread in Chrome, so a loop pauses while the icon can't be seen.
+  const watch = () => {
+    if (observer || typeof IntersectionObserver === "undefined") return;
+    observer = new IntersectionObserver(([entry]) => {
+      hidden = !entry.isIntersecting;
+      if (hidden && !loop) {
+        stopHidden();
+      } else if (hidden) {
+        paused = node.getAnimations({ subtree: true }).filter((a) => a.playState === "running");
+        paused.forEach((a) => a.pause());
+      } else {
+        paused.forEach((a) => a.play());
+        paused = [];
+      }
+    });
+    observer.observe(node);
+  };
+
+  const unwatch = () => {
+    observer?.disconnect();
+    observer = undefined;
+    hidden = false;
+    paused = [];
+  };
+
+  const startLoop = () => {
+    cancel();
+    if (moves()) node.setAttribute(PLAYING, "loop");
+    else if (reducedMotion === "fade") fading = fade(node, Infinity);
+    watch();
+  };
+
+  // Out of view, nobody sees a loop snap to rest, and a paused cycle would
+  // never finish.
+  const stopHidden = () => {
+    node.removeAttribute(PLAYING);
+    fading?.cancel();
+    unwatch();
+  };
+
+  // Finish the current cycle, then stop at rest, so a loop never snaps.
+  const stopLoop = () => {
+    if (hidden) return stopHidden();
+    if (node.getAttribute(PLAYING) === "loop") {
+      const stop = () => {
+        node.removeEventListener("animationiteration", stop);
+        if (!loop) {
+          node.removeAttribute(PLAYING);
+          unwatch();
+        }
+      };
+      node.addEventListener("animationiteration", stop);
+    }
+    if (fading?.effect.getTiming().iterations === Infinity) {
+      fading.effect.updateTiming({ iterations: fading.effect.getComputedTiming().currentIteration + 1 });
+      const finishing = fading;
+      const done = () => fading === finishing && unwatch();
+      fading.finished.then(done, done);
+    }
   };
 
   const isPlaying = () => node.hasAttribute(PLAYING) || fading?.playState === "running";
@@ -102,16 +174,20 @@ export function animate(node, options) {
   node.addEventListener("animationend", onAnimationEnd);
   node.addEventListener("animationcancel", onAnimationEnd);
 
-  if (play) start();
+  if (loop) startLoop();
+  else if (play) start();
 
   return {
     update(next) {
-      const previous = play;
+      const previous = { play, loop };
       resolve(next);
-      if (play && play !== previous) start();
+      if (loop && !previous.loop) startLoop();
+      else if (!loop && previous.loop) stopLoop();
+      else if (!loop && play && play !== previous.play) start();
     },
     destroy() {
       cancel();
+      unwatch();
       target.removeEventListener("pointerenter", onEnter);
       target.removeEventListener("pointerleave", cancel);
       if (listensForFocus) target.removeEventListener("focusin", onFocusIn);

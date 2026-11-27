@@ -1,250 +1,139 @@
 <script>
   import { onMount } from "svelte";
-  import {
-    Search,
-    CodeSnippet,
-    Modal,
-    Grid,
-    Row,
-    Column,
-    Content,
-    Theme,
-    Select,
-    SelectItem,
-    SelectSkeleton,
-    LocalStorage,
-  } from "carbon-components-svelte";
-  import fuzzy from "fuzzy";
-  import FocusKey from "./FocusKey.svelte";
+  import { Content, LocalStorage } from "carbon-components-svelte";
   import Header from "./Header.svelte";
-  import Animated from "./Animated.svelte";
-  import { BUILD_INFO_URL } from "../constants";
+  import Icons from "./Icons.svelte";
+  import { ALIASES_URL, BUILD_INFO_URL } from "../constants";
+  import { indexAliases } from "../search.js";
+  import { ANIMATED_NAMES } from "../generated/animated-names";
 
-  /** @typedef {{ byModuleName: Record<string, string>; bySize: { order: string[]; sizes: Record<string, string[]> }; total: number; renamedIcons?: Record<string, string> }} BuildInfo */
+  // The Animated page and its 257 icons load only when someone opens it,
+  // or once the Icons page is idle, so the first visit to either page is
+  // smaller.
+  // Kept once loaded, so switching to the page renders it in the same frame
+  // the Icons page goes, with no blank frame between them.
+  let AnimatedPage = null;
+  const loadAnimated = () =>
+    import("./Animated.svelte").then((module) => (AnimatedPage = module.default));
 
-  /** @type {BuildInfo | null} */
+  const animatedNames = new Set(ANIMATED_NAMES);
+
+  const ANIMATED_PATH = "/animated";
+
+  // The Animated page lives at /animated. Links from when it was #animated
+  // still work: #animated opens the page, and #animated-… opens it at that
+  // section.
+  /** @returns {"icons" | "animated"} */
+  const getRoute = () => {
+    if (location.pathname === "/" && location.hash.startsWith("#animated")) {
+      const hash = location.hash === "#animated" ? "" : location.hash;
+      history.replaceState(history.state, "", `${ANIMATED_PATH}${location.search}${hash}`);
+    }
+    return location.pathname.replace(/\/$/, "") === ANIMATED_PATH ? "animated" : "icons";
+  };
+
+  let route = getRoute();
+
+  // Links between the two pages switch without reloading. A click with a
+  // modifier, or on a link to anywhere else, does what it normally does.
+  // Switch pages once the Animated page's code is in, so the current page
+  // stays until the next one can replace it.
+  const showRoute = async () => {
+    const next = getRoute();
+    if (next === "animated" && !AnimatedPage) await loadAnimated();
+    route = next;
+  };
+
+  /** @param {MouseEvent} event */
+  async function navigate(event) {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const link = event.target instanceof Element ? event.target.closest("a[href]") : null;
+    if (!link || link.target || link.hasAttribute("download")) return;
+    const url = new URL(link.href);
+    if (url.origin !== location.origin) return;
+    const path = url.pathname.replace(/\/$/, "") || "/";
+    if (path !== "/" && path !== ANIMATED_PATH) return;
+    // A link to a section of the current page scrolls there as usual.
+    const current = location.pathname.replace(/\/$/, "") || "/";
+    if (path === current && url.search === location.search && url.hash) return;
+    event.preventDefault();
+    if (path === ANIMATED_PATH && !AnimatedPage) await loadAnimated();
+    history.pushState(null, "", url);
+    await showRoute();
+    if (!url.hash) scrollTo(0, 0);
+  }
+
+  /** The icons, their groups and their SVG, from the build. */
   let data = null;
+  /** Carbon's search terms as written, and indexed for matching. */
+  let aliasTerms = {};
+  let aliasIndex = new Map();
 
-  onMount(async () => {
-    const res = await fetch(BUILD_INFO_URL);
-    data = await res.json();
-  });
+  // The Icons page's data loads only for the Icons page: the Animated page
+  // doesn't use it, and it would compete with that page's own code. It
+  // holds the groups and names; each group's SVG loads as it comes into
+  // view (see Icons.svelte). The Icons page's HTML preloads it and the
+  // first group (see vite.config.ts).
+  let dataRequested = false;
+  const loadData = async () => {
+    dataRequested = true;
+    const response = await fetch(BUILD_INFO_URL);
+    data = await response.json();
+    // Search terms come after the icons render. Until then, search matches
+    // names. Then, once the network is free, the Animated page's code.
+    fetch(ALIASES_URL)
+      .then((response) => response.json())
+      .then((aliases) => {
+        aliasTerms = aliases;
+        aliasIndex = indexAliases(aliases);
+      })
+      .catch(() => {})
+      .finally(() => (window.requestIdleCallback ?? setTimeout)(() => loadAnimated()));
+  };
+  $: if (route === "icons" && !dataRequested) loadData();
 
-  const { match } = fuzzy;
-  const GLYPH_SUFFIX_REGEX = /Glyph$/;
-  const WHITESPACE_REGEX = /\s+/g;
-  const THEME_KEY = "theme";
-  const VALID_THEMES = ["white", "g10", "g80", "g90", "g100"];
   const ICON_SIZE_KEY = "icon-size";
   const VALID_ICON_SIZES = [16, 20, 24, 32];
-
-  /** @returns {import("svelte").ComponentProps<Theme>["theme"]} */
-  function getStoredTheme() {
-    try {
-      const stored = localStorage.getItem(THEME_KEY);
-      return stored && VALID_THEMES.includes(stored) ? stored : "white";
-    } catch {
-      return "white";
-    }
-  }
+  // Shared by both pages. 24 so detail, and motion, are easy to see.
+  const DEFAULT_ICON_SIZE = 24;
 
   /** @returns {(typeof VALID_ICON_SIZES)[number]} */
   function getStoredIconSize() {
     try {
       const stored = localStorage.getItem(ICON_SIZE_KEY);
-      if (stored == null) return 16;
-
+      if (stored == null) return DEFAULT_ICON_SIZE;
       let parsed = stored;
       try {
         parsed = JSON.parse(stored);
       } catch {
         parsed = Number(stored);
       }
-
       const size = typeof parsed === "number" ? parsed : Number(parsed);
-      return VALID_ICON_SIZES.includes(size) ? size : 16;
+      return VALID_ICON_SIZES.includes(size) ? size : DEFAULT_ICON_SIZE;
     } catch {
-      return 16;
+      return DEFAULT_ICON_SIZE;
     }
   }
 
-  /** @returns {"icons" | "animated"} */
-  const getRoute = () => (location.hash.startsWith("#animated") ? "animated" : "icons");
-
-  let route = getRoute();
-
-  let ref = null;
-  let value = "";
-
-  $: searchTerm = value.trim().replace(WHITESPACE_REGEX, "");
-  $: allIconsOrdered = data
-    ? data.bySize.order
-        .flatMap((size) => data.bySize.sizes[size])
-        .sort((a, b) => a.localeCompare(b))
-    : [];
-  $: allIcons = data ? Object.values(data.bySize.sizes).flat() : [];
-  $: allIconsSet = new Set(allIcons);
-  $: aliasToCanonical = data?.renamedIcons ?? {};
-  $: searchModuleNames = data
-    ? [
-        ...new Set([
-          ...Object.keys(data.byModuleName),
-          ...data.bySize.sizes.glyph.map((name) => `${name}Glyph`),
-          ...Object.keys(aliasToCanonical),
-        ]),
-      ]
-    : [];
-  $: canonicalToAliases = (() => {
-    /** @type {Record<string, string[]>} */
-    const result = {};
-    for (const [oldName, canonicalName] of Object.entries(aliasToCanonical)) {
-      (result[canonicalName] ??= []).push(oldName);
-    }
-    return result;
-  })();
-  $: filteredModuleNamesSet =
-    !data || searchTerm === ""
-      ? allIconsSet
-      : new Set(
-          searchModuleNames
-            .filter((name) => match(searchTerm, name))
-            .map((name) => {
-              if (aliasToCanonical[name]) {
-                return aliasToCanonical[name];
-              }
-
-              // Map Glyph variants to their base names
-              if (name.endsWith("Glyph")) {
-                return name.replace(GLYPH_SUFFIX_REGEX, "");
-              }
-              return name;
-            })
-            .filter((name) => allIconsSet.has(name))
-        );
-
-  /** @type {import("svelte").ComponentProps<Theme>["theme"]} */
-  let theme = getStoredTheme();
   let iconSize = getStoredIconSize();
-
-  $: mounted = typeof document !== "undefined";
-
-  let moduleName = null;
-
-  $: code = `<script>\n  import ${moduleName} from "carbon-icons-svelte/lib/${moduleName}.svelte";\n<\/script>\n\n<${moduleName}${
-    iconSize === 16 ? "" : ` size={${iconSize}}`
-  } />`;
-  $: iconSizeClass = `icon-size--${iconSize}`;
 </script>
 
-<svelte:window on:hashchange={() => (route = getRoute())} />
-
-<FocusKey element={ref} selectText />
+<svelte:window on:hashchange={showRoute} on:popstate={showRoute} on:click={navigate} />
 
 <Header {route} />
 
-{#if route === "animated"}
-  <Animated />
-{:else}
-{#if data}
-  <Modal
-    passiveModal
-    open={moduleName != null}
-    modalHeading={moduleName}
-    on:transitionend={({ detail }) => {
-      if (!detail.open) moduleName = null;
-    }}
-  >
-    <div class:icon-preview={true} class={iconSizeClass}>
-      {@html data.byModuleName[moduleName]}
-    </div>
-    <CodeSnippet light type="multi" {code} />
-  </Modal>
-{/if}
+<LocalStorage key={ICON_SIZE_KEY} bind:value={iconSize} />
 
-<Content>
-  <Grid>
-    <Row padding>
-      <Column>
-        <div class="options">
-          {#if mounted}
-            <Theme
-              bind:theme
-              persist
-              persistKey={THEME_KEY}
-              render="select"
-              select={{
-                id: "select-theme",
-                labelText: "Carbon theme",
-                themes: VALID_THEMES,
-              }}
-            />
-            <LocalStorage key={ICON_SIZE_KEY} bind:value={iconSize} />
-            <Select
-              id="select-icon-size"
-              labelText="Icon size"
-              bind:selected={iconSize}
-            >
-              {#each VALID_ICON_SIZES as size (size)}
-                <SelectItem value={size} />
-              {/each}
-            </Select>
-          {:else}
-            <SelectSkeleton class="select-skeleton" />
-            <SelectSkeleton class="select-skeleton" />
-          {/if}
-          <Search
-            id="search"
-            size="lg"
-            autocomplete="off"
-            autocorrect="off"
-            autocapitalize="off"
-            spellcheck="false"
-            labelText="Search"
-            placeholder={`Search icons (e.g. "Add")`}
-            bind:ref
-            bind:value
-            disabled={!data}
-          />
-        </div>
-      </Column>
-    </Row>
-    {#if data}
-      <Row padding>
-        <Column>
-          {@const displayedIcons = new Set(
-            allIcons.filter((name) => filteredModuleNamesSet.has(name))
-          )}
-          <span class="text-02">
-            Showing
-            {displayedIcons.size.toLocaleString()}
-            of
-            {data.total.toLocaleString()}
-            icons
-          </span>
-        </Column>
-      </Row>
-      <Row>
-        <Column>
-          <div class:list={true} class={iconSizeClass}>
-            {#each allIconsOrdered as name (name)}
-              {@const isFiltered = filteredModuleNamesSet.has(name)}
-              <button
-                type="button"
-                title={canonicalToAliases[name]
-                  ? `${name} (aliases: ${canonicalToAliases[name].join(", ")})`
-                  : name}
-                style:display={isFiltered ? "inline" : "none"}
-                on:click={() => (moduleName = name)}
-              >
-                {@html data.byModuleName[name]}
-              </button>
-            {/each}
-          </div>
-        </Column>
-      </Row>
-    {/if}
-  </Grid>
-</Content>
+{#if route === "animated"}
+  {#if AnimatedPage}
+    <svelte:component this={AnimatedPage} bind:iconSize />
+  {:else}
+    {#await loadAnimated() then}{/await}
+  {/if}
+{:else}
+  <Content>
+    <Icons {data} {aliasTerms} {aliasIndex} {animatedNames} bind:iconSize />
+  </Content>
 {/if}
 
 <style>
@@ -256,110 +145,7 @@
     padding: 0;
   }
 
-  .options {
-    display: grid;
-    grid-template-columns: auto auto 1fr;
-    grid-template-areas: "theme icon-size search";
-    align-items: flex-end;
-  }
-
-  .options :global(#theme) {
-    grid-area: theme;
-  }
-
-  .options :global(#icon-size) {
-    grid-area: icon-size;
-  }
-
-  .options :global(.bx--search) {
-    grid-area: search;
-    border-left: 1px solid var(--cds-ui-03);
-  }
-
-  @media screen and (max-width: 672px) {
-    .options {
-      grid-template-areas:
-        "theme icon-size"
-        "search search";
-      grid-template-columns: 1fr 1fr;
-      row-gap: var(--cds-spacing-04);
-    }
-
-    .options :global(.bx--search) {
-      border-left: none;
-    }
-  }
-
-  .list {
-    margin-bottom: var(--cds-spacing-09);
-  }
-
-  button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: 0;
-    cursor: pointer;
-    padding: var(--cds-spacing-03);
-    color: inherit;
-  }
-
-  button:focus {
-    outline-color: var(--cds-interactive-01);
-  }
-
-  .icon-size--16 :global(svg) {
-    width: 16px;
-    height: 16px;
-  }
-
-  .icon-size--20 :global(svg) {
-    width: 20px;
-    height: 20px;
-  }
-
-  .icon-size--24 :global(svg) {
-    width: 24px;
-    height: 24px;
-  }
-
-  .icon-size--32 :global(svg) {
-    width: 32px;
-    height: 32px;
-  }
-
-  .divider {
-    margin-bottom: var(--cds-spacing-04);
-    padding-bottom: var(--cds-spacing-04);
-    border-bottom: 1px solid var(--cds-ui-03);
-  }
-
   :global(body) {
     overflow-y: scroll;
-  }
-
-  :global(.select-skeleton) {
-    position: relative;
-    height: 64px;
-    top: 2px;
-    min-width: 6.42rem;
-  }
-
-  :global(#select-theme),
-  :global(#select-icon-size) {
-    min-width: 4rem;
-  }
-
-  :global(#select-icon-size) {
-    border-left: 1px solid var(--cds-ui-03);
-  }
-
-  :global(.text-02) {
-    color: var(--cds-text-02);
-  }
-
-  .icon-preview {
-    margin-bottom: var(--cds-spacing-06);
   }
 </style>
