@@ -24,6 +24,35 @@ export const setAnimatedIconDefaults = (defaults) =>
 
 export const getAnimatedIconDefaults = () => getContext(DEFAULTS) ?? {};
 
+/** Page-wide defaults, for icons outside any component that sets them. */
+let pageDefaults = {};
+
+/** Sets defaults for every animated icon on the page. Later calls merge into earlier ones. */
+export const configureAnimatedIcons = (defaults) => {
+  pageDefaults = { ...pageDefaults, ...defaults };
+};
+
+/** Data attributes on an ancestor element that set defaults for the icons inside it. */
+const ATTRIBUTES = {
+  motion: "data-animated-motion",
+  trigger: "data-animated-trigger",
+  reducedMotion: "data-animated-reduced-motion",
+  hoverDelay: "data-animated-hover-delay",
+};
+
+const FALLBACKS = { motion: "productive", trigger: "hover", reducedMotion: "static", hoverDelay: HOVER_DELAY };
+
+/** Like `closest`, but continues past a shadow root to its host. */
+const closestAcross = (node, selector) => {
+  for (let element = node; element; ) {
+    const found = element.closest(selector);
+    if (found) return found;
+    const root = element.getRootNode();
+    element = root instanceof ShadowRoot ? root.host : null;
+  }
+  return null;
+};
+
 const restart = (node) => {
   // Mid-animation, flush styles so that adding the attribute back starts a
   // new one. Only then: a flush per icon is slow when many start at once.
@@ -44,31 +73,52 @@ const fade = (node, iterations = 1) => {
  * CSS `:hover` would snap back to rest when the pointer leaves.
  */
 export function animate(node, options) {
-  let play, loop, loops, trigger, reducedMotion, hoverDelay;
+  let play, loop, loops, props, contextDefaults;
   let timer;
   let fading;
   let observer;
   let hidden = false;
   let paused = [];
 
-  const resolve = ({ defaults = {}, ...props }) => {
+  const resolve = ({ defaults = {}, ...next }) => {
+    props = next;
+    contextDefaults = defaults;
     loops = props.loops;
     play = props.play;
     loop = loops && props.loop;
-    trigger = props.trigger ?? defaults.trigger ?? "hover";
-    reducedMotion = props.reducedMotion ?? defaults.reducedMotion ?? "static";
-    hoverDelay = props.hoverDelay ?? defaults.hoverDelay ?? HOVER_DELAY;
   };
+
+  // A prop wins, then defaults from Svelte context, then the nearest ancestor
+  // with a data attribute, then `configureAnimatedIcons`. Context comes before
+  // the DOM so an icon portaled elsewhere in the page keeps its component's
+  // defaults. Read each time an icon plays, so changes to an attribute or the
+  // page defaults apply to the next play.
+  const setting = (key) => {
+    const value = props[key] ?? contextDefaults[key];
+    if (value !== undefined) return value;
+    const attribute = ATTRIBUTES[key];
+    const ancestor = closestAcross(node, `[${attribute}]`);
+    if (ancestor) {
+      const raw = ancestor.getAttribute(attribute);
+      return key === "hoverDelay" ? Number(raw) : raw;
+    }
+    return pageDefaults[key] ?? FALLBACKS[key];
+  };
+
+  // The template renders `data-motion` from props and context; the runtime
+  // updates it from the page before each play.
+  const applyMotion = () => node.setAttribute("data-motion", setting("motion"));
 
   resolve(options);
 
-  const target = node.closest(TRIGGER) ?? node;
+  const target = closestAcross(node, TRIGGER) ?? node;
 
-  const moves = () => !matchMedia(REDUCED_MOTION).matches || reducedMotion === "full";
+  const moves = () => !matchMedia(REDUCED_MOTION).matches || setting("reducedMotion") === "full";
 
   const start = () => {
+    applyMotion();
     if (moves()) restart(node);
-    else if (reducedMotion === "fade") fading = fade(node);
+    else if (setting("reducedMotion") === "fade") fading = fade(node);
   };
 
   // Browsers keep animating an SVG that's scrolled out of view, on the main
@@ -99,8 +149,9 @@ export function animate(node, options) {
 
   const startLoop = () => {
     cancel();
+    applyMotion();
     if (moves()) node.setAttribute(PLAYING, "loop");
-    else if (reducedMotion === "fade") fading = fade(node, Infinity);
+    else if (setting("reducedMotion") === "fade") fading = fade(node, Infinity);
     watch();
   };
 
@@ -136,7 +187,7 @@ export function animate(node, options) {
   const isPlaying = () => node.hasAttribute(PLAYING) || fading?.playState === "running";
 
   const startIfIdle = () => {
-    if (trigger !== "hover" || isPlaying()) return;
+    if (setting("trigger") !== "hover" || isPlaying()) return;
     if (target !== node && target.matches(DISABLED)) return;
     start();
   };
@@ -155,7 +206,7 @@ export function animate(node, options) {
     // Touch and pen fire `pointerenter` on tap, which isn't hover.
     if (event.pointerType !== "mouse") return;
     cancel();
-    timer = setTimeout(startIfIdle, hoverDelay);
+    timer = setTimeout(startIfIdle, setting("hoverDelay"));
   };
 
   // Only focus on the trigger itself counts: a text input inside a label

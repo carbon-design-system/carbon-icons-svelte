@@ -95,8 +95,8 @@ describe("animated icons", () => {
   // stopping at a cycle boundary is seamless.
   test.each(cases)("%s loops in both modes, or not at all", (name, icon) => {
     const css = templateAnimated(icon);
-    const loopRules = (mode: string) => css.split(`svg[data-playing="loop"][data-motion="${mode}"]`).length - 1;
-    const oneShotRules = (mode: string) => css.split(`svg[data-playing="motion"][data-motion="${mode}"]`).length - 1;
+    const loopRules = (mode: string) => css.split(`[data-playing="loop"][data-motion="${mode}"]`).length - 1;
+    const oneShotRules = (mode: string) => css.split(`[data-playing="motion"][data-motion="${mode}"]`).length - 1;
 
     if (!icon.loop) {
       expect(css).not.toContain('data-playing="loop"');
@@ -111,6 +111,24 @@ describe("animated icons", () => {
     // Looping parts share one cycle: no delays, or a stopped loop would cut
     // later parts off mid-cycle.
     expect(css).not.toMatch(/data-playing="loop"[^{]*\{[^}]*calc\(var\(--i\)/);
+  });
+
+  // Each icon's CSS is scoped to the icon by its own selectors and keyframe
+  // names, not by Svelte, so it works the same outside Svelte.
+  test.each(cases)("%s scopes its CSS to itself", (name, icon) => {
+    const style = templateAnimated(icon).split("<style>")[1]!;
+    const root = `svg[data-animated-icon="${name}"]`;
+    const selectors = [...style.matchAll(/:global\(([^)]*(?:\)[^)]*)*?)\)\s*[,{]/g)].map(([, selector]) => selector!);
+    const keyframes = [...style.matchAll(/@keyframes -global-([\w-]+)/g)].map(([, kf]) => kf!);
+    const used = [...style.matchAll(/animation(?:-name)?:\s*([^;]+);/g)].flatMap(([, value]) =>
+      value!.match(/ccs-animated-[\w-]+/g) ?? []
+    );
+
+    expect(selectors.length).toBeGreaterThan(0);
+    for (const selector of selectors) expect(selector.startsWith(root)).toBe(true);
+    for (const kf of keyframes) expect(kf.startsWith(`ccs-animated-${name}-`)).toBe(true);
+    for (const kf of used) expect(keyframes).toContain(kf);
+    expect(templateAnimated(icon)).toContain(`data-animated-icon="${name}"`);
   });
 
   test("gives masks and clip paths a unique id prefix per instance", () => {

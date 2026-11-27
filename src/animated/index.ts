@@ -2,7 +2,7 @@
 
 import type { IconOutput } from "@carbon/icons";
 import { RULES, ruleIcons } from "./rules.js";
-import { DURATION, EASING, withLoop, type AnimatedIcon } from "./shared.js";
+import { DURATION, EASING, scopeCss, withLoop, type AnimatedIcon } from "./shared.js";
 import ActivityIcon from "./icons/Activity.js";
 import AddIcon from "./icons/Add.js";
 import AddAltIcon from "./icons/AddAlt.js";
@@ -473,7 +473,20 @@ export const fillTokens = (source: string) =>
     .replace("__EASING_STANDARD_PRODUCTIVE__", JSON.stringify(EASING.standard.productive))
     .replace("__EASING_STANDARD_EXPRESSIVE__", JSON.stringify(EASING.standard.expressive));
 
-export const templateAnimated = ({ content, css, loop }: AnimatedIcon) => {
+/**
+ * Marks scoped CSS global for Svelte, since `scopeCss` already scoped it:
+ * each selector list in `:global()`, and each keyframe name `-global-`.
+ */
+const svelteGlobal = (css: string) =>
+  css.replace(/([^{}]+)\{((?:[^{}]|\{[^{}]*\})*)\}/g, (_, prelude: string, body: string) => {
+    const lead = prelude.match(/^\s*/)![0];
+    const head = prelude.trim();
+    if (head.startsWith("@keyframes ")) return `${lead}@keyframes -global-${head.slice(11)} {${body}}`;
+    const selectors = head.split(/,\s*/).map((selector) => `:global(${selector})`);
+    return `${lead}${selectors.join(`,\n${lead.replace(/^\n+/, "")}`)} {${body}}`;
+  });
+
+export const templateAnimated = ({ name, content, css, loop }: AnimatedIcon) => {
   const usesId = ID_PATTERN.test(content);
 
   return `<script>
@@ -512,8 +525,9 @@ ${usesId ? "\n  const id = uid();\n" : ""}
   preserveAspectRatio="xMidYMid meet"
   width={size}
   height={size}
+  data-animated-icon="${name}"
   data-motion={motion ?? defaults.motion ?? "productive"}
-  use:animate={{ play, loop, loops: ${loop ? "true" : "false"}, trigger, reducedMotion, hoverDelay, defaults }}
+  use:animate={{ play, loop, loops: ${loop ? "true" : "false"}, motion, trigger, reducedMotion, hoverDelay, defaults }}
   {...attributes}
   {...$$restProps}>
   {#if title}<title>{title}</title>{/if}
@@ -521,7 +535,7 @@ ${usesId ? "\n  const id = uid();\n" : ""}
 </svg>
 
 <style>
-${loop ? withLoop(css) : css}
+${svelteGlobal(scopeCss(name, loop ? withLoop(css) : css))}
 </style>
 `;
 };
@@ -600,6 +614,20 @@ type CarbonAnimatedIcon = typeof import("svelte") extends { mount: any }
  */
 export declare function setAnimatedIconDefaults(defaults: CarbonAnimatedIconDefaults): void;
 
+/**
+ * Sets defaults for every animated icon on the page, including icons outside
+ * any component that calls \`setAnimatedIconDefaults\`. Later calls merge into
+ * earlier ones, and apply from each icon's next play.
+ *
+ * An element can also set defaults for the icons inside it with data
+ * attributes: \`data-animated-motion\`, \`data-animated-trigger\`,
+ * \`data-animated-reduced-motion\` and \`data-animated-hover-delay\`.
+ *
+ * Props win, then \`setAnimatedIconDefaults\`, then the nearest data
+ * attribute, then these.
+ */
+export declare function configureAnimatedIcons(defaults: CarbonAnimatedIconDefaults): void;
+
 ${names.map((name) => `export declare const ${name}: CarbonAnimatedIcon;`).join("\n")}
 `;
 
@@ -631,7 +659,7 @@ export const buildAnimated = async (lookup: IconLookup) => {
   files.set("animate.js", fillTokens(await Bun.file(new URL("./animate.js", import.meta.url)).text()));
   files.set(
     "index.js",
-    'export { setAnimatedIconDefaults } from "./animate.js";\n' +
+    'export { configureAnimatedIcons, setAnimatedIconDefaults } from "./animate.js";\n' +
       names.map((name) => `export { default as ${name} } from "./${name}.svelte";\n`).join("")
   );
   files.set("index.d.ts", definitions(names));

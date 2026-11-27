@@ -37,8 +37,9 @@ exports[`animated icons template 1`] = `
   preserveAspectRatio="xMidYMid meet"
   width={size}
   height={size}
+  data-animated-icon="Notification"
   data-motion={motion ?? defaults.motion ?? "productive"}
-  use:animate={{ play, loop, loops: false, trigger, reducedMotion, hoverDelay, defaults }}
+  use:animate={{ play, loop, loops: false, motion, trigger, reducedMotion, hoverDelay, defaults }}
   {...attributes}
   {...$$restProps}>
   {#if title}<title>{title}</title>{/if}
@@ -47,26 +48,26 @@ exports[`animated icons template 1`] = `
 </svg>
 
 <style>
-  .bell,
-  .clapper {
+  :global(svg[data-animated-icon="Notification"] .bell),
+  :global(svg[data-animated-icon="Notification"] .clapper) {
     transform-box: view-box;
     transform-origin: 16px 1px;
   }
 
-  :global(svg[data-playing="motion"][data-motion="productive"]) .bell,
-  :global(svg[data-playing="motion"][data-motion="productive"]) .clapper {
-    animation: swing 400ms cubic-bezier(0.2, 0, 0.38, 0.9);
+  :global(svg[data-animated-icon="Notification"][data-playing="motion"][data-motion="productive"] .bell),
+  :global(svg[data-animated-icon="Notification"][data-playing="motion"][data-motion="productive"] .clapper) {
+    animation: ccs-animated-Notification-swing 400ms cubic-bezier(0.2, 0, 0.38, 0.9);
   }
 
-  :global(svg[data-playing="motion"][data-motion="expressive"]) .bell {
-    animation: ring 700ms cubic-bezier(0.4, 0.14, 0.3, 1);
+  :global(svg[data-animated-icon="Notification"][data-playing="motion"][data-motion="expressive"] .bell) {
+    animation: ccs-animated-Notification-ring 700ms cubic-bezier(0.4, 0.14, 0.3, 1);
   }
 
-  :global(svg[data-playing="motion"][data-motion="expressive"]) .clapper {
-    animation: ring-clapper 700ms cubic-bezier(0.4, 0.14, 0.3, 1);
+  :global(svg[data-animated-icon="Notification"][data-playing="motion"][data-motion="expressive"] .clapper) {
+    animation: ccs-animated-Notification-ring-clapper 700ms cubic-bezier(0.4, 0.14, 0.3, 1);
   }
 
-  @keyframes swing {
+  @keyframes -global-ccs-animated-Notification-swing {
     35% {
       transform: rotate(6deg);
     }
@@ -75,7 +76,7 @@ exports[`animated icons template 1`] = `
     }
   }
 
-  @keyframes ring {
+  @keyframes -global-ccs-animated-Notification-ring {
     14% {
       transform: rotate(8deg);
     }
@@ -93,7 +94,7 @@ exports[`animated icons template 1`] = `
     }
   }
 
-  @keyframes ring-clapper {
+  @keyframes -global-ccs-animated-Notification-ring-clapper {
     0%,
     5% {
       transform: rotate(0);
@@ -192,6 +193,20 @@ type CarbonAnimatedIcon = typeof import("svelte") extends { mount: any }
  * extra props. Call it while the component initializes. Props on an icon win.
  */
 export declare function setAnimatedIconDefaults(defaults: CarbonAnimatedIconDefaults): void;
+
+/**
+ * Sets defaults for every animated icon on the page, including icons outside
+ * any component that calls \`setAnimatedIconDefaults\`. Later calls merge into
+ * earlier ones, and apply from each icon's next play.
+ *
+ * An element can also set defaults for the icons inside it with data
+ * attributes: \`data-animated-motion\`, \`data-animated-trigger\`,
+ * \`data-animated-reduced-motion\` and \`data-animated-hover-delay\`.
+ *
+ * Props win, then \`setAnimatedIconDefaults\`, then the nearest data
+ * attribute, then these.
+ */
+export declare function configureAnimatedIcons(defaults: CarbonAnimatedIconDefaults): void;
 
 export declare const Activity: CarbonAnimatedIcon;
 export declare const Add: CarbonAnimatedIcon;
